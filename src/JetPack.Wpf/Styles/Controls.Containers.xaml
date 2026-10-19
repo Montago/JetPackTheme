@@ -271,7 +271,7 @@
                         <Border x:Name="Bd" Height="38" VerticalAlignment="Top" Background="Transparent">
                             <ContentPresenter x:Name="Content" Margin="{TemplateBinding Padding}" ContentSource="Header" RecognizesAccessKey="True"
                                               VerticalAlignment="Center" HorizontalAlignment="Center" Effect="{TemplateBinding h:ControlHelper.ContentEffect}"
-                                              TextElement.FontSize="{DynamicResource JetPack.Font.Size.Navigation}" TextElement.FontWeight="Bold"
+                                              TextElement.FontSize="{DynamicResource JetPack.Font.Size.Navigation}" TextElement.FontWeight="Bold" TextOptions.TextFormattingMode="Ideal"
                                               TextElement.Foreground="{TemplateBinding h:ControlHelper.HeaderForeground}" />
                         </Border>
                         <Path x:Name="Notch" Width="15" Height="9" VerticalAlignment="Bottom" HorizontalAlignment="Center" Data="{DynamicResource JetPack.Geometry.Notch}"

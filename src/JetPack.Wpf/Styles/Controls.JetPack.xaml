@@ -324,6 +324,13 @@
         <Setter Property="BorderBrush" Value="{DynamicResource JetPack.Brushes.Panel.Border}" />
         <Setter Property="BorderThickness" Value="1" />
         <Setter Property="ItemContainerStyle" Value="{DynamicResource JetPack.Styles.Expander.Accordion}" />
+        <Setter Property="ItemsPanel">
+            <Setter.Value>
+                <ItemsPanelTemplate>
+                    <c:AccordionPanel />
+                </ItemsPanelTemplate>
+            </Setter.Value>
+        </Setter>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="c:Accordion">

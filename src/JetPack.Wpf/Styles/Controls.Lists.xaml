@@ -618,6 +618,8 @@
     </Style>
 
     <Style x:Key="JetPack.Styles.TreeViewItem" TargetType="TreeViewItem">
+        <!-- The built-in TreeViewItem theme style sets Foreground to the system text colour; drop it so items inherit from the TreeView -->
+        <Setter Property="OverridesDefaultStyle" Value="True" />
         <Setter Property="FocusVisualStyle" Value="{x:Null}" />
         <Setter Property="Background" Value="Transparent" />
         <Setter Property="Padding" Value="6,2" />

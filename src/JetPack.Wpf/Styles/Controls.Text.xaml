@@ -6,7 +6,9 @@
     <Style x:Key="JetPack.Styles.TextBlock" TargetType="TextBlock">
         <Setter Property="FontFamily" Value="{DynamicResource JetPack.Fonts.Family}" />
     </Style>
+    <!-- Large text uses Ideal formatting: Display mode snaps glyphs to pixels, which suits small text but makes headings look jagged -->
     <Style x:Key="JetPack.Styles.TextBlock.Heading" TargetType="TextBlock">
+        <Setter Property="TextOptions.TextFormattingMode" Value="Ideal" />
         <Setter Property="FontFamily" Value="{DynamicResource JetPack.Fonts.Family.Heading}" />
         <Setter Property="FontWeight" Value="Bold" />
         <Setter Property="Foreground" Value="{DynamicResource JetPack.Brushes.Text}" />

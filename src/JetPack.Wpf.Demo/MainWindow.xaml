@@ -50,7 +50,7 @@
         <TabControl x:Name="Pages" Style="{StaticResource JetPack.Styles.TabControl.Strip}">
             <TabControl.Tag>
                 <StackPanel HorizontalAlignment="Right" Margin="0,4,0,0">
-                    <TextBlock HorizontalAlignment="Right" FontSize="38" Text="Jetpack" Effect="{DynamicResource JetPack.Effects.TextGlow}" />
+                    <TextBlock HorizontalAlignment="Right" FontSize="38" Text="Jetpack" TextOptions.TextFormattingMode="Ideal" Effect="{DynamicResource JetPack.Effects.TextGlow}" />
                     <TextBlock HorizontalAlignment="Right" Style="{StaticResource Demo.State}" Text="for WPF · .NET 8+" />
                 </StackPanel>
             </TabControl.Tag>

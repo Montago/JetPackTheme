@@ -40,7 +40,7 @@
                                 </Grid.ColumnDefinitions>
                                 <jp:Accordion VerticalAlignment="Stretch">
                                     <Expander Header="Need Placement" IsExpanded="True" Padding="4,6">
-                                        <TreeView BorderThickness="0" Background="Transparent" Padding="0" Height="150">
+                                        <TreeView BorderThickness="0" Background="Transparent" Padding="0">
                                             <TreeViewItem Header="Contoso" IsExpanded="True">
                                                 <TreeViewItem Header="August 2026" />
                                                 <TreeViewItem Header="September 2026" IsSelected="True" />
