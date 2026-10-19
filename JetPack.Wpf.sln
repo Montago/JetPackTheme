@@ -1,10 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.0.31903.59
+# Visual Studio Version 18
+VisualStudioVersion = 18.8.12009.203 stable
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{827E0CD3-B72D-47B6-A68D-7590B98EB39B}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JetPack.Wpf", "src\JetPack.Wpf\JetPack.Wpf.csproj", "{2DC4825C-DBB5-46A3-A09A-5A03184875D7}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JetPack.Wpf.Demo", "src\JetPack.Wpf.Demo\JetPack.Wpf.Demo.csproj", "{292959D0-FA6C-40B1-B5E3-78C15554425D}"
@@ -46,9 +44,5 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(NestedProjects) = preSolution
-		{2DC4825C-DBB5-46A3-A09A-5A03184875D7} = {827E0CD3-B72D-47B6-A68D-7590B98EB39B}
-		{292959D0-FA6C-40B1-B5E3-78C15554425D} = {827E0CD3-B72D-47B6-A68D-7590B98EB39B}
 	EndGlobalSection
 EndGlobal
