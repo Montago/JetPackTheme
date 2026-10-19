@@ -1,0 +1,6 @@
+Texture.png and Vignette.png are copied unchanged from Microsoft's
+"Silverlight 4 Application Themes" (JetPack theme):
+https://www.microsoft.com/en-us/download/details.aspx?id=14590
+
+Copyright (c) Microsoft Corporation. These two files are NOT covered by the
+MIT License of this repository. See NOTICE.md in the repository root.

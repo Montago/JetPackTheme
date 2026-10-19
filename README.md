@@ -80,7 +80,7 @@ design/              HTML-udkastet, som udtrykket blev godkendt ud fra
 
 ## Licens
 
-Koden er under MIT-licensen (se [LICENSE](LICENSE)). Det visuelle design og tekstur/vignet stammer fra Microsofts Silverlight 4 Theme Pack; se [NOTICE.md](NOTICE.md).
+Koden er under MIT-licensen (se [LICENSE](LICENSE)), **med undtagelse af** `src/JetPack.Wpf/Assets/Texture.png` og `src/JetPack.Wpf/Assets/Vignette.png`. De to billeder er kopieret uændret fra Microsofts [Silverlight 4 Application Themes](https://www.microsoft.com/en-us/download/details.aspx?id=14590) og tilhører Microsoft. Farverne og skyggerne er hentet fra samme tema, mens alle WPF-stilarter er skrevet fra bunden. Detaljer står i [NOTICE.md](NOTICE.md).
 
 ## Begrænsninger i version 0.1
 
