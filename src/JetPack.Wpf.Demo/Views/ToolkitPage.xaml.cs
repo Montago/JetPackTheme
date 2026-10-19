@@ -38,7 +38,7 @@ public partial class ToolkitPage : UserControl
             for (var s = 0; s < 3; s++)
             {
                 var h = data[q][s] * scale;
-                var bar = new Rectangle { Width = 13, Height = h, RadiusX = 1, RadiusY = 1, ToolTip = $"{quarters[q]}: {data[q][s]} timer" };
+                var bar = new Rectangle { Width = 13, Height = h, RadiusX = 1, RadiusY = 1, ToolTip = $"{quarters[q]}: {data[q][s]} hours" };
                 bar.SetResourceReference(Shape.FillProperty, $"JetPack.Brushes.Chart.{s + 1}");
                 Canvas.SetLeft(bar, x0 + s * 15);
                 Canvas.SetTop(bar, bottom - h);

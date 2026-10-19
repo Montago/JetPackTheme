@@ -6,28 +6,28 @@
     <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Padding="0,22,0,0">
         <StackPanel>
             <TextBlock Style="{StaticResource Demo.Intro}"
-                       Text="JetPackWindow afløser MetroWindow: tekstur og vignet, egen titellinje med vindueskommandoer, et lag til flyouts og en overlay til dialoger. Under ses 'Companies'-skærmen fra navigationsskabelonen, bygget med kontrollerne fra de andre faner." />
+                       Text="JetPackWindow replaces MetroWindow: texture and vignette, its own title bar with window commands, a flyout layer and an overlay for dialogs. Below is the 'Companies' screen from the navigation template, built with the controls from the other tabs." />
 
             <StackPanel Orientation="Horizontal" Margin="0,0,0,22" d:Demo.Spacing="8">
-                <TextBlock VerticalAlignment="Center" Style="{StaticResource Demo.State}" Text="Titellinje:" />
-                <RadioButton x:Name="TitleDark" Content="Mørk" GroupName="Title" IsChecked="True" Checked="OnTitleMode" Tag="Dark" Margin="0,0,6,0" />
-                <RadioButton Content="Lys" GroupName="Title" Checked="OnTitleMode" Tag="Light" Margin="0,0,6,0" />
-                <RadioButton Content="Tekstur hele vejen" GroupName="Title" Checked="OnTitleMode" Tag="Texture" Margin="0,0,24,0" />
-                <Button Content="Vis dialog" Click="OnShowDialog" />
-                <Button Content="Bekræft sletning" Click="OnShowDelete" Style="{StaticResource JetPack.Styles.Button.Orange}" />
+                <TextBlock VerticalAlignment="Center" Style="{StaticResource Demo.State}" Text="Title bar:" />
+                <RadioButton x:Name="TitleDark" Content="Dark" GroupName="Title" IsChecked="True" Checked="OnTitleMode" Tag="Dark" Margin="0,0,6,0" />
+                <RadioButton Content="Light" GroupName="Title" Checked="OnTitleMode" Tag="Light" Margin="0,0,6,0" />
+                <RadioButton Content="Texture all the way" GroupName="Title" Checked="OnTitleMode" Tag="Texture" Margin="0,0,24,0" />
+                <Button Content="Show dialog" Click="OnShowDialog" />
+                <Button Content="Confirm delete" Click="OnShowDelete" Style="{StaticResource JetPack.Styles.Button.Orange}" />
             </StackPanel>
 
             <!-- "Companies" sample from the Silverlight navigation template -->
             <Border BorderBrush="#FF3B3C40" BorderThickness="1" CornerRadius="3" ClipToBounds="True" Background="{DynamicResource JetPack.Brushes.Window.Background}" Margin="0,0,0,24">
                 <TabControl Style="{StaticResource JetPack.Styles.TabControl.Navigation}" SelectedIndex="0">
-                    <TabItem Header="Virksomheder">
+                    <TabItem Header="Companies">
                         <Grid Margin="24,12,24,22">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto" />
                                 <RowDefinition Height="Auto" />
                                 <RowDefinition Height="Auto" />
                             </Grid.RowDefinitions>
-                            <TextBlock Style="{StaticResource JetPack.Styles.TextBlock.Heading1}" Text="Virksomheder" Margin="0,0,0,16" />
+                            <TextBlock Style="{StaticResource JetPack.Styles.TextBlock.Heading1}" Text="Companies" Margin="0,0,0,16" />
 
                             <Grid Grid.Row="1">
                                 <Grid.ColumnDefinitions>
@@ -36,29 +36,29 @@
                                     <ColumnDefinition Width="*" />
                                 </Grid.ColumnDefinitions>
                                 <jp:Accordion VerticalAlignment="Stretch">
-                                    <Expander Header="Mangler placering" IsExpanded="True" Padding="4,6">
+                                    <Expander Header="Need Placement" IsExpanded="True" Padding="4,6">
                                         <TreeView BorderThickness="0" Background="Transparent" Padding="0" Height="150">
                                             <TreeViewItem Header="Contoso" IsExpanded="True">
                                                 <TreeViewItem Header="August 2026" />
                                                 <TreeViewItem Header="September 2026" IsSelected="True" />
-                                                <TreeViewItem Header="Oktober 2026" />
+                                                <TreeViewItem Header="October 2026" />
                                             </TreeViewItem>
-                                            <TreeViewItem Header="Southridge"><TreeViewItem Header="Juli 2026" /></TreeViewItem>
-                                            <TreeViewItem Header="Microsoft"><TreeViewItem Header="Juni 2026" /></TreeViewItem>
-                                            <TreeViewItem Header="Fabrikam"><TreeViewItem Header="Maj 2026" /></TreeViewItem>
+                                            <TreeViewItem Header="Southridge"><TreeViewItem Header="July 2026" /></TreeViewItem>
+                                            <TreeViewItem Header="Microsoft"><TreeViewItem Header="June 2026" /></TreeViewItem>
+                                            <TreeViewItem Header="Fabrikam"><TreeViewItem Header="May 2026" /></TreeViewItem>
                                             <TreeViewItem Header="Soar Airlines"><TreeViewItem Header="April 2026" /></TreeViewItem>
                                         </TreeView>
                                     </Expander>
-                                    <Expander Header="Fornyelse afventer">
-                                        <TextBlock TextWrapping="Wrap" Text="2 kontrakter udløber 31. december." />
+                                    <Expander Header="Renewal Pending">
+                                        <TextBlock TextWrapping="Wrap" Text="2 contracts expire on 31 December." />
                                     </Expander>
-                                    <Expander Header="Arkiv">
-                                        <TextBlock TextWrapping="Wrap" Text="148 afsluttede placeringer." />
+                                    <Expander Header="Archive">
+                                        <TextBlock TextWrapping="Wrap" Text="148 completed placements." />
                                     </Expander>
                                 </jp:Accordion>
 
                                 <TabControl Grid.Column="2">
-                                    <TabItem Header="Ledige">
+                                    <TabItem Header="Available">
                                         <Grid>
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="200" />
@@ -74,7 +74,7 @@
                                             </ListBox>
                                             <StackPanel Grid.Column="2">
                                                 <TextBlock TextWrapping="Wrap" Margin="0,0,0,8"
-                                                           Text="Daniel er backend-udvikler med 9 års erfaring i .NET og SQL Server. Ledig fra uge 44 på fuld tid." />
+                                                           Text="Daniel is a back-end developer with 9 years of experience in .NET and SQL Server. Available full time from week 44." />
                                                 <StackPanel Orientation="Horizontal">
                                                     <Calendar x:Name="Cal" />
                                                     <Border Width="92" Height="118" Margin="8,0,0,0" VerticalAlignment="Top" BorderBrush="White" BorderThickness="3"
@@ -91,11 +91,11 @@
                                             </StackPanel>
                                         </Grid>
                                     </TabItem>
-                                    <TabItem Header="Tildelte">
-                                        <TextBlock Text="9 konsulenter er tildelt projekter." />
+                                    <TabItem Header="Assigned">
+                                        <TextBlock Text="9 consultants are assigned to projects." />
                                     </TabItem>
-                                    <TabItem Header="Forslag">
-                                        <TextBlock Text="3 forslag afventer svar." />
+                                    <TabItem Header="Suggestions">
+                                        <TextBlock Text="3 suggestions are awaiting a reply." />
                                     </TabItem>
                                 </TabControl>
                             </Grid>
@@ -107,18 +107,18 @@
                                     <ColumnDefinition Width="240" />
                                 </Grid.ColumnDefinitions>
                                 <StackPanel Margin="220,0,20,0" MaxWidth="320" HorizontalAlignment="Left">
-                                    <TextBlock Style="{StaticResource JetPack.Styles.TextBlock.Heading2}" Text="Virksomhedsoplysninger" Margin="0,0,0,8" />
-                                    <Label Content="Navn" />
-                                    <TextBox Text="Contoso A/S" Width="300" HorizontalAlignment="Left" />
-                                    <Label Content="HR-kontakt" Margin="0,6,0,0" />
+                                    <TextBlock Style="{StaticResource JetPack.Styles.TextBlock.Heading2}" Text="Company Details" Margin="0,0,0,8" />
+                                    <Label Content="Name" />
+                                    <TextBox Text="Contoso Corporation" Width="300" HorizontalAlignment="Left" />
+                                    <Label Content="HR Contact" Margin="0,6,0,0" />
                                     <TextBox Text="Heather A. Andrade" Width="300" HorizontalAlignment="Left" />
-                                    <Label Content="Telefon" Margin="0,6,0,0" />
-                                    <TextBox Text="+45 86 12 34 56" Width="300" HorizontalAlignment="Left" />
+                                    <Label Content="Phone" Margin="0,6,0,0" />
+                                    <TextBox Text="(555) 555-1234" Width="300" HorizontalAlignment="Left" />
                                     <DockPanel Margin="0,16,0,0" Width="300" HorizontalAlignment="Left">
-                                        <CheckBox DockPanel.Dock="Right" Content="Hold aktiv" />
+                                        <CheckBox DockPanel.Dock="Right" Content="Keep Active" />
                                         <StackPanel Orientation="Horizontal">
-                                            <Button Content="Send besked" Margin="0,0,8,0" />
-                                            <Button Content="Opdater" Style="{StaticResource JetPack.Styles.Button.Accent}" />
+                                            <Button Content="Send Message" Margin="0,0,8,0" />
+                                            <Button Content="Update" Style="{StaticResource JetPack.Styles.Button.Accent}" />
                                         </StackPanel>
                                     </DockPanel>
                                 </StackPanel>
@@ -127,18 +127,18 @@
                                     <Rectangle Width="1" HorizontalAlignment="Right" Fill="#1AFFFFFF" />
                                 </Grid>
                                 <StackPanel Grid.Column="2" Margin="20,0,0,0">
-                                    <TextBlock Style="{StaticResource JetPack.Styles.TextBlock.Heading2}" Text="Noter" Margin="0,0,0,10" />
+                                    <TextBlock Style="{StaticResource JetPack.Styles.TextBlock.Heading2}" Text="Notes" Margin="0,0,0,10" />
                                     <TextBox Style="{StaticResource JetPack.Styles.TextBox.MultiLine.Dark}" Height="170"
-                                             Text="Kontrakten er forlænget til 30. juni 2027. Kunden ønsker en ekstra udvikler fra januar, helst med erfaring i WPF og MVVM. Næste statusmøde er torsdag i uge 44 kl. 10." />
+                                             Text="The contract has been extended to 30 June 2027. The customer wants an extra developer from January, ideally with WPF and MVVM experience. Next status meeting is Thursday in week 44 at 10 am." />
                                 </StackPanel>
                             </Grid>
                         </Grid>
                     </TabItem>
-                    <TabItem Header="Ordrer" />
-                    <TabItem Header="Medarbejdere" />
-                    <TabItem Header="Ugesedler" />
-                    <TabItem Header="Løn" />
-                    <TabItem Header="Fakturering" />
+                    <TabItem Header="Orders" />
+                    <TabItem Header="Employees" />
+                    <TabItem Header="Timesheets" />
+                    <TabItem Header="Payroll" />
+                    <TabItem Header="Billing" />
                 </TabControl>
             </Border>
         </StackPanel>

@@ -6,13 +6,13 @@ public partial class SdkPage : UserControl
 {
     public static readonly Timesheet[] Timesheets =
     {
-        new("Charles Hoyle", "Rådgivning", 37.5, 43, "Godkendt"),
-        new("Daniel Tiedemann", "Udvikling", 41.0, 43, "Afventer"),
-        new("David Ritter", "Udvikling", 32.0, 43, "Kladde"),
-        new("Ida Kragh", "Økonomi", 37.0, 43, "Godkendt"),
-        new("Lindsey Ballard", "Salg", 18.5, 43, "Afvist"),
-        new("Mads Lund", "Support", 39.5, 43, "Godkendt"),
-        new("Vivian Smail", "Salg", 36.0, 43, "Godkendt"),
+        new("Charles Hoyle", "Consulting", 37.5, 43, "Approved"),
+        new("Daniel Tiedemann", "Development", 41.0, 43, "Pending"),
+        new("David Ritter", "Development", 32.0, 43, "Draft"),
+        new("Ida Kragh", "Finance", 37.0, 43, "Approved"),
+        new("Lindsey Ballard", "Sales", 18.5, 43, "Rejected"),
+        new("Mads Lund", "Support", 39.5, 43, "Approved"),
+        new("Vivian Smail", "Sales", 36.0, 43, "Approved"),
     };
 
     public SdkPage()
@@ -30,7 +30,7 @@ public partial class SdkPage : UserControl
 
         Suggest.ItemsSource = new[]
         {
-            "Contoso A/S", "Fabrikam", "Faber & Søn ApS", "Southridge Video", "Soar Airlines", "Microsoft Danmark", "Northwind Traders", "Fourth Coffee",
+            "Contoso Corporation", "Fabrikam", "Fabrikam Residences", "Southridge Video", "Soar Airlines", "Margie's Travel", "Northwind Traders", "Fourth Coffee",
         };
     }
 }

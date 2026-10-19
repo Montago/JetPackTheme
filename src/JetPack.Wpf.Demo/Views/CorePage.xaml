@@ -6,7 +6,7 @@
     <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Padding="0,22,0,0" Background="Transparent">
         <StackPanel>
             <TextBlock Style="{StaticResource Demo.Intro}"
-                       Text="De grundlæggende WPF-kontroller i samme opstilling som den originale temaoversigt. Farver, gradienter og skygger er taget direkte fra CoreStyles.xaml og Brushes.xaml." />
+                       Text="The basic WPF controls, laid out like the original theme browser. Colours, gradients and shadows are taken directly from CoreStyles.xaml and Brushes.xaml." />
 
             <WrapPanel>
                 <HeaderedContentControl Style="{StaticResource Demo.Column}" Header="Button" Tag="JetPack.Styles.Button">
@@ -35,19 +35,19 @@
                                 <TextBox Text="Normal" />
                                 <TextBox Text="Read Only" IsReadOnly="True" />
                                 <TextBox Text="Disabled" IsEnabled="False" />
-                                <TextBox Text="abc-123" d:Demo.Error="Værdien skal være et tal." />
+                                <TextBox Text="abc-123" d:Demo.Error="The value must be a number." />
                                 <PasswordBox Password="hemmelig" />
-                                <TextBox jp:TextBoxHelper.Watermark="Søg kunde…" />
-                                <TextBlock Style="{StaticResource Demo.State}" Text="Lys (standard)" />
+                                <TextBox jp:TextBoxHelper.Watermark="Search customers…" />
+                                <TextBlock Style="{StaticResource Demo.State}" Text="Light (default)" />
                             </StackPanel>
                             <StackPanel Grid.Column="2" d:Demo.Spacing="10">
                                 <TextBox Style="{StaticResource JetPack.Styles.TextBox.Dark}" Text="Normal" />
                                 <TextBox Style="{StaticResource JetPack.Styles.TextBox.Dark}" Text="Read Only" IsReadOnly="True" />
                                 <TextBox Style="{StaticResource JetPack.Styles.TextBox.Dark}" Text="Disabled" IsEnabled="False" />
-                                <TextBox Style="{StaticResource JetPack.Styles.TextBox.Dark}" Text="abc-123" d:Demo.Error="Værdien skal være et tal." />
+                                <TextBox Style="{StaticResource JetPack.Styles.TextBox.Dark}" Text="abc-123" d:Demo.Error="The value must be a number." />
                                 <PasswordBox Style="{StaticResource JetPack.Styles.PasswordBox.Dark}" Password="hemmelig" />
-                                <TextBox Style="{StaticResource JetPack.Styles.TextBox.Dark}" jp:TextBoxHelper.Watermark="Søg kunde…" />
-                                <TextBlock Style="{StaticResource Demo.State}" Text="Mørk" />
+                                <TextBox Style="{StaticResource JetPack.Styles.TextBox.Dark}" jp:TextBoxHelper.Watermark="Search customers…" />
+                                <TextBlock Style="{StaticResource Demo.State}" Text="Dark" />
                             </StackPanel>
                         </Grid>
                     </StackPanel>
@@ -56,13 +56,13 @@
                 <HeaderedContentControl Style="{StaticResource Demo.Column}" Header="TextBlock" Tag="TextBlock · Hyperlink · ToolTip">
                     <StackPanel Width="190" d:Demo.Spacing="12">
                         <TextBlock FontSize="11" TextAlignment="Center" TextWrapping="Wrap"
-                                   Text="Tidsregistreringen for oktober lukker fredag kl. 16. Ugesedler, der ikke er godkendt inden da, overføres til november." />
+                                   Text="Time entry for October closes Friday at 4 pm. Timesheets not approved by then move to November." />
                         <Separator />
-                        <TextBlock HorizontalAlignment="Center"><Hyperlink>Åbn ugeseddel</Hyperlink></TextBlock>
-                        <TextBlock HorizontalAlignment="Center"><Hyperlink IsEnabled="False">Link deaktiveret</Hyperlink></TextBlock>
-                        <Button HorizontalAlignment="Center" Content="Link-knap" Style="{StaticResource JetPack.Styles.Button.Link}" />
+                        <TextBlock HorizontalAlignment="Center"><Hyperlink>Open timesheet</Hyperlink></TextBlock>
+                        <TextBlock HorizontalAlignment="Center"><Hyperlink IsEnabled="False">Link disabled</Hyperlink></TextBlock>
+                        <Button HorizontalAlignment="Center" Content="Link button" Style="{StaticResource JetPack.Styles.Button.Link}" />
                         <Separator />
-                        <Button HorizontalAlignment="Center" Content="Hold musen her" ToolTip="Gemmer ændringer og sender til godkendelse" />
+                        <Button HorizontalAlignment="Center" Content="Hover here" ToolTip="Saves changes and sends them for approval" />
                     </StackPanel>
                 </HeaderedContentControl>
 
@@ -72,13 +72,13 @@
                         <CheckBox Content="Checked" IsChecked="True" />
                         <CheckBox Content="Indeterminate" IsThreeState="True" IsChecked="{x:Null}" />
                         <CheckBox Content="Disabled" IsChecked="True" IsEnabled="False" />
-                        <CheckBox Content="Invalid" d:Demo.Error="Du skal acceptere vilkårene." />
+                        <CheckBox Content="Invalid" d:Demo.Error="You must accept the terms." />
                         <Separator />
                         <RadioButton Content="Normal" GroupName="r1" />
                         <RadioButton Content="Checked" GroupName="r1" IsChecked="True" />
                         <RadioButton Content="Indeterminate" GroupName="r2" IsThreeState="True" IsChecked="{x:Null}" />
                         <RadioButton Content="Disabled" GroupName="r3" IsChecked="True" IsEnabled="False" />
-                        <RadioButton Content="Invalid" GroupName="r4" d:Demo.Error="Vælg en mulighed." />
+                        <RadioButton Content="Invalid" GroupName="r4" d:Demo.Error="Choose an option." />
                     </StackPanel>
                 </HeaderedContentControl>
             </WrapPanel>
@@ -87,24 +87,24 @@
                 <HeaderedContentControl Style="{StaticResource Demo.Column}" Header="ComboBox" Tag="JetPack.Styles.ComboBox">
                     <StackPanel Width="150" d:Demo.Spacing="10">
                         <ComboBox SelectedIndex="1">
-                            <ComboBoxItem Content="København" />
-                            <ComboBoxItem Content="Aarhus" />
-                            <ComboBoxItem Content="Odense" />
-                            <ComboBoxItem Content="Aalborg" />
-                            <ComboBoxItem Content="Esbjerg" />
+                            <ComboBoxItem Content="Seattle" />
+                            <ComboBoxItem Content="Portland" />
+                            <ComboBoxItem Content="Denver" />
+                            <ComboBoxItem Content="Boston" />
+                            <ComboBoxItem Content="Chicago" />
                         </ComboBox>
                         <ComboBox SelectedIndex="0" IsEnabled="False">
-                            <ComboBoxItem Content="Aarhus" />
+                            <ComboBoxItem Content="Portland" />
                         </ComboBox>
-                        <ComboBox IsEditable="True" Text="Odense">
-                            <ComboBoxItem Content="København" />
-                            <ComboBoxItem Content="Aarhus" />
-                            <ComboBoxItem Content="Odense" />
+                        <ComboBox IsEditable="True" Text="Denver">
+                            <ComboBoxItem Content="Seattle" />
+                            <ComboBoxItem Content="Portland" />
+                            <ComboBoxItem Content="Denver" />
                         </ComboBox>
-                        <ComboBox jp:TextBoxHelper.Watermark="Vælg uge">
-                            <ComboBoxItem Content="Uge 42" />
-                            <ComboBoxItem Content="Uge 43" />
-                            <ComboBoxItem Content="Uge 44" />
+                        <ComboBox jp:TextBoxHelper.Watermark="Choose week">
+                            <ComboBoxItem Content="Week 42" />
+                            <ComboBoxItem Content="Week 43" />
+                            <ComboBoxItem Content="Week 44" />
                         </ComboBox>
                     </StackPanel>
                 </HeaderedContentControl>
@@ -121,7 +121,7 @@
                             <ListBoxItem Content="Mads Lund" />
                         </ListBox>
                         <TextBlock Style="{StaticResource Demo.State}" Text="Invalid" />
-                        <ListBox Height="36" d:Demo.Error="Vælg mindst én medarbejder." />
+                        <ListBox Height="36" d:Demo.Error="Choose at least one employee." />
                     </StackPanel>
                 </HeaderedContentControl>
 
@@ -163,10 +163,10 @@
             </WrapPanel>
 
             <WrapPanel>
-                <HeaderedContentControl Style="{StaticResource Demo.Column}" Header="Typografi" Tag="JetPack.Styles.TextBlock.Heading1–6">
+                <HeaderedContentControl Style="{StaticResource Demo.Column}" Header="Typography" Tag="JetPack.Styles.TextBlock.Heading1–6">
                     <StackPanel Width="440">
-                        <TextBlock Style="{StaticResource JetPack.Styles.TextBlock.Heading1}" Text="Virksomheder" />
-                        <TextBlock Style="{StaticResource JetPack.Styles.TextBlock.Heading2}" Text="Virksomhedsoplysninger" />
+                        <TextBlock Style="{StaticResource JetPack.Styles.TextBlock.Heading1}" Text="Companies" />
+                        <TextBlock Style="{StaticResource JetPack.Styles.TextBlock.Heading2}" Text="Company Details" />
                         <TextBlock Style="{StaticResource JetPack.Styles.TextBlock.Heading3}" Text="Heading 3 · 21 px" />
                         <TextBlock Style="{StaticResource JetPack.Styles.TextBlock.Heading4}" Text="Heading 4 · 18 px" />
                         <TextBlock Style="{StaticResource JetPack.Styles.TextBlock.Heading5}" Text="Heading 5 · 15 px" />
@@ -175,12 +175,12 @@
                 </HeaderedContentControl>
 
                 <HeaderedContentControl Style="{StaticResource Demo.Column}" Header="Label · GroupBox" Tag="JetPack.Styles.GroupBox">
-                    <GroupBox Header="Kontaktperson" Width="260">
+                    <GroupBox Header="Contact" Width="260">
                         <StackPanel>
-                            <Label Content="_Navn" Target="{Binding ElementName=ContactName}" />
+                            <Label Content="_Name" Target="{Binding ElementName=ContactName}" />
                             <TextBox x:Name="ContactName" Text="Heather Andrade" Margin="0,0,0,6" />
-                            <Label Content="_Telefon" Target="{Binding ElementName=ContactPhone}" />
-                            <TextBox x:Name="ContactPhone" Text="+45 86 12 34 56" />
+                            <Label Content="_Phone" Target="{Binding ElementName=ContactPhone}" />
+                            <TextBox x:Name="ContactPhone" Text="(555) 555-1234" />
                         </StackPanel>
                     </GroupBox>
                 </HeaderedContentControl>

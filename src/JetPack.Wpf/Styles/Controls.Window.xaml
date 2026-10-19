@@ -120,16 +120,16 @@
                                                     <Style TargetType="ToggleButton" BasedOn="{StaticResource JetPack.Styles.Button.WindowCommand}" />
                                                 </ContentPresenter.Resources>
                                             </ContentPresenter>
-                                            <Button x:Name="MinButton" Style="{StaticResource JetPack.Styles.Button.WindowCaption}" Command="{x:Static SystemCommands.MinimizeWindowCommand}" ToolTip="Minimér">
+                                            <Button x:Name="MinButton" Style="{StaticResource JetPack.Styles.Button.WindowCaption}" Command="{x:Static SystemCommands.MinimizeWindowCommand}" ToolTip="Minimize">
                                                 <Path Width="10" Height="1" Stretch="Fill" Data="M0,0 H10" Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}" StrokeThickness="1" SnapsToDevicePixels="True" />
                                             </Button>
-                                            <Button x:Name="MaxButton" Style="{StaticResource JetPack.Styles.Button.WindowCaption}" Command="{x:Static SystemCommands.MaximizeWindowCommand}" ToolTip="Maksimér">
+                                            <Button x:Name="MaxButton" Style="{StaticResource JetPack.Styles.Button.WindowCaption}" Command="{x:Static SystemCommands.MaximizeWindowCommand}" ToolTip="Maximize">
                                                 <Rectangle Width="10" Height="10" Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}" StrokeThickness="1" SnapsToDevicePixels="True" />
                                             </Button>
-                                            <Button x:Name="RestoreButton" Style="{StaticResource JetPack.Styles.Button.WindowCaption}" Command="{x:Static SystemCommands.RestoreWindowCommand}" ToolTip="Gendan" Visibility="Collapsed">
+                                            <Button x:Name="RestoreButton" Style="{StaticResource JetPack.Styles.Button.WindowCaption}" Command="{x:Static SystemCommands.RestoreWindowCommand}" ToolTip="Restore" Visibility="Collapsed">
                                                 <Path Width="10" Height="10" Data="M2,0.5 H9.5 V8 M0.5,2.5 H7.5 V9.5 H0.5 Z" Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}" StrokeThickness="1" SnapsToDevicePixels="True" />
                                             </Button>
-                                            <Button Style="{StaticResource JetPack.Styles.Button.WindowClose}" Command="{x:Static SystemCommands.CloseWindowCommand}" ToolTip="Luk">
+                                            <Button Style="{StaticResource JetPack.Styles.Button.WindowClose}" Command="{x:Static SystemCommands.CloseWindowCommand}" ToolTip="Close">
                                                 <Path Width="10" Height="10" Stretch="Fill" Data="M0,0 L10,10 M10,0 L0,10" Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}" StrokeThickness="1.2" />
                                             </Button>
                                         </StackPanel>
@@ -230,7 +230,7 @@
                                 <Border BorderBrush="#B3FFFFFF" BorderThickness="0,1,0,0" CornerRadius="2,2,0,0">
                                     <DockPanel>
                                         <Button x:Name="PART_Close" DockPanel.Dock="Right" Width="24" Height="20" Margin="0,0,3,0" Style="{StaticResource JetPack.Styles.Button.WindowClose}"
-                                                Foreground="#FF505050" ToolTip="Luk">
+                                                Foreground="#FF505050" ToolTip="Close">
                                             <Path Width="8" Height="8" Stretch="Fill" Data="M0,0 L8,8 M8,0 L0,8" Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}" StrokeThickness="1.3" />
                                         </Button>
                                         <TextBlock Margin="10,0" VerticalAlignment="Center" FontWeight="Bold" Text="{TemplateBinding Title}" Effect="{DynamicResource JetPack.Effects.TextEmboss}" />

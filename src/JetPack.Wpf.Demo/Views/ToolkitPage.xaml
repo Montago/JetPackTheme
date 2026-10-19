@@ -6,30 +6,30 @@
     <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Padding="0,22,0,0">
         <StackPanel>
             <TextBlock Style="{StaticResource Demo.Intro}"
-                       Text="Silverlight Toolkit-kontrollerne. Expander, ContextMenu og Menu er indbygget i WPF; NumericUpDown, TimePicker, Rating, BusyIndicator og Accordion leveres af JetPack.Wpf." />
+                       Text="The Silverlight Toolkit controls. Expander, ContextMenu and Menu are built into WPF; NumericUpDown, TimePicker, Rating, BusyIndicator and Accordion come with JetPack.Wpf." />
 
             <WrapPanel>
                 <HeaderedContentControl Style="{StaticResource Demo.Column}" Header="Expander" Tag="JetPack.Styles.Expander">
                     <StackPanel Width="210" d:Demo.Spacing="8">
-                        <Expander Header="Faktureringsadresse" IsExpanded="True">
-                            <TextBlock Text="Søndergade 12&#10;8000 Aarhus C" />
+                        <Expander Header="Billing address" IsExpanded="True">
+                            <TextBlock Text="120 Pine Street&#10;Seattle, WA 98101" />
                         </Expander>
-                        <Expander Header="Leveringsadresse">
-                            <TextBlock Text="Samme som fakturering" />
+                        <Expander Header="Shipping address">
+                            <TextBlock Text="Same as billing" />
                         </Expander>
                     </StackPanel>
                 </HeaderedContentControl>
 
                 <HeaderedContentControl Style="{StaticResource Demo.Column}" Header="Accordion" Tag="jp:Accordion">
                     <jp:Accordion Width="210">
-                        <Expander Header="Mangler placering" IsExpanded="True">
-                            <TextBlock TextWrapping="Wrap" Text="5 konsulenter uden opgave i uge 44." />
+                        <Expander Header="Need Placement" IsExpanded="True">
+                            <TextBlock TextWrapping="Wrap" Text="5 consultants without an assignment in week 44." />
                         </Expander>
-                        <Expander Header="Fornyelse afventer">
-                            <TextBlock TextWrapping="Wrap" Text="2 kontrakter udløber 31. december." />
+                        <Expander Header="Renewal Pending">
+                            <TextBlock TextWrapping="Wrap" Text="2 contracts expire on 31 December." />
                         </Expander>
-                        <Expander Header="Arkiv">
-                            <TextBlock TextWrapping="Wrap" Text="148 afsluttede placeringer." />
+                        <Expander Header="Archive">
+                            <TextBlock TextWrapping="Wrap" Text="148 completed placements." />
                         </Expander>
                     </jp:Accordion>
                 </HeaderedContentControl>
@@ -38,19 +38,19 @@
                     <StackPanel Width="150" d:Demo.Spacing="10">
                         <jp:NumericUpDown Value="37.5" Interval="0.5" Minimum="0" Maximum="60" StringFormat="N1" />
                         <jp:NumericUpDown Value="8" Minimum="0" Style="{StaticResource JetPack.Styles.NumericUpDown.Dark}" />
-                        <jp:NumericUpDown jp:TextBoxHelper.Watermark="Antal timer" Minimum="0" />
+                        <jp:NumericUpDown jp:TextBoxHelper.Watermark="Number of hours" Minimum="0" />
                         <Separator />
                         <jp:TimePicker x:Name="Time" />
-                        <jp:TimePicker MinuteStep="30" jp:TextBoxHelper.Watermark="Mødetid" />
+                        <jp:TimePicker MinuteStep="30" jp:TextBoxHelper.Watermark="Meeting time" />
                     </StackPanel>
                 </HeaderedContentControl>
 
                 <HeaderedContentControl Style="{StaticResource Demo.Column}" Header="Rating · BusyIndicator" Tag="jp:Rating · jp:BusyIndicator">
                     <StackPanel Width="220" d:Demo.Spacing="14">
                         <jp:Rating Value="4" HorizontalAlignment="Center" />
-                        <jp:BusyIndicator IsBusy="True" BusyContent="Henter ordrer…" Height="110">
+                        <jp:BusyIndicator IsBusy="True" BusyContent="Loading orders…" Height="110">
                             <Border Background="{DynamicResource JetPack.Brushes.Panel.Background}" CornerRadius="2.5" Padding="10">
-                                <TextBlock FontSize="11" Text="Kunde: Fabrikam&#10;Kontakt: Ida Kragh&#10;Ordrer: 14&#10;Seneste: 12-10-2026" />
+                                <TextBlock FontSize="11" Text="Customer: Fabrikam&#10;Contact: Ida Kragh&#10;Orders: 14&#10;Latest: 10/12/2026" />
                             </Border>
                         </jp:BusyIndicator>
                     </StackPanel>
@@ -62,33 +62,33 @@
                     <Border Width="200" Height="80" Background="{DynamicResource JetPack.Brushes.Panel.Background}" BorderBrush="{DynamicResource JetPack.Brushes.Panel.Border}" BorderThickness="1" CornerRadius="2.5">
                         <Border.ContextMenu>
                             <ContextMenu>
-                                <MenuItem Header="Klip" InputGestureText="Ctrl+X" />
-                                <MenuItem Header="Kopiér" InputGestureText="Ctrl+C" />
-                                <MenuItem Header="Sæt ind" InputGestureText="Ctrl+V" IsEnabled="False" />
+                                <MenuItem Header="Cut" InputGestureText="Ctrl+X" />
+                                <MenuItem Header="Copy" InputGestureText="Ctrl+C" />
+                                <MenuItem Header="Paste" InputGestureText="Ctrl+V" IsEnabled="False" />
                                 <Separator />
-                                <MenuItem Header="Vis gitterlinjer" IsCheckable="True" IsChecked="True" />
-                                <MenuItem Header="Eksportér">
+                                <MenuItem Header="Show grid lines" IsCheckable="True" IsChecked="True" />
+                                <MenuItem Header="Export">
                                     <MenuItem Header="Excel (.xlsx)" />
                                     <MenuItem Header="PDF" />
                                 </MenuItem>
                             </ContextMenu>
                         </Border.ContextMenu>
-                        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Text="Højreklik her" />
+                        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Text="Right-click here" />
                     </Border>
                 </HeaderedContentControl>
 
-                <HeaderedContentControl Style="{StaticResource Demo.Column}" Header="Chart-palet" Tag="JetPack.Brushes.Chart.1–6">
+                <HeaderedContentControl Style="{StaticResource Demo.Column}" Header="Chart palette" Tag="JetPack.Brushes.Chart.1–6">
                     <Border Width="340" Background="White" CornerRadius="2.5" Padding="10,8" Effect="{DynamicResource JetPack.Effects.LightControlShadow}">
                         <StackPanel>
-                            <TextBlock HorizontalAlignment="Center" Margin="0,0,0,6" FontWeight="Bold" Foreground="#FF303030" Text="Timer pr. kvartal" />
+                            <TextBlock HorizontalAlignment="Center" Margin="0,0,0,6" FontWeight="Bold" Foreground="#FF303030" Text="Hours per quarter" />
                             <Canvas x:Name="Chart" Width="300" Height="160" />
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,6,0,0" TextElement.Foreground="#FF303030" TextElement.FontSize="11">
                                 <Rectangle Width="10" Height="10" Fill="{DynamicResource JetPack.Brushes.Chart.1}" Margin="0,0,4,0" />
-                                <TextBlock Text="Projekter" Margin="0,0,12,0" />
+                                <TextBlock Text="Projects" Margin="0,0,12,0" />
                                 <Rectangle Width="10" Height="10" Fill="{DynamicResource JetPack.Brushes.Chart.2}" Margin="0,0,4,0" />
                                 <TextBlock Text="Support" Margin="0,0,12,0" />
                                 <Rectangle Width="10" Height="10" Fill="{DynamicResource JetPack.Brushes.Chart.3}" Margin="0,0,4,0" />
-                                <TextBlock Text="Intern" />
+                                <TextBlock Text="Internal" />
                             </StackPanel>
                         </StackPanel>
                     </Border>

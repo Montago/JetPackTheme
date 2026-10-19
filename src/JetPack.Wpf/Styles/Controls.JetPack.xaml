@@ -574,7 +574,7 @@
                         </Border>
                         <DockPanel Margin="{TemplateBinding Padding}">
                             <DockPanel DockPanel.Dock="Top" Margin="0,0,0,12">
-                                <Button x:Name="PART_Close" Style="{StaticResource JetPack.Styles.Flyout.Close}" Margin="0,0,10,0" ToolTip="Luk" />
+                                <Button x:Name="PART_Close" Style="{StaticResource JetPack.Styles.Flyout.Close}" Margin="0,0,10,0" ToolTip="Close" />
                                 <ContentPresenter ContentSource="Header" VerticalAlignment="Center" TextElement.FontSize="{DynamicResource JetPack.Font.Size.Heading5}" TextElement.FontWeight="Bold" />
                             </DockPanel>
                             <ContentPresenter />
@@ -717,7 +717,7 @@
                                 <Border x:Name="IconBg" Background="{DynamicResource JetPack.Brushes.Button.Blue.Normal}" CornerRadius="2" />
                                 <TextBlock x:Name="Glyph" Text="i" Foreground="White" FontWeight="Bold" FontSize="12" HorizontalAlignment="Center" VerticalAlignment="Center" />
                             </Grid>
-                            <Button x:Name="PART_Close" DockPanel.Dock="Right" Style="{DynamicResource JetPack.Styles.Button.Clear}" Margin="8,0,0,0" ToolTip="Luk" />
+                            <Button x:Name="PART_Close" DockPanel.Dock="Right" Style="{DynamicResource JetPack.Styles.Button.Clear}" Margin="8,0,0,0" ToolTip="Close" />
                             <ContentPresenter DockPanel.Dock="Right" Margin="8,0,0,0" VerticalAlignment="Center" />
                             <WrapPanel VerticalAlignment="Center" Effect="{DynamicResource JetPack.Effects.TextEmboss}">
                                 <TextBlock x:Name="Title" Margin="0,0,6,0" FontWeight="Bold" Text="{TemplateBinding Title}" />

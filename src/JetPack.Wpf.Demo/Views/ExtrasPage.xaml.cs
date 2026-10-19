@@ -8,10 +8,10 @@ public partial class ExtrasPage : UserControl
     public ExtrasPage()
     {
         InitializeComponent();
-        HamOverview.Tag = new[] { "Oversigt", "Det valgte punkt får accentgradient og samme lille notch som fanerne, her pegende ind mod indholdet." };
-        HamOrders.Tag = new[] { "Ordrer", "14 åbne ordrer, 3 forfalder i denne uge." };
-        HamPeople.Tag = new[] { "Medarbejdere", "23 medarbejdere fordelt på 5 afdelinger." };
-        HamSettings.Tag = new[] { "Indstillinger", "Sprog, accentfarve og synkronisering." };
+        HamOverview.Tag = new[] { "Overview", "The selected item gets the accent gradient and the same small notch as the tabs, here pointing at the content." };
+        HamOrders.Tag = new[] { "Orders", "14 open orders, 3 due this week." };
+        HamPeople.Tag = new[] { "Employees", "23 employees in 5 departments." };
+        HamSettings.Tag = new[] { "Settings", "Language, accent colour and syncing." };
     }
 
     private void OnOpenFilters(object sender, RoutedEventArgs e) => Filters.IsOpen = true;

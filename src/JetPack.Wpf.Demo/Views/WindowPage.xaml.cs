@@ -27,7 +27,7 @@ public partial class WindowPage : UserControl
     {
         if (Host is { } window)
         {
-            await window.ShowMessageAsync("Ugeseddel sendt", "Din ugeseddel for uge 43 er sendt til godkendelse hos Ida Kragh.");
+            await window.ShowMessageAsync("Timesheet sent", "Your timesheet for week 43 has been sent to Ida Kragh for approval.");
         }
     }
 
@@ -39,16 +39,16 @@ public partial class WindowPage : UserControl
         }
         var dialog = new JetPackDialog
         {
-            Title = "Slet virksomhed?",
-            Content = "Contoso A/S og 3 tilknyttede placeringer slettes permanent. Ugesedler, der allerede er faktureret, bevares i arkivet.",
-            AffirmativeText = "Slet",
-            NegativeText = "Annuller",
+            Title = "Delete company?",
+            Content = "Contoso Corporation and 3 linked placements will be deleted permanently. Timesheets that have already been billed stay in the archive.",
+            AffirmativeText = "Delete",
+            NegativeText = "Cancel",
             AffirmativeButtonStyle = (Style)FindResource("JetPack.Styles.Button.Orange"),
         };
         var result = await window.ShowDialogAsync(dialog);
         if (result == MessageDialogResult.Affirmative)
         {
-            await window.ShowMessageAsync("Slettet", "Contoso A/S er slettet.");
+            await window.ShowMessageAsync("Deleted", "Contoso Corporation has been deleted.");
         }
     }
 }

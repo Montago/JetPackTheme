@@ -9,38 +9,38 @@
 
     <jp:JetPackWindow.RightWindowCommands>
         <StackPanel Orientation="Horizontal">
-            <Button Click="OnAccentClick" Tag="Green" ToolTip="Grøn accent">
+            <Button Click="OnAccentClick" Tag="Green" ToolTip="Green accent">
                 <Border Width="14" Height="12" CornerRadius="1.5" Background="{DynamicResource JetPack.Brushes.Button.Green.Normal}" />
             </Button>
             <Button Click="OnAccentClick" Tag="Orange" ToolTip="Orange accent">
                 <Border Width="14" Height="12" CornerRadius="1.5" Background="{DynamicResource JetPack.Brushes.Button.Orange.Normal}" />
             </Button>
-            <Button Click="OnAccentClick" Tag="Blue" ToolTip="Blå accent">
+            <Button Click="OnAccentClick" Tag="Blue" ToolTip="Blue accent">
                 <Border Width="14" Height="12" CornerRadius="1.5" Background="{DynamicResource JetPack.Brushes.Button.Blue.Normal}" />
             </Button>
-            <Button Content="Indstillinger" Click="OnSettingsClick" />
+            <Button Content="Settings" Click="OnSettingsClick" />
         </StackPanel>
     </jp:JetPackWindow.RightWindowCommands>
 
     <jp:JetPackWindow.Flyouts>
         <Grid>
-            <jp:Flyout x:Name="SettingsFlyout" Header="Indstillinger" Width="300">
+            <jp:Flyout x:Name="SettingsFlyout" Header="Settings" Width="300">
                 <StackPanel>
                     <TextBlock Style="{StaticResource Demo.State}" HorizontalAlignment="Left" Text="Accent" Margin="0,0,0,6" />
                     <StackPanel Orientation="Horizontal" Margin="0,0,0,16">
-                        <RadioButton x:Name="AccentGreen" Content="Grøn" GroupName="Accent" IsChecked="True" Margin="0,0,14,0" Checked="OnAccentRadio" Tag="Green" />
+                        <RadioButton x:Name="AccentGreen" Content="Green" GroupName="Accent" IsChecked="True" Margin="0,0,14,0" Checked="OnAccentRadio" Tag="Green" />
                         <RadioButton Content="Orange" GroupName="Accent" Margin="0,0,14,0" Checked="OnAccentRadio" Tag="Orange" />
-                        <RadioButton Content="Blå" GroupName="Accent" Checked="OnAccentRadio" Tag="Blue" />
+                        <RadioButton Content="Blue" GroupName="Accent" Checked="OnAccentRadio" Tag="Blue" />
                     </StackPanel>
-                    <TextBlock Style="{StaticResource Demo.State}" HorizontalAlignment="Left" Text="Egen accentfarve (genereres)" Margin="0,0,0,6" />
+                    <TextBlock Style="{StaticResource Demo.State}" HorizontalAlignment="Left" Text="Custom accent colour (generated)" Margin="0,0,0,6" />
                     <jp:ColorPicker x:Name="CustomAccent" HorizontalAlignment="Left" Width="160" Margin="0,0,0,16" />
-                    <TextBlock Style="{StaticResource Demo.State}" HorizontalAlignment="Left" Text="Skriftstørrelse på kontroller" Margin="0,0,0,6" />
+                    <TextBlock Style="{StaticResource Demo.State}" HorizontalAlignment="Left" Text="Control font size" Margin="0,0,0,6" />
                     <StackPanel Orientation="Horizontal" Margin="0,0,0,16">
                         <RadioButton Content="12 px (WPF)" GroupName="Size" IsChecked="True" Margin="0,0,14,0" Checked="OnSizeRadio" Tag="12" />
                         <RadioButton Content="11 px (original)" GroupName="Size" Checked="OnSizeRadio" Tag="11" />
                     </StackPanel>
-                    <jp:ToggleSwitch x:Name="FocusSwitch" Content="Synlig fokusmarkering" IsChecked="True" Margin="0,0,0,10" />
-                    <jp:ToggleSwitch x:Name="VignetteSwitch" Content="Vignet i hjørnerne" IsChecked="True" />
+                    <jp:ToggleSwitch x:Name="FocusSwitch" Content="Visible focus indicator" IsChecked="True" Margin="0,0,0,10" />
+                    <jp:ToggleSwitch x:Name="VignetteSwitch" Content="Vignette in the corners" IsChecked="True" />
                 </StackPanel>
             </jp:Flyout>
         </Grid>
@@ -63,13 +63,13 @@
             <TabItem Header="Toolkit">
                 <v:ToolkitPage />
             </TabItem>
-            <TabItem Header="Udvidelser">
+            <TabItem Header="Extras">
                 <v:ExtrasPage />
             </TabItem>
-            <TabItem Header="Vindue">
+            <TabItem Header="Window">
                 <v:WindowPage />
             </TabItem>
-            <TabItem Header="Palet">
+            <TabItem Header="Palette">
                 <v:PalettePage />
             </TabItem>
         </TabControl>

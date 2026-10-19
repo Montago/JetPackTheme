@@ -4,12 +4,12 @@
     <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Padding="0,22,0,0">
         <StackPanel>
             <TextBlock Style="{StaticResource Demo.Intro}"
-                       Text="Ressourcenøglerne, som biblioteket eksponerer. Navnene følger MahApps-skemaet (MahApps.Brushes.Accent → JetPack.Brushes.Accent), så det er nemt at flytte en eksisterende app over. Accentfarverne skifter med vælgeren i titellinjen." />
+                       Text="The resource keys the library exposes. Names follow the MahApps scheme (MahApps.Brushes.Accent → JetPack.Brushes.Accent), so moving an existing app over is easy. The accent colours change with the picker in the title bar." />
             <TextBlock Style="{StaticResource JetPack.Styles.TextBlock.Heading5}" Text="Accent" Margin="0,0,0,10" />
             <WrapPanel x:Name="AccentSwatches" Margin="0,0,0,24" />
-            <TextBlock Style="{StaticResource JetPack.Styles.TextBlock.Heading5}" Text="Neutrale og tilstande" Margin="0,0,0,10" />
+            <TextBlock Style="{StaticResource JetPack.Styles.TextBlock.Heading5}" Text="Neutrals and states" Margin="0,0,0,10" />
             <WrapPanel x:Name="NeutralSwatches" Margin="0,0,0,24" />
-            <TextBlock Style="{StaticResource JetPack.Styles.TextBlock.Heading5}" Text="Knapper og diagram" Margin="0,0,0,10" />
+            <TextBlock Style="{StaticResource JetPack.Styles.TextBlock.Heading5}" Text="Buttons and chart" Margin="0,0,0,10" />
             <WrapPanel x:Name="OtherSwatches" Margin="0,0,0,24" />
         </StackPanel>
     </ScrollViewer>

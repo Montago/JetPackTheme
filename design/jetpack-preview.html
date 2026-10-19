@@ -546,35 +546,35 @@ textarea.tb{height:auto;min-height:60px;resize:vertical;line-height:1.4}
 <div class="page">
   <header class="top">
     <div class="tabs-wrap">
-      <nav class="tabs" role="tablist" aria-label="Kontrolgrupper">
+      <nav class="tabs" role="tablist" aria-label="Control groups">
         <button role="tab" data-tab="core" aria-selected="true">Core</button>
         <button role="tab" data-tab="sdk" aria-selected="false">SDK</button>
         <button role="tab" data-tab="toolkit" aria-selected="false">Toolkit</button>
         <button role="tab" data-tab="mahapps" aria-selected="false">MahApps</button>
-        <button role="tab" data-tab="window" aria-selected="false">Vindue</button>
-        <button role="tab" data-tab="palette" aria-selected="false">Palet</button>
+        <button role="tab" data-tab="window" aria-selected="false">Window</button>
+        <button role="tab" data-tab="palette" aria-selected="false">Palette</button>
       </nav>
     </div>
-    <div class="brand"><b>Jetpack</b><span>for WPF · .NET 8+ · udkast 1</span></div>
+    <div class="brand"><b>Jetpack</b><span>for WPF · .NET 8+ · draft 1</span></div>
   </header>
 
-  <div class="toolbar" role="group" aria-label="Forhåndsvisning">
+  <div class="toolbar" role="group" aria-label="Preview">
     <div class="grp"><span class="lbl">Accent</span>
-      <button class="sw g" data-accent="green" aria-pressed="true" aria-label="Grøn accent" title="Grøn (standard)"></button>
+      <button class="sw g" data-accent="green" aria-pressed="true" aria-label="Green accent" title="Green (default)"></button>
       <button class="sw o" data-accent="orange" aria-pressed="false" aria-label="Orange accent" title="Orange"></button>
-      <button class="sw b" data-accent="blue" aria-pressed="false" aria-label="Blå accent" title="Blå"></button>
+      <button class="sw b" data-accent="blue" aria-pressed="false" aria-label="Blue accent" title="Blue"></button>
     </div>
-    <div class="grp"><span class="lbl">Skriftstørrelse</span>
+    <div class="grp"><span class="lbl">Font size</span>
       <button class="btn toggle" data-size="wpf" aria-pressed="true">12 px (WPF)</button>
       <button class="btn toggle" data-size="sl" aria-pressed="false">11 px (original)</button>
     </div>
-    <label class="ts grp" for="focusToggle"><span class="lbl">Synlig fokus</span><input id="focusToggle" class="sr" type="checkbox" checked><span class="trk"></span></label>
+    <label class="ts grp" for="focusToggle"><span class="lbl">Visible focus</span><input id="focusToggle" class="sr" type="checkbox" checked><span class="trk"></span></label>
   </div>
 
   <main>
   <!-- ================= CORE ================= -->
   <section data-panel="core" role="tabpanel">
-    <p class="intro">De grundlæggende WPF-kontroller, stillet op som i den originale temaoversigt. Alt er bygget direkte på farver og skabeloner fra <code>CoreStyles.xaml</code> og <code>Brushes.xaml</code>. Hold musen over og klik for at se tilstandene.</p>
+    <p class="intro">The basic WPF controls, laid out like the original theme browser. Everything is built directly on the colours and templates in <code>CoreStyles.xaml</code> and <code>Brushes.xaml</code>. Hover and click to see the states.</p>
 
     <div class="row">
       <div class="col">
@@ -598,40 +598,40 @@ textarea.tb{height:auto;min-height:60px;resize:vertical;line-height:1.4}
         <h3>TextBox · PasswordBox</h3><span class="key">JetPack.Styles.TextBox(.Dark)</span>
         <div class="tbgrid">
           <input class="tb" id="tb1" value="Normal" aria-label="Normal">
-          <input class="tb dark" id="tb1d" value="Normal" aria-label="Normal mørk">
-          <input class="tb" id="tb2" value="Read Only" readonly aria-label="Skrivebeskyttet">
-          <input class="tb dark" id="tb2d" value="Read Only" readonly aria-label="Skrivebeskyttet mørk">
-          <input class="tb" id="tb3" value="Disabled" disabled aria-label="Deaktiveret">
-          <input class="tb dark" id="tb3d" value="Disabled" disabled aria-label="Deaktiveret mørk">
-          <div class="fld inv"><input class="tb" id="tb4" value="abc-123" aria-label="Ugyldig" aria-invalid="true"></div>
-          <div class="fld inv"><input class="tb dark" id="tb4d" value="abc-123" aria-label="Ugyldig mørk" aria-invalid="true"></div>
-          <input class="tb" id="tb5" type="password" value="hemmelig" aria-label="Adgangskode">
-          <input class="tb dark" id="tb5d" type="password" value="hemmelig" aria-label="Adgangskode mørk">
-          <input class="tb" id="tb6" placeholder="Søg kunde…" aria-label="Vandmærke">
-          <input class="tb dark" id="tb6d" placeholder="Søg kunde…" aria-label="Vandmærke mørk">
-          <span class="cap">Lys (standard)</span><span class="cap">Mørk</span>
+          <input class="tb dark" id="tb1d" value="Normal" aria-label="Normal dark">
+          <input class="tb" id="tb2" value="Read Only" readonly aria-label="Read-only">
+          <input class="tb dark" id="tb2d" value="Read Only" readonly aria-label="Read-only dark">
+          <input class="tb" id="tb3" value="Disabled" disabled aria-label="Disabled">
+          <input class="tb dark" id="tb3d" value="Disabled" disabled aria-label="Disabled dark">
+          <div class="fld inv"><input class="tb" id="tb4" value="abc-123" aria-label="Invalid" aria-invalid="true"></div>
+          <div class="fld inv"><input class="tb dark" id="tb4d" value="abc-123" aria-label="Invalid dark" aria-invalid="true"></div>
+          <input class="tb" id="tb5" type="password" value="hemmelig" aria-label="Password">
+          <input class="tb dark" id="tb5d" type="password" value="hemmelig" aria-label="Password dark">
+          <input class="tb" id="tb6" placeholder="Search customers…" aria-label="Watermark">
+          <input class="tb dark" id="tb6d" placeholder="Search customers…" aria-label="Watermark dark">
+          <span class="cap">Light (default)</span><span class="cap">Dark</span>
         </div>
         <div class="hr"></div>
         <div class="stack c" style="gap:6px">
-          <span class="state">Valideringsfejl</span>
+          <span class="state">Validation error</span>
           <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:center">
-            <div class="fld inv" style="width:120px"><input class="tb" id="tb7" value="12-13-2026" aria-label="Dato med fejl" aria-invalid="true"></div>
-            <span class="vtip">Datoen findes ikke. Brug formatet dd-mm-åååå.</span>
+            <div class="fld inv" style="width:120px"><input class="tb" id="tb7" value="13/13/2026" aria-label="Date with error" aria-invalid="true"></div>
+            <span class="vtip">That date does not exist. Use the format mm/dd/yyyy.</span>
           </div>
         </div>
       </div>
 
       <div class="col">
         <h3>TextBlock</h3><span class="key">TextBlock · Heading1–6</span>
-        <p class="body-text">Tidsregistreringen for oktober lukker fredag kl. 16. Ugesedler, der ikke er godkendt inden da, overføres til november og skal attesteres af nærmeste leder.</p>
+        <p class="body-text">Time entry for October closes Friday at 4 pm. Timesheets not approved by then move to November and must be signed off by your manager.</p>
         <div class="hr"></div>
         <h3 style="font-size:15px;margin:0">Hyperlink</h3>
-        <a class="link" href="#core" onclick="return false">Åbn ugeseddel</a>
-        <span class="link is-disabled" aria-disabled="true">Link deaktiveret</span>
+        <a class="link" href="#core" onclick="return false">Open timesheet</a>
+        <span class="link is-disabled" aria-disabled="true">Link disabled</span>
         <div class="hr"></div>
         <h3 style="font-size:15px;margin:0">ToolTip</h3>
-        <span class="tip">Gemmer ændringer og sender til godkendelse</span>
-        <span class="has-tip"><button class="btn">Hold musen her</button><span class="tip" role="tooltip">Ctrl+S gemmer også</span></span>
+        <span class="tip">Saves changes and sends them for approval</span>
+        <span class="has-tip"><button class="btn">Hover here</button><span class="tip" role="tooltip">Ctrl+S saves too</span></span>
       </div>
 
       <div class="col">
@@ -659,30 +659,30 @@ textarea.tb{height:auto;min-height:60px;resize:vertical;line-height:1.4}
       <div class="col">
         <h3>ComboBox</h3><span class="key">JetPack.Styles.ComboBox</span>
         <div class="stack c">
-          <div class="combo" data-combo><button class="combo-btn" aria-haspopup="listbox" aria-expanded="false">Aarhus</button>
-            <div class="pop jps" role="listbox" hidden><div class="item" role="option">København</div><div class="item" role="option" aria-selected="true">Aarhus</div><div class="item" role="option">Odense</div><div class="item" role="option">Aalborg</div><div class="item" role="option">Esbjerg</div></div></div>
-          <div class="combo"><button class="combo-btn" disabled>Aarhus</button></div>
-          <div class="combo edit" data-combo><input class="tb" id="cbEdit" value="Odense" aria-label="Redigerbar by"><button class="combo-btn" aria-label="Vis byer" aria-haspopup="listbox" aria-expanded="false"></button>
-            <div class="pop jps" role="listbox" hidden><div class="item" role="option">København</div><div class="item" role="option">Aarhus</div><div class="item" role="option" aria-selected="true">Odense</div><div class="item" role="option">Aalborg</div></div></div>
-          <span class="state">Åben</span>
-          <div class="combo"><button class="combo-btn" aria-expanded="true">Uge 43</button>
-            <div class="pop static" role="listbox"><div class="item" role="option">Uge 42</div><div class="item" role="option" aria-selected="true">Uge 43</div><div class="item" role="option">Uge 44</div></div></div>
+          <div class="combo" data-combo><button class="combo-btn" aria-haspopup="listbox" aria-expanded="false">Portland</button>
+            <div class="pop jps" role="listbox" hidden><div class="item" role="option">Seattle</div><div class="item" role="option" aria-selected="true">Portland</div><div class="item" role="option">Denver</div><div class="item" role="option">Boston</div><div class="item" role="option">Chicago</div></div></div>
+          <div class="combo"><button class="combo-btn" disabled>Portland</button></div>
+          <div class="combo edit" data-combo><input class="tb" id="cbEdit" value="Denver" aria-label="Editable city"><button class="combo-btn" aria-label="Show cities" aria-haspopup="listbox" aria-expanded="false"></button>
+            <div class="pop jps" role="listbox" hidden><div class="item" role="option">Seattle</div><div class="item" role="option">Portland</div><div class="item" role="option" aria-selected="true">Denver</div><div class="item" role="option">Boston</div></div></div>
+          <span class="state">Open</span>
+          <div class="combo"><button class="combo-btn" aria-expanded="true">Week 43</button>
+            <div class="pop static" role="listbox"><div class="item" role="option">Week 42</div><div class="item" role="option" aria-selected="true">Week 43</div><div class="item" role="option">Week 44</div></div></div>
         </div>
       </div>
 
       <div class="col">
         <h3>ListBox</h3><span class="key">JetPack.Styles.ListBox</span>
-        <div class="lb jps" role="listbox" data-list aria-label="Medarbejdere">
+        <div class="lb jps" role="listbox" data-list aria-label="Employees">
           <div class="item" role="option">Lindsey Ballard</div><div class="item" role="option" aria-selected="true">Charles Hoyle</div><div class="item" role="option">Daniel Tiedemann</div><div class="item" role="option">David Ritter</div><div class="item" role="option">Vivian Smail</div><div class="item" role="option">Ida Kragh</div><div class="item" role="option">Mads Lund</div>
         </div>
         <span class="state">Invalid</span>
-        <div class="lb inv" aria-label="Tom liste med fejl"></div>
+        <div class="lb inv" aria-label="Empty list with error"></div>
       </div>
 
       <div class="col">
         <h3>ScrollViewer</h3><span class="key">JetPack.Styles.ScrollBar</span>
-        <div class="sv jps" tabindex="0" aria-label="Rulleområde"><div></div></div>
-        <p class="note">Rullebjælker med lys gradient-thumb og pile i #606060, som originalen.</p>
+        <div class="sv jps" tabindex="0" aria-label="Scroll area"><div></div></div>
+        <p class="note">Scroll bars with a light gradient thumb and arrows in #606060, as in the original.</p>
       </div>
 
       <div class="col">
@@ -690,17 +690,17 @@ textarea.tb{height:auto;min-height:60px;resize:vertical;line-height:1.4}
         <div class="stack c" style="gap:14px">
           <div class="pb" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="--v:75%"><i></i></div>
           <div class="pb" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="--v:45%"><i></i></div>
-          <div class="pb ind" role="progressbar" aria-label="Arbejder"><i></i></div>
-          <div class="pb ind" role="progressbar" aria-label="Arbejder" style="height:14px"><i></i></div>
+          <div class="pb ind" role="progressbar" aria-label="Working"><i></i></div>
+          <div class="pb ind" role="progressbar" aria-label="Working" style="height:14px"><i></i></div>
         </div>
       </div>
 
       <div class="col">
         <h3>Slider</h3><span class="key">JetPack.Styles.Slider</span>
-        <div class="sl" data-slider role="slider" tabindex="0" aria-valuemin="0" aria-valuemax="100" aria-valuenow="40" aria-label="Lydstyrke"><div class="track"></div><div class="fill"></div><div class="thumb"></div></div>
+        <div class="sl" data-slider role="slider" tabindex="0" aria-valuemin="0" aria-valuemax="100" aria-valuenow="40" aria-label="Volume"><div class="track"></div><div class="fill"></div><div class="thumb"></div></div>
         <div style="display:flex;gap:18px">
-          <div class="sl v" data-slider data-v role="slider" tabindex="0" aria-valuemin="0" aria-valuemax="100" aria-valuenow="30" aria-label="Lodret 1"><div class="track"></div><div class="fill"></div><div class="thumb"></div></div>
-          <div class="sl v" data-slider data-v role="slider" tabindex="0" aria-valuemin="0" aria-valuemax="100" aria-valuenow="65" aria-label="Lodret 2" style="--p:65%"><div class="track"></div><div class="fill"></div><div class="thumb"></div></div>
+          <div class="sl v" data-slider data-v role="slider" tabindex="0" aria-valuemin="0" aria-valuemax="100" aria-valuenow="30" aria-label="Vertical 1"><div class="track"></div><div class="fill"></div><div class="thumb"></div></div>
+          <div class="sl v" data-slider data-v role="slider" tabindex="0" aria-valuemin="0" aria-valuemax="100" aria-valuenow="65" aria-label="Vertical 2" style="--p:65%"><div class="track"></div><div class="fill"></div><div class="thumb"></div></div>
           <div class="sl v is-disabled" aria-disabled="true" style="--p:50%"><div class="track"></div><div class="fill"></div><div class="thumb"></div></div>
         </div>
       </div>
@@ -708,9 +708,9 @@ textarea.tb{height:auto;min-height:60px;resize:vertical;line-height:1.4}
 
     <div class="row">
       <div class="col xwide" style="align-items:flex-start">
-        <h3 style="align-self:center">Typografi</h3><span class="key" style="align-self:center">Trebuchet MS · Heading1–6 · fed</span>
-        <div class="h h1">Virksomheder</div>
-        <div class="h h2">Virksomhedsoplysninger</div>
+        <h3 style="align-self:center">Typography</h3><span class="key" style="align-self:center">Trebuchet MS · Heading1–6 · bold</span>
+        <div class="h h1">Companies</div>
+        <div class="h h2">Company Details</div>
         <div class="h h3">Heading 3 · 21 px</div>
         <div class="h h4">Heading 4 · 18 px</div>
         <div class="h h5">Heading 5 · 15 px</div>
@@ -719,10 +719,10 @@ textarea.tb{height:auto;min-height:60px;resize:vertical;line-height:1.4}
       <div class="col wide">
         <h3>Label · GroupBox</h3><span class="key">JetPack.Styles.GroupBox</span>
         <div class="groupbox">
-          <header>Kontaktperson</header>
+          <header>Contact</header>
           <div class="gb">
-            <label class="state" for="gbName">Navn</label><input class="tb" id="gbName" value="Heather Andrade">
-            <label class="state" for="gbPhone">Telefon</label><input class="tb" id="gbPhone" value="+45 86 12 34 56">
+            <label class="state" for="gbName">Name</label><input class="tb" id="gbName" value="Heather Andrade">
+            <label class="state" for="gbPhone">Phone</label><input class="tb" id="gbPhone" value="(555) 555-1234">
           </div>
         </div>
       </div>
@@ -731,16 +731,16 @@ textarea.tb{height:auto;min-height:60px;resize:vertical;line-height:1.4}
 
   <!-- ================= SDK ================= -->
   <section data-panel="sdk" role="tabpanel" hidden>
-    <p class="intro">Kontrollerne fra Silverlight SDK, som alle har en direkte WPF-pendant: TabControl, Calendar, DatePicker, TreeView, DataGrid og GridSplitter. Kilde: <code>SDKStyles.xaml</code>. Mørke paneler bruger <code>DarkBackground</code> #707176 og <code>DarkBorder</code> #58585D.</p>
+    <p class="intro">The Silverlight SDK controls, all of which have a direct WPF counterpart: TabControl, Calendar, DatePicker, TreeView, DataGrid and GridSplitter. Source: <code>SDKStyles.xaml</code>. Dark panels use <code>DarkBackground</code> #707176 and <code>DarkBorder</code> #58585D.</p>
     <div class="row">
       <div class="col wide">
         <h3>TabControl</h3><span class="key">JetPack.Styles.TabControl</span>
         <div class="tabc" data-tabc>
-          <div class="tabstrip" role="tablist"><button class="tab" role="tab" aria-selected="true">Ledige</button><button class="tab" role="tab" aria-selected="false">Tildelte</button><button class="tab" role="tab" aria-selected="false">Forslag</button></div>
+          <div class="tabstrip" role="tablist"><button class="tab" role="tab" aria-selected="true">Available</button><button class="tab" role="tab" aria-selected="false">Assigned</button><button class="tab" role="tab" aria-selected="false">Suggestions</button></div>
           <div class="tabbody">
-            <div data-tp>14 konsulenter er ledige fra uge 44. Filtrér efter kompetence eller lokation for at indsnævre listen.</div>
-            <div data-tp hidden>9 konsulenter er tildelt projekter, der løber til og med december.</div>
-            <div data-tp hidden>3 forslag afventer svar fra kunden.</div>
+            <div data-tp>14 consultants are available from week 44. Filter by skill or location to narrow the list.</div>
+            <div data-tp hidden>9 consultants are assigned to projects running until December.</div>
+            <div data-tp hidden>3 suggestions are waiting for the customer to reply.</div>
           </div>
         </div>
       </div>
@@ -751,14 +751,14 @@ textarea.tb{height:auto;min-height:60px;resize:vertical;line-height:1.4}
       <div class="col">
         <h3>DatePicker</h3><span class="key">JetPack.Styles.DatePicker</span>
         <div class="stack" style="width:150px">
-          <div class="fld has-btn"><input class="tb" id="dp1" value="19-10-2026" aria-label="Dato"><button class="in-btn" aria-label="Vis kalender"><svg width="12" height="12" viewBox="0 0 12 12"><rect x=".5" y="1.5" width="11" height="10" rx="1" fill="#fff" stroke="#555"/><rect x=".5" y="1.5" width="11" height="3" fill="#777"/><text x="6" y="10.4" font-size="5.5" text-anchor="middle" fill="#333" font-family="Arial">19</text></svg></button></div>
-          <div class="fld has-btn"><input class="tb" id="dp2" placeholder="Vælg dato" aria-label="Tom dato"><button class="in-btn" aria-label="Vis kalender"><svg width="12" height="12" viewBox="0 0 12 12"><rect x=".5" y="1.5" width="11" height="10" rx="1" fill="#fff" stroke="#555"/><rect x=".5" y="1.5" width="11" height="3" fill="#777"/></svg></button></div>
-          <div class="fld inv has-btn"><input class="tb" id="dp3" value="31-02-2026" aria-label="Ugyldig dato" aria-invalid="true"><button class="in-btn" aria-label="Vis kalender"><svg width="12" height="12" viewBox="0 0 12 12"><rect x=".5" y="1.5" width="11" height="10" rx="1" fill="#fff" stroke="#555"/><rect x=".5" y="1.5" width="11" height="3" fill="#777"/></svg></button></div>
+          <div class="fld has-btn"><input class="tb" id="dp1" value="10/19/2026" aria-label="Date"><button class="in-btn" aria-label="Show calendar"><svg width="12" height="12" viewBox="0 0 12 12"><rect x=".5" y="1.5" width="11" height="10" rx="1" fill="#fff" stroke="#555"/><rect x=".5" y="1.5" width="11" height="3" fill="#777"/><text x="6" y="10.4" font-size="5.5" text-anchor="middle" fill="#333" font-family="Arial">19</text></svg></button></div>
+          <div class="fld has-btn"><input class="tb" id="dp2" placeholder="Choose a date" aria-label="Empty date"><button class="in-btn" aria-label="Show calendar"><svg width="12" height="12" viewBox="0 0 12 12"><rect x=".5" y="1.5" width="11" height="10" rx="1" fill="#fff" stroke="#555"/><rect x=".5" y="1.5" width="11" height="3" fill="#777"/></svg></button></div>
+          <div class="fld inv has-btn"><input class="tb" id="dp3" value="02/31/2026" aria-label="Invalid date" aria-invalid="true"><button class="in-btn" aria-label="Show calendar"><svg width="12" height="12" viewBox="0 0 12 12"><rect x=".5" y="1.5" width="11" height="10" rx="1" fill="#fff" stroke="#555"/><rect x=".5" y="1.5" width="11" height="3" fill="#777"/></svg></button></div>
         </div>
         <div class="hr"></div>
         <h3>AutoSuggestBox</h3><span class="key">JetPack.Styles.AutoSuggestBox</span>
-        <div class="combo" style="width:150px"><input class="tb" id="asb" value="Fab" aria-label="Søg firma">
-          <div class="pop static"><div class="item" aria-selected="true"><b>Fab</b>rikam</div><div class="item"><b>Fab</b>er &amp; Søn ApS</div></div></div>
+        <div class="combo" style="width:150px"><input class="tb" id="asb" value="Fab" aria-label="Search companies">
+          <div class="pop static"><div class="item" aria-selected="true"><b>Fab</b>rikam</div><div class="item"><b>Fab</b>rikam Residences</div></div></div>
       </div>
     </div>
     <div class="row">
@@ -766,11 +766,11 @@ textarea.tb{height:auto;min-height:60px;resize:vertical;line-height:1.4}
         <h3>TreeView</h3><span class="key">JetPack.Styles.TreeView</span>
         <div class="tree" data-tree>
           <ul>
-            <li><div class="node"><button class="exp" aria-expanded="true" aria-label="Fold Contoso"></button><span class="nl">Contoso</span></div>
-              <ul><li><div class="node"><span class="exp leaf"></span><span class="nl">August 2026</span></div></li><li><div class="node"><span class="exp leaf"></span><span class="nl" aria-selected="true">September 2026</span></div></li><li><div class="node"><span class="exp leaf"></span><span class="nl">Oktober 2026</span></div></li></ul></li>
-            <li><div class="node"><button class="exp" aria-expanded="false" aria-label="Fold Southridge ud"></button><span class="nl">Southridge</span></div><ul hidden><li><div class="node"><span class="exp leaf"></span><span class="nl">Juli 2026</span></div></li></ul></li>
-            <li><div class="node"><button class="exp" aria-expanded="false" aria-label="Fold Fabrikam ud"></button><span class="nl">Fabrikam</span></div><ul hidden><li><div class="node"><span class="exp leaf"></span><span class="nl">Juni 2026</span></div></li></ul></li>
-            <li><div class="node"><button class="exp" aria-expanded="false" aria-label="Fold Soar Airlines ud"></button><span class="nl">Soar Airlines</span></div><ul hidden><li><div class="node"><span class="exp leaf"></span><span class="nl">Maj 2026</span></div></li></ul></li>
+            <li><div class="node"><button class="exp" aria-expanded="true" aria-label="Collapse Contoso"></button><span class="nl">Contoso</span></div>
+              <ul><li><div class="node"><span class="exp leaf"></span><span class="nl">August 2026</span></div></li><li><div class="node"><span class="exp leaf"></span><span class="nl" aria-selected="true">September 2026</span></div></li><li><div class="node"><span class="exp leaf"></span><span class="nl">October 2026</span></div></li></ul></li>
+            <li><div class="node"><button class="exp" aria-expanded="false" aria-label="Expand Southridge"></button><span class="nl">Southridge</span></div><ul hidden><li><div class="node"><span class="exp leaf"></span><span class="nl">July 2026</span></div></li></ul></li>
+            <li><div class="node"><button class="exp" aria-expanded="false" aria-label="Expand Fabrikam"></button><span class="nl">Fabrikam</span></div><ul hidden><li><div class="node"><span class="exp leaf"></span><span class="nl">June 2026</span></div></li></ul></li>
+            <li><div class="node"><button class="exp" aria-expanded="false" aria-label="Expand Soar Airlines"></button><span class="nl">Soar Airlines</span></div><ul hidden><li><div class="node"><span class="exp leaf"></span><span class="nl">May 2026</span></div></li></ul></li>
           </ul>
         </div>
       </div>
@@ -778,150 +778,150 @@ textarea.tb{height:auto;min-height:60px;resize:vertical;line-height:1.4}
         <h3>DataGrid · DataPager</h3><span class="key">JetPack.Styles.DataGrid</span>
         <div class="gridwrap">
           <table class="dg" data-grid>
-            <thead><tr><th>Medarbejder <span class="tri-u"></span></th><th>Afdeling</th><th style="text-align:right">Timer</th><th>Uge</th><th>Status</th></tr></thead>
+            <thead><tr><th>Employee <span class="tri-u"></span></th><th>Department</th><th style="text-align:right">Hours</th><th>Week</th><th>Status</th></tr></thead>
             <tbody>
-              <tr><td>Charles Hoyle</td><td>Rådgivning</td><td class="num">37,5</td><td>43</td><td><span class="pill ok">Godkendt</span></td></tr>
-              <tr class="sel"><td>Daniel Tiedemann</td><td>Udvikling</td><td class="num">41,0</td><td>43</td><td><span class="pill warn">Afventer</span></td></tr>
-              <tr><td>David Ritter</td><td>Udvikling</td><td class="num">32,0</td><td>43</td><td><span class="pill info">Kladde</span></td></tr>
-              <tr><td>Ida Kragh</td><td>Økonomi</td><td class="num">37,0</td><td>43</td><td><span class="pill ok">Godkendt</span></td></tr>
-              <tr><td>Lindsey Ballard</td><td>Salg</td><td class="num">18,5</td><td>43</td><td><span class="pill err">Afvist</span></td></tr>
-              <tr><td>Mads Lund</td><td>Support</td><td class="num">39,5</td><td>43</td><td><span class="pill ok">Godkendt</span></td></tr>
+              <tr><td>Charles Hoyle</td><td>Consulting</td><td class="num">37.5</td><td>43</td><td><span class="pill ok">Approved</span></td></tr>
+              <tr class="sel"><td>Daniel Tiedemann</td><td>Development</td><td class="num">41.0</td><td>43</td><td><span class="pill warn">Pending</span></td></tr>
+              <tr><td>David Ritter</td><td>Development</td><td class="num">32.0</td><td>43</td><td><span class="pill info">Draft</span></td></tr>
+              <tr><td>Ida Kragh</td><td>Finance</td><td class="num">37.0</td><td>43</td><td><span class="pill ok">Approved</span></td></tr>
+              <tr><td>Lindsey Ballard</td><td>Sales</td><td class="num">18.5</td><td>43</td><td><span class="pill err">Rejected</span></td></tr>
+              <tr><td>Mads Lund</td><td>Support</td><td class="num">39.5</td><td>43</td><td><span class="pill ok">Approved</span></td></tr>
             </tbody>
           </table>
         </div>
         <div class="pager" style="align-self:flex-start">
-          <button class="btn sq" aria-label="Første side"><span class="tri-l"></span><span class="tri-l"></span></button>
-          <button class="btn sq" aria-label="Forrige side"><span class="tri-l"></span></button>
-          <span>Side</span><input class="tb" id="pg" value="2" aria-label="Side"><span>af 7</span>
-          <button class="btn sq" aria-label="Næste side"><span class="tri-r"></span></button>
-          <button class="btn sq" aria-label="Sidste side"><span class="tri-r"></span><span class="tri-r"></span></button>
+          <button class="btn sq" aria-label="First page"><span class="tri-l"></span><span class="tri-l"></span></button>
+          <button class="btn sq" aria-label="Previous page"><span class="tri-l"></span></button>
+          <span>Page</span><input class="tb" id="pg" value="2" aria-label="Page"><span>of 7</span>
+          <button class="btn sq" aria-label="Next page"><span class="tri-r"></span></button>
+          <button class="btn sq" aria-label="Last page"><span class="tri-r"></span><span class="tri-r"></span></button>
         </div>
       </div>
     </div>
     <div class="row">
       <div class="col wide">
         <h3>GridSplitter</h3><span class="key">JetPack.Styles.GridSplitter</span>
-        <div class="gs"><div>Navigation</div><button class="grip" aria-label="Træk for at ændre bredde"></button><div>Indhold</div></div>
+        <div class="gs"><div>Navigation</div><button class="grip" aria-label="Drag to resize"></button><div>Content</div></div>
       </div>
       <div class="col wide">
         <h3>ValidationSummary</h3><span class="key">JetPack.Styles.ValidationSummary</span>
-        <div class="vsum"><header>2 fejl</header><ul><li>Telefon skal have 8 cifre.</li><li>CVR-nummeret findes ikke i CVR-registret.</li></ul></div>
+        <div class="vsum"><header>2 errors</header><ul><li>Phone must have 10 digits.</li><li>The tax ID was not found.</li></ul></div>
       </div>
     </div>
   </section>
 
   <!-- ================= TOOLKIT ================= -->
   <section data-panel="toolkit" role="tabpanel" hidden>
-    <p class="intro">Silverlight Toolkit-kontrollerne. I WPF findes Expander, ContextMenu og Menu indbygget; NumericUpDown, TimePicker og Rating kommer fra MahApps. Accordion bliver en stak af Expanders med fælles stil. Kilde: <code>ToolkitStyles.xaml</code>.</p>
+    <p class="intro">The Silverlight Toolkit controls. Expander, ContextMenu and Menu are built into WPF; NumericUpDown, TimePicker and Rating come from MahApps. Accordion becomes a stack of Expanders with a shared style. Source: <code>ToolkitStyles.xaml</code>.</p>
     <div class="row">
       <div class="col">
         <h3>Expander</h3><span class="key">JetPack.Styles.Expander</span>
-        <div class="expander" data-acc><button class="acc-h" aria-expanded="true">Faktureringsadresse</button><div class="acc-b">Søndergade 12<br>8000 Aarhus C</div></div>
-        <div class="expander" data-acc><button class="acc-h" aria-expanded="false">Leveringsadresse</button><div class="acc-b" hidden>Samme som fakturering</div></div>
+        <div class="expander" data-acc><button class="acc-h" aria-expanded="true">Billing address</button><div class="acc-b">120 Pine Street<br>Seattle, WA 98101</div></div>
+        <div class="expander" data-acc><button class="acc-h" aria-expanded="false">Shipping address</button><div class="acc-b" hidden>Same as billing</div></div>
       </div>
       <div class="col">
         <h3>Accordion</h3><span class="key">JetPack.Styles.Expander.Accordion</span>
         <div class="acc-wrap" data-accordion>
-          <button class="acc-h" aria-expanded="true">Mangler placering</button><div class="acc-b">5 konsulenter uden opgave i uge 44.</div>
-          <button class="acc-h" aria-expanded="false">Fornyelse afventer</button><div class="acc-b" hidden>2 kontrakter udløber 31. december.</div>
-          <button class="acc-h" aria-expanded="false">Arkiv</button><div class="acc-b" hidden>148 afsluttede placeringer.</div>
+          <button class="acc-h" aria-expanded="true">Need Placement</button><div class="acc-b">5 consultants without an assignment in week 44.</div>
+          <button class="acc-h" aria-expanded="false">Renewal Pending</button><div class="acc-b" hidden>2 contracts expire on 31 December.</div>
+          <button class="acc-h" aria-expanded="false">Archive</button><div class="acc-b" hidden>148 completed placements.</div>
         </div>
       </div>
       <div class="col">
         <h3>NumericUpDown</h3><span class="key">JetPack.Styles.NumericUpDown</span>
         <div class="stack" style="width:130px">
-          <div class="fld" data-num><input class="tb" id="nud1" value="37,5" aria-label="Timer" style="padding-right:22px"><div class="spin"><button aria-label="Op"><span class="tri-u"></span></button><button aria-label="Ned"><span class="tri-d"></span></button></div></div>
-          <div class="fld" data-num><input class="tb dark" id="nud2" value="8" aria-label="Antal" style="padding-right:22px"><div class="spin"><button aria-label="Op"><span class="tri-u"></span></button><button aria-label="Ned"><span class="tri-d"></span></button></div></div>
+          <div class="fld" data-num><input class="tb" id="nud1" value="37.5" aria-label="Hours" style="padding-right:22px"><div class="spin"><button aria-label="Up"><span class="tri-u"></span></button><button aria-label="Down"><span class="tri-d"></span></button></div></div>
+          <div class="fld" data-num><input class="tb dark" id="nud2" value="8" aria-label="Quantity" style="padding-right:22px"><div class="spin"><button aria-label="Up"><span class="tri-u"></span></button><button aria-label="Down"><span class="tri-d"></span></button></div></div>
         </div>
         <div class="hr"></div>
         <h3>TimePicker</h3><span class="key">JetPack.Styles.TimePicker</span>
-        <div class="fld has-btn" style="width:130px"><input class="tb" id="tp1" value="08:30" aria-label="Tidspunkt"><button class="in-btn" aria-label="Vælg tid"><svg width="12" height="12" viewBox="0 0 12 12"><circle cx="6" cy="6" r="5.3" fill="#fff" stroke="#555"/><path d="M6 3v3l2 1.4" stroke="#333" fill="none"/></svg></button></div>
+        <div class="fld has-btn" style="width:130px"><input class="tb" id="tp1" value="08:30" aria-label="Time"><button class="in-btn" aria-label="Choose time"><svg width="12" height="12" viewBox="0 0 12 12"><circle cx="6" cy="6" r="5.3" fill="#fff" stroke="#555"/><path d="M6 3v3l2 1.4" stroke="#333" fill="none"/></svg></button></div>
       </div>
       <div class="col">
         <h3>Rating</h3><span class="key">JetPack.Styles.RatingControl</span>
-        <div class="rating" data-rating data-value="4" role="radiogroup" aria-label="Vurdering"></div>
+        <div class="rating" data-rating data-value="4" role="radiogroup" aria-label="Rating"></div>
         <div class="hr"></div>
         <h3>BusyIndicator</h3><span class="key">JetPack.Styles.BusyIndicator</span>
-        <div class="busy"><div class="under">Kunde: Fabrikam<br>Kontakt: Ida Kragh<br>Ordrer: 14<br>Seneste: 12-10-2026</div><div class="card">Henter ordrer…<div class="pb ind" style="width:110px"><i></i></div></div></div>
+        <div class="busy"><div class="under">Customer: Fabrikam<br>Contact: Ida Kragh<br>Orders: 14<br>Latest: 10/12/2026</div><div class="card">Loading orders…<div class="pb ind" style="width:110px"><i></i></div></div></div>
       </div>
     </div>
     <div class="row">
       <div class="col">
         <h3>ContextMenu</h3><span class="key">JetPack.Styles.ContextMenu</span>
         <div class="menu" role="menu">
-          <div class="mi" role="menuitem"><span class="ic">✂</span>Klip<span class="sc">Ctrl+X</span></div>
-          <div class="mi focus" role="menuitem"><span class="ic">⧉</span>Kopiér<span class="sc">Ctrl+C</span></div>
-          <div class="mi dis" role="menuitem" aria-disabled="true"><span class="ic">📋</span>Sæt ind<span class="sc">Ctrl+V</span></div>
+          <div class="mi" role="menuitem"><span class="ic">✂</span>Cut<span class="sc">Ctrl+X</span></div>
+          <div class="mi focus" role="menuitem"><span class="ic">⧉</span>Copy<span class="sc">Ctrl+C</span></div>
+          <div class="mi dis" role="menuitem" aria-disabled="true"><span class="ic">📋</span>Paste<span class="sc">Ctrl+V</span></div>
           <div class="msep"></div>
-          <div class="mi" role="menuitem"><span class="ic"></span>Eksportér<span class="sub tri-r"></span></div>
+          <div class="mi" role="menuitem"><span class="ic"></span>Export<span class="sub tri-r"></span></div>
         </div>
       </div>
       <div class="col wide">
         <h3>Chart</h3><span class="key">JetPack.Brushes.Chart.Palette</span>
-        <div class="chart"><h4>Timer pr. kvartal</h4><svg id="chart" viewBox="0 0 300 170" role="img" aria-label="Søjlediagram over timer pr. kvartal"></svg>
-          <div class="legend"><span><i style="background:linear-gradient(135deg,#B2C60D,#4C7B00)"></i>Projekter</span><span><i style="background:linear-gradient(135deg,#39B7FF,#0065AD)"></i>Support</span><span><i style="background:linear-gradient(135deg,#85878C,#33353A)"></i>Intern</span></div></div>
-        <p class="note" style="max-width:40ch">Paletten er fra Toolkit-diagrammet (11 radiale gradienter). WPF har intet indbygget diagram, så temaet leverer paletten som ressourcer til fx LiveCharts eller OxyPlot.</p>
+        <div class="chart"><h4>Hours per quarter</h4><svg id="chart" viewBox="0 0 300 170" role="img" aria-label="Column chart of hours per quarter"></svg>
+          <div class="legend"><span><i style="background:linear-gradient(135deg,#B2C60D,#4C7B00)"></i>Projects</span><span><i style="background:linear-gradient(135deg,#39B7FF,#0065AD)"></i>Support</span><span><i style="background:linear-gradient(135deg,#85878C,#33353A)"></i>Internal</span></div></div>
+        <p class="note" style="max-width:40ch">The palette comes from the Toolkit chart (11 radial gradients). WPF has no built-in chart, so the theme provides the palette as resources for e.g. LiveCharts or OxyPlot.</p>
       </div>
     </div>
   </section>
 
   <!-- ================= MAHAPPS ================= -->
   <section data-panel="mahapps" role="tabpanel" hidden>
-    <p class="intro">Kontroller, som JetPack aldrig havde, men som et komplet WPF-bibliotek i MahApps' format skal have. Her har jeg selv fortolket stilen: dæmpede gradienter, 2–3 px hjørner, mørke spor og lyse "knap"-flader. De her er vigtigst at give feedback på.</p>
+    <p class="intro">Controls JetPack never had, but which a complete WPF library in the MahApps mould needs. Here the style is my own interpretation: muted gradients, 2–3 px corners, dark tracks and light "button" surfaces. These are the most important ones to give feedback on.</p>
     <div class="row">
       <div class="col">
         <h3>ToggleSwitch</h3><span class="key">JetPack.Styles.ToggleSwitch</span>
         <div class="stack">
-          <label class="ts"><input class="sr" type="checkbox" checked><span class="trk"></span>Notifikationer</label>
-          <label class="ts"><input class="sr" type="checkbox"><span class="trk"></span>Mørk tilstand</label>
-          <label class="ts is-disabled"><input class="sr" type="checkbox" checked disabled><span class="trk"></span>Låst af politik</label>
+          <label class="ts"><input class="sr" type="checkbox" checked><span class="trk"></span>Notifications</label>
+          <label class="ts"><input class="sr" type="checkbox"><span class="trk"></span>Dark mode</label>
+          <label class="ts is-disabled"><input class="sr" type="checkbox" checked disabled><span class="trk"></span>Locked by policy</label>
         </div>
       </div>
       <div class="col">
         <h3>SplitButton · DropDownButton</h3><span class="key">JetPack.Styles.SplitButton</span>
         <div class="stack c">
-          <div class="split"><button class="btn">Gem</button><button class="btn" aria-label="Flere gem-muligheder"><span class="caret"></span></button></div>
-          <div class="split"><button class="btn c-accent">Send</button><button class="btn c-accent" aria-label="Flere send-muligheder"><span class="caret"></span></button></div>
-          <button class="btn">Eksportér <span class="caret"></span></button>
+          <div class="split"><button class="btn">Save</button><button class="btn" aria-label="More save options"><span class="caret"></span></button></div>
+          <div class="split"><button class="btn c-accent">Send</button><button class="btn c-accent" aria-label="More send options"><span class="caret"></span></button></div>
+          <button class="btn">Export <span class="caret"></span></button>
         </div>
       </div>
       <div class="col">
         <h3>ProgressRing</h3><span class="key">JetPack.Styles.ProgressRing</span>
-        <div class="ring-wrap" role="progressbar" aria-label="Indlæser"><div class="ring"></div></div>
+        <div class="ring-wrap" role="progressbar" aria-label="Loading"><div class="ring"></div></div>
         <div class="hr"></div>
         <h3>Badged</h3><span class="key">JetPack.Styles.Badged</span>
         <div style="display:flex;gap:22px;padding-top:6px">
-          <span class="badged"><button class="btn" style="min-width:80px">Indbakke</button><span class="badge">12</span></span>
-          <span class="badged"><button class="btn sq" aria-label="Notifikationer"><svg width="12" height="12" viewBox="0 0 12 12"><path d="M6 1a3.5 3.5 0 0 0-3.5 3.5V7L1.5 9h9l-1-2V4.5A3.5 3.5 0 0 0 6 1zm-1.3 9a1.3 1.3 0 0 0 2.6 0z" fill="#404040"/></svg></button><span class="badge">3</span></span>
+          <span class="badged"><button class="btn" style="min-width:80px">Inbox</button><span class="badge">12</span></span>
+          <span class="badged"><button class="btn sq" aria-label="Notifications"><svg width="12" height="12" viewBox="0 0 12 12"><path d="M6 1a3.5 3.5 0 0 0-3.5 3.5V7L1.5 9h9l-1-2V4.5A3.5 3.5 0 0 0 6 1zm-1.3 9a1.3 1.3 0 0 0 2.6 0z" fill="#404040"/></svg></button><span class="badge">3</span></span>
         </div>
       </div>
       <div class="col wide">
-        <h3>TextBox-hjælpere</h3><span class="key">TextBoxHelper.Watermark · ClearTextButton</span>
+        <h3>TextBox helpers</h3><span class="key">TextBoxHelper.Watermark · ClearTextButton</span>
         <div class="stack" style="width:220px">
-          <div class="fld"><input class="tb" id="tbh1" value="Fabrikam A/S" aria-label="Med ryd-knap" style="padding-right:24px"><button class="clear" aria-label="Ryd tekst">×</button></div>
-          <div class="fld has-btn"><input class="tb" id="tbh2" placeholder="Søg i ordrer…" aria-label="Søg"><button class="in-btn" aria-label="Søg"><svg width="11" height="11" viewBox="0 0 11 11"><circle cx="4.5" cy="4.5" r="3.5" fill="none" stroke="#404040" stroke-width="1.5"/><path d="M7 7l3 3" stroke="#404040" stroke-width="1.6"/></svg></button></div>
-          <div class="fld"><input class="tb dark" id="tbh3" placeholder="CVR-nummer" aria-label="CVR"></div>
+          <div class="fld"><input class="tb" id="tbh1" value="Fabrikam, Inc." aria-label="With clear button" style="padding-right:24px"><button class="clear" aria-label="Clear text">×</button></div>
+          <div class="fld has-btn"><input class="tb" id="tbh2" placeholder="Search orders…" aria-label="Search"><button class="in-btn" aria-label="Search"><svg width="11" height="11" viewBox="0 0 11 11"><circle cx="4.5" cy="4.5" r="3.5" fill="none" stroke="#404040" stroke-width="1.5"/><path d="M7 7l3 3" stroke="#404040" stroke-width="1.6"/></svg></button></div>
+          <div class="fld"><input class="tb dark" id="tbh3" placeholder="Tax ID" aria-label="Tax ID"></div>
         </div>
       </div>
     </div>
     <div class="row">
       <div class="col">
         <h3>RangeSlider</h3><span class="key">JetPack.Styles.RangeSlider</span>
-        <div class="sl rng" data-range style="--a:25%;--p:70%;width:160px" role="group" aria-label="Prisinterval"><div class="track"></div><div class="fill"></div><div class="thumb a" tabindex="0" role="slider" aria-label="Fra"></div><div class="thumb b" tabindex="0" role="slider" aria-label="Til"></div></div>
-        <span class="state" id="rangeOut">2.500 – 7.000 kr.</span>
+        <div class="sl rng" data-range style="--a:25%;--p:70%;width:160px" role="group" aria-label="Price range"><div class="track"></div><div class="fill"></div><div class="thumb a" tabindex="0" role="slider" aria-label="From"></div><div class="thumb b" tabindex="0" role="slider" aria-label="To"></div></div>
+        <span class="state" id="rangeOut">$2,500 – $7,000</span>
       </div>
       <div class="col">
         <h3>Tile</h3><span class="key">JetPack.Styles.Tile</span>
-        <div class="tiles"><button class="tile g"><b>14</b><span>Ledige</span></button><button class="tile o"><b>3</b><span>Forslag</span></button><button class="tile b"><b>9</b><span>Tildelte</span></button><button class="tile n"><b>148</b><span>Arkiv</span></button></div>
+        <div class="tiles"><button class="tile g"><b>14</b><span>Available</span></button><button class="tile o"><b>3</b><span>Suggestions</span></button><button class="tile b"><b>9</b><span>Assigned</span></button><button class="tile n"><b>148</b><span>Archive</span></button></div>
       </div>
       <div class="col wide">
         <h3>Flyout</h3><span class="key">JetPack.Styles.Flyout</span>
-        <div class="mini"><div class="content"><button class="btn" data-flyout-open>Åbn filtre</button><p>Flyout glider ind fra højre over indholdet.</p></div>
-          <aside class="flyout open" id="flyout"><header><button data-flyout-close aria-label="Luk filtre"><span class="tri-r"></span></button>Filtre</header>
-            <label class="cb"><input class="sr" type="checkbox" checked><span class="box"></span>Kun aktive kunder</label>
-            <label class="cb"><input class="sr" type="checkbox"><span class="box"></span>Vis arkiverede</label>
-            <div class="combo" data-combo style="width:100%"><button class="combo-btn" aria-expanded="false" aria-haspopup="listbox">Alle afdelinger</button><div class="pop jps" role="listbox" hidden><div class="item" role="option" aria-selected="true">Alle afdelinger</div><div class="item" role="option">Udvikling</div><div class="item" role="option">Salg</div></div></div>
-            <button class="btn c-accent" style="align-self:flex-start">Anvend</button>
+        <div class="mini"><div class="content"><button class="btn" data-flyout-open>Open filters</button><p>The flyout slides in from the right over the content.</p></div>
+          <aside class="flyout open" id="flyout"><header><button data-flyout-close aria-label="Close filters"><span class="tri-r"></span></button>Filters</header>
+            <label class="cb"><input class="sr" type="checkbox" checked><span class="box"></span>Active customers only</label>
+            <label class="cb"><input class="sr" type="checkbox"><span class="box"></span>Show archived</label>
+            <div class="combo" data-combo style="width:100%"><button class="combo-btn" aria-expanded="false" aria-haspopup="listbox">All departments</button><div class="pop jps" role="listbox" hidden><div class="item" role="option" aria-selected="true">All departments</div><div class="item" role="option">Development</div><div class="item" role="option">Sales</div></div></div>
+            <button class="btn c-accent" style="align-self:flex-start">Apply</button>
           </aside></div>
       </div>
     </div>
@@ -929,23 +929,23 @@ textarea.tb{height:auto;min-height:60px;resize:vertical;line-height:1.4}
       <div class="col xwide">
         <h3>HamburgerMenu</h3><span class="key">JetPack.Styles.HamburgerMenu</span>
         <div class="ham" data-ham>
-          <nav role="tablist" aria-label="Sektioner">
-            <button role="tab" aria-selected="true"><svg viewBox="0 0 14 14"><path d="M1 6.5L7 1l6 5.5V13H8.5V9h-3v4H1z"/></svg>Oversigt</button>
-            <button role="tab" aria-selected="false"><svg viewBox="0 0 14 14"><path d="M2 1h10v12H2zM4 4h6v1H4zm0 3h6v1H4zm0 3h4v1H4z"/></svg>Ordrer</button>
-            <button role="tab" aria-selected="false"><svg viewBox="0 0 14 14"><circle cx="7" cy="4.5" r="3"/><path d="M1.5 13a5.5 5.5 0 0 1 11 0z"/></svg>Medarbejdere</button>
-            <button role="tab" aria-selected="false"><svg viewBox="0 0 14 14"><path d="M7 4.5A2.5 2.5 0 1 0 7 9.5 2.5 2.5 0 0 0 7 4.5zM6 0h2l.4 2 1.6.8 1.7-1.2 1.4 1.4-1.2 1.7.8 1.6 2 .4v2l-2 .4-.8 1.6 1.2 1.7-1.4 1.4-1.7-1.2-1.6.8L8 14H6l-.4-2-1.6-.8-1.7 1.2-1.4-1.4 1.2-1.7L1.3 8.4 0 8V6l2-.4.8-1.6-1.2-1.7L3 .9l1.7 1.2L6.3 1.3z"/></svg>Indstillinger</button>
+          <nav role="tablist" aria-label="Sections">
+            <button role="tab" aria-selected="true"><svg viewBox="0 0 14 14"><path d="M1 6.5L7 1l6 5.5V13H8.5V9h-3v4H1z"/></svg>Overview</button>
+            <button role="tab" aria-selected="false"><svg viewBox="0 0 14 14"><path d="M2 1h10v12H2zM4 4h6v1H4zm0 3h6v1H4zm0 3h4v1H4z"/></svg>Orders</button>
+            <button role="tab" aria-selected="false"><svg viewBox="0 0 14 14"><circle cx="7" cy="4.5" r="3"/><path d="M1.5 13a5.5 5.5 0 0 1 11 0z"/></svg>Employees</button>
+            <button role="tab" aria-selected="false"><svg viewBox="0 0 14 14"><path d="M7 4.5A2.5 2.5 0 1 0 7 9.5 2.5 2.5 0 0 0 7 4.5zM6 0h2l.4 2 1.6.8 1.7-1.2 1.4 1.4-1.2 1.7.8 1.6 2 .4v2l-2 .4-.8 1.6 1.2 1.7-1.4 1.4-1.7-1.2-1.6.8L8 14H6l-.4-2-1.6-.8-1.7 1.2-1.4-1.4 1.2-1.7L1.3 8.4 0 8V6l2-.4.8-1.6-1.2-1.7L3 .9l1.7 1.2L6.3 1.3z"/></svg>Settings</button>
           </nav>
-          <div class="pane"><h5 id="hamTitle">Oversigt</h5><p id="hamText">Valgt punkt får accentgradient og samme lille notch som fanerne øverst, her pegende ind mod indholdet.</p></div>
+          <div class="pane"><h5 id="hamTitle">Overview</h5><p id="hamText">The selected item gets the accent gradient and the same small notch as the tabs at the top, here pointing at the content.</p></div>
         </div>
       </div>
       <div class="col wide">
         <h3>InfoBar</h3><span class="key">JetPack.Styles.InfoBar</span>
         <div class="stack" style="width:100%" id="infobars">
-          <div class="info i"><span class="ico">i</span>Ny version 2.4 er klar til installation.<button class="x" aria-label="Luk">×</button></div>
-          <div class="info s"><span class="ico">✓</span>Ugesedlen er sendt til godkendelse.<button class="x" aria-label="Luk">×</button></div>
-          <div class="info w"><span class="ico">!</span>3 timer er ikke fordelt på projekter.<button class="x" aria-label="Luk">×</button></div>
-          <div class="info e"><span class="ico">×</span>Forbindelsen til lønsystemet fejlede.<button class="x" aria-label="Luk">×</button></div>
-          <button class="btn" id="infoReset" hidden>Vis beskeder igen</button>
+          <div class="info i"><span class="ico">i</span>Version 2.4 is ready to install.<button class="x" aria-label="Close">×</button></div>
+          <div class="info s"><span class="ico">✓</span>The timesheet has been sent for approval.<button class="x" aria-label="Close">×</button></div>
+          <div class="info w"><span class="ico">!</span>3 hours are not assigned to projects.<button class="x" aria-label="Close">×</button></div>
+          <div class="info e"><span class="ico">×</span>The connection to the payroll system failed.<button class="x" aria-label="Close">×</button></div>
+          <button class="btn" id="infoReset" hidden>Show messages again</button>
         </div>
       </div>
     </div>
@@ -953,21 +953,21 @@ textarea.tb{height:auto;min-height:60px;resize:vertical;line-height:1.4}
       <div class="col xwide" style="align-items:stretch">
         <h3>Menu · ToolBar · StatusBar</h3><span class="key">JetPack.Styles.Menu / ToolBar / StatusBar</span>
         <div class="menubar" data-menubar>
-          <div><button aria-haspopup="menu" aria-expanded="false">Filer</button><div class="menu" role="menu" hidden><div class="mi" role="menuitem"><span class="ic"></span>Ny kunde<span class="sc">Ctrl+N</span></div><div class="mi" role="menuitem"><span class="ic"></span>Åbn…<span class="sc">Ctrl+O</span></div><div class="msep"></div><div class="mi" role="menuitem"><span class="ic"></span>Afslut</div></div></div>
-          <div><button aria-haspopup="menu" aria-expanded="false">Rediger</button><div class="menu" role="menu" hidden><div class="mi" role="menuitem"><span class="ic"></span>Fortryd<span class="sc">Ctrl+Z</span></div><div class="mi" role="menuitem"><span class="ic"></span>Find<span class="sc">Ctrl+F</span></div></div></div>
-          <div><button aria-haspopup="menu" aria-expanded="false">Vis</button><div class="menu" role="menu" hidden><div class="mi" role="menuitem"><span class="ic">✓</span>Statuslinje</div><div class="mi" role="menuitem"><span class="ic"></span>Fuld skærm<span class="sc">F11</span></div></div></div>
-          <div><button aria-haspopup="menu" aria-expanded="false">Hjælp</button><div class="menu" role="menu" hidden><div class="mi" role="menuitem"><span class="ic"></span>Om Jetpack</div></div></div>
+          <div><button aria-haspopup="menu" aria-expanded="false">File</button><div class="menu" role="menu" hidden><div class="mi" role="menuitem"><span class="ic"></span>New customer<span class="sc">Ctrl+N</span></div><div class="mi" role="menuitem"><span class="ic"></span>Open…<span class="sc">Ctrl+O</span></div><div class="msep"></div><div class="mi" role="menuitem"><span class="ic"></span>Exit</div></div></div>
+          <div><button aria-haspopup="menu" aria-expanded="false">Edit</button><div class="menu" role="menu" hidden><div class="mi" role="menuitem"><span class="ic"></span>Undo<span class="sc">Ctrl+Z</span></div><div class="mi" role="menuitem"><span class="ic"></span>Find<span class="sc">Ctrl+F</span></div></div></div>
+          <div><button aria-haspopup="menu" aria-expanded="false">View</button><div class="menu" role="menu" hidden><div class="mi" role="menuitem"><span class="ic">✓</span>Status bar</div><div class="mi" role="menuitem"><span class="ic"></span>Full screen<span class="sc">F11</span></div></div></div>
+          <div><button aria-haspopup="menu" aria-expanded="false">Help</button><div class="menu" role="menu" hidden><div class="mi" role="menuitem"><span class="ic"></span>About Jetpack</div></div></div>
         </div>
-        <div class="toolbarx" role="toolbar" aria-label="Formatering">
+        <div class="toolbarx" role="toolbar" aria-label="Formatting">
           <span class="grip"></span>
-          <button aria-label="Ny"><svg viewBox="0 0 14 14"><path d="M3 1h5l3 3v9H3zM8 1v3h3"/></svg></button>
-          <button aria-label="Gem"><svg viewBox="0 0 14 14"><path d="M1 1h10l2 2v10H1zm2 1v4h7V2zm1 7v3h6V9z"/></svg></button>
+          <button aria-label="New"><svg viewBox="0 0 14 14"><path d="M3 1h5l3 3v9H3zM8 1v3h3"/></svg></button>
+          <button aria-label="Save"><svg viewBox="0 0 14 14"><path d="M1 1h10l2 2v10H1zm2 1v4h7V2zm1 7v3h6V9z"/></svg></button>
           <span class="sep"></span>
-          <button aria-label="Fed" aria-pressed="true"><b>B</b></button>
-          <button aria-label="Kursiv" aria-pressed="false"><i style="font-family:Georgia,serif">I</i></button>
-          <button aria-label="Understreget" aria-pressed="false"><u>U</u></button>
+          <button aria-label="Bold" aria-pressed="true"><b>B</b></button>
+          <button aria-label="Italic" aria-pressed="false"><i style="font-family:Georgia,serif">I</i></button>
+          <button aria-label="Underline" aria-pressed="false"><u>U</u></button>
         </div>
-        <div class="statusbar" style="margin-top:6px"><span>Klar</span><span>Fabrikam A/S · 14 ordrer</span><span class="sp">Synkroniserer <span class="pb ind" style="width:80px;height:8px"><i></i></span></span></div>
+        <div class="statusbar" style="margin-top:6px"><span>Ready</span><span>Fabrikam · 14 orders</span><span class="sp">Syncing <span class="pb ind" style="width:80px;height:8px"><i></i></span></span></div>
       </div>
       <div class="col">
         <h3>ColorPicker</h3><span class="key">JetPack.Styles.ColorPicker</span>
@@ -978,17 +978,17 @@ textarea.tb{height:auto;min-height:60px;resize:vertical;line-height:1.4}
 
     <div class="row">
       <div class="col xwide" style="align-items:stretch">
-        <h3>Dækning af MahApps-kontrollerne</h3><span class="key">src/MahApps.Metro/Controls</span>
+        <h3>Coverage of the MahApps controls</h3><span class="key">src/MahApps.Metro/Controls</span>
         <div style="overflow-x:auto">
         <table class="cover">
-          <thead><tr><th>Gruppe</th><th>Vist i udkastet</th><th>Følger samme mønster</th></tr></thead>
+          <thead><tr><th>Group</th><th>Shown in the draft</th><th>Follows the same pattern</th></tr></thead>
           <tbody>
-            <tr><td>Vindue</td><td>MetroWindow → <code>JetPackWindow</code>, WindowCommands, ChildWindow, Dialogs</td><td>MetroNavigationWindow, ContentDialog</td></tr>
-            <tr><td>Knapper</td><td>Button, ToggleButton, RepeatButton, SplitButton, DropDownButton, Badged, Tile</td><td>HyperlinkButton, CircleButton-varianter</td></tr>
+            <tr><td>Window</td><td>MetroWindow → <code>JetPackWindow</code>, WindowCommands, ChildWindow, Dialogs</td><td>MetroNavigationWindow, ContentDialog</td></tr>
+            <tr><td>Buttons</td><td>Button, ToggleButton, RepeatButton, SplitButton, DropDownButton, Badged, Tile</td><td>HyperlinkButton, CircleButton variants</td></tr>
             <tr><td>Input</td><td>TextBox, PasswordBox, NumericUpDown, TimePicker, DatePicker, AutoSuggestBox, ColorPicker</td><td>DateTimePicker, HotKeyBox, MultiSelectionComboBox, RichTextBox</td></tr>
-            <tr><td>Valg</td><td>CheckBox, RadioButton, ToggleSwitch, Slider, RangeSlider, Rating</td><td>–</td></tr>
+            <tr><td>Selection</td><td>CheckBox, RadioButton, ToggleSwitch, Slider, RangeSlider, Rating</td><td>–</td></tr>
             <tr><td>Navigation</td><td>TabControl, HamburgerMenu, Flyout, Menu, ContextMenu, ToolBar, TreeView</td><td>MetroTabControl, MetroAnimatedTabControl, Pivot, FlipView, SplitView</td></tr>
-            <tr><td>Data</td><td>ListBox, DataGrid, Calendar</td><td>ListView/GridView, DataGrid-numeriske kolonner</td></tr>
+            <tr><td>Data</td><td>ListBox, DataGrid, Calendar</td><td>ListView/GridView, DataGrid numeric columns</td></tr>
             <tr><td>Status</td><td>ProgressBar, ProgressRing, InfoBar, StatusBar, ValidationError, ToolTip</td><td>MetroProgressBar</td></tr>
           </tbody>
         </table>
@@ -999,107 +999,107 @@ textarea.tb{height:auto;min-height:60px;resize:vertical;line-height:1.4}
 
   <!-- ================= WINDOW ================= -->
   <section data-panel="window" role="tabpanel" hidden>
-    <p class="intro">Forslag til <code>JetPackWindow</code> (afløser for <code>MetroWindow</code>). Silverlight-temaet havde ingen vinduesramme, så titellinjen er ny. Indholdet er "Companies"-skærmen fra din reference, bygget med kontrollerne fra de andre faner.</p>
-    <div class="winbar"><span class="state">Titellinje:</span>
-      <button class="btn toggle" data-title="dark" aria-pressed="true">Mørk</button>
-      <button class="btn toggle" data-title="light" aria-pressed="false">Lys</button>
-      <button class="btn toggle" data-title="texture" aria-pressed="false">Tekstur hele vejen</button>
+    <p class="intro">Proposal for <code>JetPackWindow</code> (replaces <code>MetroWindow</code>). The Silverlight theme had no window frame, so the title bar is new. The content is the "Companies" screen from your reference, built with the controls from the other tabs.</p>
+    <div class="winbar"><span class="state">Title bar:</span>
+      <button class="btn toggle" data-title="dark" aria-pressed="true">Dark</button>
+      <button class="btn toggle" data-title="light" aria-pressed="false">Light</button>
+      <button class="btn toggle" data-title="texture" aria-pressed="false">Texture all the way</button>
     </div>
 
     <div class="win" id="win" data-title="dark">
       <div class="wt">
-        <div class="ti"><span class="logo"></span><span>Konsulentplanlægning · Fabrikam A/S</span></div>
+        <div class="ti"><span class="logo"></span><span>Consultant planning · Fabrikam, Inc.</span></div>
         <div class="cmds">
-          <button class="wc">Indstillinger</button><button class="wc">Hjælp</button>
-          <button class="wb" aria-label="Minimér"><svg viewBox="0 0 10 10"><path d="M0 5.5h10"/></svg></button>
-          <button class="wb" aria-label="Maksimér"><svg viewBox="0 0 10 10"><rect x=".6" y=".6" width="8.8" height="8.8"/></svg></button>
-          <button class="wb close" aria-label="Luk"><svg viewBox="0 0 10 10"><path d="M0 0l10 10M10 0L0 10"/></svg></button>
+          <button class="wc">Settings</button><button class="wc">Help</button>
+          <button class="wb" aria-label="Minimize"><svg viewBox="0 0 10 10"><path d="M0 5.5h10"/></svg></button>
+          <button class="wb" aria-label="Maximize"><svg viewBox="0 0 10 10"><rect x=".6" y=".6" width="8.8" height="8.8"/></svg></button>
+          <button class="wb close" aria-label="Close"><svg viewBox="0 0 10 10"><path d="M0 0l10 10M10 0L0 10"/></svg></button>
         </div>
       </div>
-      <nav class="nav" data-nav role="tablist" aria-label="Moduler">
-        <button role="tab" aria-selected="true">Virksomheder</button><button role="tab" aria-selected="false">Ordrer</button><button role="tab" aria-selected="false">Medarbejdere</button><button role="tab" aria-selected="false">Ugesedler</button><button role="tab" aria-selected="false">Løn</button><button role="tab" aria-selected="false">Fakturering</button><button role="tab" aria-selected="false">Rapporter</button>
+      <nav class="nav" data-nav role="tablist" aria-label="Modules">
+        <button role="tab" aria-selected="true">Companies</button><button role="tab" aria-selected="false">Orders</button><button role="tab" aria-selected="false">Employees</button><button role="tab" aria-selected="false">Timesheets</button><button role="tab" aria-selected="false">Payroll</button><button role="tab" aria-selected="false">Billing</button><button role="tab" aria-selected="false">Reports</button>
       </nav>
       <div class="navnotch"><i id="notch"></i></div>
       <div class="wc-body">
-        <div class="h h1">Virksomheder</div>
+        <div class="h h1">Companies</div>
         <div class="wgrid">
           <div class="wleft">
             <div style="display:flex;flex-direction:column;flex:1" data-accordion>
-              <button class="acc-h" aria-expanded="true">Mangler placering</button>
+              <button class="acc-h" aria-expanded="true">Need Placement</button>
               <div class="acc-b">
                 <div class="tree" data-tree><ul>
-                  <li><div class="node"><button class="exp" aria-expanded="true" aria-label="Fold Contoso"></button><span class="nl">Contoso</span></div>
-                    <ul><li><div class="node"><span class="exp leaf"></span><span class="nl">August 2026</span></div></li><li><div class="node"><span class="exp leaf"></span><span class="nl" aria-selected="true">September 2026</span></div></li><li><div class="node"><span class="exp leaf"></span><span class="nl">Oktober 2026</span></div></li></ul></li>
-                  <li><div class="node"><button class="exp" aria-expanded="false" aria-label="Fold Southridge ud"></button><span class="nl">Southridge</span></div><ul hidden><li><div class="node"><span class="exp leaf"></span><span class="nl">Juli 2026</span></div></li></ul></li>
-                  <li><div class="node"><button class="exp" aria-expanded="false" aria-label="Fold Microsoft ud"></button><span class="nl">Microsoft</span></div><ul hidden><li><div class="node"><span class="exp leaf"></span><span class="nl">Juni 2026</span></div></li></ul></li>
-                  <li><div class="node"><button class="exp" aria-expanded="false" aria-label="Fold Fabrikam ud"></button><span class="nl">Fabrikam</span></div><ul hidden><li><div class="node"><span class="exp leaf"></span><span class="nl">Maj 2026</span></div></li></ul></li>
-                  <li><div class="node"><button class="exp" aria-expanded="false" aria-label="Fold Soar Airlines ud"></button><span class="nl">Soar Airlines</span></div><ul hidden><li><div class="node"><span class="exp leaf"></span><span class="nl">April 2026</span></div></li></ul></li>
+                  <li><div class="node"><button class="exp" aria-expanded="true" aria-label="Collapse Contoso"></button><span class="nl">Contoso</span></div>
+                    <ul><li><div class="node"><span class="exp leaf"></span><span class="nl">August 2026</span></div></li><li><div class="node"><span class="exp leaf"></span><span class="nl" aria-selected="true">September 2026</span></div></li><li><div class="node"><span class="exp leaf"></span><span class="nl">October 2026</span></div></li></ul></li>
+                  <li><div class="node"><button class="exp" aria-expanded="false" aria-label="Expand Southridge"></button><span class="nl">Southridge</span></div><ul hidden><li><div class="node"><span class="exp leaf"></span><span class="nl">July 2026</span></div></li></ul></li>
+                  <li><div class="node"><button class="exp" aria-expanded="false" aria-label="Expand Microsoft"></button><span class="nl">Microsoft</span></div><ul hidden><li><div class="node"><span class="exp leaf"></span><span class="nl">June 2026</span></div></li></ul></li>
+                  <li><div class="node"><button class="exp" aria-expanded="false" aria-label="Expand Fabrikam"></button><span class="nl">Fabrikam</span></div><ul hidden><li><div class="node"><span class="exp leaf"></span><span class="nl">May 2026</span></div></li></ul></li>
+                  <li><div class="node"><button class="exp" aria-expanded="false" aria-label="Expand Soar Airlines"></button><span class="nl">Soar Airlines</span></div><ul hidden><li><div class="node"><span class="exp leaf"></span><span class="nl">April 2026</span></div></li></ul></li>
                 </ul></div>
               </div>
-              <button class="acc-h" aria-expanded="false">Fornyelse afventer</button><div class="acc-b" hidden>2 kontrakter udløber 31. december.</div>
-              <button class="acc-h" aria-expanded="false">Arkiv</button><div class="acc-b" hidden>148 afsluttede placeringer.</div>
+              <button class="acc-h" aria-expanded="false">Renewal Pending</button><div class="acc-b" hidden>2 contracts expire on 31 December.</div>
+              <button class="acc-h" aria-expanded="false">Archive</button><div class="acc-b" hidden>148 completed placements.</div>
             </div>
           </div>
           <div class="tabc wtabs" data-tabc>
-            <div class="tabstrip" role="tablist"><button class="tab" role="tab" aria-selected="true">Ledige</button><button class="tab" role="tab" aria-selected="false">Tildelte</button><button class="tab" role="tab" aria-selected="false">Forslag</button></div>
+            <div class="tabstrip" role="tablist"><button class="tab" role="tab" aria-selected="true">Available</button><button class="tab" role="tab" aria-selected="false">Assigned</button><button class="tab" role="tab" aria-selected="false">Suggestions</button></div>
             <div class="tabbody">
-              <div class="lb jps" role="listbox" data-list aria-label="Ledige konsulenter">
+              <div class="lb jps" role="listbox" data-list aria-label="Available consultants">
                 <div class="item" role="option">Lindsey N. Ballard</div><div class="item" role="option">Charles K. Hoyle</div><div class="item" role="option" aria-selected="true">Daniel S. Tiedemann</div><div class="item" role="option">David J. Ritter</div><div class="item" role="option">Vivian J. Smail</div>
               </div>
               <div style="flex:1 1 300px;min-width:0;display:flex;flex-direction:column">
-                <p class="lede">Daniel er backend-udvikler med 9 års erfaring i .NET og SQL Server. Ledig fra mandag i uge 44 på fuld tid, foretrækker opgaver i Aarhus-området.</p>
-                <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:flex-start"><div class="cal" data-cal></div><div class="photo" aria-label="Profilbillede">DT</div></div>
+                <p class="lede">Daniel is a back-end developer with 9 years of experience in .NET and SQL Server. Available full time from Monday of week 44; prefers assignments in the Seattle area.</p>
+                <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:flex-start"><div class="cal" data-cal></div><div class="photo" aria-label="Profile picture">DT</div></div>
               </div>
             </div>
           </div>
         </div>
         <div class="wform">
           <div>
-            <div class="h h2">Virksomhedsoplysninger</div>
+            <div class="h h2">Company Details</div>
             <div class="formfields">
-              <label for="wName">Navn</label><input class="tb" id="wName" value="Contoso A/S">
-              <label for="wHr">HR-kontakt</label><input class="tb" id="wHr" value="Heather A. Andrade">
-              <label for="wPhone">Telefon</label><input class="tb" id="wPhone" value="+45 86 12 34 56">
+              <label for="wName">Name</label><input class="tb" id="wName" value="Contoso Corporation">
+              <label for="wHr">HR Contact</label><input class="tb" id="wHr" value="Heather A. Andrade">
+              <label for="wPhone">Phone</label><input class="tb" id="wPhone" value="(555) 555-1234">
             </div>
-            <div class="formfoot"><button class="btn">Send besked</button><button class="btn c-accent">Opdater</button><label class="cb"><input class="sr" type="checkbox"><span class="box"></span>Hold aktiv</label></div>
+            <div class="formfoot"><button class="btn">Send Message</button><button class="btn c-accent">Update</button><label class="cb"><input class="sr" type="checkbox"><span class="box"></span>Keep Active</label></div>
           </div>
           <div class="divider"></div>
           <div class="wnotes">
-            <div class="h h2">Noter</div>
-            <textarea class="tb dark jps" id="wNotes" aria-label="Noter">Kontrakten er forlænget til 30. juni 2027. Kunden ønsker en ekstra udvikler fra januar, helst med erfaring i WPF og MVVM. Næste statusmøde er torsdag i uge 44 kl. 10 hos Contoso i Aarhus.</textarea>
+            <div class="h h2">Notes</div>
+            <textarea class="tb dark jps" id="wNotes" aria-label="Notes">The contract has been extended to 30 June 2027. The customer wants an extra developer from January, ideally with WPF and MVVM experience. Next status meeting is Thursday in week 44 at 10 am at Contoso in Seattle.</textarea>
           </div>
         </div>
       </div>
-      <div class="statusbar"><span>Klar</span><span>5 ledige · 9 tildelte</span><span class="sp">Sidst synkroniseret 09:42</span></div>
+      <div class="statusbar"><span>Ready</span><span>5 available · 9 assigned</span><span class="sp">Last synced 09:42</span></div>
     </div>
 
     <div class="dialog-demo">
       <div class="dlg" role="dialog" aria-labelledby="dlgT">
-        <header><span id="dlgT">Slet virksomhed?</span><button aria-label="Luk">×</button></header>
-        <div class="db"><p>Contoso A/S og 3 tilknyttede placeringer slettes permanent. Ugesedler, der allerede er faktureret, bevares i arkivet.</p>
-          <div class="acts"><button class="btn">Annuller</button><button class="btn c-orange">Slet</button></div></div>
+        <header><span id="dlgT">Delete company?</span><button aria-label="Close">×</button></header>
+        <div class="db"><p>Contoso Corporation and 3 linked placements will be deleted permanently. Timesheets that have already been billed stay in the archive.</p>
+          <div class="acts"><button class="btn">Cancel</button><button class="btn c-orange">Delete</button></div></div>
       </div>
     </div>
-    <p class="note" style="max-width:none;margin-top:10px">ChildWindow / MahApps-dialog: lys titel (StaticControlBackground), krop #E0E0E0, overlay 50 % sort.</p>
+    <p class="note" style="max-width:none;margin-top:10px">ChildWindow / MahApps dialog: light title (StaticControlBackground), body #E0E0E0, 50% black overlay.</p>
   </section>
 
   <!-- ================= PALETTE ================= -->
   <section data-panel="palette" role="tabpanel" hidden>
-    <p class="intro">Ressourcenøglerne, som biblioteket eksponerer. Navnene følger MahApps-skemaet (<code>MahApps.Brushes.Accent</code> → <code>JetPack.Brushes.Accent</code>), så det er nemt at flytte en eksisterende app over. Accent-farverne skifter med vælgeren øverst.</p>
-    <div class="row"><div class="col xwide" style="align-items:stretch"><h3>Accent</h3><span class="key" id="accName">Grøn</span><div class="swatches" id="swAccent"></div></div></div>
-    <div class="row"><div class="col xwide" style="align-items:stretch"><h3>Neutrale og tilstande</h3><span class="key">fælles for alle accenter</span><div class="swatches" id="swNeutral"></div></div></div>
+    <p class="intro">The resource keys the library exposes. Names follow the MahApps scheme (<code>MahApps.Brushes.Accent</code> → <code>JetPack.Brushes.Accent</code>), so moving an existing app over is easy. The accent colours change with the picker at the top.</p>
+    <div class="row"><div class="col xwide" style="align-items:stretch"><h3>Accent</h3><span class="key" id="accName">Green</span><div class="swatches" id="swAccent"></div></div></div>
+    <div class="row"><div class="col xwide" style="align-items:stretch"><h3>Neutrals and states</h3><span class="key">shared by all accents</span><div class="swatches" id="swNeutral"></div></div></div>
     <div class="row">
-      <div class="col xwide" style="align-items:stretch"><h3>Typografi</h3><span class="key">JetPack.Font.*</span>
-        <div class="typerow"><code>Heading1 · 36</code><span class="h h1" style="font-size:36px">Virksomheder</span></div>
-        <div class="typerow"><code>Heading2 · 24 · 50 %</code><span class="h h2">Virksomhedsoplysninger</span></div>
-        <div class="typerow"><code>Heading3 · 21</code><span class="h h3">Noter</span></div>
-        <div class="typerow"><code>Heading4 · 18</code><span class="h h4">Kontaktperson</span></div>
-        <div class="typerow"><code>Heading5 · 15</code><span class="h h5">Faneblade og navigation</span></div>
-        <div class="typerow"><code>Content · 13</code><span style="font-size:13px">Brødtekst i indholdsområder</span></div>
-        <div class="typerow"><code>Default · 12,5</code><span style="font-size:12.5px">Standard for vinduer og UserControls</span></div>
-        <div class="typerow"><code>Input/Normal · 11 → 12</code><span style="font-size:var(--fs-ctl)">Kontroller og inputfelter</span></div>
+      <div class="col xwide" style="align-items:stretch"><h3>Typography</h3><span class="key">JetPack.Font.*</span>
+        <div class="typerow"><code>Heading1 · 36</code><span class="h h1" style="font-size:36px">Companies</span></div>
+        <div class="typerow"><code>Heading2 · 24 · 50 %</code><span class="h h2">Company Details</span></div>
+        <div class="typerow"><code>Heading3 · 21</code><span class="h h3">Notes</span></div>
+        <div class="typerow"><code>Heading4 · 18</code><span class="h h4">Contact</span></div>
+        <div class="typerow"><code>Heading5 · 15</code><span class="h h5">Tabs and navigation</span></div>
+        <div class="typerow"><code>Content · 13</code><span style="font-size:13px">Body text in content areas</span></div>
+        <div class="typerow"><code>Default · 12,5</code><span style="font-size:12.5px">Default for windows and UserControls</span></div>
+        <div class="typerow"><code>Input/Normal · 11 → 12</code><span style="font-size:var(--fs-ctl)">Controls and input fields</span></div>
       </div>
-      <div class="col wide" style="align-items:stretch"><h3>Effekter</h3><span class="key">JetPack.Effects.*</span>
+      <div class="col wide" style="align-items:stretch"><h3>Effects</h3><span class="key">JetPack.Effects.*</span>
         <div class="stack" style="gap:16px">
           <div style="display:flex;gap:12px;align-items:center"><span style="width:60px;height:30px;background:#ccc;border-radius:2px;box-shadow:var(--shadow)"></span><code class="key">ControlShadow · blur 3 · 55 %</code></div>
           <div style="display:flex;gap:12px;align-items:center"><span style="width:60px;height:30px;background:#ccc;border-radius:2px;box-shadow:var(--shadow-light)"></span><code class="key">LightControlShadow · #55524F</code></div>
@@ -1112,17 +1112,17 @@ textarea.tb{height:auto;min-height:60px;resize:vertical;line-height:1.4}
   </main>
 
   <section class="decisions" aria-labelledby="decT">
-    <h2 id="decT">Det skal vi blive enige om</h2>
-    <p>Mit forslag er markeret med fed. Skriv bare tilbage, hvad du vil ændre, så retter jeg udkastet, før jeg går i gang med WPF-biblioteket.</p>
+    <h2 id="decT">What we need to agree on</h2>
+    <p>My proposal is in bold. Tell me what you want to change and I will update the draft before starting on the WPF library.</p>
     <div class="dlist">
-      <div class="dcard"><h4>Fokusmarkering</h4><p>Originalen havde usynlig fokus (<code class="key">FocusVisualBrush #00000000</code>). Det er et problem for tastaturbrugere.</p><div class="prop">Forslag: <b>1 px ring i accent-highlight</b>, og felter får accentkant. Slå til og fra øverst for at sammenligne.</div></div>
-      <div class="dcard"><h4>Skriftstørrelse</h4><p>Silverlight brugte 11 px på kontroller. På moderne skærme i WPF virker det småt.</p><div class="prop">Forslag: <b>12 px på kontroller</b>, overskrifter uændrede. Begge kan ses via knapperne øverst.</div></div>
-      <div class="dcard"><h4>Accentfarver</h4><p>JetPack har tre accentsæt: grøn, orange og blå. MahApps har 23 og kan lave et sæt ud fra én farve.</p><div class="prop">Forslag: <b>Grøn som standard, orange og blå indbygget</b>, plus en generator, der laver alle gradienter ud fra én farve.</div></div>
-      <div class="dcard"><h4>Vinduets titellinje</h4><p>Ny del, der ikke fandtes i Silverlight. Tre varianter kan ses under fanen Vindue.</p><div class="prop">Forslag: <b>Mørk titellinje</b> (samme gradient som DataGrid-hovedet), så den lyse menulinje står klart nedenunder.</div></div>
-      <div class="dcard"><h4>Lyse og mørke inputfelter</h4><p>Originalen har både "White" og "Dark Gray" TextBox og PasswordBox.</p><div class="prop">Forslag: <b>lys som standard</b>, mørk som navngiven stil <code class="key">JetPack.Styles.TextBox.Dark</code>, også til NumericUpDown og ComboBox.</div></div>
-      <div class="dcard"><h4>Skrifttype</h4><p>Trebuchet MS følger med Windows, så det ligner originalen uden at skulle pakke en skrifttype med.</p><div class="prop">Forslag: <b>Trebuchet MS beholdes</b>, med Segoe UI som reserve.</div></div>
-      <div class="dcard"><h4>Lys/mørk base</h4><p>MahApps har Light- og Dark-basetemaer. JetPack findes kun i den grå teksturerede udgave.</p><div class="prop">Forslag: <b>kun den originale grå base i version 1</b>. En mørkere variant kan komme senere.</div></div>
-      <div class="dcard"><h4>Opbygning af biblioteket</h4><p>Til trin 2: et selvstændigt bibliotek med samme struktur som MahApps, eller et tema oven på MahApps.Metro-pakken.</p><div class="prop">Forslag: <b>selvstændigt bibliotek, JetPack.Wpf (net8.0-windows)</b>, som tager MahApps' kontrolkode med og giver den nye skabeloner.</div></div>
+      <div class="dcard"><h4>Focus indicator</h4><p>The original had an invisible focus (<code class="key">FocusVisualBrush #00000000</code>). That is a problem for keyboard users.</p><div class="prop">Proposal: <b>1 px ring in the accent highlight</b>, and fields get an accent border. Toggle it at the top to compare.</div></div>
+      <div class="dcard"><h4>Font size</h4><p>Silverlight used 11 px for controls. On modern screens in WPF that looks small.</p><div class="prop">Proposal: <b>12 px for controls</b>, headings unchanged. Both can be seen with the buttons at the top.</div></div>
+      <div class="dcard"><h4>Accent colours</h4><p>JetPack has three accent sets: green, orange and blue. MahApps has 23 and can make a set from one colour.</p><div class="prop">Proposal: <b>Green by default, orange and blue built in</b>, plus a generator that makes all gradients from one colour.</div></div>
+      <div class="dcard"><h4>Window title bar</h4><p>A new part that did not exist in Silverlight. Three variants are shown on the Window tab.</p><div class="prop">Proposal: <b>Dark title bar</b> (the same gradient as the DataGrid header), so the light menu bar stands out below it.</div></div>
+      <div class="dcard"><h4>Light and dark inputs</h4><p>The original has both "White" and "Dark Gray" TextBox and PasswordBox.</p><div class="prop">Proposal: <b>light by default</b>, dark as the named style <code class="key">JetPack.Styles.TextBox.Dark</code>, also for NumericUpDown and ComboBox.</div></div>
+      <div class="dcard"><h4>Typeface</h4><p>Trebuchet MS ships with Windows, so it matches the original without bundling a font.</p><div class="prop">Proposal: <b>keep Trebuchet MS</b>, with Segoe UI as the fallback.</div></div>
+      <div class="dcard"><h4>Light/dark base</h4><p>MahApps has Light and Dark base themes. JetPack only exists in the grey textured version.</p><div class="prop">Proposal: <b>only the original grey base in version 1</b>. A darker variant can come later.</div></div>
+      <div class="dcard"><h4>Library structure</h4><p>For step 2: a standalone library with the same structure as MahApps, or a theme on top of the MahApps.Metro package.</p><div class="prop">Proposal: <b>a standalone library, JetPack.Wpf (net8.0-windows)</b>, modelled on MahApps' controls with new templates.</div></div>
     </div>
   </section>
 </div>
@@ -1144,9 +1144,9 @@ textarea.tb{height:auto;min-height:60px;resize:vertical;line-height:1.4}
   tabs.forEach(t=>t.addEventListener('click',()=>{showTab(t.dataset.tab);try{history.replaceState(null,'','#'+t.dataset.tab)}catch(e){}}));
 
   /* accent / size / focus */
-  const ACC={green:{name:'Grøn',sel:['#98B913','#75A20A'],acc:['#BCD742','#91B006'],over:['#9EBF0A','#C3E040'],sub:['#6D9000','#5A8100'],hl:'#C2DF00',solid:'#75A20A'},
+  const ACC={green:{name:'Green',sel:['#98B913','#75A20A'],acc:['#BCD742','#91B006'],over:['#9EBF0A','#C3E040'],sub:['#6D9000','#5A8100'],hl:'#C2DF00',solid:'#75A20A'},
              orange:{name:'Orange',sel:['#FFB629','#FE770A'],acc:['#FFB72C','#FF8700'],over:['#FFC149','#FF9800'],sub:['#DD870D','#CE5300'],hl:'#FFC600',solid:'#FE770A'},
-             blue:{name:'Blå',sel:['#42BAFF','#148CD1'],acc:['#42BAFF','#148CD1'],over:['#1A9EE8','#74CDFF'],sub:['#1AA0EC','#0072BE'],hl:'#8DDBFF',solid:'#148CD1'}};
+             blue:{name:'Blue',sel:['#42BAFF','#148CD1'],acc:['#42BAFF','#148CD1'],over:['#1A9EE8','#74CDFF'],sub:['#1AA0EC','#0072BE'],hl:'#8DDBFF',solid:'#148CD1'}};
   function setAccent(a){
     if(!ACC[a]) a='green';
     if(a==='green') root.removeAttribute('data-accent'); else root.setAttribute('data-accent',a);
@@ -1208,13 +1208,13 @@ textarea.tb{height:auto;min-height:60px;resize:vertical;line-height:1.4}
   });
 
   /* calendars: October 2026, Monday first */
-  const MONTHS=['januar','februar','marts','april','maj','juni','juli','august','september','oktober','november','december'];
+  const MONTHS=['January','February','March','April','May','June','July','August','September','October','November','December'];
   $$('[data-cal]').forEach(cal=>{
     let y=2026,m=9,sel=new Date(2026,9,23);const today=new Date(2026,9,19);
     function draw(){
       const first=new Date(y,m,1),off=(first.getDay()+6)%7,start=new Date(y,m,1-off);
-      let h='<div class="cal-head"><button aria-label="Forrige måned"><span class="tri-l"></span></button><span>'+MONTHS[m].replace(/^./,c=>c.toUpperCase())+' '+y+'</span><button aria-label="Næste måned"><span class="tri-r"></span></button></div><div class="cal-grid">';
-      ['Ma','Ti','On','To','Fr','Lø','Sø'].forEach(d=>h+='<span class="dow">'+d+'</span>');
+      let h='<div class="cal-head"><button aria-label="Previous month"><span class="tri-l"></span></button><span>'+MONTHS[m]+' '+y+'</span><button aria-label="Next month"><span class="tri-r"></span></button></div><div class="cal-grid">';
+      ['Mo','Tu','We','Th','Fr','Sa','Su'].forEach(d=>h+='<span class="dow">'+d+'</span>');
       for(let i=0;i<42;i++){const d=new Date(start);d.setDate(start.getDate()+i);
         const cls=['d'];if(d.getMonth()!==m)cls.push('o');if(+d===+today)cls.push('today');if(+d===+sel)cls.push('sel');
         h+='<span class="'+cls.join(' ')+'" data-t="'+(+d)+'">'+d.getDate()+'</span>';}
@@ -1238,7 +1238,7 @@ textarea.tb{height:auto;min-height:60px;resize:vertical;line-height:1.4}
   $$('[data-slider]').forEach(bindSlider);
   const rg=$('[data-range]');
   if(rg){let a=25,b=70;const out=$('#rangeOut');
-    const upd=()=>{rg.style.setProperty('--a',a+'%');rg.style.setProperty('--p',b+'%');out.textContent=(a*100).toLocaleString('da-DK')+' – '+(b*100).toLocaleString('da-DK')+' kr.'};
+    const upd=()=>{rg.style.setProperty('--a',a+'%');rg.style.setProperty('--p',b+'%');out.textContent='$'+(a*100).toLocaleString('en-US')+' – $'+(b*100).toLocaleString('en-US')};
     rg.addEventListener('pointerdown',e=>{const r=rg.getBoundingClientRect();const pos=()=>Math.max(0,Math.min(100,(event.clientX-r.left)/r.width*100));
       const p0=(e.clientX-r.left)/r.width*100;const which=Math.abs(p0-a)<Math.abs(p0-b)?'a':'b';rg.setPointerCapture(e.pointerId);
       const mv=ev=>{const p=Math.round(Math.max(0,Math.min(100,(ev.clientX-r.left)/r.width*100)));if(which==='a')a=Math.min(p,b);else b=Math.max(p,a);upd()};mv(e);
@@ -1253,15 +1253,15 @@ textarea.tb{height:auto;min-height:60px;resize:vertical;line-height:1.4}
   /* rating */
   $$('[data-rating]').forEach(r=>{let val=+r.dataset.value;
     const star='<svg viewBox="0 0 18 18"><path d="M9 1.5l2.3 4.8 5.2.7-3.8 3.6.9 5.2L9 13.3l-4.6 2.5.9-5.2L1.5 7l5.2-.7z" stroke-width="1"/></svg>';
-    const draw=()=>{r.innerHTML='';for(let i=1;i<=5;i++){const b=document.createElement('button');b.className=i<=val?'on':'off';b.innerHTML=star;b.setAttribute('role','radio');b.setAttribute('aria-checked',i===val);b.setAttribute('aria-label',i+' stjerner');b.onclick=()=>{val=i;draw()};r.appendChild(b)}};draw()});
+    const draw=()=>{r.innerHTML='';for(let i=1;i<=5;i++){const b=document.createElement('button');b.className=i<=val?'on':'off';b.innerHTML=star;b.setAttribute('role','radio');b.setAttribute('aria-checked',i===val);b.setAttribute('aria-label',i+' stars');b.onclick=()=>{val=i;draw()};r.appendChild(b)}};draw()});
 
   /* chart */
   (function(){const svg=$('#chart');if(!svg)return;
-    const data=[[120,80,60],[150,95,70],[135,110,55],[170,120,80]],Q=['K1','K2','K3','K4'];
+    const data=[[120,80,60],[150,95,70],[135,110,55],[170,120,80]],Q=['Q1','Q2','Q3','Q4'];
     const fills=['url(#gG)','url(#gO)','url(#gB)'],y=v=>140-v*0.625;
     let h='<defs><linearGradient id="gG" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#B2C60D"/><stop offset="1" stop-color="#4C7B00"/></linearGradient><linearGradient id="gO" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#39B7FF"/><stop offset="1" stop-color="#0065AD"/></linearGradient><linearGradient id="gB" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#85878C"/><stop offset="1" stop-color="#33353A"/></linearGradient></defs>';
     [0,50,100,150,200].forEach(v=>{h+='<line x1="30" x2="290" y1="'+y(v)+'" y2="'+y(v)+'" stroke="rgba(0,0,0,.1)"/><text x="25" y="'+(y(v)+3)+'" fill="#606060" font-size="9" text-anchor="end">'+v+'</text>'});
-    data.forEach((g,i)=>{const x0=30+i*65+11;g.forEach((v,j)=>{h+='<rect x="'+(x0+j*15)+'" y="'+y(v)+'" width="13" height="'+(140-y(v))+'" rx="1" fill="'+fills[j]+'"><title>'+Q[i]+': '+v+' timer</title></rect>'});
+    data.forEach((g,i)=>{const x0=30+i*65+11;g.forEach((v,j)=>{h+='<rect x="'+(x0+j*15)+'" y="'+y(v)+'" width="13" height="'+(140-y(v))+'" rx="1" fill="'+fills[j]+'"><title>'+Q[i]+': '+v+' hours</title></rect>'});
       h+='<text x="'+(x0+21.5)+'" y="155" fill="#303030" font-size="10" text-anchor="middle">'+Q[i]+'</text>'});
     h+='<line x1="30" x2="290" y1="140" y2="140" stroke="#686868"/>';
     svg.innerHTML=h})();
@@ -1270,7 +1270,7 @@ textarea.tb{height:auto;min-height:60px;resize:vertical;line-height:1.4}
   const fo=$('#flyout');$('[data-flyout-open]').onclick=()=>fo.classList.add('open');$('[data-flyout-close]').onclick=()=>fo.classList.remove('open');
 
   /* hamburger */
-  const HT={Oversigt:'Valgt punkt får accentgradient og samme lille notch som fanerne øverst, her pegende ind mod indholdet.',Ordrer:'14 åbne ordrer, 3 forfalder i denne uge.',Medarbejdere:'23 medarbejdere fordelt på 5 afdelinger.',Indstillinger:'Sprog, accentfarve og synkronisering.'};
+  const HT={Overview:'The selected item gets the accent gradient and the same small notch as the tabs at the top, here pointing at the content.',Orders:'14 open orders, 3 due this week.',Employees:'23 employees in 5 departments.',Settings:'Language, accent colour and syncing.'};
   $$('[data-ham] nav button').forEach(b=>b.addEventListener('click',()=>{$$('[data-ham] nav button').forEach(x=>x.setAttribute('aria-selected',x===b));const t=b.textContent.trim();$('#hamTitle').textContent=t;$('#hamText').textContent=HT[t]}));
 
   /* infobars */
@@ -1299,7 +1299,7 @@ textarea.tb{height:auto;min-height:60px;resize:vertical;line-height:1.4}
   function renderAccentSwatches(a){const A=ACC[a];$('#accName').textContent=A.name;
     const items=[['Selection','JetPack.Brushes.Accent.Selection',g(...A.sel),A.sel.join(' → ')],['Accent','JetPack.Brushes.Accent',g(...A.acc),A.acc.join(' → ')],['AccentOver','JetPack.Brushes.Accent.MouseOver',g(...A.over),A.over.join(' → ')],['AccentSubdued','JetPack.Brushes.Accent.Pressed',g(...A.sub),A.sub.join(' → ')],['Highlight','JetPack.Brushes.Accent.Highlight',A.hl,A.hl],['Solid','JetPack.Colors.Accent',A.solid,A.solid]];
     $('#swAccent').innerHTML=items.map(i=>'<div class="swatch"><div class="chip" style="background:'+i[2]+'"></div><div class="meta"><b>'+i[0]+'</b><code>'+i[1]+'</code><code>'+i[3]+'</code></div></div>').join('')}
-  const N=[['ControlBackground','Control.Background','var(--ctl-normal)','#F7F7F7 → #C6C6C6'],['ControlBackground.MouseOver','Control.Background.MouseOver','var(--ctl-over)','#FFFFFF → #DEDEDE'],['ControlBackground.Pressed','Control.Background.Pressed','var(--ctl-pressed)','#CECECE → #AFAFAF'],['StaticControlBackground','Static.Background','var(--static)','#E2E2E2 → #C6C6C6'],['Input.Background','Input.Background','#FFFFFF','#FFFFFF'],['Control.Border','Control.Border','#686868','#686868'],['Control.Foreground','Text','#202020','#202020'],['Alt.Background','Track','#57575C','#57575C'],['Dark.Background','Panel.Background','#707176','#707176'],['Dark.Border','Panel.Border','#58585D','#58585D'],['DataGrid.Header','DataGrid.Header','var(--grid-head)','#606066 → #4D4D51'],['Disabled','Disabled','var(--disabled)','#9C9DA0 → #8B8C8E'],['Error','Validation','#EF0A0A','#EF0A0A / #DC000C'],['ScrollBar.Track','ScrollBar.Track','#DCDCDD','#DCDCDD'],['Window.Ground','Window.Background','var(--ground) var(--tex)','#86888D + tekstur']];
+  const N=[['ControlBackground','Control.Background','var(--ctl-normal)','#F7F7F7 → #C6C6C6'],['ControlBackground.MouseOver','Control.Background.MouseOver','var(--ctl-over)','#FFFFFF → #DEDEDE'],['ControlBackground.Pressed','Control.Background.Pressed','var(--ctl-pressed)','#CECECE → #AFAFAF'],['StaticControlBackground','Static.Background','var(--static)','#E2E2E2 → #C6C6C6'],['Input.Background','Input.Background','#FFFFFF','#FFFFFF'],['Control.Border','Control.Border','#686868','#686868'],['Control.Foreground','Text','#202020','#202020'],['Alt.Background','Track','#57575C','#57575C'],['Dark.Background','Panel.Background','#707176','#707176'],['Dark.Border','Panel.Border','#58585D','#58585D'],['DataGrid.Header','DataGrid.Header','var(--grid-head)','#606066 → #4D4D51'],['Disabled','Disabled','var(--disabled)','#9C9DA0 → #8B8C8E'],['Error','Validation','#EF0A0A','#EF0A0A / #DC000C'],['ScrollBar.Track','ScrollBar.Track','#DCDCDD','#DCDCDD'],['Window.Ground','Window.Background','var(--ground) var(--tex)','#86888D + texture']];
   $('#swNeutral').innerHTML=N.map(i=>'<div class="swatch"><div class="chip" style="background:'+i[2]+'"></div><div class="meta"><b>'+i[0]+'</b><code>JetPack.Brushes.'+i[1]+'</code><code>'+i[3]+'</code></div></div>').join('');
 
   setAccent(store.get('jp-accent')||'green');

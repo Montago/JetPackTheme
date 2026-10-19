@@ -6,21 +6,21 @@
     <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Padding="0,22,0,0">
         <StackPanel>
             <TextBlock Style="{StaticResource Demo.Intro}"
-                       Text="Kontrollerne fra Silverlight SDK, som alle findes i WPF: TabControl, Calendar, DatePicker, TreeView, DataGrid og GridSplitter. De mørke paneler bruger DarkBackground #707176 og DarkBorder #58585D." />
+                       Text="The Silverlight SDK controls, all of which exist in WPF: TabControl, Calendar, DatePicker, TreeView, DataGrid and GridSplitter. The dark panels use DarkBackground #707176 and DarkBorder #58585D." />
 
             <WrapPanel>
                 <HeaderedContentControl Style="{StaticResource Demo.Column}" Header="TabControl" Tag="JetPack.Styles.TabControl">
                     <TabControl Width="320" Height="140">
-                        <TabItem Header="Ledige">
-                            <TextBlock TextWrapping="Wrap" Text="14 konsulenter er ledige fra uge 44. Filtrér efter kompetence eller lokation for at indsnævre listen." />
+                        <TabItem Header="Available">
+                            <TextBlock TextWrapping="Wrap" Text="14 consultants are available from week 44. Filter by skill or location to narrow the list." />
                         </TabItem>
-                        <TabItem Header="Tildelte">
-                            <TextBlock TextWrapping="Wrap" Text="9 konsulenter er tildelt projekter, der løber til og med december." />
+                        <TabItem Header="Assigned">
+                            <TextBlock TextWrapping="Wrap" Text="9 consultants are assigned to projects running until December." />
                         </TabItem>
-                        <TabItem Header="Forslag">
-                            <TextBlock TextWrapping="Wrap" Text="3 forslag afventer svar fra kunden." />
+                        <TabItem Header="Suggestions">
+                            <TextBlock TextWrapping="Wrap" Text="3 suggestions are waiting for the customer to reply." />
                         </TabItem>
-                        <TabItem Header="Arkiv" IsEnabled="False" />
+                        <TabItem Header="Archive" IsEnabled="False" />
                     </TabControl>
                 </HeaderedContentControl>
 
@@ -32,10 +32,10 @@
                     <StackPanel Width="170" d:Demo.Spacing="10">
                         <DatePicker x:Name="Picked" />
                         <DatePicker />
-                        <DatePicker x:Name="BadDate" d:Demo.Error="Datoen ligger før kontraktens start." />
+                        <DatePicker x:Name="BadDate" d:Demo.Error="The date is before the contract starts." />
                         <Separator />
-                        <jp:AutoSuggestBox x:Name="Suggest" jp:TextBoxHelper.Watermark="Søg firma…" />
-                        <TextBlock Style="{StaticResource Demo.State}" Text="Skriv fx 'fa' eller 'so'" />
+                        <jp:AutoSuggestBox x:Name="Suggest" jp:TextBoxHelper.Watermark="Search companies…" />
+                        <TextBlock Style="{StaticResource Demo.State}" Text="Type e.g. 'fa' or 'so'" />
                     </StackPanel>
                 </HeaderedContentControl>
             </WrapPanel>
@@ -46,16 +46,16 @@
                         <TreeViewItem Header="Contoso" IsExpanded="True">
                             <TreeViewItem Header="August 2026" />
                             <TreeViewItem Header="September 2026" IsSelected="True" />
-                            <TreeViewItem Header="Oktober 2026" />
+                            <TreeViewItem Header="October 2026" />
                         </TreeViewItem>
                         <TreeViewItem Header="Southridge">
-                            <TreeViewItem Header="Juli 2026" />
+                            <TreeViewItem Header="July 2026" />
                         </TreeViewItem>
                         <TreeViewItem Header="Microsoft">
-                            <TreeViewItem Header="Juni 2026" />
+                            <TreeViewItem Header="June 2026" />
                         </TreeViewItem>
                         <TreeViewItem Header="Fabrikam">
-                            <TreeViewItem Header="Maj 2026" />
+                            <TreeViewItem Header="May 2026" />
                         </TreeViewItem>
                         <TreeViewItem Header="Soar Airlines">
                             <TreeViewItem Header="April 2026" />
@@ -66,16 +66,16 @@
                 <HeaderedContentControl Style="{StaticResource Demo.Column}" Header="DataGrid" Tag="JetPack.Styles.DataGrid">
                     <DataGrid x:Name="Grid" Width="520" Height="190" AutoGenerateColumns="False" IsReadOnly="True" SelectionMode="Single" CanUserAddRows="False">
                         <DataGrid.Columns>
-                            <DataGridTextColumn Header="Medarbejder" Binding="{Binding Employee}" Width="*" SortDirection="Ascending" />
-                            <DataGridTextColumn Header="Afdeling" Binding="{Binding Department}" Width="110" />
-                            <DataGridTextColumn Header="Timer" Binding="{Binding Hours, StringFormat=N1}" Width="60">
+                            <DataGridTextColumn Header="Employee" Binding="{Binding Employee}" Width="*" SortDirection="Ascending" />
+                            <DataGridTextColumn Header="Department" Binding="{Binding Department}" Width="110" />
+                            <DataGridTextColumn Header="Hours" Binding="{Binding Hours, StringFormat=N1}" Width="60">
                                 <DataGridTextColumn.ElementStyle>
                                     <Style TargetType="TextBlock">
                                         <Setter Property="HorizontalAlignment" Value="Right" />
                                     </Style>
                                 </DataGridTextColumn.ElementStyle>
                             </DataGridTextColumn>
-                            <DataGridTextColumn Header="Uge" Binding="{Binding Week}" Width="50" />
+                            <DataGridTextColumn Header="Week" Binding="{Binding Week}" Width="50" />
                             <DataGridTextColumn Header="Status" Binding="{Binding Status}" Width="90" />
                         </DataGrid.Columns>
                     </DataGrid>
@@ -87,9 +87,9 @@
                     <ListView x:Name="List" Width="360" Height="150" SelectedIndex="2">
                         <ListView.View>
                             <GridView>
-                                <GridViewColumn Header="Medarbejder" DisplayMemberBinding="{Binding Employee}" Width="150" />
-                                <GridViewColumn Header="Afdeling" DisplayMemberBinding="{Binding Department}" Width="110" />
-                                <GridViewColumn Header="Timer" DisplayMemberBinding="{Binding Hours}" Width="70" />
+                                <GridViewColumn Header="Employee" DisplayMemberBinding="{Binding Employee}" Width="150" />
+                                <GridViewColumn Header="Department" DisplayMemberBinding="{Binding Department}" Width="110" />
+                                <GridViewColumn Header="Hours" DisplayMemberBinding="{Binding Hours}" Width="70" />
                             </GridView>
                         </ListView.View>
                     </ListView>
@@ -107,7 +107,7 @@
                         </Border>
                         <GridSplitter Grid.Column="1" HorizontalAlignment="Stretch" ResizeBehavior="PreviousAndNext" />
                         <Border Grid.Column="2" Background="{DynamicResource JetPack.Brushes.Panel.Background}" Padding="8">
-                            <TextBlock Text="Indhold" />
+                            <TextBlock Text="Content" />
                         </Border>
                     </Grid>
                 </HeaderedContentControl>

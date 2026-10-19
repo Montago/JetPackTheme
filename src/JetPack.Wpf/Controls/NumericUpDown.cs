@@ -72,7 +72,7 @@ public class NumericUpDown : Control
     public static readonly DependencyProperty StringFormatProperty = DependencyProperty.Register(
         nameof(StringFormat), typeof(string), typeof(NumericUpDown), new PropertyMetadata("G", (d, _) => ((NumericUpDown)d).UpdateText()));
 
-    /// <summary>Format used to show the value, e.g. "N1" or "0.00 kr".</summary>
+    /// <summary>Format used to show the value, e.g. "N1" or "0.00 USD".</summary>
     public string StringFormat
     {
         get => (string)GetValue(StringFormatProperty);

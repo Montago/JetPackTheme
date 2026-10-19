@@ -1,12 +1,12 @@
 # JetPack for WPF
 
-JetPack-temaet fra Silverlight 4 Theme Pack, genopbygget som et komplet kontrolbibliotek til WPF på .NET 8 og nyere. Det er bygget efter samme model som MahApps.Metro: én ressourceordbog giver alle standardkontroller JetPack-udseendet, og biblioteket har desuden egne kontroller (vindue, ToggleSwitch, NumericUpDown, Flyout, HamburgerMenu og flere).
+The JetPack theme from Microsoft's Silverlight 4 Application Themes, rebuilt as a complete controls library for WPF on .NET 8 and later. It follows the same model as MahApps.Metro: one resource dictionary gives every standard control the JetPack look, and the library adds its own controls (window, ToggleSwitch, NumericUpDown, Flyout, HamburgerMenu and more).
 
 ![Core](docs/screenshots/core.png)
 
-## Kom i gang
+## Getting started
 
-Referér projektet (eller pakken `JetPack.Wpf`) og flet ordbogen ind i `App.xaml`:
+Reference the project (or the `JetPack.Wpf` package) and merge the dictionary in `App.xaml`:
 
 ```xml
 <Application.Resources>
@@ -18,14 +18,14 @@ Referér projektet (eller pakken `JetPack.Wpf`) og flet ordbogen ind i `App.xaml
 </Application.Resources>
 ```
 
-Vinduet arver fra `JetPackWindow`:
+Derive your window from `JetPackWindow`:
 
 ```xml
 <jp:JetPackWindow x:Class="MyApp.MainWindow"
                   xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                   xmlns:jp="urn:jetpack-wpf"
-                  Title="Min app" TitleBarMode="Dark">
+                  Title="My app" TitleBarMode="Dark">
     ...
 </jp:JetPackWindow>
 ```
@@ -34,27 +34,27 @@ Vinduet arver fra `JetPackWindow`:
 public partial class MainWindow : JetPack.Wpf.Controls.JetPackWindow { ... }
 ```
 
-## Tema og accent
+## Theme and accent
 
 ```csharp
 using JetPack.Wpf.Theming;
 
-ThemeManager.ChangeAccent(JetPackAccent.Orange);          // Green (standard), Orange, Blue
-ThemeManager.ChangeAccent(Color.FromRgb(0x8E, 0x44, 0xAD)); // generér et accentsæt ud fra én farve
-ThemeManager.ShowFocusVisuals = false;                    // originalens usynlige fokus
-ThemeManager.ControlFontSize = 11;                        // originalens skriftstørrelse (standard: 12)
+ThemeManager.ChangeAccent(JetPackAccent.Orange);            // Green (default), Orange, Blue
+ThemeManager.ChangeAccent(Color.FromRgb(0x8E, 0x44, 0xAD)); // generate a full accent from one colour
+ThemeManager.ShowFocusVisuals = false;                      // the original's invisible focus
+ThemeManager.ControlFontSize = 11;                          // the original's control font size (default: 12)
 ```
 
-Ressourcenøglerne følger MahApps-skemaet med præfikset `JetPack.`: `JetPack.Brushes.Accent`, `JetPack.Brushes.Accent.Selection`, `JetPack.Brushes.Control.Background`, `JetPack.Styles.Button.Accent` og så videre. Fanen *Palet* i demoen viser dem alle.
+Resource keys follow the MahApps scheme with a `JetPack.` prefix: `JetPack.Brushes.Accent`, `JetPack.Brushes.Accent.Selection`, `JetPack.Brushes.Control.Background`, `JetPack.Styles.Button.Accent` and so on. The *Palette* tab in the demo lists them all.
 
-## Hvad er med
+## What's included
 
-| Gruppe | Kontroller |
+| Group | Controls |
 | --- | --- |
-| Standard-WPF (implicitte stilarter) | Button, RepeatButton, ToggleButton, Hyperlink, TextBox, PasswordBox, RichTextBox, Label, CheckBox, RadioButton, ComboBox, ListBox, ListView/GridView, TreeView, ScrollBar, ScrollViewer, ProgressBar, Slider, ToolTip, GroupBox, Expander, TabControl, Calendar, DatePicker, DataGrid, GridSplitter, Separator, Menu, ContextMenu, ToolBar, StatusBar, valideringsfejl |
-| Navngivne varianter | `Button.Accent/Green/Orange/Blue/Square/Flat/Link`, `TextBox.Dark`, `TextBox.MultiLine(.Dark)`, `PasswordBox.Dark`, `TabControl.Navigation` (den lyse linkbjælke med notch), `TabControl.Strip` (den mørke fanestrimmel), `Expander.Accordion`, `TextBlock.Heading1–6` |
-| Egne kontroller (`jp:`) | JetPackWindow, JetPackDialog, ToggleSwitch, NumericUpDown, SplitButton, DropDownButton, ProgressRing, Badged, Tile, Flyout, HamburgerMenu, InfoBar, RangeSlider, Rating, TimePicker, ColorPicker, AutoSuggestBox, BusyIndicator, Accordion |
-| Hjælpere | `TextBoxHelper.Watermark`, `TextBoxHelper.ClearTextButton`, `ControlHelper.CornerRadius` m.fl. |
+| Standard WPF (implicit styles) | Button, RepeatButton, ToggleButton, Hyperlink, TextBox, PasswordBox, RichTextBox, Label, CheckBox, RadioButton, ComboBox, ListBox, ListView/GridView, TreeView, ScrollBar, ScrollViewer, ProgressBar, Slider, ToolTip, GroupBox, Expander, TabControl, Calendar, DatePicker, DataGrid, GridSplitter, Separator, Menu, ContextMenu, ToolBar, StatusBar, validation errors |
+| Named variants | `Button.Accent/Green/Orange/Blue/Square/Flat/Link`, `TextBox.Dark`, `TextBox.MultiLine(.Dark)`, `PasswordBox.Dark`, `TabControl.Navigation` (the light link bar with the notch), `TabControl.Strip` (the dark tab strip), `Expander.Accordion`, `TextBlock.Heading1–6` |
+| Own controls (`jp:`) | JetPackWindow, JetPackDialog, ToggleSwitch, NumericUpDown, SplitButton, DropDownButton, ProgressRing, Badged, Tile, Flyout, HamburgerMenu, InfoBar, RangeSlider, Rating, TimePicker, ColorPicker, AutoSuggestBox, BusyIndicator, Accordion |
+| Helpers | `TextBoxHelper.Watermark`, `TextBoxHelper.ClearTextButton`, `ControlHelper.CornerRadius` and others |
 
 ## Demo
 
@@ -62,28 +62,28 @@ Ressourcenøglerne følger MahApps-skemaet med præfikset `JetPack.`: `JetPack.B
 dotnet run --project src/JetPack.Wpf.Demo
 ```
 
-`--snapshot <mappe>` renderer hver side til PNG og lukker igen. Billederne i `docs/screenshots` er lavet på den måde.
+`--snapshot <folder>` renders every page to PNG and exits. The images in `docs/screenshots` were made that way.
 
-## Struktur
+## Layout
 
 ```
 src/JetPack.Wpf/
-  Assets/            tekstur og vignet fra Silverlight-temaet
+  Assets/            texture and vignette from the Silverlight theme
   Styles/            Brushes, Fonts, Effects, Accents/*, Controls.*.xaml, JetPack.xaml
   Themes/Generic.xaml
-  Controls/          egne kontroller
-  Helpers/           attached properties og konvertere
-  Theming/           ThemeManager og AccentGenerator
+  Controls/          own controls
+  Helpers/           attached properties and converters
+  Theming/           ThemeManager and AccentGenerator
 src/JetPack.Wpf.Demo/
-design/              HTML-udkastet, som udtrykket blev godkendt ud fra
+design/              the HTML draft the look was approved from
 ```
 
-## Licens
+## License
 
-Koden er under MIT-licensen (se [LICENSE](LICENSE)), **med undtagelse af** `src/JetPack.Wpf/Assets/Texture.png` og `src/JetPack.Wpf/Assets/Vignette.png`. De to billeder er kopieret uændret fra Microsofts [Silverlight 4 Application Themes](https://www.microsoft.com/en-us/download/details.aspx?id=14590) og tilhører Microsoft. Farverne og skyggerne er hentet fra samme tema, mens alle WPF-stilarter er skrevet fra bunden. Detaljer står i [NOTICE.md](NOTICE.md).
+The code is licensed under the MIT License (see [LICENSE](LICENSE)), **except** `src/JetPack.Wpf/Assets/Texture.png` and `src/JetPack.Wpf/Assets/Vignette.png`. Those two images are copied unchanged from Microsoft's [Silverlight 4 Application Themes](https://www.microsoft.com/en-us/download/details.aspx?id=14590) and belong to Microsoft. Colours and shadow values come from the same theme; all WPF styles are written from scratch. See [NOTICE.md](NOTICE.md) for details.
 
-## Begrænsninger i version 0.1
+## Limitations in version 0.1
 
-- TabControl understøtter kun faner øverst.
-- DatePickerens vandmærke ("Select a date") kommer fra WPF's egne tekster og følger ikke sproget.
-- Indbygget diagram findes ikke; temaet leverer paletten `JetPack.Brushes.Chart.1–6` til et diagrambibliotek.
+- TabControl only supports tabs at the top.
+- The DatePicker watermark ("Select a date") comes from WPF's own resources and does not follow the app language.
+- There is no built-in chart; the theme provides the `JetPack.Brushes.Chart.1–6` palette for a charting library.

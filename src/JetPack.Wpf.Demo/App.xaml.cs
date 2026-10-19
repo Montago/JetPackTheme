@@ -1,4 +1,4 @@
-﻿using System.Globalization;
+using System.Globalization;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
@@ -13,9 +13,23 @@ namespace JetPack.Wpf.Demo;
 
 public partial class App : Application
 {
+    public App()
+    {
+        // Screenshots are rendered in English regardless of the machine's language. This has to run
+        // outside the async OnStartup, which would restore the thread culture at its first await.
+        if (Environment.GetCommandLineArgs().Contains("--snapshot"))
+        {
+            var english = CultureInfo.GetCultureInfo("en-US");
+            CultureInfo.DefaultThreadCurrentCulture = CultureInfo.DefaultThreadCurrentUICulture = english;
+            Thread.CurrentThread.CurrentCulture = Thread.CurrentThread.CurrentUICulture = english;
+        }
+    }
+
     protected override async void OnStartup(StartupEventArgs e)
     {
         base.OnStartup(e);
+
+        var index = Array.IndexOf(e.Args, "--snapshot");
 
         // WPF formats bindings as en-US unless told otherwise.
         FrameworkElement.LanguageProperty.OverrideMetadata(typeof(FrameworkElement),
@@ -24,7 +38,6 @@ public partial class App : Application
         var window = new MainWindow();
         MainWindow = window;
 
-        var index = Array.IndexOf(e.Args, "--snapshot");
         if (index < 0)
         {
             window.Show();
@@ -65,9 +78,9 @@ public partial class App : Application
             await SaveAsync(window, Path.Combine(folder, "22-window-light.png"));
             window.TitleBarMode = TitleBarMode.Dark;
 
-            var dialog = window.ShowMessageAsync("Slet virksomhed?",
-                "Contoso A/S og 3 tilknyttede placeringer slettes permanent. Ugesedler, der allerede er faktureret, bevares i arkivet.",
-                "Slet", "Annuller");
+            var dialog = window.ShowMessageAsync("Delete company?",
+                "Contoso Corporation and 3 linked placements will be deleted permanently. Timesheets that have already been billed stay in the archive.",
+                "Delete", "Cancel");
             await SaveAsync(window, Path.Combine(folder, "23-dialog.png"));
 
             window.OpenSettings();
