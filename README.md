@@ -43,6 +43,29 @@ public partial class MainWindow : JetPack.Wpf.Controls.JetPackWindow { ... }
 | `ShowVignette`, `ShowIcon`, `ShowMinButton`, `ShowMaxRestoreButton` | `bool` |
 | `LeftWindowCommands`, `RightWindowCommands`, `Flyouts` | any content |
 
+Two common layouts for the window content:
+
+```xml
+<DockPanel>
+    <!-- footer -->
+    <StatusBar DockPanel.Dock="Bottom">
+        <StatusBarItem Content="Ready" />
+        <StatusBarItem HorizontalAlignment="Right" Content="Last synced 09:42" />
+    </StatusBar>
+    <!-- full-width grey navigation bar right under the title bar; Tag goes to its right end -->
+    <TabControl Style="{StaticResource JetPack.Styles.TabControl.Navigation}">
+        <TabControl.Tag>
+            <TextBlock FontSize="15" FontWeight="Bold" Text="My app" />
+        </TabControl.Tag>
+        <TabItem Header="Companies">...</TabItem>
+        <TabItem Header="Orders">...</TabItem>
+    </TabControl>
+</DockPanel>
+```
+
+For the dark tab strip of the original theme browser, use `JetPack.Styles.TabControl.Strip` instead
+(the demo can switch between the two under *Settings → Page navigation*).
+
 ## Theme and accent
 
 ```csharp
@@ -61,7 +84,7 @@ Resource keys follow the MahApps scheme with a `JetPack.` prefix: `JetPack.Brush
 | Group | Controls |
 | --- | --- |
 | Standard WPF (implicit styles) | Button, RepeatButton, ToggleButton, Hyperlink, TextBox, PasswordBox, RichTextBox, Label, CheckBox, RadioButton, ComboBox, ListBox, ListView/GridView, TreeView, ScrollBar, ScrollViewer, ProgressBar, Slider, ToolTip, GroupBox, Expander, TabControl, Calendar, DatePicker, DataGrid, GridSplitter, Separator, Menu, ContextMenu, ToolBar, StatusBar, validation errors |
-| Named variants | `Button.Accent/Green/Orange/Blue/Square/Flat/Link`, `TextBox.Dark`, `TextBox.MultiLine(.Dark)`, `PasswordBox.Dark`, `TabControl.Navigation` (the light link bar with the notch), `TabControl.Strip` (the dark tab strip), `Expander.Accordion`, `TextBlock.Heading1–6` |
+| Named variants | `Button.Accent/Green/Orange/Blue/Square/Flat/Link`, `TextBox.Dark`, `TextBox.MultiLine(.Dark)`, `PasswordBox.Dark`, `TabControl.Navigation` (the full-width light link bar with the notch), `TabControl.Strip` (the dark tab strip), `Expander.Accordion`, `TextBlock.Heading1–6` |
 | Own controls (`jp:`) | JetPackWindow, JetPackDialog, ToggleSwitch, NumericUpDown, SplitButton, DropDownButton, ProgressRing, Badged, Tile, Flyout, HamburgerMenu, InfoBar, RangeSlider, Rating, TimePicker, ColorPicker, AutoSuggestBox, BusyIndicator, Accordion |
 | Helpers | `TextBoxHelper.Watermark`, `TextBoxHelper.ClearTextButton`, `ControlHelper.CornerRadius` and others |
 

@@ -251,6 +251,8 @@
     <!--
     Navigation tabs: the light link bar from the navigation template, with the
     selected link in accent and a small notch pointing down at the content.
+    The bar fills the width of the TabControl, so placed directly under the title bar
+    it runs edge to edge. Tag is shown at the right end of the bar (branding, search, user).
     -->
     <Style x:Key="JetPack.Styles.TabItem.Navigation" TargetType="TabItem">
         <Setter Property="OverridesDefaultStyle" Value="True" />
@@ -315,6 +317,10 @@
                             <RowDefinition Height="*" />
                         </Grid.RowDefinitions>
                         <Border Height="38" VerticalAlignment="Top" Background="{TemplateBinding Background}" Effect="{DynamicResource JetPack.Effects.ControlShadow}" />
+                        <Grid Height="38" Margin="{TemplateBinding Padding}" VerticalAlignment="Top">
+                            <ContentPresenter HorizontalAlignment="Right" VerticalAlignment="Center" Content="{TemplateBinding Tag}"
+                                              TextElement.Foreground="{DynamicResource JetPack.Brushes.Navigation.Inactive}" />
+                        </Grid>
                         <TabPanel x:Name="HeaderPanel" Margin="{TemplateBinding Padding}" Panel.ZIndex="1" IsItemsHost="True" KeyboardNavigation.TabIndex="1" />
                         <ContentPresenter x:Name="PART_SelectedContentHost" Grid.Row="1" ContentSource="SelectedContent" KeyboardNavigation.TabIndex="2" />
                     </Grid>

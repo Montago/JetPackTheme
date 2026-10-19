@@ -7,6 +7,14 @@
                   Width="1280" Height="880" MinWidth="720" MinHeight="480"
                   WindowStartupLocation="CenterScreen">
 
+    <jp:JetPackWindow.Resources>
+        <!-- Branding shown at the right end of the full-width navigation bar (see UseNavigationBar) -->
+        <StackPanel x:Key="Demo.Brand.Bar" Orientation="Horizontal" Effect="{DynamicResource JetPack.Effects.TextEmboss}">
+            <TextBlock VerticalAlignment="Center" FontSize="22" Text="Jetpack" TextOptions.TextFormattingMode="Ideal" />
+            <TextBlock VerticalAlignment="Center" Margin="8,3,0,0" FontSize="11" Text="for WPF · .NET 8+" />
+        </StackPanel>
+    </jp:JetPackWindow.Resources>
+
     <jp:JetPackWindow.RightWindowCommands>
         <StackPanel Orientation="Horizontal">
             <Button Click="OnAccentClick" Tag="Green" ToolTip="Green accent">
@@ -39,6 +47,11 @@
                         <RadioButton Content="12 px (WPF)" GroupName="Size" IsChecked="True" Margin="0,0,14,0" Checked="OnSizeRadio" Tag="12" />
                         <RadioButton Content="11 px (original)" GroupName="Size" Checked="OnSizeRadio" Tag="11" />
                     </StackPanel>
+                    <TextBlock Style="{StaticResource Demo.State}" HorizontalAlignment="Left" Text="Page navigation" Margin="0,0,0,6" />
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,16">
+                        <RadioButton Content="Tab strip" GroupName="Navigation" IsChecked="True" Margin="0,0,14,0" Checked="OnNavigationRadio" Tag="Strip" />
+                        <RadioButton Content="Full-width bar" GroupName="Navigation" Checked="OnNavigationRadio" Tag="Bar" />
+                    </StackPanel>
                     <jp:ToggleSwitch x:Name="FocusSwitch" Content="Visible focus indicator" IsChecked="True" Margin="0,0,0,10" />
                     <jp:ToggleSwitch x:Name="VignetteSwitch" Content="Vignette in the corners" IsChecked="True" />
                 </StackPanel>
@@ -46,32 +59,45 @@
         </Grid>
     </jp:JetPackWindow.Flyouts>
 
-    <Grid Margin="24,16,24,0">
-        <TabControl x:Name="Pages" Style="{StaticResource JetPack.Styles.TabControl.Strip}">
-            <TabControl.Tag>
-                <StackPanel HorizontalAlignment="Right" Margin="0,4,0,0">
-                    <TextBlock HorizontalAlignment="Right" FontSize="38" Text="Jetpack" TextOptions.TextFormattingMode="Ideal" Effect="{DynamicResource JetPack.Effects.TextGlow}" />
-                    <TextBlock HorizontalAlignment="Right" Style="{StaticResource Demo.State}" Text="for WPF · .NET 8+" />
-                </StackPanel>
-            </TabControl.Tag>
-            <TabItem Header="Core">
-                <v:CorePage />
-            </TabItem>
-            <TabItem Header="SDK">
-                <v:SdkPage />
-            </TabItem>
-            <TabItem Header="Toolkit">
-                <v:ToolkitPage />
-            </TabItem>
-            <TabItem Header="Extras">
-                <v:ExtrasPage />
-            </TabItem>
-            <TabItem Header="Window">
-                <v:WindowPage />
-            </TabItem>
-            <TabItem Header="Palette">
-                <v:PalettePage />
-            </TabItem>
-        </TabControl>
-    </Grid>
+    <DockPanel>
+        <StatusBar DockPanel.Dock="Bottom">
+            <StatusBarItem Content="Ready" />
+            <StatusBarItem>
+                <TextBlock>
+                    <Run Text="Page:" />
+                    <Run Text="{Binding SelectedItem.Header, ElementName=Pages, Mode=OneWay}" />
+                </TextBlock>
+            </StatusBarItem>
+            <StatusBarItem x:Name="FooterVersion" HorizontalAlignment="Right" />
+        </StatusBar>
+
+        <Grid x:Name="PagesHost" Margin="24,16,24,0">
+            <TabControl x:Name="Pages" Style="{StaticResource JetPack.Styles.TabControl.Strip}">
+                <TabControl.Tag>
+                    <StackPanel HorizontalAlignment="Right" Margin="0,4,0,0">
+                        <TextBlock HorizontalAlignment="Right" FontSize="38" Text="Jetpack" TextOptions.TextFormattingMode="Ideal" Effect="{DynamicResource JetPack.Effects.TextGlow}" />
+                        <TextBlock HorizontalAlignment="Right" Style="{StaticResource Demo.State}" Text="for WPF · .NET 8+" />
+                    </StackPanel>
+                </TabControl.Tag>
+                <TabItem Header="Core">
+                    <v:CorePage />
+                </TabItem>
+                <TabItem Header="SDK">
+                    <v:SdkPage />
+                </TabItem>
+                <TabItem Header="Toolkit">
+                    <v:ToolkitPage />
+                </TabItem>
+                <TabItem Header="Extras">
+                    <v:ExtrasPage />
+                </TabItem>
+                <TabItem Header="Window">
+                    <v:WindowPage />
+                </TabItem>
+                <TabItem Header="Palette">
+                    <v:PalettePage />
+                </TabItem>
+            </TabControl>
+        </Grid>
+    </DockPanel>
 </jp:JetPackWindow>
