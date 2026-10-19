@@ -1,6 +1,8 @@
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Interop;
+using System.Windows.Media;
 using System.Windows.Shell;
 
 namespace JetPack.Wpf.Controls;
@@ -16,6 +18,19 @@ public enum TitleBarMode
 
     /// <summary>No bar: the texture runs all the way to the top.</summary>
     Texture,
+}
+
+/// <summary>Shape of the outer corners of a <see cref="JetPackWindow"/>.</summary>
+public enum WindowCornerStyle
+{
+    /// <summary>Square corners, as in the original Silverlight theme.</summary>
+    Square,
+
+    /// <summary>
+    /// Rounded corners drawn by the Windows 11 compositor. On Windows 10 the
+    /// corners stay square.
+    /// </summary>
+    Rounded,
 }
 
 /// <summary>
@@ -61,6 +76,28 @@ public class JetPackWindow : Window
         get => (TitleBarMode)GetValue(TitleBarModeProperty);
         set => SetValue(TitleBarModeProperty, value);
     }
+
+    public static readonly DependencyProperty CornerStyleProperty = DependencyProperty.Register(
+        nameof(CornerStyle), typeof(WindowCornerStyle), typeof(JetPackWindow),
+        new PropertyMetadata(WindowCornerStyle.Square, (d, _) => ((JetPackWindow)d).ApplyCornerStyle()));
+
+    /// <summary>Square (default) or rounded outer corners. Rounded needs Windows 11.</summary>
+    public WindowCornerStyle CornerStyle
+    {
+        get => (WindowCornerStyle)GetValue(CornerStyleProperty);
+        set => SetValue(CornerStyleProperty, value);
+    }
+
+    private static readonly DependencyPropertyKey HasSystemRoundedCornersPropertyKey = DependencyProperty.RegisterReadOnly(
+        nameof(HasSystemRoundedCorners), typeof(bool), typeof(JetPackWindow), new PropertyMetadata(false));
+
+    public static readonly DependencyProperty HasSystemRoundedCornersProperty = HasSystemRoundedCornersPropertyKey.DependencyProperty;
+
+    /// <summary>
+    /// True when Windows rounds the corners and draws the 1px frame itself, so
+    /// the template leaves its own border out.
+    /// </summary>
+    public bool HasSystemRoundedCorners => (bool)GetValue(HasSystemRoundedCornersProperty);
 
     public static readonly DependencyProperty TitleBarHeightProperty = DependencyProperty.Register(
         nameof(TitleBarHeight), typeof(double), typeof(JetPackWindow), new PropertyMetadata(30d, OnTitleBarHeightChanged));
@@ -152,6 +189,37 @@ public class JetPackWindow : Window
         dialogHost = GetTemplateChild(PartDialogHost) as Grid;
         root = GetTemplateChild(PartRoot) as FrameworkElement;
         UpdateMaximizedMargin();
+    }
+
+    protected override void OnSourceInitialized(EventArgs e)
+    {
+        base.OnSourceInitialized(e);
+        ApplyCornerStyle();
+    }
+
+    private void ApplyCornerStyle()
+    {
+        var hwnd = new WindowInteropHelper(this).Handle;
+        if (hwnd == IntPtr.Zero)
+        {
+            return;
+        }
+
+        var rounded = CornerStyle == WindowCornerStyle.Rounded;
+        var applied = NativeMethods.SetDwmAttribute(hwnd, NativeMethods.DwmwaWindowCornerPreference,
+            rounded ? NativeMethods.DwmwcpRound : NativeMethods.DwmwcpDoNotRound);
+
+        // Rounded: Windows draws the frame, in the JetPack border colour. Square: no system
+        // frame, so only the template's 1px border shows.
+        var border = NativeMethods.DwmwaColorNone;
+        if (rounded && (TryFindResource("JetPack.Brushes.Window.Border") as SolidColorBrush ?? BorderBrush as SolidColorBrush) is { } brush)
+        {
+            var c = brush.Color;
+            border = c.R | (c.G << 8) | (c.B << 16);
+        }
+        NativeMethods.SetDwmAttribute(hwnd, NativeMethods.DwmwaBorderColor, border);
+
+        SetValue(HasSystemRoundedCornersPropertyKey, rounded && applied);
     }
 
     protected override void OnStateChanged(EventArgs e)

@@ -4,6 +4,7 @@
 
     <!-- Text buttons placed in the title bar (LeftWindowCommands / RightWindowCommands) -->
     <Style x:Key="JetPack.Styles.Button.WindowCommand" TargetType="ButtonBase">
+        <Setter Property="OverridesDefaultStyle" Value="True" />
         <Setter Property="Focusable" Value="False" />
         <Setter Property="Background" Value="Transparent" />
         <Setter Property="FontFamily" Value="{DynamicResource JetPack.Fonts.Family}" />
@@ -35,6 +36,7 @@
 
     <!-- Minimise / maximise / close -->
     <Style x:Key="JetPack.Styles.Button.WindowCaption" TargetType="Button">
+        <Setter Property="OverridesDefaultStyle" Value="True" />
         <Setter Property="Focusable" Value="False" />
         <Setter Property="Width" Value="42" />
         <Setter Property="Background" Value="Transparent" />
@@ -173,6 +175,9 @@
                         <Trigger Property="WindowState" Value="Maximized">
                             <Setter TargetName="MaxButton" Property="Visibility" Value="Collapsed" />
                             <Setter TargetName="RestoreButton" Property="Visibility" Value="Visible" />
+                            <Setter TargetName="PART_Root" Property="BorderThickness" Value="0" />
+                        </Trigger>
+                        <Trigger Property="HasSystemRoundedCorners" Value="True">
                             <Setter TargetName="PART_Root" Property="BorderThickness" Value="0" />
                         </Trigger>
                         <Trigger Property="ShowMaxRestoreButton" Value="False">

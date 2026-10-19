@@ -34,6 +34,15 @@ Derive your window from `JetPackWindow`:
 public partial class MainWindow : JetPack.Wpf.Controls.JetPackWindow { ... }
 ```
 
+`JetPackWindow` options:
+
+| Property | Values |
+| --- | --- |
+| `TitleBarMode` | `Dark` (default), `Light`, `Texture` |
+| `CornerStyle` | `Square` (default, as in the original theme) or `Rounded`. Rounded corners are drawn by the Windows 11 compositor; on Windows 10 the corners stay square. |
+| `ShowVignette`, `ShowIcon`, `ShowMinButton`, `ShowMaxRestoreButton` | `bool` |
+| `LeftWindowCommands`, `RightWindowCommands`, `Flyouts` | any content |
+
 ## Theme and accent
 
 ```csharp

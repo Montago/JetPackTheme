@@ -23,6 +23,14 @@ public partial class WindowPage : UserControl
         }
     }
 
+    private void OnCornerStyle(object sender, RoutedEventArgs e)
+    {
+        if (Host is { } window)
+        {
+            window.CornerStyle = Enum.Parse<WindowCornerStyle>((string)((FrameworkElement)sender).Tag);
+        }
+    }
+
     private async void OnShowDialog(object sender, RoutedEventArgs e)
     {
         if (Host is { } window)

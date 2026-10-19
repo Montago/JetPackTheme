@@ -13,6 +13,9 @@
                 <RadioButton x:Name="TitleDark" Content="Dark" GroupName="Title" IsChecked="True" Checked="OnTitleMode" Tag="Dark" Margin="0,0,6,0" />
                 <RadioButton Content="Light" GroupName="Title" Checked="OnTitleMode" Tag="Light" Margin="0,0,6,0" />
                 <RadioButton Content="Texture all the way" GroupName="Title" Checked="OnTitleMode" Tag="Texture" Margin="0,0,24,0" />
+                <TextBlock VerticalAlignment="Center" Style="{StaticResource Demo.State}" Text="Corners:" />
+                <RadioButton Content="Square" GroupName="Corners" IsChecked="True" Checked="OnCornerStyle" Tag="Square" Margin="0,0,6,0" />
+                <RadioButton Content="Rounded" GroupName="Corners" Checked="OnCornerStyle" Tag="Rounded" Margin="0,0,24,0" />
                 <Button Content="Show dialog" Click="OnShowDialog" />
                 <Button Content="Confirm delete" Click="OnShowDelete" Style="{StaticResource JetPack.Styles.Button.Orange}" />
             </StackPanel>
