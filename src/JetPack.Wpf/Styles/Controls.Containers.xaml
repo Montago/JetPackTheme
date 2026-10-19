@@ -400,12 +400,12 @@
         <Setter Property="FontSize" Value="{DynamicResource JetPack.Font.Size.Small}" />
         <Setter Property="Foreground" Value="{DynamicResource JetPack.Brushes.Tab.Inactive.Foreground}" />
         <Setter Property="Background" Value="{DynamicResource JetPack.Brushes.Panel.Border}" />
-        <Setter Property="Padding" Value="6,2" />
+        <Setter Property="Padding" Value="2,3,2,4" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="StatusBar">
-                    <Border Background="{TemplateBinding Background}" BorderBrush="#FF47474B" BorderThickness="0,1,0,0" Padding="{TemplateBinding Padding}">
-                        <Border BorderBrush="#1AFFFFFF" BorderThickness="0,1,0,0" Margin="0,-2,0,0" Padding="0,2,0,0">
+                    <Border Background="{TemplateBinding Background}" BorderBrush="#FF47474B" BorderThickness="0,1,0,0">
+                        <Border BorderBrush="#1AFFFFFF" BorderThickness="0,1,0,0" Padding="{TemplateBinding Padding}">
                             <ItemsPresenter />
                         </Border>
                     </Border>
@@ -413,8 +413,9 @@
             </Setter.Value>
         </Setter>
     </Style>
+    <!-- Items are 16px apart and the outer ones 10px from the edges, as in the HTML draft -->
     <Style x:Key="JetPack.Styles.StatusBarItem" TargetType="StatusBarItem">
-        <Setter Property="Padding" Value="4,1" />
+        <Setter Property="Padding" Value="8,1" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
         <Setter Property="Template">
             <Setter.Value>
