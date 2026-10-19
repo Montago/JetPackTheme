@@ -1,0 +1,345 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:h="clr-namespace:JetPack.Wpf.Helpers">
+
+    <!-- ===================== Typography ===================== -->
+    <Style x:Key="JetPack.Styles.TextBlock" TargetType="TextBlock">
+        <Setter Property="FontFamily" Value="{DynamicResource JetPack.Fonts.Family}" />
+    </Style>
+    <Style x:Key="JetPack.Styles.TextBlock.Heading" TargetType="TextBlock">
+        <Setter Property="FontFamily" Value="{DynamicResource JetPack.Fonts.Family.Heading}" />
+        <Setter Property="FontWeight" Value="Bold" />
+        <Setter Property="Foreground" Value="{DynamicResource JetPack.Brushes.Text}" />
+        <Setter Property="TextWrapping" Value="Wrap" />
+    </Style>
+    <Style x:Key="JetPack.Styles.TextBlock.Heading1" TargetType="TextBlock" BasedOn="{StaticResource JetPack.Styles.TextBlock.Heading}">
+        <Setter Property="FontSize" Value="{DynamicResource JetPack.Font.Size.Heading1}" />
+        <Setter Property="Effect" Value="{DynamicResource JetPack.Effects.TextGlow}" />
+    </Style>
+    <Style x:Key="JetPack.Styles.TextBlock.Heading2" TargetType="TextBlock" BasedOn="{StaticResource JetPack.Styles.TextBlock.Heading}">
+        <Setter Property="FontSize" Value="{DynamicResource JetPack.Font.Size.Heading2}" />
+        <Setter Property="Foreground" Value="{DynamicResource JetPack.Brushes.Text.Dim}" />
+    </Style>
+    <Style x:Key="JetPack.Styles.TextBlock.Heading3" TargetType="TextBlock" BasedOn="{StaticResource JetPack.Styles.TextBlock.Heading}">
+        <Setter Property="FontSize" Value="{DynamicResource JetPack.Font.Size.Heading3}" />
+    </Style>
+    <Style x:Key="JetPack.Styles.TextBlock.Heading4" TargetType="TextBlock" BasedOn="{StaticResource JetPack.Styles.TextBlock.Heading}">
+        <Setter Property="FontSize" Value="{DynamicResource JetPack.Font.Size.Heading4}" />
+    </Style>
+    <Style x:Key="JetPack.Styles.TextBlock.Heading5" TargetType="TextBlock" BasedOn="{StaticResource JetPack.Styles.TextBlock.Heading}">
+        <Setter Property="FontSize" Value="{DynamicResource JetPack.Font.Size.Heading5}" />
+    </Style>
+    <Style x:Key="JetPack.Styles.TextBlock.Heading6" TargetType="TextBlock" BasedOn="{StaticResource JetPack.Styles.TextBlock.Heading}">
+        <Setter Property="FontSize" Value="{DynamicResource JetPack.Font.Size.Heading6}" />
+    </Style>
+    <Style x:Key="JetPack.Styles.TextBlock.Content" TargetType="TextBlock">
+        <Setter Property="FontFamily" Value="{DynamicResource JetPack.Fonts.Family}" />
+        <Setter Property="FontSize" Value="{DynamicResource JetPack.Font.Size.Content}" />
+        <Setter Property="Foreground" Value="{DynamicResource JetPack.Brushes.Text}" />
+        <Setter Property="TextWrapping" Value="Wrap" />
+    </Style>
+    <Style x:Key="JetPack.Styles.TextBlock.Caption" TargetType="TextBlock">
+        <Setter Property="FontFamily" Value="{DynamicResource JetPack.Fonts.Family}" />
+        <Setter Property="FontSize" Value="{DynamicResource JetPack.Font.Size.Small}" />
+        <Setter Property="Foreground" Value="{DynamicResource JetPack.Brushes.Text.Soft}" />
+        <Setter Property="TextWrapping" Value="Wrap" />
+    </Style>
+
+    <Style x:Key="JetPack.Styles.Label" TargetType="Label">
+        <Setter Property="FontFamily" Value="{DynamicResource JetPack.Fonts.Family}" />
+        <Setter Property="FontSize" Value="{DynamicResource JetPack.Font.Size.Control}" />
+        <Setter Property="Foreground" Value="{DynamicResource JetPack.Brushes.Text}" />
+        <Setter Property="Padding" Value="0,3" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Label">
+                    <Border Background="{TemplateBinding Background}" Padding="{TemplateBinding Padding}" SnapsToDevicePixels="True">
+                        <ContentPresenter RecognizesAccessKey="True" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Foreground" Value="{DynamicResource JetPack.Brushes.Text.Disabled}" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- ===================== Text inputs ===================== -->
+    <!--
+    White field with a 1px border, an inner shadow on the top/left edges
+    and a faint outer highlight on the bottom/right edges.
+    -->
+    <ControlTemplate x:Key="JetPack.Templates.TextBox" TargetType="TextBox">
+        <Grid SnapsToDevicePixels="True">
+            <Border x:Name="Bd" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="2.5">
+                <Grid>
+                    <Border x:Name="ReadOnly" Background="{TemplateBinding h:ControlHelper.ReadOnlyBrush}" CornerRadius="2" Visibility="Collapsed" />
+                    <Grid x:Name="Host" Margin="{TemplateBinding Padding}">
+                        <ScrollViewer x:Name="PART_ContentHost" Focusable="False" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden"
+                                      VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+                        <TextBlock x:Name="Watermark" Margin="2,0" Text="{TemplateBinding h:TextBoxHelper.Watermark}" Foreground="{TemplateBinding Foreground}" Opacity="0.5"
+                                   IsHitTestVisible="False" Visibility="Collapsed" TextTrimming="CharacterEllipsis"
+                                   HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+                    </Grid>
+                    <Button x:Name="Clear" Style="{DynamicResource JetPack.Styles.Button.Clear}" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,3,0"
+                            Command="{x:Static h:TextBoxHelper.ClearTextCommand}" Visibility="Collapsed" />
+                </Grid>
+            </Border>
+            <Border BorderBrush="{TemplateBinding h:ControlHelper.EdgeBrush}" BorderThickness="1,1,0,0" CornerRadius="2.5" IsHitTestVisible="False" />
+            <Border BorderBrush="{DynamicResource JetPack.Brushes.Control.OuterHighlight}" BorderThickness="0,0,1,1" CornerRadius="3" Margin="0,0,-1,-1" IsHitTestVisible="False" />
+            <Border BorderBrush="{TemplateBinding h:ControlHelper.InnerShadowDark}" BorderThickness="1,1,0,0" CornerRadius="2" Margin="1" IsHitTestVisible="False" />
+            <Border BorderBrush="{TemplateBinding h:ControlHelper.InnerShadowLight}" BorderThickness="1,1,0,0" CornerRadius="1" Margin="2" IsHitTestVisible="False" />
+            <Border x:Name="Disabled" Background="{TemplateBinding h:ControlHelper.DisabledBrush}" CornerRadius="2" Margin="1" Visibility="Collapsed" IsHitTestVisible="False" />
+            <Border x:Name="Focus" BorderBrush="{DynamicResource JetPack.Brushes.Focus.Border}" BorderThickness="1" CornerRadius="2.5" Visibility="Collapsed" IsHitTestVisible="False" />
+        </Grid>
+        <ControlTemplate.Triggers>
+            <Trigger Property="IsReadOnly" Value="True">
+                <Setter TargetName="ReadOnly" Property="Visibility" Value="Visible" />
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter TargetName="Disabled" Property="Visibility" Value="Visible" />
+                <Setter TargetName="Host" Property="Opacity" Value="0.5" />
+            </Trigger>
+            <Trigger Property="IsKeyboardFocusWithin" Value="True">
+                <Setter TargetName="Focus" Property="Visibility" Value="Visible" />
+            </Trigger>
+            <Trigger Property="h:TextBoxHelper.HasText" Value="False">
+                <Setter TargetName="Watermark" Property="Visibility" Value="Visible" />
+            </Trigger>
+            <MultiTrigger>
+                <MultiTrigger.Conditions>
+                    <Condition Property="h:TextBoxHelper.ClearTextButton" Value="True" />
+                    <Condition Property="h:TextBoxHelper.HasText" Value="True" />
+                    <Condition Property="IsReadOnly" Value="False" />
+                </MultiTrigger.Conditions>
+                <Setter TargetName="Clear" Property="Visibility" Value="Visible" />
+                <Setter TargetName="Host" Property="Margin" Value="5,3,20,3" />
+            </MultiTrigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+
+    <Style x:Key="JetPack.Styles.TextBoxBase" TargetType="TextBoxBase">
+        <Setter Property="SnapsToDevicePixels" Value="True" />
+        <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+        <Setter Property="FontFamily" Value="{DynamicResource JetPack.Fonts.Family}" />
+        <Setter Property="FontSize" Value="{DynamicResource JetPack.Font.Size.Control}" />
+        <Setter Property="Foreground" Value="{DynamicResource JetPack.Brushes.Input.Foreground}" />
+        <Setter Property="Background" Value="{DynamicResource JetPack.Brushes.Input.Background}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource JetPack.Brushes.Control.Border}" />
+        <Setter Property="CaretBrush" Value="{DynamicResource JetPack.Brushes.Input.Foreground}" />
+        <Setter Property="SelectionBrush" Value="{DynamicResource JetPack.Brushes.Accent.Solid}" />
+        <Setter Property="SelectionOpacity" Value="0.55" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="Padding" Value="5,3" />
+        <Setter Property="MinHeight" Value="24" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="h:ControlHelper.InnerShadowDark" Value="{DynamicResource JetPack.Brushes.Input.InnerShadowDark}" />
+        <Setter Property="h:ControlHelper.InnerShadowLight" Value="{DynamicResource JetPack.Brushes.Input.InnerShadowLight}" />
+        <Setter Property="h:ControlHelper.ReadOnlyBrush" Value="{DynamicResource JetPack.Brushes.Input.ReadOnly}" />
+        <Setter Property="h:ControlHelper.DisabledBrush" Value="{DynamicResource JetPack.Brushes.Input.Disabled}" />
+        <Setter Property="Validation.ErrorTemplate" Value="{DynamicResource JetPack.Templates.ValidationError}" />
+        <Setter Property="AllowDrop" Value="True" />
+        <Setter Property="ContextMenu" Value="{DynamicResource JetPack.ContextMenu.Text}" />
+    </Style>
+
+    <Style x:Key="JetPack.Styles.TextBox" TargetType="TextBox" BasedOn="{StaticResource JetPack.Styles.TextBoxBase}">
+        <Setter Property="h:TextBoxHelper.IsMonitoring" Value="True" />
+        <Setter Property="Template" Value="{StaticResource JetPack.Templates.TextBox}" />
+    </Style>
+
+    <!-- Dark grey input ("Dark Gray Option" in the original theme browser) -->
+    <Style x:Key="JetPack.Styles.TextBox.Dark" TargetType="TextBox" BasedOn="{StaticResource JetPack.Styles.TextBox}">
+        <Setter Property="Foreground" Value="{DynamicResource JetPack.Brushes.Dark.Input.Foreground}" />
+        <Setter Property="Background" Value="{DynamicResource JetPack.Brushes.Dark.Input.Background}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource JetPack.Brushes.Dark.Input.Border}" />
+        <Setter Property="CaretBrush" Value="White" />
+        <Setter Property="h:ControlHelper.EdgeBrush" Value="{DynamicResource JetPack.Brushes.Control.DarkEdge}" />
+        <Setter Property="h:ControlHelper.InnerShadowDark" Value="{DynamicResource JetPack.Brushes.Dark.Input.InnerShadowDark}" />
+        <Setter Property="h:ControlHelper.InnerShadowLight" Value="{DynamicResource JetPack.Brushes.Dark.Input.InnerShadowLight}" />
+        <Setter Property="h:ControlHelper.ReadOnlyBrush" Value="{DynamicResource JetPack.Brushes.Dark.Input.ReadOnly}" />
+        <Setter Property="h:ControlHelper.DisabledBrush" Value="{DynamicResource JetPack.Brushes.Dark.Input.Disabled}" />
+    </Style>
+
+    <Style x:Key="JetPack.Styles.TextBox.MultiLine" TargetType="TextBox" BasedOn="{StaticResource JetPack.Styles.TextBox}">
+        <Setter Property="AcceptsReturn" Value="True" />
+        <Setter Property="TextWrapping" Value="Wrap" />
+        <Setter Property="VerticalContentAlignment" Value="Top" />
+        <Setter Property="VerticalScrollBarVisibility" Value="Auto" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="TextBox">
+                    <Grid SnapsToDevicePixels="True">
+                        <Border x:Name="Bd" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="2.5">
+                            <Grid>
+                                <Border x:Name="ReadOnly" Background="{TemplateBinding h:ControlHelper.ReadOnlyBrush}" CornerRadius="2" Visibility="Collapsed" />
+                                <ScrollViewer x:Name="PART_ContentHost" Focusable="False" Padding="{TemplateBinding Padding}" />
+                                <TextBlock x:Name="Watermark" Margin="{TemplateBinding Padding}" Padding="2,0" Text="{TemplateBinding h:TextBoxHelper.Watermark}" Foreground="{TemplateBinding Foreground}"
+                                           Opacity="0.5" IsHitTestVisible="False" Visibility="Collapsed" />
+                            </Grid>
+                        </Border>
+                        <Border BorderBrush="{TemplateBinding h:ControlHelper.EdgeBrush}" BorderThickness="1,1,0,0" CornerRadius="2.5" IsHitTestVisible="False" />
+                        <Border BorderBrush="{DynamicResource JetPack.Brushes.Control.OuterHighlight}" BorderThickness="0,0,1,1" CornerRadius="3" Margin="0,0,-1,-1" IsHitTestVisible="False" />
+                        <Border BorderBrush="{TemplateBinding h:ControlHelper.InnerShadowDark}" BorderThickness="1,1,0,0" CornerRadius="2" Margin="1" IsHitTestVisible="False" />
+                        <Border BorderBrush="{TemplateBinding h:ControlHelper.InnerShadowLight}" BorderThickness="1,1,0,0" CornerRadius="1" Margin="2" IsHitTestVisible="False" />
+                        <Border x:Name="Disabled" Background="{TemplateBinding h:ControlHelper.DisabledBrush}" CornerRadius="2" Margin="1" Visibility="Collapsed" IsHitTestVisible="False" />
+                        <Border x:Name="Focus" BorderBrush="{DynamicResource JetPack.Brushes.Focus.Border}" BorderThickness="1" CornerRadius="2.5" Visibility="Collapsed" IsHitTestVisible="False" />
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsReadOnly" Value="True">
+                            <Setter TargetName="ReadOnly" Property="Visibility" Value="Visible" />
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter TargetName="Disabled" Property="Visibility" Value="Visible" />
+                            <Setter TargetName="PART_ContentHost" Property="Opacity" Value="0.5" />
+                        </Trigger>
+                        <Trigger Property="IsKeyboardFocusWithin" Value="True">
+                            <Setter TargetName="Focus" Property="Visibility" Value="Visible" />
+                        </Trigger>
+                        <Trigger Property="h:TextBoxHelper.HasText" Value="False">
+                            <Setter TargetName="Watermark" Property="Visibility" Value="Visible" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style x:Key="JetPack.Styles.TextBox.MultiLine.Dark" TargetType="TextBox" BasedOn="{StaticResource JetPack.Styles.TextBox.MultiLine}">
+        <Setter Property="Foreground" Value="{DynamicResource JetPack.Brushes.Dark.Input.Foreground}" />
+        <Setter Property="Background" Value="{DynamicResource JetPack.Brushes.Dark.Input.Background}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource JetPack.Brushes.Dark.Input.Border}" />
+        <Setter Property="CaretBrush" Value="White" />
+        <Setter Property="h:ControlHelper.EdgeBrush" Value="{DynamicResource JetPack.Brushes.Control.DarkEdge}" />
+        <Setter Property="h:ControlHelper.InnerShadowDark" Value="{DynamicResource JetPack.Brushes.Dark.Input.InnerShadowDark}" />
+        <Setter Property="h:ControlHelper.InnerShadowLight" Value="{DynamicResource JetPack.Brushes.Dark.Input.InnerShadowLight}" />
+        <Setter Property="h:ControlHelper.ReadOnlyBrush" Value="{DynamicResource JetPack.Brushes.Dark.Input.ReadOnly}" />
+        <Setter Property="h:ControlHelper.DisabledBrush" Value="{DynamicResource JetPack.Brushes.Dark.Input.Disabled}" />
+    </Style>
+
+    <ControlTemplate x:Key="JetPack.Templates.PasswordBox" TargetType="PasswordBox">
+        <Grid SnapsToDevicePixels="True">
+            <Border x:Name="Bd" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="2.5">
+                <Grid>
+                    <Grid x:Name="Host" Margin="{TemplateBinding Padding}">
+                        <ScrollViewer x:Name="PART_ContentHost" Focusable="False" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden"
+                                      VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+                        <TextBlock x:Name="Watermark" Margin="2,0" Text="{TemplateBinding h:TextBoxHelper.Watermark}" Foreground="{TemplateBinding Foreground}" Opacity="0.5"
+                                   IsHitTestVisible="False" Visibility="Collapsed" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+                    </Grid>
+                    <Button x:Name="Clear" Style="{DynamicResource JetPack.Styles.Button.Clear}" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,3,0"
+                            Command="{x:Static h:TextBoxHelper.ClearTextCommand}" Visibility="Collapsed" />
+                </Grid>
+            </Border>
+            <Border BorderBrush="{TemplateBinding h:ControlHelper.EdgeBrush}" BorderThickness="1,1,0,0" CornerRadius="2.5" IsHitTestVisible="False" />
+            <Border BorderBrush="{DynamicResource JetPack.Brushes.Control.OuterHighlight}" BorderThickness="0,0,1,1" CornerRadius="3" Margin="0,0,-1,-1" IsHitTestVisible="False" />
+            <Border BorderBrush="{TemplateBinding h:ControlHelper.InnerShadowDark}" BorderThickness="1,1,0,0" CornerRadius="2" Margin="1" IsHitTestVisible="False" />
+            <Border BorderBrush="{TemplateBinding h:ControlHelper.InnerShadowLight}" BorderThickness="1,1,0,0" CornerRadius="1" Margin="2" IsHitTestVisible="False" />
+            <Border x:Name="Disabled" Background="{TemplateBinding h:ControlHelper.DisabledBrush}" CornerRadius="2" Margin="1" Visibility="Collapsed" IsHitTestVisible="False" />
+            <Border x:Name="Focus" BorderBrush="{DynamicResource JetPack.Brushes.Focus.Border}" BorderThickness="1" CornerRadius="2.5" Visibility="Collapsed" IsHitTestVisible="False" />
+        </Grid>
+        <ControlTemplate.Triggers>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter TargetName="Disabled" Property="Visibility" Value="Visible" />
+                <Setter TargetName="Host" Property="Opacity" Value="0.5" />
+            </Trigger>
+            <Trigger Property="IsKeyboardFocusWithin" Value="True">
+                <Setter TargetName="Focus" Property="Visibility" Value="Visible" />
+            </Trigger>
+            <Trigger Property="h:TextBoxHelper.HasText" Value="False">
+                <Setter TargetName="Watermark" Property="Visibility" Value="Visible" />
+            </Trigger>
+            <MultiTrigger>
+                <MultiTrigger.Conditions>
+                    <Condition Property="h:TextBoxHelper.ClearTextButton" Value="True" />
+                    <Condition Property="h:TextBoxHelper.HasText" Value="True" />
+                </MultiTrigger.Conditions>
+                <Setter TargetName="Clear" Property="Visibility" Value="Visible" />
+                <Setter TargetName="Host" Property="Margin" Value="5,3,20,3" />
+            </MultiTrigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+
+    <Style x:Key="JetPack.Styles.PasswordBox" TargetType="PasswordBox">
+        <Setter Property="SnapsToDevicePixels" Value="True" />
+        <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+        <Setter Property="FontFamily" Value="{DynamicResource JetPack.Fonts.Family}" />
+        <Setter Property="FontSize" Value="{DynamicResource JetPack.Font.Size.Control}" />
+        <Setter Property="Foreground" Value="{DynamicResource JetPack.Brushes.Input.Foreground}" />
+        <Setter Property="Background" Value="{DynamicResource JetPack.Brushes.Input.Background}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource JetPack.Brushes.Control.Border}" />
+        <Setter Property="CaretBrush" Value="{DynamicResource JetPack.Brushes.Input.Foreground}" />
+        <Setter Property="SelectionBrush" Value="{DynamicResource JetPack.Brushes.Accent.Solid}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="Padding" Value="5,3" />
+        <Setter Property="MinHeight" Value="24" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="h:TextBoxHelper.IsMonitoring" Value="True" />
+        <Setter Property="h:ControlHelper.InnerShadowDark" Value="{DynamicResource JetPack.Brushes.Input.InnerShadowDark}" />
+        <Setter Property="h:ControlHelper.InnerShadowLight" Value="{DynamicResource JetPack.Brushes.Input.InnerShadowLight}" />
+        <Setter Property="h:ControlHelper.DisabledBrush" Value="{DynamicResource JetPack.Brushes.Input.Disabled}" />
+        <Setter Property="Validation.ErrorTemplate" Value="{DynamicResource JetPack.Templates.ValidationError}" />
+        <Setter Property="Template" Value="{StaticResource JetPack.Templates.PasswordBox}" />
+    </Style>
+    <Style x:Key="JetPack.Styles.PasswordBox.Dark" TargetType="PasswordBox" BasedOn="{StaticResource JetPack.Styles.PasswordBox}">
+        <Setter Property="Foreground" Value="{DynamicResource JetPack.Brushes.Dark.Input.Foreground}" />
+        <Setter Property="Background" Value="{DynamicResource JetPack.Brushes.Dark.Input.Background}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource JetPack.Brushes.Dark.Input.Border}" />
+        <Setter Property="CaretBrush" Value="White" />
+        <Setter Property="h:ControlHelper.EdgeBrush" Value="{DynamicResource JetPack.Brushes.Control.DarkEdge}" />
+        <Setter Property="h:ControlHelper.InnerShadowDark" Value="{DynamicResource JetPack.Brushes.Dark.Input.InnerShadowDark}" />
+        <Setter Property="h:ControlHelper.InnerShadowLight" Value="{DynamicResource JetPack.Brushes.Dark.Input.InnerShadowLight}" />
+        <Setter Property="h:ControlHelper.DisabledBrush" Value="{DynamicResource JetPack.Brushes.Dark.Input.Disabled}" />
+    </Style>
+
+    <Style x:Key="JetPack.Styles.RichTextBox" TargetType="RichTextBox" BasedOn="{StaticResource JetPack.Styles.TextBoxBase}">
+        <Setter Property="Padding" Value="3" />
+        <Setter Property="VerticalScrollBarVisibility" Value="Auto" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="RichTextBox">
+                    <Grid SnapsToDevicePixels="True">
+                        <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="2.5">
+                            <ScrollViewer x:Name="PART_ContentHost" Focusable="False" Padding="{TemplateBinding Padding}" />
+                        </Border>
+                        <Border BorderBrush="{DynamicResource JetPack.Brushes.Control.OuterHighlight}" BorderThickness="0,0,1,1" CornerRadius="3" Margin="0,0,-1,-1" IsHitTestVisible="False" />
+                        <Border BorderBrush="{TemplateBinding h:ControlHelper.InnerShadowDark}" BorderThickness="1,1,0,0" CornerRadius="2" Margin="1" IsHitTestVisible="False" />
+                        <Border BorderBrush="{TemplateBinding h:ControlHelper.InnerShadowLight}" BorderThickness="1,1,0,0" CornerRadius="1" Margin="2" IsHitTestVisible="False" />
+                        <Border x:Name="Disabled" Background="{TemplateBinding h:ControlHelper.DisabledBrush}" CornerRadius="2" Margin="1" Visibility="Collapsed" IsHitTestVisible="False" />
+                        <Border x:Name="Focus" BorderBrush="{DynamicResource JetPack.Brushes.Focus.Border}" BorderThickness="1" CornerRadius="2.5" Visibility="Collapsed" IsHitTestVisible="False" />
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter TargetName="Disabled" Property="Visibility" Value="Visible" />
+                        </Trigger>
+                        <Trigger Property="IsKeyboardFocusWithin" Value="True">
+                            <Setter TargetName="Focus" Property="Visibility" Value="Visible" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- Cut / copy / paste menu for text inputs -->
+    <ContextMenu x:Key="JetPack.ContextMenu.Text" x:Shared="False">
+        <MenuItem Command="ApplicationCommands.Cut" />
+        <MenuItem Command="ApplicationCommands.Copy" />
+        <MenuItem Command="ApplicationCommands.Paste" />
+        <Separator />
+        <MenuItem Command="ApplicationCommands.SelectAll" />
+    </ContextMenu>
+
+    <!-- Styles ToolBar applies to its children -->
+    <Style x:Key="{x:Static ToolBar.TextBoxStyleKey}" TargetType="TextBox" BasedOn="{StaticResource JetPack.Styles.TextBox}">
+        <Setter Property="Margin" Value="2,0" />
+        <Setter Property="MinHeight" Value="22" />
+    </Style>
+
+    <Style TargetType="Label" BasedOn="{StaticResource JetPack.Styles.Label}" />
+    <Style TargetType="TextBox" BasedOn="{StaticResource JetPack.Styles.TextBox}" />
+    <Style TargetType="PasswordBox" BasedOn="{StaticResource JetPack.Styles.PasswordBox}" />
+    <Style TargetType="RichTextBox" BasedOn="{StaticResource JetPack.Styles.RichTextBox}" />
+
+</ResourceDictionary>

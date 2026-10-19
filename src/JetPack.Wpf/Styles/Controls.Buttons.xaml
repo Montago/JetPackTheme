@@ -1,0 +1,241 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:h="clr-namespace:JetPack.Wpf.Helpers">
+
+    <!--
+    Button chrome, as in CoreStyles.xaml: a gradient slab with a drop shadow,
+    a white top/left highlight, and embossed text. Variants only swap brushes.
+    -->
+    <ControlTemplate x:Key="JetPack.Templates.Button" TargetType="ButtonBase">
+        <Grid SnapsToDevicePixels="True">
+            <Border x:Name="Normal" Background="{TemplateBinding Background}" CornerRadius="{TemplateBinding h:ControlHelper.CornerRadius}"
+                    Effect="{DynamicResource JetPack.Effects.ControlShadow}" />
+            <Border x:Name="MouseOver" Background="{TemplateBinding h:ControlHelper.MouseOverBackground}" CornerRadius="{TemplateBinding h:ControlHelper.CornerRadius}" Opacity="0" />
+            <Border x:Name="Pressed" Background="{TemplateBinding h:ControlHelper.PressedBackground}" CornerRadius="{TemplateBinding h:ControlHelper.CornerRadius}" Opacity="0" />
+            <Border x:Name="Highlight" BorderBrush="{TemplateBinding h:ControlHelper.HighlightBrush}" BorderThickness="1,1,0,0" CornerRadius="{TemplateBinding h:ControlHelper.CornerRadius}" />
+            <Border x:Name="Disabled" Background="{DynamicResource JetPack.Brushes.Disabled}" BorderBrush="{DynamicResource JetPack.Brushes.Disabled.Border}"
+                    BorderThickness="0,0,1,1" CornerRadius="{TemplateBinding h:ControlHelper.CornerRadius}" Visibility="Collapsed" />
+            <ContentPresenter x:Name="Content" Margin="{TemplateBinding Padding}" Focusable="False" RecognizesAccessKey="True"
+                              HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                              Effect="{TemplateBinding h:ControlHelper.ContentEffect}" />
+        </Grid>
+        <ControlTemplate.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter TargetName="MouseOver" Property="Opacity" Value="1" />
+            </Trigger>
+            <Trigger Property="IsPressed" Value="True">
+                <Setter TargetName="Pressed" Property="Opacity" Value="1" />
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter TargetName="Disabled" Property="Visibility" Value="Visible" />
+                <Setter TargetName="Normal" Property="Effect" Value="{x:Null}" />
+                <Setter TargetName="Highlight" Property="Visibility" Value="Collapsed" />
+                <Setter TargetName="Content" Property="Opacity" Value="0.5" />
+                <Setter TargetName="Content" Property="Effect" Value="{x:Null}" />
+            </Trigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+
+    <ControlTemplate x:Key="JetPack.Templates.ToggleButton" TargetType="ToggleButton">
+        <Grid SnapsToDevicePixels="True">
+            <Border x:Name="Normal" Background="{TemplateBinding Background}" CornerRadius="{TemplateBinding h:ControlHelper.CornerRadius}"
+                    Effect="{DynamicResource JetPack.Effects.ControlShadow}" />
+            <Border x:Name="MouseOver" Background="{TemplateBinding h:ControlHelper.MouseOverBackground}" CornerRadius="{TemplateBinding h:ControlHelper.CornerRadius}" Opacity="0" />
+            <Border x:Name="Pressed" Background="{TemplateBinding h:ControlHelper.PressedBackground}" CornerRadius="{TemplateBinding h:ControlHelper.CornerRadius}" Opacity="0" />
+            <Border x:Name="Checked" Margin="0,-1" Background="{DynamicResource JetPack.Brushes.Control.Background.Checked}" BorderBrush="{DynamicResource JetPack.Brushes.Control.Border.Checked}"
+                    BorderThickness="1" CornerRadius="2.5" Visibility="Collapsed">
+                <Border BorderBrush="#70303030" BorderThickness="1,1,0,0" CornerRadius="2">
+                    <Border BorderBrush="#30303030" BorderThickness="1" CornerRadius="1.5">
+                        <Border BorderBrush="#10303030" BorderThickness="1,1,0,0" CornerRadius="1" />
+                    </Border>
+                </Border>
+            </Border>
+            <Border x:Name="Highlight" BorderBrush="{TemplateBinding h:ControlHelper.HighlightBrush}" BorderThickness="1,1,0,0" CornerRadius="{TemplateBinding h:ControlHelper.CornerRadius}" />
+            <Border x:Name="Disabled" Background="{DynamicResource JetPack.Brushes.Disabled}" BorderBrush="{DynamicResource JetPack.Brushes.Disabled.Border}"
+                    BorderThickness="0,0,1,1" CornerRadius="{TemplateBinding h:ControlHelper.CornerRadius}" Visibility="Collapsed" />
+            <ContentPresenter x:Name="Content" Margin="{TemplateBinding Padding}" Focusable="False" RecognizesAccessKey="True"
+                              HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                              Effect="{TemplateBinding h:ControlHelper.ContentEffect}" />
+        </Grid>
+        <ControlTemplate.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter TargetName="MouseOver" Property="Opacity" Value="1" />
+            </Trigger>
+            <Trigger Property="IsPressed" Value="True">
+                <Setter TargetName="Pressed" Property="Opacity" Value="1" />
+            </Trigger>
+            <Trigger Property="IsChecked" Value="True">
+                <Setter TargetName="Checked" Property="Visibility" Value="Visible" />
+                <Setter TargetName="Highlight" Property="Visibility" Value="Collapsed" />
+                <Setter TargetName="Normal" Property="Effect" Value="{x:Null}" />
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter TargetName="Disabled" Property="Visibility" Value="Visible" />
+                <Setter TargetName="Normal" Property="Effect" Value="{x:Null}" />
+                <Setter TargetName="Highlight" Property="Visibility" Value="Collapsed" />
+                <Setter TargetName="Content" Property="Opacity" Value="0.5" />
+                <Setter TargetName="Content" Property="Effect" Value="{x:Null}" />
+            </Trigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+
+    <Style x:Key="JetPack.Styles.ButtonBase" TargetType="ButtonBase">
+        <Setter Property="SnapsToDevicePixels" Value="True" />
+        <Setter Property="FocusVisualStyle" Value="{DynamicResource JetPack.Styles.FocusVisual}" />
+        <Setter Property="FontFamily" Value="{DynamicResource JetPack.Fonts.Family}" />
+        <Setter Property="FontSize" Value="{DynamicResource JetPack.Font.Size.Control}" />
+        <Setter Property="Foreground" Value="{DynamicResource JetPack.Brushes.Control.Foreground}" />
+        <Setter Property="Background" Value="{DynamicResource JetPack.Brushes.Control.Background}" />
+        <Setter Property="h:ControlHelper.MouseOverBackground" Value="{DynamicResource JetPack.Brushes.Control.Background.MouseOver}" />
+        <Setter Property="h:ControlHelper.PressedBackground" Value="{DynamicResource JetPack.Brushes.Control.Background.Pressed}" />
+        <Setter Property="h:ControlHelper.HighlightBrush" Value="{DynamicResource JetPack.Brushes.Control.Highlight}" />
+        <Setter Property="h:ControlHelper.ContentEffect" Value="{DynamicResource JetPack.Effects.TextEmboss}" />
+        <Setter Property="h:ControlHelper.CornerRadius" Value="2" />
+        <Setter Property="Padding" Value="16,3" />
+        <Setter Property="MinHeight" Value="22" />
+        <Setter Property="HorizontalContentAlignment" Value="Center" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="Template" Value="{StaticResource JetPack.Templates.Button}" />
+    </Style>
+
+    <Style x:Key="JetPack.Styles.Button" TargetType="Button" BasedOn="{StaticResource JetPack.Styles.ButtonBase}" />
+    <Style x:Key="JetPack.Styles.RepeatButton" TargetType="RepeatButton" BasedOn="{StaticResource JetPack.Styles.ButtonBase}" />
+    <Style x:Key="JetPack.Styles.ToggleButton" TargetType="ToggleButton" BasedOn="{StaticResource JetPack.Styles.ButtonBase}">
+        <Setter Property="Template" Value="{StaticResource JetPack.Templates.ToggleButton}" />
+    </Style>
+
+    <!-- Coloured buttons: white text with a dark shadow above it -->
+    <Style x:Key="JetPack.Styles.Button.Accent" TargetType="Button" BasedOn="{StaticResource JetPack.Styles.Button}">
+        <Setter Property="Foreground" Value="{DynamicResource JetPack.Brushes.Accent.Foreground}" />
+        <Setter Property="Background" Value="{DynamicResource JetPack.Brushes.Accent.Button.Normal}" />
+        <Setter Property="h:ControlHelper.MouseOverBackground" Value="{DynamicResource JetPack.Brushes.Accent.Button.MouseOver}" />
+        <Setter Property="h:ControlHelper.PressedBackground" Value="{DynamicResource JetPack.Brushes.Accent.Button.Pressed}" />
+        <Setter Property="h:ControlHelper.HighlightBrush" Value="{DynamicResource JetPack.Brushes.Accent.Button.Highlight}" />
+        <Setter Property="h:ControlHelper.ContentEffect" Value="{DynamicResource JetPack.Effects.Accent.TextShadow}" />
+    </Style>
+    <Style x:Key="JetPack.Styles.Button.Green" TargetType="Button" BasedOn="{StaticResource JetPack.Styles.Button}">
+        <Setter Property="Foreground" Value="White" />
+        <Setter Property="Background" Value="{DynamicResource JetPack.Brushes.Button.Green.Normal}" />
+        <Setter Property="h:ControlHelper.MouseOverBackground" Value="{DynamicResource JetPack.Brushes.Button.Green.MouseOver}" />
+        <Setter Property="h:ControlHelper.PressedBackground" Value="{DynamicResource JetPack.Brushes.Button.Green.Pressed}" />
+        <Setter Property="h:ControlHelper.HighlightBrush" Value="{DynamicResource JetPack.Brushes.Button.Green.Highlight}" />
+        <Setter Property="h:ControlHelper.ContentEffect" Value="{DynamicResource JetPack.Effects.Button.Green.TextShadow}" />
+    </Style>
+    <Style x:Key="JetPack.Styles.Button.Orange" TargetType="Button" BasedOn="{StaticResource JetPack.Styles.Button}">
+        <Setter Property="Foreground" Value="White" />
+        <Setter Property="Background" Value="{DynamicResource JetPack.Brushes.Button.Orange.Normal}" />
+        <Setter Property="h:ControlHelper.MouseOverBackground" Value="{DynamicResource JetPack.Brushes.Button.Orange.MouseOver}" />
+        <Setter Property="h:ControlHelper.PressedBackground" Value="{DynamicResource JetPack.Brushes.Button.Orange.Pressed}" />
+        <Setter Property="h:ControlHelper.HighlightBrush" Value="{DynamicResource JetPack.Brushes.Button.Orange.Highlight}" />
+        <Setter Property="h:ControlHelper.ContentEffect" Value="{DynamicResource JetPack.Effects.Button.Orange.TextShadow}" />
+    </Style>
+    <Style x:Key="JetPack.Styles.Button.Blue" TargetType="Button" BasedOn="{StaticResource JetPack.Styles.Button}">
+        <Setter Property="Foreground" Value="White" />
+        <Setter Property="Background" Value="{DynamicResource JetPack.Brushes.Button.Blue.Normal}" />
+        <Setter Property="h:ControlHelper.MouseOverBackground" Value="{DynamicResource JetPack.Brushes.Button.Blue.MouseOver}" />
+        <Setter Property="h:ControlHelper.PressedBackground" Value="{DynamicResource JetPack.Brushes.Button.Blue.Pressed}" />
+        <Setter Property="h:ControlHelper.HighlightBrush" Value="{DynamicResource JetPack.Brushes.Button.Blue.Highlight}" />
+        <Setter Property="h:ControlHelper.ContentEffect" Value="{DynamicResource JetPack.Effects.Button.Blue.TextShadow}" />
+    </Style>
+
+    <!-- Square icon button -->
+    <Style x:Key="JetPack.Styles.Button.Square" TargetType="Button" BasedOn="{StaticResource JetPack.Styles.Button}">
+        <Setter Property="Padding" Value="0" />
+        <Setter Property="Width" Value="24" />
+        <Setter Property="Height" Value="22" />
+    </Style>
+
+    <!-- Flat button for tool bars: no chrome until the mouse is over it -->
+    <Style x:Key="JetPack.Styles.Button.Flat" TargetType="ButtonBase">
+        <Setter Property="SnapsToDevicePixels" Value="True" />
+        <Setter Property="FocusVisualStyle" Value="{DynamicResource JetPack.Styles.FocusVisual}" />
+        <Setter Property="FontFamily" Value="{DynamicResource JetPack.Fonts.Family}" />
+        <Setter Property="FontSize" Value="{DynamicResource JetPack.Font.Size.Control}" />
+        <Setter Property="Foreground" Value="{DynamicResource JetPack.Brushes.Control.Glyph.Dark}" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderBrush" Value="Transparent" />
+        <Setter Property="Padding" Value="4,2" />
+        <Setter Property="MinWidth" Value="24" />
+        <Setter Property="MinHeight" Value="22" />
+        <Setter Property="HorizontalContentAlignment" Value="Center" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ButtonBase">
+                    <Border x:Name="Bd" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="1" CornerRadius="2">
+                        <ContentPresenter x:Name="Content" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True"
+                                          HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="Bd" Property="Background" Value="{DynamicResource JetPack.Brushes.Control.Background.MouseOver}" />
+                            <Setter TargetName="Bd" Property="BorderBrush" Value="#33000000" />
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="Bd" Property="Background" Value="{DynamicResource JetPack.Brushes.Control.Background.Pressed}" />
+                            <Setter TargetName="Bd" Property="BorderBrush" Value="#4D000000" />
+                        </Trigger>
+                        <Trigger Property="ToggleButton.IsChecked" Value="True">
+                            <Setter TargetName="Bd" Property="Background" Value="{DynamicResource JetPack.Brushes.Control.Background.Pressed}" />
+                            <Setter TargetName="Bd" Property="BorderBrush" Value="#4D000000" />
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter TargetName="Content" Property="Opacity" Value="0.4" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- Button that looks like a hyperlink -->
+    <Style x:Key="JetPack.Styles.Button.Link" TargetType="Button">
+        <Setter Property="Cursor" Value="Hand" />
+        <Setter Property="FocusVisualStyle" Value="{DynamicResource JetPack.Styles.FocusVisual}" />
+        <Setter Property="Foreground" Value="{DynamicResource JetPack.Brushes.Accent.Link}" />
+        <Setter Property="FontFamily" Value="{DynamicResource JetPack.Fonts.Family}" />
+        <Setter Property="FontSize" Value="{DynamicResource JetPack.Font.Size.Control}" />
+        <Setter Property="Padding" Value="2,0" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border Background="Transparent" Padding="{TemplateBinding Padding}">
+                        <TextBlock x:Name="Text" Text="{TemplateBinding Content}" />
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="Text" Property="TextDecorations" Value="Underline" />
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Foreground" Value="{DynamicResource JetPack.Brushes.Text.Disabled}" />
+                            <Setter Property="Cursor" Value="Arrow" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="JetPack.Styles.Hyperlink" TargetType="Hyperlink">
+        <Setter Property="Foreground" Value="{DynamicResource JetPack.Brushes.Accent.Link}" />
+        <Setter Property="TextDecorations" Value="{x:Null}" />
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="TextDecorations" Value="Underline" />
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Foreground" Value="{DynamicResource JetPack.Brushes.Text.Disabled}" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <!-- Styles ToolBar applies to its children -->
+    <Style x:Key="{x:Static ToolBar.ButtonStyleKey}" TargetType="Button" BasedOn="{StaticResource JetPack.Styles.Button.Flat}" />
+    <Style x:Key="{x:Static ToolBar.ToggleButtonStyleKey}" TargetType="ToggleButton" BasedOn="{StaticResource JetPack.Styles.Button.Flat}" />
+
+    <Style TargetType="Button" BasedOn="{StaticResource JetPack.Styles.Button}" />
+    <Style TargetType="RepeatButton" BasedOn="{StaticResource JetPack.Styles.RepeatButton}" />
+    <Style TargetType="ToggleButton" BasedOn="{StaticResource JetPack.Styles.ToggleButton}" />
+    <Style TargetType="Hyperlink" BasedOn="{StaticResource JetPack.Styles.Hyperlink}" />
+
+</ResourceDictionary>

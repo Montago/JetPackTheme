@@ -1,0 +1,117 @@
+<UserControl x:Class="JetPack.Wpf.Demo.Views.SdkPage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="clr-namespace:JetPack.Wpf.Demo"
+             xmlns:jp="urn:jetpack-wpf">
+    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Padding="0,22,0,0">
+        <StackPanel>
+            <TextBlock Style="{StaticResource Demo.Intro}"
+                       Text="Kontrollerne fra Silverlight SDK, som alle findes i WPF: TabControl, Calendar, DatePicker, TreeView, DataGrid og GridSplitter. De mørke paneler bruger DarkBackground #707176 og DarkBorder #58585D." />
+
+            <WrapPanel>
+                <HeaderedContentControl Style="{StaticResource Demo.Column}" Header="TabControl" Tag="JetPack.Styles.TabControl">
+                    <TabControl Width="320" Height="140">
+                        <TabItem Header="Ledige">
+                            <TextBlock TextWrapping="Wrap" Text="14 konsulenter er ledige fra uge 44. Filtrér efter kompetence eller lokation for at indsnævre listen." />
+                        </TabItem>
+                        <TabItem Header="Tildelte">
+                            <TextBlock TextWrapping="Wrap" Text="9 konsulenter er tildelt projekter, der løber til og med december." />
+                        </TabItem>
+                        <TabItem Header="Forslag">
+                            <TextBlock TextWrapping="Wrap" Text="3 forslag afventer svar fra kunden." />
+                        </TabItem>
+                        <TabItem Header="Arkiv" IsEnabled="False" />
+                    </TabControl>
+                </HeaderedContentControl>
+
+                <HeaderedContentControl Style="{StaticResource Demo.Column}" Header="Calendar" Tag="JetPack.Styles.Calendar">
+                    <Calendar x:Name="Calendar" />
+                </HeaderedContentControl>
+
+                <HeaderedContentControl Style="{StaticResource Demo.Column}" Header="DatePicker · AutoSuggestBox" Tag="JetPack.Styles.DatePicker">
+                    <StackPanel Width="170" d:Demo.Spacing="10">
+                        <DatePicker x:Name="Picked" />
+                        <DatePicker />
+                        <DatePicker x:Name="BadDate" d:Demo.Error="Datoen ligger før kontraktens start." />
+                        <Separator />
+                        <jp:AutoSuggestBox x:Name="Suggest" jp:TextBoxHelper.Watermark="Søg firma…" />
+                        <TextBlock Style="{StaticResource Demo.State}" Text="Skriv fx 'fa' eller 'so'" />
+                    </StackPanel>
+                </HeaderedContentControl>
+            </WrapPanel>
+
+            <WrapPanel>
+                <HeaderedContentControl Style="{StaticResource Demo.Column}" Header="TreeView" Tag="JetPack.Styles.TreeView">
+                    <TreeView Width="210" Height="190">
+                        <TreeViewItem Header="Contoso" IsExpanded="True">
+                            <TreeViewItem Header="August 2026" />
+                            <TreeViewItem Header="September 2026" IsSelected="True" />
+                            <TreeViewItem Header="Oktober 2026" />
+                        </TreeViewItem>
+                        <TreeViewItem Header="Southridge">
+                            <TreeViewItem Header="Juli 2026" />
+                        </TreeViewItem>
+                        <TreeViewItem Header="Microsoft">
+                            <TreeViewItem Header="Juni 2026" />
+                        </TreeViewItem>
+                        <TreeViewItem Header="Fabrikam">
+                            <TreeViewItem Header="Maj 2026" />
+                        </TreeViewItem>
+                        <TreeViewItem Header="Soar Airlines">
+                            <TreeViewItem Header="April 2026" />
+                        </TreeViewItem>
+                    </TreeView>
+                </HeaderedContentControl>
+
+                <HeaderedContentControl Style="{StaticResource Demo.Column}" Header="DataGrid" Tag="JetPack.Styles.DataGrid">
+                    <DataGrid x:Name="Grid" Width="520" Height="190" AutoGenerateColumns="False" IsReadOnly="True" SelectionMode="Single" CanUserAddRows="False">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Medarbejder" Binding="{Binding Employee}" Width="*" SortDirection="Ascending" />
+                            <DataGridTextColumn Header="Afdeling" Binding="{Binding Department}" Width="110" />
+                            <DataGridTextColumn Header="Timer" Binding="{Binding Hours, StringFormat=N1}" Width="60">
+                                <DataGridTextColumn.ElementStyle>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="HorizontalAlignment" Value="Right" />
+                                    </Style>
+                                </DataGridTextColumn.ElementStyle>
+                            </DataGridTextColumn>
+                            <DataGridTextColumn Header="Uge" Binding="{Binding Week}" Width="50" />
+                            <DataGridTextColumn Header="Status" Binding="{Binding Status}" Width="90" />
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </HeaderedContentControl>
+            </WrapPanel>
+
+            <WrapPanel>
+                <HeaderedContentControl Style="{StaticResource Demo.Column}" Header="ListView · GridView" Tag="JetPack.Styles.ListView">
+                    <ListView x:Name="List" Width="360" Height="150" SelectedIndex="2">
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn Header="Medarbejder" DisplayMemberBinding="{Binding Employee}" Width="150" />
+                                <GridViewColumn Header="Afdeling" DisplayMemberBinding="{Binding Department}" Width="110" />
+                                <GridViewColumn Header="Timer" DisplayMemberBinding="{Binding Hours}" Width="70" />
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+                </HeaderedContentControl>
+
+                <HeaderedContentControl Style="{StaticResource Demo.Column}" Header="GridSplitter" Tag="JetPack.Styles.GridSplitter">
+                    <Grid Width="320" Height="110">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" MinWidth="60" />
+                            <ColumnDefinition Width="6" />
+                            <ColumnDefinition Width="2*" MinWidth="60" />
+                        </Grid.ColumnDefinitions>
+                        <Border Background="{DynamicResource JetPack.Brushes.Panel.Background}" Padding="8">
+                            <TextBlock Text="Navigation" />
+                        </Border>
+                        <GridSplitter Grid.Column="1" HorizontalAlignment="Stretch" ResizeBehavior="PreviousAndNext" />
+                        <Border Grid.Column="2" Background="{DynamicResource JetPack.Brushes.Panel.Background}" Padding="8">
+                            <TextBlock Text="Indhold" />
+                        </Border>
+                    </Grid>
+                </HeaderedContentControl>
+            </WrapPanel>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

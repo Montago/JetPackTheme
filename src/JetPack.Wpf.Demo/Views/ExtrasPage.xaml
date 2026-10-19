@@ -1,0 +1,237 @@
+<UserControl x:Class="JetPack.Wpf.Demo.Views.ExtrasPage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="clr-namespace:JetPack.Wpf.Demo"
+             xmlns:jp="urn:jetpack-wpf">
+    <UserControl.Resources>
+        <ContextMenu x:Key="SaveMenu">
+            <MenuItem Header="Gem som kladde" />
+            <MenuItem Header="Gem og send til godkendelse" />
+            <Separator />
+            <MenuItem Header="Gem som skabelon" />
+        </ContextMenu>
+        <ContextMenu x:Key="ExportMenu">
+            <MenuItem Header="Excel (.xlsx)" />
+            <MenuItem Header="CSV" />
+            <MenuItem Header="PDF" />
+        </ContextMenu>
+        <Geometry x:Key="IconHome">M1,6.5 L7,1 13,6.5 13,13 8.5,13 8.5,9 5.5,9 5.5,13 1,13 z</Geometry>
+        <Geometry x:Key="IconList">M2,1 H12 V13 H2 Z M4,4 H10 V5 H4 Z M4,7 H10 V8 H4 Z M4,10 H8 V11 H4 Z</Geometry>
+        <Geometry x:Key="IconPeople">M7,1.5 A3,3 0 1 1 6.99,1.5 Z M1.5,13 A5.5,5.5 0 0 1 12.5,13 Z</Geometry>
+        <Geometry x:Key="IconGear">M7,4.5 A2.5,2.5 0 1 0 7.01,4.5 Z M6,0 H8 L8.4,2 10,2.8 11.7,1.6 13.1,3 11.9,4.7 12.7,6.3 14,6.6 V8.4 L12.7,8.7 11.9,10.3 13.1,12 11.7,13.4 10,12.2 8.4,13 8,14 H6 L5.6,12 4,11.2 2.3,12.4 0.9,11 2.1,9.3 1.3,7.7 0,7.4 V5.6 L1.3,5.3 2.1,3.7 0.9,2 2.3,0.6 4,1.8 5.6,1 Z</Geometry>
+    </UserControl.Resources>
+
+    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Padding="0,22,0,0">
+        <StackPanel>
+            <TextBlock Style="{StaticResource Demo.Intro}"
+                       Text="Kontroller, som JetPack aldrig havde, men som et bibliotek i MahApps' format har brug for. De er tegnet med de samme materialer: lyse, hævede flader, mørke nedsænkede spor og accentgradienter." />
+
+            <WrapPanel>
+                <HeaderedContentControl Style="{StaticResource Demo.Column}" Header="ToggleSwitch" Tag="jp:ToggleSwitch">
+                    <StackPanel d:Demo.Spacing="12" HorizontalAlignment="Left">
+                        <jp:ToggleSwitch Content="Notifikationer" IsChecked="True" />
+                        <jp:ToggleSwitch Content="Mørk tilstand" />
+                        <jp:ToggleSwitch Content="Låst af politik" IsChecked="True" IsEnabled="False" />
+                    </StackPanel>
+                </HeaderedContentControl>
+
+                <HeaderedContentControl Style="{StaticResource Demo.Column}" Header="SplitButton · DropDownButton" Tag="jp:SplitButton · jp:DropDownButton">
+                    <StackPanel d:Demo.Spacing="12" HorizontalAlignment="Center">
+                        <jp:SplitButton Content="Gem" Menu="{StaticResource SaveMenu}" HorizontalAlignment="Center" />
+                        <jp:SplitButton Content="Send" Menu="{StaticResource SaveMenu}" Style="{StaticResource JetPack.Styles.SplitButton.Accent}" HorizontalAlignment="Center" />
+                        <jp:DropDownButton Content="Eksportér" Menu="{StaticResource ExportMenu}" HorizontalAlignment="Center" />
+                    </StackPanel>
+                </HeaderedContentControl>
+
+                <HeaderedContentControl Style="{StaticResource Demo.Column}" Header="ProgressRing · Badged" Tag="jp:ProgressRing · jp:Badged">
+                    <StackPanel d:Demo.Spacing="18" HorizontalAlignment="Center">
+                        <jp:ProgressRing HorizontalAlignment="Center" />
+                        <StackPanel Orientation="Horizontal" d:Demo.Spacing="24" Margin="0,6,0,0">
+                            <jp:Badged Badge="12">
+                                <Button Content="Indbakke" />
+                            </jp:Badged>
+                            <jp:Badged Badge="3">
+                                <Button Style="{StaticResource JetPack.Styles.Button.Square}" ToolTip="Notifikationer">
+                                    <Path Width="12" Height="12" Stretch="Uniform" Fill="#FF404040" Data="M6,1 A3.5,3.5 0 0 0 2.5,4.5 V7 L1.5,9 H10.5 L9.5,7 V4.5 A3.5,3.5 0 0 0 6,1 Z M4.7,10 A1.3,1.3 0 0 0 7.3,10 Z" />
+                                </Button>
+                            </jp:Badged>
+                        </StackPanel>
+                    </StackPanel>
+                </HeaderedContentControl>
+
+                <HeaderedContentControl Style="{StaticResource Demo.Column}" Header="TextBox-hjælpere" Tag="TextBoxHelper.Watermark · ClearTextButton">
+                    <StackPanel Width="220" d:Demo.Spacing="10">
+                        <TextBox Text="Fabrikam A/S" jp:TextBoxHelper.ClearTextButton="True" />
+                        <TextBox jp:TextBoxHelper.Watermark="Søg i ordrer…" jp:TextBoxHelper.ClearTextButton="True" />
+                        <PasswordBox jp:TextBoxHelper.Watermark="Adgangskode" jp:TextBoxHelper.ClearTextButton="True" />
+                        <TextBox Style="{StaticResource JetPack.Styles.TextBox.Dark}" jp:TextBoxHelper.Watermark="CVR-nummer" />
+                    </StackPanel>
+                </HeaderedContentControl>
+            </WrapPanel>
+
+            <WrapPanel>
+                <HeaderedContentControl Style="{StaticResource Demo.Column}" Header="RangeSlider" Tag="jp:RangeSlider">
+                    <StackPanel Width="180" d:Demo.Spacing="8">
+                        <jp:RangeSlider x:Name="Range" Minimum="0" Maximum="10000" LowerValue="2500" UpperValue="7000" SmallChange="100" />
+                        <TextBlock Style="{StaticResource Demo.State}">
+                            <Run Text="{Binding LowerValue, ElementName=Range, StringFormat=N0, Mode=OneWay}" /><Run Text=" – " /><Run Text="{Binding UpperValue, ElementName=Range, StringFormat=N0, Mode=OneWay}" /><Run Text=" kr." />
+                        </TextBlock>
+                    </StackPanel>
+                </HeaderedContentControl>
+
+                <HeaderedContentControl Style="{StaticResource Demo.Column}" Header="Tile" Tag="JetPack.Styles.Tile.*">
+                    <UniformGrid Columns="2" Width="236">
+                        <jp:Tile Title="Ledige" Count="14" Style="{StaticResource JetPack.Styles.Tile.Green}" Margin="0,0,8,8" />
+                        <jp:Tile Title="Forslag" Count="3" Style="{StaticResource JetPack.Styles.Tile.Orange}" Margin="0,0,0,8" />
+                        <jp:Tile Title="Tildelte" Count="9" Style="{StaticResource JetPack.Styles.Tile.Blue}" Margin="0,0,8,0" />
+                        <jp:Tile Title="Arkiv" Count="148" Style="{StaticResource JetPack.Styles.Tile}" />
+                    </UniformGrid>
+                </HeaderedContentControl>
+
+                <HeaderedContentControl Style="{StaticResource Demo.Column}" Header="Flyout" Tag="jp:Flyout">
+                    <Grid Width="320" Height="200" ClipToBounds="True">
+                        <Border BorderBrush="#FF3D3E42" BorderThickness="1" CornerRadius="3" Background="{DynamicResource JetPack.Brushes.Window.Background}" />
+                        <StackPanel Margin="12" d:Demo.Spacing="8" HorizontalAlignment="Left">
+                            <Button Content="Åbn filtre" Click="OnOpenFilters" HorizontalAlignment="Left" />
+                            <TextBlock Style="{StaticResource Demo.State}" HorizontalAlignment="Left" TextWrapping="Wrap" Width="110" Text="Glider ind fra højre over indholdet." />
+                        </StackPanel>
+                        <jp:Flyout x:Name="Filters" Header="Filtre" Width="190" IsOpen="True" Padding="12,10">
+                            <StackPanel d:Demo.Spacing="10">
+                                <CheckBox Content="Kun aktive" IsChecked="True" />
+                                <CheckBox Content="Vis arkiverede" />
+                                <ComboBox SelectedIndex="0">
+                                    <ComboBoxItem Content="Alle afdelinger" />
+                                    <ComboBoxItem Content="Udvikling" />
+                                    <ComboBoxItem Content="Salg" />
+                                </ComboBox>
+                                <Button Content="Anvend" Style="{StaticResource JetPack.Styles.Button.Accent}" HorizontalAlignment="Left" />
+                            </StackPanel>
+                        </jp:Flyout>
+                    </Grid>
+                </HeaderedContentControl>
+
+                <HeaderedContentControl Style="{StaticResource Demo.Column}" Header="ColorPicker" Tag="jp:ColorPicker">
+                    <StackPanel Width="160" d:Demo.Spacing="8">
+                        <jp:ColorPicker />
+                        <TextBlock Style="{StaticResource Demo.State}" TextWrapping="Wrap" TextAlignment="Center" Text="Indstillinger → Egen accentfarve genererer et helt accentsæt ud fra én farve." />
+                    </StackPanel>
+                </HeaderedContentControl>
+            </WrapPanel>
+
+            <WrapPanel>
+                <HeaderedContentControl Style="{StaticResource Demo.Column}" Header="HamburgerMenu" Tag="jp:HamburgerMenu">
+                    <Border Width="440" Height="200" BorderBrush="#FF3D3E42" BorderThickness="1" CornerRadius="3" ClipToBounds="True">
+                        <jp:HamburgerMenu x:Name="Ham" SelectedIndex="0" Content="{Binding SelectedItem.Tag, RelativeSource={RelativeSource Self}}">
+                            <jp:HamburgerMenu.ContentTemplate>
+                                <DataTemplate>
+                                    <Border Background="{DynamicResource JetPack.Brushes.Window.Background}" Padding="14,10">
+                                        <StackPanel>
+                                            <TextBlock Style="{StaticResource JetPack.Styles.TextBlock.Heading5}" Text="{Binding [0]}" />
+                                            <TextBlock Margin="0,4,0,0" FontSize="11" TextWrapping="Wrap" Foreground="{DynamicResource JetPack.Brushes.Text.Soft}" Text="{Binding [1]}" />
+                                        </StackPanel>
+                                    </Border>
+                                </DataTemplate>
+                            </jp:HamburgerMenu.ContentTemplate>
+                            <jp:HamburgerMenuItem Content="Oversigt" x:Name="HamOverview">
+                                <jp:HamburgerMenuItem.Icon>
+                                    <Path Data="{StaticResource IconHome}" Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=jp:HamburgerMenuItem}}" Stretch="Uniform" />
+                                </jp:HamburgerMenuItem.Icon>
+                            </jp:HamburgerMenuItem>
+                            <jp:HamburgerMenuItem Content="Ordrer" x:Name="HamOrders">
+                                <jp:HamburgerMenuItem.Icon>
+                                    <Path Data="{StaticResource IconList}" Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=jp:HamburgerMenuItem}}" Stretch="Uniform" />
+                                </jp:HamburgerMenuItem.Icon>
+                            </jp:HamburgerMenuItem>
+                            <jp:HamburgerMenuItem Content="Medarbejdere" x:Name="HamPeople">
+                                <jp:HamburgerMenuItem.Icon>
+                                    <Path Data="{StaticResource IconPeople}" Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=jp:HamburgerMenuItem}}" Stretch="Uniform" />
+                                </jp:HamburgerMenuItem.Icon>
+                            </jp:HamburgerMenuItem>
+                            <jp:HamburgerMenuItem Content="Indstillinger" x:Name="HamSettings">
+                                <jp:HamburgerMenuItem.Icon>
+                                    <Path Data="{StaticResource IconGear}" Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=jp:HamburgerMenuItem}}" Stretch="Uniform" />
+                                </jp:HamburgerMenuItem.Icon>
+                            </jp:HamburgerMenuItem>
+                        </jp:HamburgerMenu>
+                    </Border>
+                </HeaderedContentControl>
+
+                <HeaderedContentControl Style="{StaticResource Demo.Column}" Header="InfoBar" Tag="jp:InfoBar">
+                    <StackPanel Width="340" d:Demo.Spacing="8">
+                        <jp:InfoBar Severity="Info" Message="Version 2.4 er klar til installation." />
+                        <jp:InfoBar Severity="Success" Title="Sendt." Message="Ugesedlen er sendt til godkendelse." />
+                        <jp:InfoBar Severity="Warning" Message="3 timer er ikke fordelt på projekter." />
+                        <jp:InfoBar Severity="Error" Title="Fejl:" Message="Forbindelsen til lønsystemet fejlede." IsClosable="False">
+                            <Button Content="Prøv igen" MinHeight="20" Padding="10,1" />
+                        </jp:InfoBar>
+                    </StackPanel>
+                </HeaderedContentControl>
+            </WrapPanel>
+
+            <WrapPanel>
+                <HeaderedContentControl Style="{StaticResource Demo.Column}" Header="Menu · ToolBar · StatusBar" Tag="JetPack.Styles.Menu / ToolBar / StatusBar">
+                    <StackPanel Width="620" d:Demo.Spacing="8">
+                        <Menu>
+                            <MenuItem Header="_Filer">
+                                <MenuItem Header="_Ny kunde" InputGestureText="Ctrl+N" />
+                                <MenuItem Header="_Åbn…" InputGestureText="Ctrl+O" />
+                                <Separator />
+                                <MenuItem Header="Seneste">
+                                    <MenuItem Header="Contoso A/S" />
+                                    <MenuItem Header="Fabrikam" />
+                                </MenuItem>
+                                <Separator />
+                                <MenuItem Header="_Afslut" />
+                            </MenuItem>
+                            <MenuItem Header="_Rediger">
+                                <MenuItem Command="ApplicationCommands.Undo" />
+                                <MenuItem Command="ApplicationCommands.Find" />
+                            </MenuItem>
+                            <MenuItem Header="_Vis">
+                                <MenuItem Header="Statuslinje" IsCheckable="True" IsChecked="True" />
+                                <MenuItem Header="Fuld skærm" InputGestureText="F11" />
+                            </MenuItem>
+                            <MenuItem Header="_Hjælp" />
+                        </Menu>
+                        <ToolBarTray>
+                            <ToolBar>
+                                <Button ToolTip="Ny">
+                                    <Path Width="12" Height="14" Stretch="Uniform" Fill="#FF404040" Data="M0,0 H6 L10,4 V14 H0 Z M6,0 V4 H10" />
+                                </Button>
+                                <Button ToolTip="Gem">
+                                    <Path Width="13" Height="13" Stretch="Uniform" Fill="#FF404040" Data="M0,0 H10 L12,2 V12 H0 Z M2,1 V5 H9 V1 Z M3,8 V11 H9 V8 Z" />
+                                </Button>
+                                <Separator />
+                                <ToggleButton IsChecked="True" ToolTip="Fed">
+                                    <TextBlock FontWeight="Bold" Text="B" />
+                                </ToggleButton>
+                                <ToggleButton ToolTip="Kursiv">
+                                    <TextBlock FontStyle="Italic" FontFamily="Georgia" Text="I" />
+                                </ToggleButton>
+                                <ToggleButton ToolTip="Understreget">
+                                    <TextBlock TextDecorations="Underline" Text="U" />
+                                </ToggleButton>
+                                <Separator />
+                                <ComboBox Width="110" SelectedIndex="0">
+                                    <ComboBoxItem Content="Trebuchet MS" />
+                                    <ComboBoxItem Content="Segoe UI" />
+                                </ComboBox>
+                                <CheckBox Content="Stavekontrol" IsChecked="True" />
+                            </ToolBar>
+                        </ToolBarTray>
+                        <StatusBar>
+                            <StatusBarItem Content="Klar" />
+                            <StatusBarItem Content="Fabrikam A/S · 14 ordrer" />
+                            <StatusBarItem HorizontalAlignment="Right">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="Synkroniserer" Margin="0,0,8,0" VerticalAlignment="Center" />
+                                    <ProgressBar Width="80" Height="8" IsIndeterminate="True" />
+                                </StackPanel>
+                            </StatusBarItem>
+                        </StatusBar>
+                    </StackPanel>
+                </HeaderedContentControl>
+            </WrapPanel>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

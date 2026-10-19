@@ -1,0 +1,93 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!-- Glyphs -->
+    <Geometry x:Key="JetPack.Geometry.Check">M0.5625,5.0625 L1.5,3.9375 L2.9575791,4.9549685 L5.75,1.125 L6.9375,2 L3.186887,7.0000076 z</Geometry>
+    <Geometry x:Key="JetPack.Geometry.ArrowDown">M0,0 L8,0 L4,4 z</Geometry>
+    <Geometry x:Key="JetPack.Geometry.ArrowUp">M0,4 L8,4 L4,0 z</Geometry>
+    <Geometry x:Key="JetPack.Geometry.ArrowLeft">M4,0 L4,7 L0,3.5 z</Geometry>
+    <Geometry x:Key="JetPack.Geometry.ArrowRight">M0,0 L0,7 L4,3.5 z</Geometry>
+    <Geometry x:Key="JetPack.Geometry.Close">M0,0 L8,8 M8,0 L0,8</Geometry>
+    <Geometry x:Key="JetPack.Geometry.Notch">M0,0 L15,0 L7.5,9 z</Geometry>
+    <Geometry x:Key="JetPack.Geometry.ErrorCorner">M0,0 L8,0 L8,8 z</Geometry>
+
+    <!-- Keyboard focus: 1px accent ring (transparent when ThemeManager.ShowFocusVisuals is off) -->
+    <Style x:Key="JetPack.Styles.FocusVisual">
+        <Setter Property="Control.Template">
+            <Setter.Value>
+                <ControlTemplate>
+                    <Border Margin="-2" BorderBrush="{DynamicResource JetPack.Brushes.Focus}" BorderThickness="1" CornerRadius="3" SnapsToDevicePixels="True" />
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!--
+    Validation: red frame with the folded red corner from the Silverlight theme,
+    and the red call-out to the right while the control has focus.
+    -->
+    <ControlTemplate x:Key="JetPack.Templates.ValidationError">
+        <Grid>
+            <AdornedElementPlaceholder x:Name="Placeholder" />
+            <Border BorderBrush="{DynamicResource JetPack.Brushes.Error}" BorderThickness="1" CornerRadius="2.5" IsHitTestVisible="False" />
+            <Path Width="8" Height="8" HorizontalAlignment="Right" VerticalAlignment="Top" Data="{StaticResource JetPack.Geometry.ErrorCorner}"
+                  Fill="{DynamicResource JetPack.Brushes.Error}" IsHitTestVisible="False" />
+            <Popup AllowsTransparency="True" Placement="Right" HorizontalOffset="4" PopupAnimation="Fade" Focusable="False"
+                   PlacementTarget="{Binding ElementName=Placeholder}"
+                   IsOpen="{Binding ElementName=Placeholder, Path=AdornedElement.IsKeyboardFocusWithin, Mode=OneWay}">
+                <Grid Margin="0,0,6,6">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Path Margin="0,7,0,0" VerticalAlignment="Top" Data="M5,0 L5,10 L0,5 z" Fill="{DynamicResource JetPack.Brushes.Error.Tip}" />
+                    <Border Grid.Column="1" Background="#352A2E31" CornerRadius="3" Margin="1,1,-2,-2" />
+                    <Border Grid.Column="1" Background="{DynamicResource JetPack.Brushes.Error.Tip}" CornerRadius="2">
+                        <TextBlock MaxWidth="260" Margin="8,4" Foreground="White" TextWrapping="Wrap"
+                                   FontFamily="{DynamicResource JetPack.Fonts.Family}" FontSize="{DynamicResource JetPack.Font.Size.Small}"
+                                   Text="{Binding ElementName=Placeholder, Path=AdornedElement.(Validation.Errors)/ErrorContent}" />
+                    </Border>
+                </Grid>
+            </Popup>
+        </Grid>
+    </ControlTemplate>
+
+    <!-- Small "x" inside text boxes -->
+    <Style x:Key="JetPack.Styles.Button.Clear" TargetType="Button">
+        <Setter Property="Focusable" Value="False" />
+        <Setter Property="Cursor" Value="Arrow" />
+        <Setter Property="Foreground" Value="#FF808080" />
+        <Setter Property="Width" Value="16" />
+        <Setter Property="Height" Value="16" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Grid Background="Transparent">
+                        <Path x:Name="Glyph" Width="7" Height="7" Stretch="Fill" Data="{StaticResource JetPack.Geometry.Close}"
+                              Stroke="{TemplateBinding Foreground}" StrokeThickness="1.5" />
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="Glyph" Property="Stroke" Value="{DynamicResource JetPack.Brushes.Error}" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- Invisible page buttons for scroll bars and sliders -->
+    <Style x:Key="JetPack.Styles.RepeatButton.Transparent" TargetType="RepeatButton">
+        <Setter Property="Focusable" Value="False" />
+        <Setter Property="IsTabStop" Value="False" />
+        <Setter Property="OverridesDefaultStyle" Value="True" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="RepeatButton">
+                    <Border Background="Transparent" />
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+</ResourceDictionary>

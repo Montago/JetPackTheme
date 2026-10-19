@@ -1,0 +1,10 @@
+<!--
+    Theme dictionary: default styles for the JetPack controls (including
+    classes derived from JetPackWindow, which implicit styles do not reach).
+-->
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="pack://application:,,,/JetPack.Wpf;component/Styles/JetPack.xaml" />
+    </ResourceDictionary.MergedDictionaries>
+</ResourceDictionary>

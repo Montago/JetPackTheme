@@ -1,0 +1,345 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:p="clr-namespace:System.Windows.Controls.Primitives;assembly=PresentationFramework"
+                    xmlns:h="clr-namespace:JetPack.Wpf.Helpers">
+
+    <!-- White card with a light-grey header strip; today in grey, selection in accent (SDKStyles.xaml) -->
+
+    <Style x:Key="JetPack.Styles.CalendarDayButton" TargetType="CalendarDayButton">
+        <Setter Property="MinWidth" Value="22" />
+        <Setter Property="MinHeight" Value="19" />
+        <Setter Property="FontSize" Value="10.5" />
+        <Setter Property="Foreground" Value="#FF333333" />
+        <Setter Property="HorizontalContentAlignment" Value="Center" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="CalendarDayButton">
+                    <Grid Margin="0.5">
+                        <Rectangle x:Name="Today" Fill="#FFAAAAAA" RadiusX="1" RadiusY="1" Visibility="Collapsed" />
+                        <Rectangle x:Name="Selected" Fill="{DynamicResource JetPack.Brushes.Accent.Selection}" RadiusX="1" RadiusY="1" Visibility="Collapsed"
+                                   Effect="{DynamicResource JetPack.Effects.LightControlShadow}" />
+                        <Rectangle x:Name="Over" Fill="#20000000" RadiusX="1" RadiusY="1" Visibility="Collapsed" />
+                        <ContentPresenter x:Name="Content" Margin="4,2" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+                        <Path x:Name="Blackout" Margin="4" Stretch="Fill" Fill="{DynamicResource JetPack.Brushes.Disabled}" Opacity="0.6" Visibility="Collapsed"
+                              Data="M8.1772461,11.029181 L10.433105,11.029181 L11.700684,12.801641 L12.973633,11.029181 L15.191895,11.029181 L12.844727,13.999395 L15.21875,17.060919 L12.962891,17.060919 L11.673828,15.256231 L10.352539,17.060919 L8.1396484,17.060919 L10.519043,14.042364 z" />
+                        <Rectangle x:Name="Focus" Stroke="{DynamicResource JetPack.Brushes.Focus.Border}" StrokeThickness="1" RadiusX="1" RadiusY="1" Visibility="Collapsed" />
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="Over" Property="Visibility" Value="Visible" />
+                        </Trigger>
+                        <Trigger Property="IsInactive" Value="True">
+                            <Setter Property="Foreground" Value="#FFADADAD" />
+                        </Trigger>
+                        <Trigger Property="IsToday" Value="True">
+                            <Setter TargetName="Today" Property="Visibility" Value="Visible" />
+                            <Setter Property="Foreground" Value="White" />
+                        </Trigger>
+                        <Trigger Property="IsHighlighted" Value="True">
+                            <Setter TargetName="Over" Property="Visibility" Value="Visible" />
+                        </Trigger>
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter TargetName="Selected" Property="Visibility" Value="Visible" />
+                            <Setter Property="Foreground" Value="White" />
+                        </Trigger>
+                        <Trigger Property="IsBlackedOut" Value="True">
+                            <Setter TargetName="Blackout" Property="Visibility" Value="Visible" />
+                        </Trigger>
+                        <Trigger Property="IsKeyboardFocused" Value="True">
+                            <Setter TargetName="Focus" Property="Visibility" Value="Visible" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="JetPack.Styles.CalendarButton" TargetType="CalendarButton">
+        <Setter Property="MinWidth" Value="40" />
+        <Setter Property="MinHeight" Value="36" />
+        <Setter Property="FontSize" Value="11" />
+        <Setter Property="Foreground" Value="#FF333333" />
+        <Setter Property="HorizontalContentAlignment" Value="Center" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="CalendarButton">
+                    <Grid Margin="1">
+                        <Rectangle x:Name="Selected" Fill="{DynamicResource JetPack.Brushes.Accent.Selection}" RadiusX="1" RadiusY="1" Visibility="Collapsed" />
+                        <Rectangle x:Name="Over" Fill="#20000000" RadiusX="1" RadiusY="1" Visibility="Collapsed" />
+                        <ContentPresenter Margin="2" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="Over" Property="Visibility" Value="Visible" />
+                        </Trigger>
+                        <Trigger Property="IsInactive" Value="True">
+                            <Setter Property="Foreground" Value="#FFADADAD" />
+                        </Trigger>
+                        <Trigger Property="HasSelectedDays" Value="True">
+                            <Setter TargetName="Selected" Property="Visibility" Value="Visible" />
+                            <Setter Property="Foreground" Value="White" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="JetPack.Styles.Calendar.NavButton" TargetType="Button">
+        <Setter Property="Focusable" Value="False" />
+        <Setter Property="OverridesDefaultStyle" Value="True" />
+        <Setter Property="Width" Value="22" />
+        <Setter Property="Height" Value="20" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="Bd" Background="Transparent" CornerRadius="2">
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="Bd" Property="Background" Value="#1A000000" />
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Opacity" Value="0.4" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="JetPack.Styles.Calendar.HeaderButton" TargetType="Button">
+        <Setter Property="Focusable" Value="False" />
+        <Setter Property="OverridesDefaultStyle" Value="True" />
+        <Setter Property="FontWeight" Value="Bold" />
+        <Setter Property="FontSize" Value="12" />
+        <Setter Property="Foreground" Value="{DynamicResource JetPack.Brushes.Header.Foreground}" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="Bd" Background="Transparent" CornerRadius="2" Padding="6,2">
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" Effect="{DynamicResource JetPack.Effects.TextEmboss}" />
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="Bd" Property="Background" Value="#14000000" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="JetPack.Styles.CalendarItem" TargetType="CalendarItem">
+        <Setter Property="Margin" Value="0" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="CalendarItem">
+                    <ControlTemplate.Resources>
+                        <DataTemplate x:Key="{x:Static CalendarItem.DayTitleTemplateResourceKey}">
+                            <TextBlock Margin="0,4,0,2" HorizontalAlignment="Center" FontSize="9.5" Foreground="#FF8A8A8A" Text="{Binding}" />
+                        </DataTemplate>
+                    </ControlTemplate.Resources>
+                    <Grid x:Name="PART_Root" Margin="0,0,5,5">
+                        <Border Background="{TemplateBinding Background}" CornerRadius="2" Effect="{DynamicResource JetPack.Effects.LightControlShadow}" />
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="28" />
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
+                            <Border Background="{DynamicResource JetPack.Brushes.Static.Background}" CornerRadius="2,2,0,0" />
+                            <Grid Margin="3,0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <Button x:Name="PART_PreviousButton" Style="{StaticResource JetPack.Styles.Calendar.NavButton}">
+                                    <Path Width="4" Height="7" Stretch="Fill" Data="{DynamicResource JetPack.Geometry.ArrowLeft}" Fill="{DynamicResource JetPack.Brushes.Control.Glyph.Dark}" />
+                                </Button>
+                                <Button x:Name="PART_HeaderButton" Grid.Column="1" Style="{StaticResource JetPack.Styles.Calendar.HeaderButton}" HorizontalAlignment="Center" />
+                                <Button x:Name="PART_NextButton" Grid.Column="2" Style="{StaticResource JetPack.Styles.Calendar.NavButton}">
+                                    <Path Width="4" Height="7" Stretch="Fill" Data="{DynamicResource JetPack.Geometry.ArrowRight}" Fill="{DynamicResource JetPack.Brushes.Control.Glyph.Dark}" />
+                                </Button>
+                            </Grid>
+                            <Grid x:Name="PART_MonthView" Grid.Row="1" Margin="6,2,6,6" HorizontalAlignment="Center" Visibility="Visible">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" /><RowDefinition Height="Auto" /><RowDefinition Height="Auto" /><RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" /><RowDefinition Height="Auto" /><RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" /><ColumnDefinition Width="Auto" /><ColumnDefinition Width="Auto" /><ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="Auto" /><ColumnDefinition Width="Auto" /><ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                            </Grid>
+                            <Grid x:Name="PART_YearView" Grid.Row="1" Margin="6" HorizontalAlignment="Center" Visibility="Hidden">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" /><RowDefinition Height="Auto" /><RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" /><ColumnDefinition Width="Auto" /><ColumnDefinition Width="Auto" /><ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                            </Grid>
+                        </Grid>
+                        <Rectangle x:Name="PART_DisabledVisual" Fill="#80FFFFFF" RadiusX="2" RadiusY="2" Visibility="Collapsed" />
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <DataTrigger Binding="{Binding DisplayMode, RelativeSource={RelativeSource AncestorType=Calendar}}" Value="Year">
+                            <Setter TargetName="PART_MonthView" Property="Visibility" Value="Hidden" />
+                            <Setter TargetName="PART_YearView" Property="Visibility" Value="Visible" />
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding DisplayMode, RelativeSource={RelativeSource AncestorType=Calendar}}" Value="Decade">
+                            <Setter TargetName="PART_MonthView" Property="Visibility" Value="Hidden" />
+                            <Setter TargetName="PART_YearView" Property="Visibility" Value="Visible" />
+                        </DataTrigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter TargetName="PART_DisabledVisual" Property="Visibility" Value="Visible" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="JetPack.Styles.Calendar" TargetType="Calendar">
+        <Setter Property="FontFamily" Value="{DynamicResource JetPack.Fonts.Family}" />
+        <Setter Property="Foreground" Value="#FF333333" />
+        <Setter Property="Background" Value="White" />
+        <Setter Property="IsTodayHighlighted" Value="True" />
+        <Setter Property="CalendarItemStyle" Value="{StaticResource JetPack.Styles.CalendarItem}" />
+        <Setter Property="CalendarDayButtonStyle" Value="{StaticResource JetPack.Styles.CalendarDayButton}" />
+        <Setter Property="CalendarButtonStyle" Value="{StaticResource JetPack.Styles.CalendarButton}" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Calendar">
+                    <StackPanel x:Name="PART_Root" HorizontalAlignment="Center">
+                        <CalendarItem x:Name="PART_CalendarItem" Style="{TemplateBinding CalendarItemStyle}" Background="{TemplateBinding Background}" Foreground="{TemplateBinding Foreground}" />
+                    </StackPanel>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- ===================== DatePicker ===================== -->
+    <Style x:Key="JetPack.Styles.DatePickerTextBox" TargetType="DatePickerTextBox">
+        <Setter Property="SnapsToDevicePixels" Value="True" />
+        <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+        <Setter Property="Foreground" Value="{DynamicResource JetPack.Brushes.Input.Foreground}" />
+        <Setter Property="Background" Value="{DynamicResource JetPack.Brushes.Input.Background}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource JetPack.Brushes.Control.Border}" />
+        <Setter Property="CaretBrush" Value="{DynamicResource JetPack.Brushes.Input.Foreground}" />
+        <Setter Property="SelectionBrush" Value="{DynamicResource JetPack.Brushes.Accent.Solid}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="Padding" Value="5,3,28,3" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="DatePickerTextBox">
+                    <Grid SnapsToDevicePixels="True">
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="WatermarkStates">
+                                <VisualState x:Name="Unwatermarked" />
+                                <VisualState x:Name="Watermarked">
+                                    <Storyboard>
+                                        <DoubleAnimation Storyboard.TargetName="PART_Watermark" Storyboard.TargetProperty="Opacity" To="0.5" Duration="0" />
+                                        <DoubleAnimation Storyboard.TargetName="PART_ContentHost" Storyboard.TargetProperty="Opacity" To="0" Duration="0" />
+                                    </Storyboard>
+                                </VisualState>
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+                        <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="2.5">
+                            <Grid Margin="{TemplateBinding Padding}">
+                                <ContentControl x:Name="PART_Watermark" Opacity="0" Focusable="False" IsHitTestVisible="False" Margin="2,0" VerticalAlignment="Center" />
+                                <ScrollViewer x:Name="PART_ContentHost" Focusable="False" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden" VerticalAlignment="Center" />
+                            </Grid>
+                        </Border>
+                        <Border BorderBrush="{DynamicResource JetPack.Brushes.Control.OuterHighlight}" BorderThickness="0,0,1,1" CornerRadius="3" Margin="0,0,-1,-1" IsHitTestVisible="False" />
+                        <Border BorderBrush="{DynamicResource JetPack.Brushes.Input.InnerShadowDark}" BorderThickness="1,1,0,0" CornerRadius="2" Margin="1" IsHitTestVisible="False" />
+                        <Border BorderBrush="{DynamicResource JetPack.Brushes.Input.InnerShadowLight}" BorderThickness="1,1,0,0" CornerRadius="1" Margin="2" IsHitTestVisible="False" />
+                        <Border x:Name="Focus" BorderBrush="{DynamicResource JetPack.Brushes.Focus.Border}" BorderThickness="1" CornerRadius="2.5" Visibility="Collapsed" IsHitTestVisible="False" />
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsKeyboardFocusWithin" Value="True">
+                            <Setter TargetName="Focus" Property="Visibility" Value="Visible" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="JetPack.Styles.DatePicker.Button" TargetType="Button">
+        <Setter Property="Focusable" Value="False" />
+        <Setter Property="OverridesDefaultStyle" Value="True" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Grid Width="20" Margin="3" SnapsToDevicePixels="True">
+                        <Border x:Name="Normal" Background="{DynamicResource JetPack.Brushes.Control.Background}" CornerRadius="2">
+                            <Border.Effect>
+                                <DropShadowEffect BlurRadius="2" ShadowDepth="1" Direction="270" Opacity="0.4" />
+                            </Border.Effect>
+                        </Border>
+                        <Border x:Name="MouseOver" Background="{DynamicResource JetPack.Brushes.Control.Background.MouseOver}" CornerRadius="2" Opacity="0" />
+                        <Border x:Name="Pressed" Background="{DynamicResource JetPack.Brushes.Control.Background.Pressed}" CornerRadius="2" Opacity="0" />
+                        <Border BorderBrush="{DynamicResource JetPack.Brushes.Control.Highlight}" BorderThickness="1,1,0,0" CornerRadius="2" />
+                        <Canvas Width="12" Height="12">
+                            <Rectangle Canvas.Left="0.5" Canvas.Top="1.5" Width="11" Height="10" RadiusX="1" RadiusY="1" Fill="White" Stroke="#FF555555" />
+                            <Rectangle Canvas.Left="0.5" Canvas.Top="1.5" Width="11" Height="3" Fill="#FF777777" />
+                            <Rectangle Canvas.Left="3" Canvas.Top="6" Width="2" Height="2" Fill="#FF555555" />
+                            <Rectangle Canvas.Left="7" Canvas.Top="6" Width="2" Height="2" Fill="#FF555555" />
+                        </Canvas>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="MouseOver" Property="Opacity" Value="1" />
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="Pressed" Property="Opacity" Value="1" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="JetPack.Styles.DatePicker" TargetType="DatePicker">
+        <Setter Property="SnapsToDevicePixels" Value="True" />
+        <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+        <Setter Property="FontFamily" Value="{DynamicResource JetPack.Fonts.Family}" />
+        <Setter Property="FontSize" Value="{DynamicResource JetPack.Font.Size.Control}" />
+        <Setter Property="Foreground" Value="{DynamicResource JetPack.Brushes.Input.Foreground}" />
+        <Setter Property="MinHeight" Value="24" />
+        <Setter Property="IsTodayHighlighted" Value="True" />
+        <Setter Property="CalendarStyle" Value="{StaticResource JetPack.Styles.Calendar}" />
+        <Setter Property="Validation.ErrorTemplate" Value="{DynamicResource JetPack.Templates.ValidationError}" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="DatePicker">
+                    <Grid x:Name="PART_Root">
+                        <DatePickerTextBox x:Name="PART_TextBox" Style="{StaticResource JetPack.Styles.DatePickerTextBox}" Foreground="{TemplateBinding Foreground}" />
+                        <Button x:Name="PART_Button" Style="{StaticResource JetPack.Styles.DatePicker.Button}" HorizontalAlignment="Right" />
+                        <Popup x:Name="PART_Popup" AllowsTransparency="True" Placement="Bottom" PlacementTarget="{Binding ElementName=PART_TextBox}" StaysOpen="False" VerticalOffset="2" />
+                        <Border x:Name="Disabled" Background="{DynamicResource JetPack.Brushes.Input.Disabled}" CornerRadius="2.5" Visibility="Collapsed" />
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter TargetName="Disabled" Property="Visibility" Value="Visible" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="CalendarDayButton" BasedOn="{StaticResource JetPack.Styles.CalendarDayButton}" />
+    <Style TargetType="CalendarButton" BasedOn="{StaticResource JetPack.Styles.CalendarButton}" />
+    <Style TargetType="CalendarItem" BasedOn="{StaticResource JetPack.Styles.CalendarItem}" />
+    <Style TargetType="Calendar" BasedOn="{StaticResource JetPack.Styles.Calendar}" />
+    <Style TargetType="DatePickerTextBox" BasedOn="{StaticResource JetPack.Styles.DatePickerTextBox}" />
+    <Style TargetType="DatePicker" BasedOn="{StaticResource JetPack.Styles.DatePicker}" />
+
+</ResourceDictionary>

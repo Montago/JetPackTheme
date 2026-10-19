@@ -1,0 +1,1308 @@
+<title>JetPack for WPF</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fira+Sans:wght@400;700&display=swap">
+<style>
+/* Layout: the original JetPack theme browser — textured grey ground, dark tab strip with green notch, controls in ruled columns. */
+:root{
+  color-scheme: light;
+  --font:"Trebuchet MS","Fira Sans",system-ui,sans-serif;
+  --mono:Consolas,"Cascadia Mono","Courier New",monospace;
+  --fs-ctl:12px;
+
+  /* ground */
+  --tex:url(data:image/png;base64,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);
+  --ground:#86888d;
+  --on-tex:#ffffff;
+  --on-tex-soft:rgba(255,255,255,.80);
+  --on-tex-dim:rgba(255,255,255,.50);
+
+  /* neutrals (Brushes.xaml) */
+  --ctl-fg:#202020;
+  --input-fg:#404040;
+  --input-border:#686868;
+  --ctl-normal:linear-gradient(#F7F7F7 16.4%,#C6C6C6 80.2%,#C6C6C6 95.3%);
+  --ctl-over:linear-gradient(#FFFFFF 21.1%,#DEDEDE 78.4%);
+  --ctl-pressed:linear-gradient(#CECECE 20.4%,#AFAFAF 86.4%);
+  --static:linear-gradient(#E2E2E2,#C6C6C6);
+  --static-over:linear-gradient(#F8F8F8,#D0D0D0);
+  --alt:#57575C;
+  --dark-bg:#707176;
+  --dark-border:#58585D;
+  --edge:#2E2E30;
+  --disabled:linear-gradient(#9C9DA0,#8B8C8E);
+  --error:#EF0A0A;
+  --error-tip:#DC000C;
+  --grid-head:linear-gradient(#606066,#4D4D51);
+  --hover-sel:linear-gradient(#EDEDEE,#DEDEDF);
+  --scroll:#DCDCDD;
+  --menu-bg:#E0E0E0;
+  --nav-inactive:#58585D;
+
+  /* effects (CoreStyles.xaml) */
+  --shadow:0 1px 3px rgba(0,0,0,.55);
+  --shadow-light:0 1px 4px rgba(85,82,79,.5);
+  --hl:inset 1px 1px 0 rgba(255,255,255,.5);
+  --inner:inset 1px 1px 0 rgba(80,80,80,.31),inset 2px 2px 0 rgba(32,32,32,.125);
+  --outer-hl:1px 1px 0 rgba(255,255,255,.25);
+
+  /* fixed coloured buttons */
+  --green-n:linear-gradient(#A0BB0E 17.6%,#6D9700 89.4%);
+  --green-o:linear-gradient(#AECC07 22.8%,#83B100 84.9%);
+  --green-p:linear-gradient(#6D9000 31%,#5A8100 78%);
+  --orange-n:linear-gradient(#FFB400 16.9%,#FFA700 48.2%,#FF7600 86.4%);
+  --orange-o:linear-gradient(#FFC740 25.4%,#FFB400 49.6%,#FF9900 100%);
+  --orange-p:linear-gradient(#DD870D 20.7%,#CE5300 85.8%);
+  --blue-n:linear-gradient(#99C7E2 14%,#87BDDD 37.5%,#4599CA 87.1%);
+  --blue-o:linear-gradient(#81CDF8 23.7%,#2DACF3 86.6%);
+  --blue-p:linear-gradient(#769BB1 22%,#437694 79.7%);
+
+  /* accent: green (default) */
+  --acc-sel:linear-gradient(#98B913,#75A20A);
+  --acc:linear-gradient(#BCD742,#91B006);
+  --acc-over:linear-gradient(#9EBF0A,#C3E040);
+  --acc-sub:linear-gradient(#6D9000 31%,#5A8100 78%);
+  --acc-hl:#C2DF00;
+  --acc-solid:#75A20A;
+  --acc-link:#D0FF00;
+  --acc-btn:var(--green-n);
+  --acc-btn-o:var(--green-o);
+  --acc-btn-p:var(--green-p);
+  --acc-btn-hl:#BED126;
+  --acc-btn-sh:43,61,0;
+
+  --focus:var(--acc-hl);
+}
+:root[data-accent="orange"]{
+  --acc-sel:linear-gradient(#FFB629,#FE770A);
+  --acc:linear-gradient(#FFB72C,#FF8700);
+  --acc-over:linear-gradient(#FFC149,#FF9800);
+  --acc-sub:linear-gradient(#DD870D,#CE5300);
+  --acc-hl:#FFC600;
+  --acc-solid:#FE770A;
+  --acc-link:#FFC600;
+  --acc-btn:var(--orange-n);--acc-btn-o:var(--orange-o);--acc-btn-p:var(--orange-p);
+  --acc-btn-hl:#FFCC00;--acc-btn-sh:182,47,0;
+}
+:root[data-accent="blue"]{
+  --acc-sel:linear-gradient(#42BAFF,#148CD1);
+  --acc:linear-gradient(#42BAFF,#148CD1);
+  --acc-over:linear-gradient(#1A9EE8,#74CDFF);
+  --acc-sub:linear-gradient(#1AA0EC 31%,#0072BE 78%);
+  --acc-hl:#8DDBFF;
+  --acc-solid:#148CD1;
+  --acc-link:#8DDBFF;
+  --acc-btn:var(--blue-n);--acc-btn-o:var(--blue-o);--acc-btn-p:var(--blue-p);
+  --acc-btn-hl:#B9DAEC;--acc-btn-sh:0,83,142;
+}
+:root[data-focus="off"]{--focus:transparent}
+:root[data-size="sl"]{--fs-ctl:11px}
+
+*{box-sizing:border-box}
+html{background:var(--ground)}
+body{background:var(--ground) var(--tex) repeat;color:var(--on-tex);font:var(--fs-ctl)/1.4 var(--font);min-height:100vh}
+body::before{content:"";position:fixed;inset:0;pointer-events:none;box-shadow:inset 0 0 180px 30px rgba(0,0,0,.42);z-index:0}
+::selection{background:var(--acc-solid);color:#fff}
+button,input,select,textarea{font:inherit;font-size:var(--fs-ctl)}
+:focus-visible{outline:1px solid var(--focus);outline-offset:1px}
+.sr{position:absolute;width:1px;height:1px;opacity:0;pointer-events:none;margin:0}
+
+.page{position:relative;z-index:1;max-width:1180px;margin:0 auto;padding-block:0 56px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));
+  background:linear-gradient(rgba(255,255,255,.12),rgba(255,255,255,0) 420px)}
+
+/* ---------- header ---------- */
+.top{display:flex;justify-content:space-between;align-items:flex-start;gap:16px 24px;flex-wrap:wrap}
+.tabs-wrap{max-width:100%;overflow-x:auto;padding-bottom:10px;margin-bottom:-10px}
+.tabs{display:flex;background:#5B5C61;box-shadow:var(--shadow);width:max-content}
+.tabs button{position:relative;border:0;background:transparent;color:#fff;font-weight:700;font-size:15px;padding:9px 18px 10px;cursor:pointer;text-shadow:0 0 5px rgba(0,0,0,.25)}
+.tabs button:hover{background:rgba(255,255,255,.08)}
+.tabs button[aria-selected="true"]{background:var(--acc-sel);box-shadow:inset 0 1px 0 var(--acc-hl)}
+.tabs button[aria-selected="true"]::after{content:"";position:absolute;left:50%;bottom:-8px;margin-left:-7px;border-left:7px solid transparent;border-right:7px solid transparent;border-top:8px solid var(--acc-solid);filter:drop-shadow(0 1px 1px rgba(0,0,0,.4))}
+.brand{display:flex;flex-direction:column;align-items:flex-end;padding-top:14px}
+.brand b{font-weight:400;font-size:40px;line-height:1;letter-spacing:.5px;text-shadow:0 1px 5px rgba(0,0,0,.25)}
+.brand span{font-size:12px;color:var(--on-tex-soft);margin-top:4px}
+
+.toolbar{display:flex;flex-wrap:wrap;gap:12px 28px;align-items:center;margin-top:22px;padding:10px 14px;background:rgba(0,0,0,.12);border-top:1px solid rgba(0,0,0,.18);box-shadow:inset 0 1px 0 rgba(255,255,255,.08), 0 1px 0 rgba(255,255,255,.1)}
+.toolbar .grp{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.toolbar .lbl{color:var(--on-tex-soft);font-size:12px}
+.sw{width:22px;height:18px;border:0;border-radius:2px;cursor:pointer;box-shadow:var(--shadow)}
+.sw[aria-pressed="true"]{outline:2px solid #fff;outline-offset:1px}
+.sw.g{background:var(--green-n)}.sw.o{background:var(--orange-n)}.sw.b{background:var(--blue-n)}
+
+.intro{max-width:72ch;color:var(--on-tex-soft);font-size:13px;margin:22px 0 0}
+.intro code,.key{font-family:var(--mono);font-size:11px;color:var(--on-tex-dim)}
+.intro code{color:#fff;background:rgba(0,0,0,.15);padding:0 4px;border-radius:2px}
+
+/* ---------- column grid ---------- */
+.row{display:flex;flex-wrap:wrap;margin-top:34px;row-gap:28px}
+.col{flex:1 1 170px;min-width:0;padding:0 18px;display:flex;flex-direction:column;align-items:center;gap:11px}
+.col.wide{flex:2 1 340px}
+.col.xwide{flex:3 1 520px}
+.col + .col{border-left:1px solid rgba(0,0,0,.16);box-shadow:inset 1px 0 0 rgba(255,255,255,.10)}
+.col > h3{margin:0;font-size:15px;font-weight:700;text-align:center;text-shadow:0 0 5px rgba(0,0,0,.25)}
+.col > .key{margin-top:-9px;margin-bottom:4px;text-align:center}
+.stack{display:flex;flex-direction:column;gap:11px;align-items:flex-start}
+.stack.c{align-items:center}
+.hr{width:80%;height:2px;border-top:1px solid rgba(0,0,0,.18);border-bottom:1px solid rgba(255,255,255,.14);margin:6px 0}
+.note{font-size:11px;color:var(--on-tex-dim);text-align:center;max-width:26ch}
+.state{font-size:11px;color:var(--on-tex)}
+
+/* ---------- buttons ---------- */
+.btn{position:relative;display:inline-flex;align-items:center;justify-content:center;gap:6px;min-width:96px;height:22px;padding:0 16px;border:0;border-radius:2px;color:var(--ctl-fg);background:var(--ctl-normal);box-shadow:var(--shadow),var(--hl);text-shadow:0 1px 1px rgba(255,255,255,.5);cursor:pointer;white-space:nowrap;font-size:var(--fs-ctl)}
+.btn:hover,.btn.is-over{background:var(--ctl-over)}
+.btn:active,.btn.is-pressed{background:var(--ctl-pressed)}
+.btn:disabled,.btn.is-disabled{background:var(--disabled);box-shadow:inset -1px -1px 0 rgba(0,0,0,.4);color:rgba(32,32,32,.5);text-shadow:none;cursor:default}
+.btn.toggle[aria-pressed="true"]{background:linear-gradient(#E6E6E6 10%,#C9C9C9 90%);box-shadow:inset 0 0 0 1px rgba(73,74,77,.82),inset 2px 2px 0 rgba(48,48,48,.34),inset 3px 3px 0 rgba(48,48,48,.12)}
+.btn.c-green{--n:var(--green-n);--o:var(--green-o);--p:var(--green-p);--h:#BED126;--s:43,61,0}
+.btn.c-orange{--n:var(--orange-n);--o:var(--orange-o);--p:var(--orange-p);--h:#FFCC00;--s:182,47,0}
+.btn.c-blue{--n:var(--blue-n);--o:var(--blue-o);--p:var(--blue-p);--h:#B9DAEC;--s:0,83,142}
+.btn.c-accent{--n:var(--acc-btn);--o:var(--acc-btn-o);--p:var(--acc-btn-p);--h:var(--acc-btn-hl);--s:var(--acc-btn-sh)}
+.btn.c-green,.btn.c-orange,.btn.c-blue,.btn.c-accent{color:#fff;background:var(--n);box-shadow:var(--shadow),inset .5px 1px 0 var(--h);text-shadow:0 -1px 1px rgba(var(--s),.5)}
+.btn.c-green:hover,.btn.c-orange:hover,.btn.c-blue:hover,.btn.c-accent:hover{background:var(--o)}
+.btn.c-green:active,.btn.c-orange:active,.btn.c-blue:active,.btn.c-accent:active{background:var(--p)}
+.btn.sq{min-width:0;width:24px;padding:0}
+.btn .caret{width:0;height:0;border-left:4px solid transparent;border-right:4px solid transparent;border-top:4px solid #606060}
+.c-green .caret,.c-orange .caret,.c-blue .caret,.c-accent .caret{border-top-color:#fff}
+.split{display:inline-flex;border-radius:2px;box-shadow:var(--shadow)}
+.split .btn{box-shadow:var(--hl);border-radius:2px 0 0 2px}
+.split .btn + .btn{border-radius:0 2px 2px 0;min-width:0;width:24px;padding:0;box-shadow:inset 1px 0 0 rgba(255,255,255,.8),inset 2px 0 0 rgba(0,0,0,0)}
+.split .btn + .btn::before{content:"";position:absolute;left:-1px;top:3px;bottom:3px;width:1px;background:rgba(0,0,0,.22)}
+.link{color:var(--acc-link);text-decoration:none;cursor:pointer;padding:0 2px}
+.link:hover{text-decoration:underline}
+.link.is-disabled{color:rgba(255,255,255,.35);cursor:default;text-decoration:none}
+
+/* ---------- text input ---------- */
+.tb{display:block;width:100%;height:24px;padding:3px 6px;border:1px solid var(--input-border);border-radius:2.5px;background:#fff;color:var(--input-fg);box-shadow:var(--inner),var(--outer-hl);font-size:var(--fs-ctl)}
+textarea.tb{height:auto;min-height:60px;resize:vertical;line-height:1.4}
+.tb::placeholder{color:#9b9b9b}
+.tb[readonly]{background:#D3D3D4}
+.tb:disabled{background:#C4C5C8;color:rgba(64,64,64,.45);border-color:rgba(104,104,104,.55)}
+.tb.dark{background:linear-gradient(#57575F 30%,#505054);border-color:rgba(80,80,80,.82);color:#fff;box-shadow:inset 1px 1px 0 var(--edge),inset 2px 2px 0 rgba(48,48,48,.31),var(--outer-hl)}
+.tb.dark::placeholder{color:rgba(255,255,255,.45)}
+.tb.dark[readonly]{background:linear-gradient(rgba(255,255,255,.12),rgba(255,255,255,.12)),linear-gradient(#57575F 30%,#505054)}
+.tb.dark:disabled{background:linear-gradient(rgba(255,255,255,.2),rgba(255,255,255,.2)),linear-gradient(#57575F 30%,#505054);color:rgba(255,255,255,.4)}
+.tb:focus{outline:none;border-color:var(--focus-border,var(--input-border))}
+:root:not([data-focus="off"]) .tb:focus{border-color:var(--acc-solid);box-shadow:var(--inner),0 0 0 1px var(--acc-hl)}
+.fld{position:relative;width:100%}
+.fld.inv .tb{border-color:var(--error)}
+.fld.inv::after{content:"";position:absolute;top:0;right:0;width:8px;height:8px;background:var(--error);clip-path:polygon(0 0,100% 0,100% 100%);border-top-right-radius:2.5px;pointer-events:none}
+.fld .in-btn{position:absolute;top:3px;right:3px;bottom:3px;width:20px;border:0;border-radius:2px;background:var(--ctl-normal);box-shadow:0 1px 2px rgba(0,0,0,.4),var(--hl);cursor:pointer;display:grid;place-items:center;padding:0;color:#404040}
+.fld .in-btn:hover{background:var(--ctl-over)}
+.fld .clear{position:absolute;top:50%;right:6px;width:14px;height:14px;margin-top:-7px;border:0;background:transparent;color:#808080;cursor:pointer;font-size:14px;line-height:14px;padding:0}
+.fld .clear:hover{color:var(--error)}
+.fld.has-btn .tb{padding-right:28px}
+.spin{position:absolute;top:2px;right:2px;bottom:2px;width:16px;display:flex;flex-direction:column;gap:1px}
+.spin button{flex:1;border:0;border-radius:1.5px;background:var(--ctl-normal);box-shadow:0 1px 1px rgba(0,0,0,.35),var(--hl);cursor:pointer;padding:0;display:grid;place-items:center}
+.spin button:hover{background:var(--ctl-over)}
+.spin button:active{background:var(--ctl-pressed)}
+.tri-u,.tri-d,.tri-l,.tri-r{width:0;height:0;display:inline-block}
+.tri-u{border-left:3.5px solid transparent;border-right:3.5px solid transparent;border-bottom:4px solid #606060}
+.tri-d{border-left:3.5px solid transparent;border-right:3.5px solid transparent;border-top:4px solid #606060}
+.tri-l{border-top:3.5px solid transparent;border-bottom:3.5px solid transparent;border-right:4px solid #404040}
+.tri-r{border-top:3.5px solid transparent;border-bottom:3.5px solid transparent;border-left:4px solid #404040}
+.tbgrid{display:grid;grid-template-columns:repeat(2,minmax(0,120px));gap:11px 12px;width:100%;justify-content:center}
+.tbgrid .cap{font-size:11px;text-align:center}
+.vtip{position:relative;display:inline-block;background:var(--error-tip);color:#fff;padding:4px 8px;border-radius:2px;font-size:11px;box-shadow:1px 1px 0 rgba(42,46,49,.21),2px 2px 0 rgba(42,46,49,.15),3px 3px 0 rgba(42,46,49,.08),4px 4px 0 rgba(42,46,49,.02);max-width:200px}
+.vtip::before{content:"";position:absolute;left:-5px;top:7px;border-top:5px solid transparent;border-bottom:5px solid transparent;border-right:5px solid var(--error-tip)}
+
+/* ---------- checkbox / radio ---------- */
+.cb,.rb{display:inline-flex;align-items:center;gap:7px;cursor:pointer;color:#fff;font-size:var(--fs-ctl);position:relative;user-select:none}
+.cb .box{position:relative;width:12px;height:12px;flex:none;background:linear-gradient(#57575C 30%,#55555A 50%,#4F4F54);border:1px solid #343537;box-shadow:inset 1px 1px 0 rgba(48,48,48,.31),1px 1px 0 rgba(255,255,255,.25)}
+.cb:hover .box{box-shadow:inset 0 0 0 1px var(--acc-solid),1px 1px 0 rgba(255,255,255,.25)}
+.cb:active .box{box-shadow:inset 0 0 0 1px #5A8100,1px 1px 0 rgba(255,255,255,.25)}
+.cb .box::after{content:"";position:absolute;inset:1px;opacity:0;background:var(--acc-hl);
+  -webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0.3 0.8 7 6.6'%3E%3Cpath d='M0.5625,5.0625 L1.5,3.9375 L2.9575791,4.9549685 L5.75,1.125 L6.9375,2 L3.186887,7.0000076 z'/%3E%3C/svg%3E") center/contain no-repeat;
+          mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0.3 0.8 7 6.6'%3E%3Cpath d='M0.5625,5.0625 L1.5,3.9375 L2.9575791,4.9549685 L5.75,1.125 L6.9375,2 L3.186887,7.0000076 z'/%3E%3C/svg%3E") center/contain no-repeat}
+.cb input:checked + .box::after{opacity:1}
+.cb input:indeterminate + .box::after{opacity:1;-webkit-mask:none;mask:none;inset:4px 2px}
+.cb input:focus-visible + .box,.rb input:focus-visible + .dot{outline:1px solid var(--focus);outline-offset:2px}
+.cb.is-disabled,.rb.is-disabled{color:rgba(255,255,255,.45);cursor:default}
+.cb.is-disabled .box{background:#8E8F93;border-color:#717276;box-shadow:none}
+.cb.is-disabled .box::after{background:#C7C8CA}
+.cb.inv .box{border-color:var(--error);box-shadow:inset 0 0 0 1px var(--error)}
+.cb.inv .box::before{content:"";position:absolute;right:-4px;top:-4px;width:6px;height:6px;background:var(--error);clip-path:polygon(0 0,100% 0,100% 100%)}
+.rb .dot{position:relative;width:12px;height:12px;flex:none;border-radius:50%;background:linear-gradient(135deg,#505050 30%,#484848);border:1px solid #343537;box-shadow:1px 1px 0 rgba(255,255,255,.45),inset 0 0 3px rgba(0,0,0,.25)}
+.rb:hover .dot{box-shadow:inset 0 0 0 1px var(--acc-solid),1px 1px 0 rgba(255,255,255,.45)}
+.rb .dot::after{content:"";position:absolute;inset:2px;border-radius:50%;background:var(--acc-hl);opacity:0}
+.rb input:checked + .dot::after{opacity:1}
+.rb.indet .dot::after{opacity:1;background:transparent;border:1px solid var(--acc-hl)}
+.rb.is-disabled .dot{background:#8E8F93;border-color:#717276;box-shadow:none}
+.rb.is-disabled .dot::after{background:#C7C8CA}
+.rb.inv .dot{border-color:var(--error)}
+.rb.inv .dot::before{content:"";position:absolute;right:-3px;top:-3px;width:4px;height:4px;border-radius:50%;background:var(--error)}
+
+/* ---------- combobox / list ---------- */
+.combo{position:relative;width:130px}
+.combo-btn{position:relative;width:100%;height:22px;text-align:left;padding:0 32px 0 10px;border:0;border-radius:2px;background:var(--ctl-normal);box-shadow:var(--shadow),var(--hl);color:var(--ctl-fg);text-shadow:0 1px 1px rgba(255,255,255,.5);cursor:pointer;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.combo-btn:hover{background:var(--ctl-over)}
+.combo-btn[aria-expanded="true"],.combo-btn:active{background:var(--ctl-pressed)}
+.combo-btn:disabled{background:var(--disabled);box-shadow:inset -1px -1px 0 rgba(0,0,0,.4);color:rgba(32,32,32,.5);cursor:default;text-shadow:none}
+.combo-btn::before{content:"";position:absolute;right:26px;top:2px;bottom:2px;width:1px;background:linear-gradient(rgba(0,0,0,0),rgba(0,0,0,.19) 30%,rgba(0,0,0,.19) 70%,rgba(0,0,0,0));box-shadow:1px 0 0 rgba(255,255,255,.8)}
+.combo-btn::after{content:"";position:absolute;right:9px;top:50%;margin-top:-2px;border-left:4px solid transparent;border-right:4px solid transparent;border-top:4px solid #606060}
+.combo.edit .tb{padding-right:30px}
+.combo.edit .combo-btn{position:absolute;right:2px;top:2px;bottom:2px;width:22px;height:auto;padding:0;box-shadow:0 1px 1px rgba(0,0,0,.35),var(--hl)}
+.combo.edit .combo-btn::before{display:none}
+.combo.edit .combo-btn::after{right:7px}
+.pop{position:absolute;left:0;right:0;top:calc(100% + 1px);background:#fff;border-radius:0 0 4px 4px;box-shadow:var(--shadow);padding-bottom:4px;z-index:20;color:var(--input-fg);max-height:180px;overflow:auto}
+.pop.static{position:static;margin-top:1px}
+.item{padding:4px 6px;cursor:default;white-space:nowrap}
+.item:hover{background:var(--hover-sel)}
+.item[aria-selected="true"]{background:var(--acc-sel);color:#fff}
+.lb{width:140px;height:92px;background:#fff;border:1px solid var(--input-border);border-radius:3px;box-shadow:var(--inner),var(--outer-hl);overflow:auto;color:var(--input-fg)}
+.lb.inv{border-color:var(--error);height:36px;position:relative}
+.sv{width:120px;height:100px;border:1px solid rgba(64,64,64,.5);border-radius:2.5px;overflow:scroll;background:#C9CACC}
+.sv > div{width:260px;height:240px;background:repeating-linear-gradient(0deg,rgba(255,255,255,.06) 0 12px,transparent 12px 24px)}
+
+/* JetPack scrollbars (Chromium) */
+.jps::-webkit-scrollbar{width:16px;height:16px;background:var(--scroll)}
+.jps::-webkit-scrollbar-track{background:var(--scroll)}
+.jps::-webkit-scrollbar-corner{background:var(--scroll)}
+.jps::-webkit-scrollbar-thumb{background:linear-gradient(90deg,#F8F8F8 10%,#C0C0C0) padding-box;border:2px solid transparent;border-radius:3px 6px 4px 4px;box-shadow:inset 1px 1px 0 #fff,inset -1px -1px 0 rgba(0,0,0,.25)}
+.jps::-webkit-scrollbar-thumb:horizontal{background:linear-gradient(#F8F8F8 10%,#C0C0C0) padding-box}
+.jps::-webkit-scrollbar-button:single-button{display:block;width:16px;height:14px;background:var(--scroll) center/7px 4px no-repeat}
+.jps::-webkit-scrollbar-button:single-button:vertical:decrement{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 7 4'%3E%3Cpath d='M0 4h7L3.5 0z' fill='%23606060'/%3E%3C/svg%3E")}
+.jps::-webkit-scrollbar-button:single-button:vertical:increment{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 7 4'%3E%3Cpath d='M0 0h7L3.5 4z' fill='%23606060'/%3E%3C/svg%3E")}
+.jps::-webkit-scrollbar-button:single-button:horizontal:decrement{background-size:4px 7px;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 4 7'%3E%3Cpath d='M4 0v7L0 3.5z' fill='%23404040'/%3E%3C/svg%3E")}
+.jps::-webkit-scrollbar-button:single-button:horizontal:increment{background-size:4px 7px;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 4 7'%3E%3Cpath d='M0 0v7l4-3.5z' fill='%23606060'/%3E%3C/svg%3E")}
+
+/* ---------- progress / slider ---------- */
+.pb{position:relative;width:140px;height:10px;border-radius:2px;background:var(--alt);box-shadow:inset 0 0 0 1px rgba(80,80,80,.31),inset 0 0 0 2px rgba(32,32,32,.125),1px 1px 0 rgba(255,255,255,.25);overflow:hidden}
+.pb > i{position:absolute;top:1px;bottom:1px;left:1px;width:var(--v,50%);border-radius:1px;background:linear-gradient(rgba(255,255,255,.15) 50%,rgba(255,255,255,0) 50%),var(--acc)}
+.pb.ind > i{right:1px;width:auto;overflow:hidden}
+.pb.ind > i::before{content:"";position:absolute;top:0;bottom:0;left:-28px;right:0;background:repeating-linear-gradient(-45deg,rgba(255,255,255,.55) 0 5px,rgba(255,255,255,.08) 5px 10px);animation:stripes .9s linear infinite}
+@keyframes stripes{to{transform:translateX(14.142px)}}
+.sl{position:relative;width:140px;height:18px;cursor:pointer;touch-action:none;--p:40%}
+.sl .track{position:absolute;left:0;right:0;top:3px;height:8px;border-radius:2px;background:linear-gradient(#57575C 30%,#505054);border:1px solid rgba(80,80,80,.82);box-shadow:inset 1px 1px 0 var(--edge),inset 2px 2px 0 rgba(48,48,48,.31),1px 1px 0 rgba(255,255,255,.25)}
+.sl .fill{position:absolute;left:0;top:3px;height:8px;width:var(--p);border-radius:2px;border:1px solid #3A3A3E;background:linear-gradient(#CCCCCC,#9F9F9F);box-shadow:inset 0 1px 0 #F1F1F1,inset 0 -1px 0 #969696}
+.sl .thumb{position:absolute;top:0;left:calc(var(--p) - 6px);width:12px;height:16px;filter:drop-shadow(0 1px 2px rgba(0,0,0,.5))}
+.sl .thumb::before{content:"";position:absolute;inset:0;background:linear-gradient(#FDFDFD,#9D9D9E);clip-path:polygon(0 12%,8% 2%,92% 2%,100% 12%,100% 66%,50% 100%,0 66%)}
+.sl.v{width:18px;height:96px;--p:30%}
+.sl.v .track{left:3px;right:auto;top:0;bottom:0;width:8px;height:auto;background:linear-gradient(90deg,#57575C 30%,#505054)}
+.sl.v .fill{left:3px;top:auto;bottom:0;width:8px;height:var(--p);background:linear-gradient(270deg,#CCCCCC,#9F9F9F);box-shadow:inset 1px 0 0 #F1F1F1,inset -1px 0 0 #969696}
+.sl.v .thumb{left:0;top:auto;bottom:calc(var(--p) - 6px);width:16px;height:12px}
+.sl.v .thumb::before{clip-path:polygon(2% 8%,12% 0,66% 0,100% 50%,66% 100%,12% 100%,2% 92%)}
+.sl.rng .fill{left:var(--a);width:calc(var(--p) - var(--a))}
+.sl.rng .thumb.a{left:calc(var(--a) - 6px)}
+.sl.is-disabled{opacity:.55;cursor:default}
+
+/* ---------- tooltip / typography ---------- */
+.tip{display:inline-block;position:relative;padding:6px 9px;border-radius:3px;color:#fff;background:linear-gradient(rgba(255,255,255,.3),rgba(0,0,0,.3)),var(--acc-btn);box-shadow:inset 1px 1px 0 var(--acc-btn-hl),0 1px 2px rgba(0,0,0,.24);text-shadow:0 0 5px rgba(0,0,0,.25);font-size:11px;max-width:220px}
+.has-tip{position:relative;display:inline-block}
+.has-tip .tip{position:absolute;left:50%;bottom:calc(100% + 8px);transform:translateX(-50%);white-space:nowrap;opacity:0;pointer-events:none;transition:opacity .12s}
+.has-tip:hover .tip,.has-tip:focus-within .tip{opacity:1}
+.h{font-weight:700;margin:0;line-height:1.15;text-shadow:0 0 5px rgba(0,0,0,.18)}
+.h1{font-size:36px}.h2{font-size:24px;color:var(--on-tex-dim)}.h3{font-size:21px}.h4{font-size:18px}.h5{font-size:15px}.h6{font-size:11px}
+.body-text{font-size:11px;color:#fff;text-align:center;max-width:28ch;margin:0}
+
+/* ---------- SDK: tabs / calendar / tree / grid ---------- */
+.tabc{width:100%}
+.tabstrip{display:flex;gap:3px;position:relative;z-index:1;margin-bottom:-1px;flex-wrap:wrap}
+.tab{min-height:28px;padding:4px 16px;border:0;border-radius:2.5px 2.5px 0 0;background:var(--dark-border);color:rgba(255,255,255,.88);box-shadow:inset 0 -1px 0 rgba(0,0,0,.25);margin-top:2px;cursor:pointer}
+.tab:hover{background:#626368}
+.tab[aria-selected="true"]{background:var(--dark-bg);border:1px solid var(--dark-border);border-bottom:0;color:#fff;box-shadow:none;margin-top:0;padding-bottom:6px}
+.tabbody{background:var(--dark-bg);border:1px solid var(--dark-border);border-radius:0 2.5px 2.5px 2.5px;padding:8px;box-shadow:var(--shadow-light);min-width:0}
+.cal{width:190px;background:#fff;border-radius:2px;box-shadow:var(--shadow-light);color:#333;overflow:hidden;flex:none}
+.cal-head{height:28px;display:flex;align-items:center;justify-content:space-between;padding:0 4px;background:var(--static);font-weight:700;font-size:12px;color:#303030;text-shadow:0 1px 0 rgba(255,255,255,.5)}
+.cal-head button{width:20px;height:20px;border:0;background:transparent;cursor:pointer;display:grid;place-items:center;border-radius:2px}
+.cal-head button:hover{background:rgba(0,0,0,.1)}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:1px;padding:5px 6px 7px;text-align:center;font-size:10.5px;font-variant-numeric:tabular-nums}
+.cal-grid .dow{color:#8a8a8a;font-size:9.5px;padding-bottom:2px}
+.cal-grid .d{padding:3px 0;border-radius:1px;cursor:pointer}
+.cal-grid .d:hover{background:rgba(0,0,0,.125)}
+.cal-grid .d.o{color:#ADADAD}
+.cal-grid .d.today{background:#AAAAAA;color:#fff}
+.cal-grid .d.sel{background:var(--acc-sel);color:#fff;box-shadow:var(--shadow-light)}
+.tree{background:var(--dark-bg);border:1px solid var(--dark-border);border-radius:2.5px;padding:8px 6px;color:#fff;font-weight:700;width:100%;max-width:220px;box-shadow:var(--shadow-light)}
+.tree ul{list-style:none;margin:0;padding:0 0 0 16px}
+.tree > ul{padding-left:0}
+.tree li{margin:2px 0}
+.node{display:flex;align-items:center;gap:6px}
+.exp{width:9px;height:9px;flex:none;background:#fff;border:1px solid #333;position:relative;cursor:pointer;padding:0}
+.exp::before,.exp::after{content:"";position:absolute;background:#000;left:1px;right:1px;top:3px;height:1px}
+.exp::after{left:3px;right:auto;width:1px;top:1px;height:5px}
+.exp[aria-expanded="true"]::after{display:none}
+.exp.leaf{visibility:hidden}
+.nl{padding:2px 6px;border-radius:1px;cursor:pointer;border-top:1px solid transparent}
+.nl:hover{background:rgba(255,255,255,.1)}
+.nl[aria-selected="true"]{background:var(--acc-sel);border-top-color:var(--acc-hl);box-shadow:var(--shadow-light)}
+.gridwrap{width:100%;overflow-x:auto}
+.dg{width:100%;min-width:460px;border:1px solid var(--input-border);border-radius:3px 3px 0 0;background:#F0F0F0;color:#202020;border-collapse:separate;border-spacing:0;overflow:hidden;font-size:var(--fs-ctl)}
+.dg th{background:var(--grid-head);color:#fff;text-align:left;font-weight:400;padding:5px 8px;border-left:1px solid rgba(0,0,0,.25);box-shadow:inset 1px 0 0 rgba(255,255,255,.125);white-space:nowrap;cursor:pointer}
+.dg th:first-child{border-left:0;box-shadow:none}
+.dg th .tri-u,.dg th .tri-d{border-bottom-color:#fff;border-top-color:#fff;margin-left:6px;vertical-align:middle}
+.dg td{padding:4px 8px;border-top:1px solid rgba(0,0,0,.125);border-left:1px solid rgba(0,0,0,.125);white-space:nowrap}
+.dg td:first-child{border-left:0}
+.dg td.num{text-align:right;font-variant-numeric:tabular-nums}
+.dg tbody tr:nth-child(even) td{background:#E0E0E0}
+.dg tbody tr:hover td{background:var(--hover-sel)}
+.dg tbody tr.sel td{background:var(--acc-sel);color:#fff;border-top-color:transparent}
+.pill{display:inline-block;padding:0 6px;border-radius:2px;font-size:10.5px;color:#fff;line-height:16px;text-shadow:0 -1px 0 rgba(0,0,0,.25)}
+.pill.ok{background:var(--green-n)}.pill.warn{background:var(--orange-n)}.pill.info{background:var(--blue-n)}.pill.err{background:linear-gradient(#F04A4A,#C41212)}
+.pager{display:flex;align-items:center;gap:6px;margin-top:6px;flex-wrap:wrap;color:#fff;font-size:11px}
+.pager .tb{width:36px;text-align:center;height:22px;padding:2px}
+.vsum{width:100%;background:#F0F0F0;border:1px solid var(--input-border);border-radius:2.5px;color:#202020;overflow:hidden;box-shadow:var(--shadow-light)}
+.vsum header{background:linear-gradient(#F04A4A,#C41212);color:#fff;padding:4px 8px;font-weight:700;font-size:11px}
+.vsum ul{margin:0;padding:6px 8px 8px 24px;font-size:11px}
+.gs{display:flex;width:100%;height:80px;border-radius:2.5px;overflow:hidden;box-shadow:var(--shadow-light)}
+.gs > div{flex:1;background:var(--dark-bg);padding:6px;font-size:11px}
+.gs .grip{flex:none;width:6px;background:var(--static);cursor:col-resize;display:grid;place-items:center;padding:0}
+.gs .grip::before{content:"";width:2px;height:18px;border-left:1px dotted #555;border-right:1px dotted #fff}
+
+/* ---------- toolkit ---------- */
+.acc-wrap{width:100%;border:1px solid var(--dark-border);border-radius:2px;overflow:hidden;box-shadow:var(--shadow-light)}
+.acc-h{display:flex;align-items:center;gap:8px;width:100%;height:25px;padding:0 9px;border:0;background:var(--ctl-normal);color:#303030;font-weight:700;text-shadow:0 1px 0 rgba(255,255,255,.5);box-shadow:inset 0 1px 0 rgba(255,255,255,.6),inset 0 -1px 0 rgba(0,0,0,.22);cursor:pointer;text-align:left}
+.acc-h:hover{background:var(--ctl-over)}
+.acc-h:active{background:var(--ctl-pressed)}
+.acc-h::before{content:"";border-top:4px solid transparent;border-bottom:4px solid transparent;border-left:5px solid #404040;transition:transform .15s}
+.acc-h[aria-expanded="true"]::before{transform:rotate(90deg)}
+.acc-b{background:var(--dark-bg);padding:8px 10px;color:#fff}
+.expander{width:100%}
+.expander .acc-h{border-radius:2px;box-shadow:var(--shadow),var(--hl)}
+.expander .acc-b{margin-top:2px;border-radius:0 0 2px 2px;box-shadow:var(--shadow-light)}
+.rating{display:flex;gap:2px}
+.rating button{width:18px;height:18px;border:0;padding:0;background:transparent;cursor:pointer}
+.rating svg{display:block;width:18px;height:18px}
+.rating .on path{fill:var(--acc-hl);stroke:#5A6A10}
+.rating .off path{fill:#57575C;stroke:#343537}
+.busy{position:relative;width:100%;max-width:220px;height:110px;border-radius:2.5px;overflow:hidden;background:var(--dark-bg);box-shadow:var(--shadow-light)}
+.busy .under{padding:8px;font-size:11px;color:#fff;filter:blur(.6px)}
+.busy::after{content:"";position:absolute;inset:0;background:rgba(255,255,255,.35)}
+.busy .card{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);z-index:1;background:var(--static);border-radius:2px;box-shadow:var(--shadow-light);padding:9px 12px;color:#303030;font-size:11px;display:flex;flex-direction:column;gap:6px;align-items:center;text-shadow:0 1px 0 rgba(255,255,255,.5)}
+.menu{background:var(--menu-bg);border:1px solid var(--dark-border);padding:5px 0;box-shadow:var(--shadow-light);width:190px;color:#202020;border-radius:1px}
+.mi{display:flex;align-items:center;gap:8px;padding:4px 10px 4px 6px;cursor:default;position:relative}
+.mi .ic{width:16px;text-align:center;color:#505050;font-size:11px}
+.mi .sc{margin-left:auto;color:#707070;font-size:10.5px}
+.mi:hover,.mi.focus{background:var(--acc-sel);color:#fff}
+.mi:hover .ic,.mi:hover .sc,.mi.focus .ic,.mi.focus .sc{color:#fff}
+.mi.dis{color:#9a9a9a}
+.mi.dis:hover{background:transparent;color:#9a9a9a}
+.msep{height:2px;margin:4px 6px 4px 30px;border-top:1px solid rgba(0,0,0,.16);border-bottom:1px solid #fff}
+.mi .sub{margin-left:auto}
+.chart{width:100%;max-width:340px;background:#fff;color:#303030;border-radius:2.5px;box-shadow:var(--shadow-light);padding:8px 8px 10px}
+.chart h4{margin:0 0 4px;text-align:center;font-size:13px}
+.chart svg{display:block;width:100%;height:auto}
+.legend{display:flex;gap:12px;justify-content:center;font-size:11px;flex-wrap:wrap}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:1px;margin-right:4px;vertical-align:-1px}
+
+/* ---------- MahApps extras ---------- */
+.ts{display:inline-flex;align-items:center;gap:8px;cursor:pointer;color:#fff;user-select:none}
+.ts .trk{position:relative;width:44px;height:18px;border-radius:2.5px;background:linear-gradient(#57575C 30%,#505054);border:1px solid rgba(52,53,55,.9);box-shadow:inset 1px 1px 0 var(--edge),inset 2px 2px 0 rgba(48,48,48,.31),1px 1px 0 rgba(255,255,255,.25);transition:background .15s}
+.ts .trk::after{content:"";position:absolute;top:1px;left:1px;width:20px;height:14px;border-radius:2px;background:var(--ctl-normal);box-shadow:0 1px 2px rgba(0,0,0,.55),var(--hl);transition:left .15s}
+.ts:hover .trk::after{background:var(--ctl-over)}
+.ts input:checked + .trk{background:var(--acc-sel);box-shadow:inset 0 1px 0 rgba(0,0,0,.25),1px 1px 0 rgba(255,255,255,.25)}
+.ts input:checked + .trk::after{left:21px}
+.ts input:focus-visible + .trk{outline:1px solid var(--focus);outline-offset:2px}
+.ts.is-disabled{opacity:.5;cursor:default}
+.ring{width:34px;height:34px;border-radius:50%;background:conic-gradient(from 0deg,var(--acc-solid) 0 25%,rgba(0,0,0,0) 25%);-webkit-mask:radial-gradient(circle,transparent 11px,#000 12px);mask:radial-gradient(circle,transparent 11px,#000 12px);animation:spin .9s linear infinite;position:relative}
+.ring-wrap{position:relative;width:34px;height:34px}
+.ring-wrap::before{content:"";position:absolute;inset:0;border-radius:50%;background:var(--alt);-webkit-mask:radial-gradient(circle,transparent 11px,#000 12px);mask:radial-gradient(circle,transparent 11px,#000 12px);box-shadow:inset 0 1px 2px rgba(0,0,0,.6)}
+.ring-wrap .ring{position:absolute;inset:0;background:conic-gradient(from 0deg,var(--acc-hl),var(--acc-solid) 28%,rgba(0,0,0,0) 29%)}
+@keyframes spin{to{transform:rotate(360deg)}}
+.badged{position:relative;display:inline-block}
+.badge{position:absolute;top:-8px;right:-9px;min-width:18px;height:16px;padding:0 4px;border-radius:2px;background:var(--orange-n);box-shadow:var(--shadow),inset .5px 1px 0 #FFCC00;color:#fff;font-size:10.5px;font-weight:700;line-height:16px;text-align:center;text-shadow:0 -1px 0 rgba(182,47,0,.6)}
+.tiles{display:grid;grid-template-columns:repeat(2,110px);gap:8px}
+.tile{position:relative;height:84px;border:0;border-radius:2px;padding:8px;color:#fff;text-align:left;display:flex;flex-direction:column;justify-content:space-between;cursor:pointer;box-shadow:var(--shadow);text-shadow:0 -1px 1px rgba(0,0,0,.25)}
+.tile b{font-size:24px;font-weight:700;align-self:flex-end;line-height:1}
+.tile span{font-size:12px;font-weight:700}
+.tile.g{background:var(--green-n);box-shadow:var(--shadow),inset .5px 1px 0 #BED126}.tile.g:hover{background:var(--green-o)}
+.tile.o{background:var(--orange-n);box-shadow:var(--shadow),inset .5px 1px 0 #FFCC00}.tile.o:hover{background:var(--orange-o)}
+.tile.b{background:var(--blue-n);box-shadow:var(--shadow),inset .5px 1px 0 #B9DAEC}.tile.b:hover{background:var(--blue-o)}
+.tile.n{background:var(--ctl-normal);color:#303030;text-shadow:0 1px 0 rgba(255,255,255,.5);box-shadow:var(--shadow),var(--hl)}.tile.n:hover{background:var(--ctl-over)}
+.mini{position:relative;width:100%;height:190px;border:1px solid #3D3E42;border-radius:3px;overflow:hidden;background:var(--ground) var(--tex);box-shadow:var(--shadow-light)}
+.mini .content{padding:10px;font-size:11px;color:var(--on-tex-soft)}
+.flyout{position:absolute;top:0;right:0;bottom:0;width:62%;background:linear-gradient(90deg,#4F5054,#5B5C61);border-left:1px solid #3B3C40;box-shadow:-3px 0 8px rgba(0,0,0,.35);transform:translateX(102%);transition:transform .22s ease-out;padding:10px;display:flex;flex-direction:column;gap:8px}
+.flyout.open{transform:none}
+.flyout header{display:flex;align-items:center;gap:8px;font-weight:700;font-size:15px}
+.flyout header button{width:20px;height:20px;border-radius:50%;border:1px solid rgba(255,255,255,.7);background:transparent;color:#fff;cursor:pointer;display:grid;place-items:center;padding:0}
+.flyout header button .tri-r{border-left-color:#fff}
+.ham{display:flex;width:100%;height:190px;border:1px solid #3D3E42;border-radius:3px;overflow:hidden;box-shadow:var(--shadow-light)}
+.ham nav{width:150px;flex:none;background:var(--dark-border);padding:6px 0;display:flex;flex-direction:column;gap:1px}
+.ham nav button{position:relative;display:flex;align-items:center;gap:10px;border:0;background:transparent;color:rgba(255,255,255,.88);padding:7px 12px;text-align:left;cursor:pointer}
+.ham nav button:hover{background:rgba(255,255,255,.08)}
+.ham nav button svg{width:14px;height:14px;fill:currentColor;flex:none}
+.ham nav button[aria-selected="true"]{background:var(--acc-sel);color:#fff;box-shadow:inset 0 1px 0 var(--acc-hl)}
+.ham nav button[aria-selected="true"]::after{content:"";position:absolute;right:-1px;top:50%;margin-top:-6px;border-top:6px solid transparent;border-bottom:6px solid transparent;border-right:6px solid var(--ground)}
+.ham .pane{flex:1;background:var(--ground) var(--tex);padding:10px 12px;min-width:0}
+.ham .pane h5{margin:0 0 4px;font-size:15px}
+.ham .pane p{margin:0;font-size:11px;color:var(--on-tex-soft)}
+.info{display:flex;align-items:center;gap:9px;width:100%;padding:6px 8px;background:var(--static);border-radius:2px;box-shadow:var(--shadow-light);color:#303030;font-size:11px;text-shadow:0 1px 0 rgba(255,255,255,.4)}
+.info .ico{width:18px;height:18px;flex:none;border-radius:2px;color:#fff;font-weight:700;font-size:12px;display:grid;place-items:center;text-shadow:0 -1px 0 rgba(0,0,0,.3)}
+.info.i .ico{background:var(--blue-n)}.info.s .ico{background:var(--green-n)}.info.w .ico{background:var(--orange-n)}.info.e .ico{background:linear-gradient(#F04A4A,#C41212)}
+.info .x{margin-left:auto;border:0;background:transparent;cursor:pointer;color:#606060;font-size:14px;line-height:1;padding:0 2px}
+.info .x:hover{color:#202020}
+.menubar{display:flex;width:100%;background:var(--static);box-shadow:var(--shadow);padding:0 2px;border-radius:1px}
+.menubar > div{position:relative}
+.menubar > div > button{border:0;background:transparent;padding:5px 10px;color:#303030;cursor:pointer;text-shadow:0 1px 0 rgba(255,255,255,.5)}
+.menubar > div > button:hover,.menubar > div > button[aria-expanded="true"]{background:var(--acc-sel);color:#fff;text-shadow:none}
+.menubar .menu{position:absolute;left:0;top:100%;z-index:20}
+.toolbarx{display:flex;align-items:center;gap:2px;width:100%;margin-top:6px;padding:3px;background:var(--static);border-radius:2px;box-shadow:var(--shadow-light)}
+.toolbarx .grip{width:4px;height:16px;margin:0 4px 0 2px;background:radial-gradient(circle,#777 0.8px,transparent 1.2px) 0 0/4px 4px}
+.toolbarx button{width:24px;height:22px;border:1px solid transparent;border-radius:2px;background:transparent;cursor:pointer;display:grid;place-items:center;padding:0;color:#404040}
+.toolbarx button svg{width:14px;height:14px;fill:currentColor}
+.toolbarx button:hover{background:var(--ctl-over);border-color:rgba(0,0,0,.2);box-shadow:var(--hl)}
+.toolbarx button[aria-pressed="true"]{background:var(--ctl-pressed);border-color:rgba(0,0,0,.3)}
+.toolbarx .sep{width:1px;height:16px;background:rgba(0,0,0,.2);box-shadow:1px 0 0 #fff;margin:0 4px}
+.statusbar{display:flex;gap:16px;align-items:center;width:100%;padding:4px 10px;background:var(--dark-border);color:rgba(255,255,255,.88);font-size:11px;border-top:1px solid #47474B;box-shadow:inset 0 1px 0 rgba(255,255,255,.1)}
+.statusbar .sp{margin-left:auto;display:flex;align-items:center;gap:8px}
+.groupbox{width:100%;border:1px solid var(--dark-border);border-radius:2.5px;overflow:hidden;box-shadow:var(--shadow-light)}
+.groupbox header{background:var(--grid-head);color:#fff;padding:4px 8px;font-weight:700;font-size:12px;box-shadow:inset 0 1px 0 rgba(255,255,255,.12)}
+.groupbox .gb{background:var(--dark-bg);padding:8px;display:flex;flex-direction:column;gap:8px}
+.colorp{display:grid;grid-template-columns:repeat(8,16px);gap:3px;padding:6px;background:#fff;border-radius:0 0 4px 4px;box-shadow:var(--shadow)}
+.colorp i{width:16px;height:16px;border:1px solid rgba(0,0,0,.25);cursor:pointer}
+.colorp i:hover{outline:1px solid var(--acc-solid);outline-offset:1px}
+.colorp i.sel{outline:2px solid var(--acc-solid);outline-offset:1px}
+
+/* ---------- window ---------- */
+.winbar{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:26px}
+.win{margin-top:12px;border:1px solid #3B3C40;border-radius:5px 5px 2px 2px;box-shadow:0 14px 44px rgba(0,0,0,.5),0 2px 6px rgba(0,0,0,.35);overflow:hidden;background:var(--ground) var(--tex);position:relative}
+.win::before{content:"";position:absolute;inset:0;pointer-events:none;box-shadow:inset 0 0 120px 10px rgba(0,0,0,.32)}
+.wt{position:relative;display:flex;align-items:center;height:30px;padding-left:10px;background:var(--grid-head);color:#fff;box-shadow:inset 0 1px 0 rgba(255,255,255,.14)}
+.wt .ti{display:flex;align-items:center;gap:8px;font-weight:700;font-size:12px;min-width:0}
+.wt .ti span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.wt .logo{width:16px;height:16px;border-radius:2px;background:var(--acc-btn);box-shadow:inset .5px 1px 0 var(--acc-btn-hl);flex:none}
+.wt .cmds{margin-left:auto;display:flex;align-items:center;height:100%}
+.wt .cmds .wc{border:0;background:transparent;color:inherit;height:100%;padding:0 10px;cursor:pointer;font-size:11px}
+.wt .cmds .wc:hover{background:rgba(255,255,255,.12)}
+.wt .wb{width:42px;height:100%;border:0;background:transparent;color:inherit;cursor:pointer;display:grid;place-items:center;padding:0}
+.wt .wb svg{width:10px;height:10px;stroke:currentColor;fill:none;stroke-width:1.2}
+.wt .wb:hover{background:rgba(255,255,255,.14)}
+.wt .wb.close:hover{background:linear-gradient(#E84B4B,#B71C1C);color:#fff}
+.win[data-title="light"] .wt{background:var(--static);color:#303030;box-shadow:inset 0 1px 0 rgba(255,255,255,.7),0 1px 0 rgba(0,0,0,.25);text-shadow:0 1px 0 rgba(255,255,255,.5)}
+.win[data-title="light"] .wt .wb:hover,.win[data-title="light"] .wt .cmds .wc:hover{background:rgba(0,0,0,.08)}
+.win[data-title="light"] .wt .wb.close:hover{color:#fff}
+.win[data-title="texture"] .wt{background:transparent;box-shadow:none}
+.win[data-title="texture"] .nav{margin-top:0}
+.nav{position:relative;display:flex;height:38px;background:var(--static);box-shadow:var(--shadow);padding:0 16px;overflow-x:auto;overflow-y:hidden}
+.nav button{position:relative;border:0;background:transparent;color:var(--nav-inactive);font-weight:700;font-size:15px;padding:0 20px;cursor:pointer;white-space:nowrap;text-shadow:0 1px 0 rgba(255,255,255,.5)}
+.nav button:hover{background:var(--static-over)}
+.nav button[aria-selected="true"]{background:var(--acc-sel);color:#fff;text-shadow:0 -1px 0 rgba(var(--acc-btn-sh),.4)}
+.navnotch{position:relative;height:0}
+.navnotch i{position:absolute;top:0;border-left:7.5px solid transparent;border-right:7.5px solid transparent;border-top:9px solid var(--acc-solid);filter:drop-shadow(0 1px 1px rgba(0,0,0,.4));transition:left .15s}
+.wc-body{position:relative;padding:20px 24px 22px}
+.wc-body .h1{margin-bottom:18px}
+.wgrid{display:grid;grid-template-columns:200px minmax(0,1fr);gap:20px}
+.wleft{display:flex;flex-direction:column;justify-content:space-between;border:1px solid var(--dark-border);border-radius:2px;overflow:hidden;box-shadow:var(--shadow-light);background:var(--dark-bg)}
+.wleft .acc-b{flex:1}
+.wleft .tree{border:0;box-shadow:none;padding:2px 0;max-width:none}
+.wtabs .tabbody{display:flex;gap:12px;align-items:flex-start;flex-wrap:wrap}
+.wtabs .lb{width:200px;height:162px}
+.wtabs .lede{flex:1 1 180px;min-width:0;font-size:12px;color:#fff;margin:0 0 8px}
+.photo{width:92px;height:118px;flex:none;border:3px solid #fff;box-shadow:var(--shadow-light);background:linear-gradient(160deg,#9AA0A8,#5C6168);display:grid;place-items:center;color:#fff;font-size:30px;font-weight:700;text-shadow:0 1px 3px rgba(0,0,0,.4)}
+.wform{display:grid;grid-template-columns:minmax(0,1fr) 1px 220px;gap:20px;margin-top:22px}
+.wform .divider{background:rgba(0,0,0,.18);box-shadow:1px 0 0 rgba(255,255,255,.12)}
+.formfields{display:flex;flex-direction:column;gap:4px;max-width:300px;margin-top:10px}
+.formfields label{font-size:12px;color:#fff;margin-top:6px}
+.formfoot{display:flex;align-items:center;gap:8px;margin-top:16px;flex-wrap:wrap;max-width:300px}
+.formfoot .cb{margin-left:auto}
+.wnotes{display:flex;flex-direction:column;gap:10px}
+.wnotes textarea{min-height:170px}
+.dialog-demo{position:relative;margin-top:28px;padding:34px 16px;border-radius:3px;background:rgba(0,0,0,.5);display:grid;place-items:center}
+.dlg{width:100%;max-width:380px;border-radius:2px;overflow:hidden;box-shadow:0 1px 4px rgba(85,82,79,.5),0 10px 30px rgba(0,0,0,.45)}
+.dlg header{display:flex;align-items:center;height:28px;padding:0 4px 0 10px;background:var(--static);color:#303030;font-weight:700;text-shadow:0 1px 0 rgba(255,255,255,.5)}
+.dlg header button{margin-left:auto;width:22px;height:20px;border:0;border-radius:2px;background:transparent;cursor:pointer;color:#505050;font-size:14px}
+.dlg header button:hover{background:linear-gradient(#E84B4B,#B71C1C);color:#fff}
+.dlg .db{background:#E0E0E0;color:#303030;padding:14px 14px 12px;font-size:12px}
+.dlg .db p{margin:0 0 14px}
+.dlg .acts{display:flex;justify-content:flex-end;gap:8px}
+
+/* ---------- palette ---------- */
+.swatches{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px;width:100%}
+.swatch{background:rgba(0,0,0,.12);border-radius:2px;overflow:hidden;box-shadow:0 1px 0 rgba(255,255,255,.1)}
+.swatch .chip{height:46px;box-shadow:inset 0 -1px 0 rgba(0,0,0,.2)}
+.swatch .meta{padding:6px 8px 8px;display:flex;flex-direction:column;gap:2px;min-width:0}
+.swatch .meta b{font-size:12px}
+.swatch .meta code{font-family:var(--mono);font-size:10.5px;color:var(--on-tex-soft);overflow-wrap:anywhere}
+.typerow{display:flex;align-items:baseline;gap:14px;padding:6px 0;border-bottom:1px solid rgba(0,0,0,.14);box-shadow:0 1px 0 rgba(255,255,255,.08);width:100%}
+.typerow code{font-family:var(--mono);font-size:10.5px;color:var(--on-tex-dim);width:150px;flex:none}
+.cover{width:100%;border-collapse:collapse;font-size:12px}
+.cover th,.cover td{text-align:left;padding:5px 8px;border-bottom:1px solid rgba(0,0,0,.14)}
+.cover th{color:var(--on-tex-soft);font-weight:700;font-size:11px;text-transform:uppercase;letter-spacing:.06em}
+.cover td code{font-family:var(--mono);font-size:10.5px;color:var(--on-tex-soft)}
+
+/* ---------- decisions ---------- */
+.decisions{margin-top:54px;padding-top:26px;border-top:1px solid rgba(0,0,0,.18);box-shadow:inset 0 1px 0 rgba(255,255,255,.1)}
+.decisions h2{margin:0 0 4px;font-size:24px}
+.decisions > p{margin:0 0 18px;color:var(--on-tex-soft);max-width:72ch;font-size:13px}
+.dlist{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px}
+.dcard{background:var(--dark-bg);border:1px solid var(--dark-border);border-radius:2.5px;box-shadow:var(--shadow-light);padding:10px 12px 12px;display:flex;flex-direction:column;gap:6px;min-width:0}
+.dcard h4{margin:0;font-size:14px}
+.dcard p{margin:0;font-size:12px;color:rgba(255,255,255,.86)}
+.dcard .prop{font-size:11.5px;color:#fff}
+.dcard .prop b{color:var(--acc-hl)}
+
+@media (max-width:760px){
+  .wgrid,.wform{grid-template-columns:minmax(0,1fr)}
+  .wform .divider{display:none}
+  .brand{align-items:flex-start;padding-top:0}
+  .col + .col{border-left:0;box-shadow:none}
+  .col{padding:0 4px}
+}
+@media (prefers-reduced-motion:reduce){
+  .pb.ind > i::before,.ring{animation:none}
+  .flyout,.ts .trk::after,.acc-h::before{transition:none}
+}
+</style>
+
+<div class="page">
+  <header class="top">
+    <div class="tabs-wrap">
+      <nav class="tabs" role="tablist" aria-label="Kontrolgrupper">
+        <button role="tab" data-tab="core" aria-selected="true">Core</button>
+        <button role="tab" data-tab="sdk" aria-selected="false">SDK</button>
+        <button role="tab" data-tab="toolkit" aria-selected="false">Toolkit</button>
+        <button role="tab" data-tab="mahapps" aria-selected="false">MahApps</button>
+        <button role="tab" data-tab="window" aria-selected="false">Vindue</button>
+        <button role="tab" data-tab="palette" aria-selected="false">Palet</button>
+      </nav>
+    </div>
+    <div class="brand"><b>Jetpack</b><span>for WPF · .NET 8+ · udkast 1</span></div>
+  </header>
+
+  <div class="toolbar" role="group" aria-label="Forhåndsvisning">
+    <div class="grp"><span class="lbl">Accent</span>
+      <button class="sw g" data-accent="green" aria-pressed="true" aria-label="Grøn accent" title="Grøn (standard)"></button>
+      <button class="sw o" data-accent="orange" aria-pressed="false" aria-label="Orange accent" title="Orange"></button>
+      <button class="sw b" data-accent="blue" aria-pressed="false" aria-label="Blå accent" title="Blå"></button>
+    </div>
+    <div class="grp"><span class="lbl">Skriftstørrelse</span>
+      <button class="btn toggle" data-size="wpf" aria-pressed="true">12 px (WPF)</button>
+      <button class="btn toggle" data-size="sl" aria-pressed="false">11 px (original)</button>
+    </div>
+    <label class="ts grp" for="focusToggle"><span class="lbl">Synlig fokus</span><input id="focusToggle" class="sr" type="checkbox" checked><span class="trk"></span></label>
+  </div>
+
+  <main>
+  <!-- ================= CORE ================= -->
+  <section data-panel="core" role="tabpanel">
+    <p class="intro">De grundlæggende WPF-kontroller, stillet op som i den originale temaoversigt. Alt er bygget direkte på farver og skabeloner fra <code>CoreStyles.xaml</code> og <code>Brushes.xaml</code>. Hold musen over og klik for at se tilstandene.</p>
+
+    <div class="row">
+      <div class="col">
+        <h3>Button</h3><span class="key">JetPack.Styles.Button</span>
+        <div class="stack c">
+          <button class="btn">Normal</button>
+          <button class="btn is-over">MouseOver</button>
+          <button class="btn is-pressed">Pressed</button>
+          <button class="btn" disabled>Disabled</button>
+          <button class="btn toggle" aria-pressed="false">Toggle</button>
+          <button class="btn toggle" aria-pressed="true">Toggle Checked</button>
+          <button class="btn" id="repeatBtn">Repeat (<span id="repeatN">0</span>)</button>
+          <button class="btn c-accent">Accent</button>
+          <button class="btn c-green">Green</button>
+          <button class="btn c-orange">Orange</button>
+          <button class="btn c-blue">Blue</button>
+        </div>
+      </div>
+
+      <div class="col wide">
+        <h3>TextBox · PasswordBox</h3><span class="key">JetPack.Styles.TextBox(.Dark)</span>
+        <div class="tbgrid">
+          <input class="tb" id="tb1" value="Normal" aria-label="Normal">
+          <input class="tb dark" id="tb1d" value="Normal" aria-label="Normal mørk">
+          <input class="tb" id="tb2" value="Read Only" readonly aria-label="Skrivebeskyttet">
+          <input class="tb dark" id="tb2d" value="Read Only" readonly aria-label="Skrivebeskyttet mørk">
+          <input class="tb" id="tb3" value="Disabled" disabled aria-label="Deaktiveret">
+          <input class="tb dark" id="tb3d" value="Disabled" disabled aria-label="Deaktiveret mørk">
+          <div class="fld inv"><input class="tb" id="tb4" value="abc-123" aria-label="Ugyldig" aria-invalid="true"></div>
+          <div class="fld inv"><input class="tb dark" id="tb4d" value="abc-123" aria-label="Ugyldig mørk" aria-invalid="true"></div>
+          <input class="tb" id="tb5" type="password" value="hemmelig" aria-label="Adgangskode">
+          <input class="tb dark" id="tb5d" type="password" value="hemmelig" aria-label="Adgangskode mørk">
+          <input class="tb" id="tb6" placeholder="Søg kunde…" aria-label="Vandmærke">
+          <input class="tb dark" id="tb6d" placeholder="Søg kunde…" aria-label="Vandmærke mørk">
+          <span class="cap">Lys (standard)</span><span class="cap">Mørk</span>
+        </div>
+        <div class="hr"></div>
+        <div class="stack c" style="gap:6px">
+          <span class="state">Valideringsfejl</span>
+          <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:center">
+            <div class="fld inv" style="width:120px"><input class="tb" id="tb7" value="12-13-2026" aria-label="Dato med fejl" aria-invalid="true"></div>
+            <span class="vtip">Datoen findes ikke. Brug formatet dd-mm-åååå.</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="col">
+        <h3>TextBlock</h3><span class="key">TextBlock · Heading1–6</span>
+        <p class="body-text">Tidsregistreringen for oktober lukker fredag kl. 16. Ugesedler, der ikke er godkendt inden da, overføres til november og skal attesteres af nærmeste leder.</p>
+        <div class="hr"></div>
+        <h3 style="font-size:15px;margin:0">Hyperlink</h3>
+        <a class="link" href="#core" onclick="return false">Åbn ugeseddel</a>
+        <span class="link is-disabled" aria-disabled="true">Link deaktiveret</span>
+        <div class="hr"></div>
+        <h3 style="font-size:15px;margin:0">ToolTip</h3>
+        <span class="tip">Gemmer ændringer og sender til godkendelse</span>
+        <span class="has-tip"><button class="btn">Hold musen her</button><span class="tip" role="tooltip">Ctrl+S gemmer også</span></span>
+      </div>
+
+      <div class="col">
+        <h3>CheckBox</h3><span class="key">JetPack.Styles.CheckBox</span>
+        <div class="stack">
+          <label class="cb"><input class="sr" type="checkbox"><span class="box"></span>Normal</label>
+          <label class="cb"><input class="sr" type="checkbox" checked><span class="box"></span>Checked</label>
+          <label class="cb"><input class="sr" type="checkbox" data-indet><span class="box"></span>Indeterminate</label>
+          <label class="cb is-disabled"><input class="sr" type="checkbox" checked disabled><span class="box"></span>Disabled</label>
+          <label class="cb inv"><input class="sr" type="checkbox" aria-invalid="true"><span class="box"></span>Invalid</label>
+        </div>
+        <div class="hr"></div>
+        <h3>RadioButton</h3><span class="key">JetPack.Styles.RadioButton</span>
+        <div class="stack">
+          <label class="rb"><input class="sr" type="radio" name="r1"><span class="dot"></span>Normal</label>
+          <label class="rb"><input class="sr" type="radio" name="r1" checked><span class="dot"></span>Checked</label>
+          <label class="rb indet"><input class="sr" type="radio" name="r1x"><span class="dot"></span>Indeterminate</label>
+          <label class="rb is-disabled"><input class="sr" type="radio" name="r2" checked disabled><span class="dot"></span>Disabled</label>
+          <label class="rb inv"><input class="sr" type="radio" name="r3" aria-invalid="true"><span class="dot"></span>Invalid</label>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col">
+        <h3>ComboBox</h3><span class="key">JetPack.Styles.ComboBox</span>
+        <div class="stack c">
+          <div class="combo" data-combo><button class="combo-btn" aria-haspopup="listbox" aria-expanded="false">Aarhus</button>
+            <div class="pop jps" role="listbox" hidden><div class="item" role="option">København</div><div class="item" role="option" aria-selected="true">Aarhus</div><div class="item" role="option">Odense</div><div class="item" role="option">Aalborg</div><div class="item" role="option">Esbjerg</div></div></div>
+          <div class="combo"><button class="combo-btn" disabled>Aarhus</button></div>
+          <div class="combo edit" data-combo><input class="tb" id="cbEdit" value="Odense" aria-label="Redigerbar by"><button class="combo-btn" aria-label="Vis byer" aria-haspopup="listbox" aria-expanded="false"></button>
+            <div class="pop jps" role="listbox" hidden><div class="item" role="option">København</div><div class="item" role="option">Aarhus</div><div class="item" role="option" aria-selected="true">Odense</div><div class="item" role="option">Aalborg</div></div></div>
+          <span class="state">Åben</span>
+          <div class="combo"><button class="combo-btn" aria-expanded="true">Uge 43</button>
+            <div class="pop static" role="listbox"><div class="item" role="option">Uge 42</div><div class="item" role="option" aria-selected="true">Uge 43</div><div class="item" role="option">Uge 44</div></div></div>
+        </div>
+      </div>
+
+      <div class="col">
+        <h3>ListBox</h3><span class="key">JetPack.Styles.ListBox</span>
+        <div class="lb jps" role="listbox" data-list aria-label="Medarbejdere">
+          <div class="item" role="option">Lindsey Ballard</div><div class="item" role="option" aria-selected="true">Charles Hoyle</div><div class="item" role="option">Daniel Tiedemann</div><div class="item" role="option">David Ritter</div><div class="item" role="option">Vivian Smail</div><div class="item" role="option">Ida Kragh</div><div class="item" role="option">Mads Lund</div>
+        </div>
+        <span class="state">Invalid</span>
+        <div class="lb inv" aria-label="Tom liste med fejl"></div>
+      </div>
+
+      <div class="col">
+        <h3>ScrollViewer</h3><span class="key">JetPack.Styles.ScrollBar</span>
+        <div class="sv jps" tabindex="0" aria-label="Rulleområde"><div></div></div>
+        <p class="note">Rullebjælker med lys gradient-thumb og pile i #606060, som originalen.</p>
+      </div>
+
+      <div class="col">
+        <h3>ProgressBar</h3><span class="key">JetPack.Styles.ProgressBar</span>
+        <div class="stack c" style="gap:14px">
+          <div class="pb" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="--v:75%"><i></i></div>
+          <div class="pb" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="--v:45%"><i></i></div>
+          <div class="pb ind" role="progressbar" aria-label="Arbejder"><i></i></div>
+          <div class="pb ind" role="progressbar" aria-label="Arbejder" style="height:14px"><i></i></div>
+        </div>
+      </div>
+
+      <div class="col">
+        <h3>Slider</h3><span class="key">JetPack.Styles.Slider</span>
+        <div class="sl" data-slider role="slider" tabindex="0" aria-valuemin="0" aria-valuemax="100" aria-valuenow="40" aria-label="Lydstyrke"><div class="track"></div><div class="fill"></div><div class="thumb"></div></div>
+        <div style="display:flex;gap:18px">
+          <div class="sl v" data-slider data-v role="slider" tabindex="0" aria-valuemin="0" aria-valuemax="100" aria-valuenow="30" aria-label="Lodret 1"><div class="track"></div><div class="fill"></div><div class="thumb"></div></div>
+          <div class="sl v" data-slider data-v role="slider" tabindex="0" aria-valuemin="0" aria-valuemax="100" aria-valuenow="65" aria-label="Lodret 2" style="--p:65%"><div class="track"></div><div class="fill"></div><div class="thumb"></div></div>
+          <div class="sl v is-disabled" aria-disabled="true" style="--p:50%"><div class="track"></div><div class="fill"></div><div class="thumb"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col xwide" style="align-items:flex-start">
+        <h3 style="align-self:center">Typografi</h3><span class="key" style="align-self:center">Trebuchet MS · Heading1–6 · fed</span>
+        <div class="h h1">Virksomheder</div>
+        <div class="h h2">Virksomhedsoplysninger</div>
+        <div class="h h3">Heading 3 · 21 px</div>
+        <div class="h h4">Heading 4 · 18 px</div>
+        <div class="h h5">Heading 5 · 15 px</div>
+        <div class="h h6">HEADING 6 · 11 PX</div>
+      </div>
+      <div class="col wide">
+        <h3>Label · GroupBox</h3><span class="key">JetPack.Styles.GroupBox</span>
+        <div class="groupbox">
+          <header>Kontaktperson</header>
+          <div class="gb">
+            <label class="state" for="gbName">Navn</label><input class="tb" id="gbName" value="Heather Andrade">
+            <label class="state" for="gbPhone">Telefon</label><input class="tb" id="gbPhone" value="+45 86 12 34 56">
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= SDK ================= -->
+  <section data-panel="sdk" role="tabpanel" hidden>
+    <p class="intro">Kontrollerne fra Silverlight SDK, som alle har en direkte WPF-pendant: TabControl, Calendar, DatePicker, TreeView, DataGrid og GridSplitter. Kilde: <code>SDKStyles.xaml</code>. Mørke paneler bruger <code>DarkBackground</code> #707176 og <code>DarkBorder</code> #58585D.</p>
+    <div class="row">
+      <div class="col wide">
+        <h3>TabControl</h3><span class="key">JetPack.Styles.TabControl</span>
+        <div class="tabc" data-tabc>
+          <div class="tabstrip" role="tablist"><button class="tab" role="tab" aria-selected="true">Ledige</button><button class="tab" role="tab" aria-selected="false">Tildelte</button><button class="tab" role="tab" aria-selected="false">Forslag</button></div>
+          <div class="tabbody">
+            <div data-tp>14 konsulenter er ledige fra uge 44. Filtrér efter kompetence eller lokation for at indsnævre listen.</div>
+            <div data-tp hidden>9 konsulenter er tildelt projekter, der løber til og med december.</div>
+            <div data-tp hidden>3 forslag afventer svar fra kunden.</div>
+          </div>
+        </div>
+      </div>
+      <div class="col">
+        <h3>Calendar</h3><span class="key">JetPack.Styles.Calendar</span>
+        <div class="cal" data-cal></div>
+      </div>
+      <div class="col">
+        <h3>DatePicker</h3><span class="key">JetPack.Styles.DatePicker</span>
+        <div class="stack" style="width:150px">
+          <div class="fld has-btn"><input class="tb" id="dp1" value="19-10-2026" aria-label="Dato"><button class="in-btn" aria-label="Vis kalender"><svg width="12" height="12" viewBox="0 0 12 12"><rect x=".5" y="1.5" width="11" height="10" rx="1" fill="#fff" stroke="#555"/><rect x=".5" y="1.5" width="11" height="3" fill="#777"/><text x="6" y="10.4" font-size="5.5" text-anchor="middle" fill="#333" font-family="Arial">19</text></svg></button></div>
+          <div class="fld has-btn"><input class="tb" id="dp2" placeholder="Vælg dato" aria-label="Tom dato"><button class="in-btn" aria-label="Vis kalender"><svg width="12" height="12" viewBox="0 0 12 12"><rect x=".5" y="1.5" width="11" height="10" rx="1" fill="#fff" stroke="#555"/><rect x=".5" y="1.5" width="11" height="3" fill="#777"/></svg></button></div>
+          <div class="fld inv has-btn"><input class="tb" id="dp3" value="31-02-2026" aria-label="Ugyldig dato" aria-invalid="true"><button class="in-btn" aria-label="Vis kalender"><svg width="12" height="12" viewBox="0 0 12 12"><rect x=".5" y="1.5" width="11" height="10" rx="1" fill="#fff" stroke="#555"/><rect x=".5" y="1.5" width="11" height="3" fill="#777"/></svg></button></div>
+        </div>
+        <div class="hr"></div>
+        <h3>AutoSuggestBox</h3><span class="key">JetPack.Styles.AutoSuggestBox</span>
+        <div class="combo" style="width:150px"><input class="tb" id="asb" value="Fab" aria-label="Søg firma">
+          <div class="pop static"><div class="item" aria-selected="true"><b>Fab</b>rikam</div><div class="item"><b>Fab</b>er &amp; Søn ApS</div></div></div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <h3>TreeView</h3><span class="key">JetPack.Styles.TreeView</span>
+        <div class="tree" data-tree>
+          <ul>
+            <li><div class="node"><button class="exp" aria-expanded="true" aria-label="Fold Contoso"></button><span class="nl">Contoso</span></div>
+              <ul><li><div class="node"><span class="exp leaf"></span><span class="nl">August 2026</span></div></li><li><div class="node"><span class="exp leaf"></span><span class="nl" aria-selected="true">September 2026</span></div></li><li><div class="node"><span class="exp leaf"></span><span class="nl">Oktober 2026</span></div></li></ul></li>
+            <li><div class="node"><button class="exp" aria-expanded="false" aria-label="Fold Southridge ud"></button><span class="nl">Southridge</span></div><ul hidden><li><div class="node"><span class="exp leaf"></span><span class="nl">Juli 2026</span></div></li></ul></li>
+            <li><div class="node"><button class="exp" aria-expanded="false" aria-label="Fold Fabrikam ud"></button><span class="nl">Fabrikam</span></div><ul hidden><li><div class="node"><span class="exp leaf"></span><span class="nl">Juni 2026</span></div></li></ul></li>
+            <li><div class="node"><button class="exp" aria-expanded="false" aria-label="Fold Soar Airlines ud"></button><span class="nl">Soar Airlines</span></div><ul hidden><li><div class="node"><span class="exp leaf"></span><span class="nl">Maj 2026</span></div></li></ul></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col xwide">
+        <h3>DataGrid · DataPager</h3><span class="key">JetPack.Styles.DataGrid</span>
+        <div class="gridwrap">
+          <table class="dg" data-grid>
+            <thead><tr><th>Medarbejder <span class="tri-u"></span></th><th>Afdeling</th><th style="text-align:right">Timer</th><th>Uge</th><th>Status</th></tr></thead>
+            <tbody>
+              <tr><td>Charles Hoyle</td><td>Rådgivning</td><td class="num">37,5</td><td>43</td><td><span class="pill ok">Godkendt</span></td></tr>
+              <tr class="sel"><td>Daniel Tiedemann</td><td>Udvikling</td><td class="num">41,0</td><td>43</td><td><span class="pill warn">Afventer</span></td></tr>
+              <tr><td>David Ritter</td><td>Udvikling</td><td class="num">32,0</td><td>43</td><td><span class="pill info">Kladde</span></td></tr>
+              <tr><td>Ida Kragh</td><td>Økonomi</td><td class="num">37,0</td><td>43</td><td><span class="pill ok">Godkendt</span></td></tr>
+              <tr><td>Lindsey Ballard</td><td>Salg</td><td class="num">18,5</td><td>43</td><td><span class="pill err">Afvist</span></td></tr>
+              <tr><td>Mads Lund</td><td>Support</td><td class="num">39,5</td><td>43</td><td><span class="pill ok">Godkendt</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="pager" style="align-self:flex-start">
+          <button class="btn sq" aria-label="Første side"><span class="tri-l"></span><span class="tri-l"></span></button>
+          <button class="btn sq" aria-label="Forrige side"><span class="tri-l"></span></button>
+          <span>Side</span><input class="tb" id="pg" value="2" aria-label="Side"><span>af 7</span>
+          <button class="btn sq" aria-label="Næste side"><span class="tri-r"></span></button>
+          <button class="btn sq" aria-label="Sidste side"><span class="tri-r"></span><span class="tri-r"></span></button>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col wide">
+        <h3>GridSplitter</h3><span class="key">JetPack.Styles.GridSplitter</span>
+        <div class="gs"><div>Navigation</div><button class="grip" aria-label="Træk for at ændre bredde"></button><div>Indhold</div></div>
+      </div>
+      <div class="col wide">
+        <h3>ValidationSummary</h3><span class="key">JetPack.Styles.ValidationSummary</span>
+        <div class="vsum"><header>2 fejl</header><ul><li>Telefon skal have 8 cifre.</li><li>CVR-nummeret findes ikke i CVR-registret.</li></ul></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= TOOLKIT ================= -->
+  <section data-panel="toolkit" role="tabpanel" hidden>
+    <p class="intro">Silverlight Toolkit-kontrollerne. I WPF findes Expander, ContextMenu og Menu indbygget; NumericUpDown, TimePicker og Rating kommer fra MahApps. Accordion bliver en stak af Expanders med fælles stil. Kilde: <code>ToolkitStyles.xaml</code>.</p>
+    <div class="row">
+      <div class="col">
+        <h3>Expander</h3><span class="key">JetPack.Styles.Expander</span>
+        <div class="expander" data-acc><button class="acc-h" aria-expanded="true">Faktureringsadresse</button><div class="acc-b">Søndergade 12<br>8000 Aarhus C</div></div>
+        <div class="expander" data-acc><button class="acc-h" aria-expanded="false">Leveringsadresse</button><div class="acc-b" hidden>Samme som fakturering</div></div>
+      </div>
+      <div class="col">
+        <h3>Accordion</h3><span class="key">JetPack.Styles.Expander.Accordion</span>
+        <div class="acc-wrap" data-accordion>
+          <button class="acc-h" aria-expanded="true">Mangler placering</button><div class="acc-b">5 konsulenter uden opgave i uge 44.</div>
+          <button class="acc-h" aria-expanded="false">Fornyelse afventer</button><div class="acc-b" hidden>2 kontrakter udløber 31. december.</div>
+          <button class="acc-h" aria-expanded="false">Arkiv</button><div class="acc-b" hidden>148 afsluttede placeringer.</div>
+        </div>
+      </div>
+      <div class="col">
+        <h3>NumericUpDown</h3><span class="key">JetPack.Styles.NumericUpDown</span>
+        <div class="stack" style="width:130px">
+          <div class="fld" data-num><input class="tb" id="nud1" value="37,5" aria-label="Timer" style="padding-right:22px"><div class="spin"><button aria-label="Op"><span class="tri-u"></span></button><button aria-label="Ned"><span class="tri-d"></span></button></div></div>
+          <div class="fld" data-num><input class="tb dark" id="nud2" value="8" aria-label="Antal" style="padding-right:22px"><div class="spin"><button aria-label="Op"><span class="tri-u"></span></button><button aria-label="Ned"><span class="tri-d"></span></button></div></div>
+        </div>
+        <div class="hr"></div>
+        <h3>TimePicker</h3><span class="key">JetPack.Styles.TimePicker</span>
+        <div class="fld has-btn" style="width:130px"><input class="tb" id="tp1" value="08:30" aria-label="Tidspunkt"><button class="in-btn" aria-label="Vælg tid"><svg width="12" height="12" viewBox="0 0 12 12"><circle cx="6" cy="6" r="5.3" fill="#fff" stroke="#555"/><path d="M6 3v3l2 1.4" stroke="#333" fill="none"/></svg></button></div>
+      </div>
+      <div class="col">
+        <h3>Rating</h3><span class="key">JetPack.Styles.RatingControl</span>
+        <div class="rating" data-rating data-value="4" role="radiogroup" aria-label="Vurdering"></div>
+        <div class="hr"></div>
+        <h3>BusyIndicator</h3><span class="key">JetPack.Styles.BusyIndicator</span>
+        <div class="busy"><div class="under">Kunde: Fabrikam<br>Kontakt: Ida Kragh<br>Ordrer: 14<br>Seneste: 12-10-2026</div><div class="card">Henter ordrer…<div class="pb ind" style="width:110px"><i></i></div></div></div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <h3>ContextMenu</h3><span class="key">JetPack.Styles.ContextMenu</span>
+        <div class="menu" role="menu">
+          <div class="mi" role="menuitem"><span class="ic">✂</span>Klip<span class="sc">Ctrl+X</span></div>
+          <div class="mi focus" role="menuitem"><span class="ic">⧉</span>Kopiér<span class="sc">Ctrl+C</span></div>
+          <div class="mi dis" role="menuitem" aria-disabled="true"><span class="ic">📋</span>Sæt ind<span class="sc">Ctrl+V</span></div>
+          <div class="msep"></div>
+          <div class="mi" role="menuitem"><span class="ic"></span>Eksportér<span class="sub tri-r"></span></div>
+        </div>
+      </div>
+      <div class="col wide">
+        <h3>Chart</h3><span class="key">JetPack.Brushes.Chart.Palette</span>
+        <div class="chart"><h4>Timer pr. kvartal</h4><svg id="chart" viewBox="0 0 300 170" role="img" aria-label="Søjlediagram over timer pr. kvartal"></svg>
+          <div class="legend"><span><i style="background:linear-gradient(135deg,#B2C60D,#4C7B00)"></i>Projekter</span><span><i style="background:linear-gradient(135deg,#39B7FF,#0065AD)"></i>Support</span><span><i style="background:linear-gradient(135deg,#85878C,#33353A)"></i>Intern</span></div></div>
+        <p class="note" style="max-width:40ch">Paletten er fra Toolkit-diagrammet (11 radiale gradienter). WPF har intet indbygget diagram, så temaet leverer paletten som ressourcer til fx LiveCharts eller OxyPlot.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= MAHAPPS ================= -->
+  <section data-panel="mahapps" role="tabpanel" hidden>
+    <p class="intro">Kontroller, som JetPack aldrig havde, men som et komplet WPF-bibliotek i MahApps' format skal have. Her har jeg selv fortolket stilen: dæmpede gradienter, 2–3 px hjørner, mørke spor og lyse "knap"-flader. De her er vigtigst at give feedback på.</p>
+    <div class="row">
+      <div class="col">
+        <h3>ToggleSwitch</h3><span class="key">JetPack.Styles.ToggleSwitch</span>
+        <div class="stack">
+          <label class="ts"><input class="sr" type="checkbox" checked><span class="trk"></span>Notifikationer</label>
+          <label class="ts"><input class="sr" type="checkbox"><span class="trk"></span>Mørk tilstand</label>
+          <label class="ts is-disabled"><input class="sr" type="checkbox" checked disabled><span class="trk"></span>Låst af politik</label>
+        </div>
+      </div>
+      <div class="col">
+        <h3>SplitButton · DropDownButton</h3><span class="key">JetPack.Styles.SplitButton</span>
+        <div class="stack c">
+          <div class="split"><button class="btn">Gem</button><button class="btn" aria-label="Flere gem-muligheder"><span class="caret"></span></button></div>
+          <div class="split"><button class="btn c-accent">Send</button><button class="btn c-accent" aria-label="Flere send-muligheder"><span class="caret"></span></button></div>
+          <button class="btn">Eksportér <span class="caret"></span></button>
+        </div>
+      </div>
+      <div class="col">
+        <h3>ProgressRing</h3><span class="key">JetPack.Styles.ProgressRing</span>
+        <div class="ring-wrap" role="progressbar" aria-label="Indlæser"><div class="ring"></div></div>
+        <div class="hr"></div>
+        <h3>Badged</h3><span class="key">JetPack.Styles.Badged</span>
+        <div style="display:flex;gap:22px;padding-top:6px">
+          <span class="badged"><button class="btn" style="min-width:80px">Indbakke</button><span class="badge">12</span></span>
+          <span class="badged"><button class="btn sq" aria-label="Notifikationer"><svg width="12" height="12" viewBox="0 0 12 12"><path d="M6 1a3.5 3.5 0 0 0-3.5 3.5V7L1.5 9h9l-1-2V4.5A3.5 3.5 0 0 0 6 1zm-1.3 9a1.3 1.3 0 0 0 2.6 0z" fill="#404040"/></svg></button><span class="badge">3</span></span>
+        </div>
+      </div>
+      <div class="col wide">
+        <h3>TextBox-hjælpere</h3><span class="key">TextBoxHelper.Watermark · ClearTextButton</span>
+        <div class="stack" style="width:220px">
+          <div class="fld"><input class="tb" id="tbh1" value="Fabrikam A/S" aria-label="Med ryd-knap" style="padding-right:24px"><button class="clear" aria-label="Ryd tekst">×</button></div>
+          <div class="fld has-btn"><input class="tb" id="tbh2" placeholder="Søg i ordrer…" aria-label="Søg"><button class="in-btn" aria-label="Søg"><svg width="11" height="11" viewBox="0 0 11 11"><circle cx="4.5" cy="4.5" r="3.5" fill="none" stroke="#404040" stroke-width="1.5"/><path d="M7 7l3 3" stroke="#404040" stroke-width="1.6"/></svg></button></div>
+          <div class="fld"><input class="tb dark" id="tbh3" placeholder="CVR-nummer" aria-label="CVR"></div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <h3>RangeSlider</h3><span class="key">JetPack.Styles.RangeSlider</span>
+        <div class="sl rng" data-range style="--a:25%;--p:70%;width:160px" role="group" aria-label="Prisinterval"><div class="track"></div><div class="fill"></div><div class="thumb a" tabindex="0" role="slider" aria-label="Fra"></div><div class="thumb b" tabindex="0" role="slider" aria-label="Til"></div></div>
+        <span class="state" id="rangeOut">2.500 – 7.000 kr.</span>
+      </div>
+      <div class="col">
+        <h3>Tile</h3><span class="key">JetPack.Styles.Tile</span>
+        <div class="tiles"><button class="tile g"><b>14</b><span>Ledige</span></button><button class="tile o"><b>3</b><span>Forslag</span></button><button class="tile b"><b>9</b><span>Tildelte</span></button><button class="tile n"><b>148</b><span>Arkiv</span></button></div>
+      </div>
+      <div class="col wide">
+        <h3>Flyout</h3><span class="key">JetPack.Styles.Flyout</span>
+        <div class="mini"><div class="content"><button class="btn" data-flyout-open>Åbn filtre</button><p>Flyout glider ind fra højre over indholdet.</p></div>
+          <aside class="flyout open" id="flyout"><header><button data-flyout-close aria-label="Luk filtre"><span class="tri-r"></span></button>Filtre</header>
+            <label class="cb"><input class="sr" type="checkbox" checked><span class="box"></span>Kun aktive kunder</label>
+            <label class="cb"><input class="sr" type="checkbox"><span class="box"></span>Vis arkiverede</label>
+            <div class="combo" data-combo style="width:100%"><button class="combo-btn" aria-expanded="false" aria-haspopup="listbox">Alle afdelinger</button><div class="pop jps" role="listbox" hidden><div class="item" role="option" aria-selected="true">Alle afdelinger</div><div class="item" role="option">Udvikling</div><div class="item" role="option">Salg</div></div></div>
+            <button class="btn c-accent" style="align-self:flex-start">Anvend</button>
+          </aside></div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col xwide">
+        <h3>HamburgerMenu</h3><span class="key">JetPack.Styles.HamburgerMenu</span>
+        <div class="ham" data-ham>
+          <nav role="tablist" aria-label="Sektioner">
+            <button role="tab" aria-selected="true"><svg viewBox="0 0 14 14"><path d="M1 6.5L7 1l6 5.5V13H8.5V9h-3v4H1z"/></svg>Oversigt</button>
+            <button role="tab" aria-selected="false"><svg viewBox="0 0 14 14"><path d="M2 1h10v12H2zM4 4h6v1H4zm0 3h6v1H4zm0 3h4v1H4z"/></svg>Ordrer</button>
+            <button role="tab" aria-selected="false"><svg viewBox="0 0 14 14"><circle cx="7" cy="4.5" r="3"/><path d="M1.5 13a5.5 5.5 0 0 1 11 0z"/></svg>Medarbejdere</button>
+            <button role="tab" aria-selected="false"><svg viewBox="0 0 14 14"><path d="M7 4.5A2.5 2.5 0 1 0 7 9.5 2.5 2.5 0 0 0 7 4.5zM6 0h2l.4 2 1.6.8 1.7-1.2 1.4 1.4-1.2 1.7.8 1.6 2 .4v2l-2 .4-.8 1.6 1.2 1.7-1.4 1.4-1.7-1.2-1.6.8L8 14H6l-.4-2-1.6-.8-1.7 1.2-1.4-1.4 1.2-1.7L1.3 8.4 0 8V6l2-.4.8-1.6-1.2-1.7L3 .9l1.7 1.2L6.3 1.3z"/></svg>Indstillinger</button>
+          </nav>
+          <div class="pane"><h5 id="hamTitle">Oversigt</h5><p id="hamText">Valgt punkt får accentgradient og samme lille notch som fanerne øverst, her pegende ind mod indholdet.</p></div>
+        </div>
+      </div>
+      <div class="col wide">
+        <h3>InfoBar</h3><span class="key">JetPack.Styles.InfoBar</span>
+        <div class="stack" style="width:100%" id="infobars">
+          <div class="info i"><span class="ico">i</span>Ny version 2.4 er klar til installation.<button class="x" aria-label="Luk">×</button></div>
+          <div class="info s"><span class="ico">✓</span>Ugesedlen er sendt til godkendelse.<button class="x" aria-label="Luk">×</button></div>
+          <div class="info w"><span class="ico">!</span>3 timer er ikke fordelt på projekter.<button class="x" aria-label="Luk">×</button></div>
+          <div class="info e"><span class="ico">×</span>Forbindelsen til lønsystemet fejlede.<button class="x" aria-label="Luk">×</button></div>
+          <button class="btn" id="infoReset" hidden>Vis beskeder igen</button>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col xwide" style="align-items:stretch">
+        <h3>Menu · ToolBar · StatusBar</h3><span class="key">JetPack.Styles.Menu / ToolBar / StatusBar</span>
+        <div class="menubar" data-menubar>
+          <div><button aria-haspopup="menu" aria-expanded="false">Filer</button><div class="menu" role="menu" hidden><div class="mi" role="menuitem"><span class="ic"></span>Ny kunde<span class="sc">Ctrl+N</span></div><div class="mi" role="menuitem"><span class="ic"></span>Åbn…<span class="sc">Ctrl+O</span></div><div class="msep"></div><div class="mi" role="menuitem"><span class="ic"></span>Afslut</div></div></div>
+          <div><button aria-haspopup="menu" aria-expanded="false">Rediger</button><div class="menu" role="menu" hidden><div class="mi" role="menuitem"><span class="ic"></span>Fortryd<span class="sc">Ctrl+Z</span></div><div class="mi" role="menuitem"><span class="ic"></span>Find<span class="sc">Ctrl+F</span></div></div></div>
+          <div><button aria-haspopup="menu" aria-expanded="false">Vis</button><div class="menu" role="menu" hidden><div class="mi" role="menuitem"><span class="ic">✓</span>Statuslinje</div><div class="mi" role="menuitem"><span class="ic"></span>Fuld skærm<span class="sc">F11</span></div></div></div>
+          <div><button aria-haspopup="menu" aria-expanded="false">Hjælp</button><div class="menu" role="menu" hidden><div class="mi" role="menuitem"><span class="ic"></span>Om Jetpack</div></div></div>
+        </div>
+        <div class="toolbarx" role="toolbar" aria-label="Formatering">
+          <span class="grip"></span>
+          <button aria-label="Ny"><svg viewBox="0 0 14 14"><path d="M3 1h5l3 3v9H3zM8 1v3h3"/></svg></button>
+          <button aria-label="Gem"><svg viewBox="0 0 14 14"><path d="M1 1h10l2 2v10H1zm2 1v4h7V2zm1 7v3h6V9z"/></svg></button>
+          <span class="sep"></span>
+          <button aria-label="Fed" aria-pressed="true"><b>B</b></button>
+          <button aria-label="Kursiv" aria-pressed="false"><i style="font-family:Georgia,serif">I</i></button>
+          <button aria-label="Understreget" aria-pressed="false"><u>U</u></button>
+        </div>
+        <div class="statusbar" style="margin-top:6px"><span>Klar</span><span>Fabrikam A/S · 14 ordrer</span><span class="sp">Synkroniserer <span class="pb ind" style="width:80px;height:8px"><i></i></span></span></div>
+      </div>
+      <div class="col">
+        <h3>ColorPicker</h3><span class="key">JetPack.Styles.ColorPicker</span>
+        <div class="combo" style="width:154px"><button class="combo-btn" aria-expanded="true"><span style="display:inline-block;width:12px;height:12px;background:#75A20A;border:1px solid rgba(0,0,0,.3);vertical-align:-2px;margin-right:6px"></span>#75A20A</button>
+          <div class="colorp" data-colors></div></div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col xwide" style="align-items:stretch">
+        <h3>Dækning af MahApps-kontrollerne</h3><span class="key">src/MahApps.Metro/Controls</span>
+        <div style="overflow-x:auto">
+        <table class="cover">
+          <thead><tr><th>Gruppe</th><th>Vist i udkastet</th><th>Følger samme mønster</th></tr></thead>
+          <tbody>
+            <tr><td>Vindue</td><td>MetroWindow → <code>JetPackWindow</code>, WindowCommands, ChildWindow, Dialogs</td><td>MetroNavigationWindow, ContentDialog</td></tr>
+            <tr><td>Knapper</td><td>Button, ToggleButton, RepeatButton, SplitButton, DropDownButton, Badged, Tile</td><td>HyperlinkButton, CircleButton-varianter</td></tr>
+            <tr><td>Input</td><td>TextBox, PasswordBox, NumericUpDown, TimePicker, DatePicker, AutoSuggestBox, ColorPicker</td><td>DateTimePicker, HotKeyBox, MultiSelectionComboBox, RichTextBox</td></tr>
+            <tr><td>Valg</td><td>CheckBox, RadioButton, ToggleSwitch, Slider, RangeSlider, Rating</td><td>–</td></tr>
+            <tr><td>Navigation</td><td>TabControl, HamburgerMenu, Flyout, Menu, ContextMenu, ToolBar, TreeView</td><td>MetroTabControl, MetroAnimatedTabControl, Pivot, FlipView, SplitView</td></tr>
+            <tr><td>Data</td><td>ListBox, DataGrid, Calendar</td><td>ListView/GridView, DataGrid-numeriske kolonner</td></tr>
+            <tr><td>Status</td><td>ProgressBar, ProgressRing, InfoBar, StatusBar, ValidationError, ToolTip</td><td>MetroProgressBar</td></tr>
+          </tbody>
+        </table>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= WINDOW ================= -->
+  <section data-panel="window" role="tabpanel" hidden>
+    <p class="intro">Forslag til <code>JetPackWindow</code> (afløser for <code>MetroWindow</code>). Silverlight-temaet havde ingen vinduesramme, så titellinjen er ny. Indholdet er "Companies"-skærmen fra din reference, bygget med kontrollerne fra de andre faner.</p>
+    <div class="winbar"><span class="state">Titellinje:</span>
+      <button class="btn toggle" data-title="dark" aria-pressed="true">Mørk</button>
+      <button class="btn toggle" data-title="light" aria-pressed="false">Lys</button>
+      <button class="btn toggle" data-title="texture" aria-pressed="false">Tekstur hele vejen</button>
+    </div>
+
+    <div class="win" id="win" data-title="dark">
+      <div class="wt">
+        <div class="ti"><span class="logo"></span><span>Konsulentplanlægning · Fabrikam A/S</span></div>
+        <div class="cmds">
+          <button class="wc">Indstillinger</button><button class="wc">Hjælp</button>
+          <button class="wb" aria-label="Minimér"><svg viewBox="0 0 10 10"><path d="M0 5.5h10"/></svg></button>
+          <button class="wb" aria-label="Maksimér"><svg viewBox="0 0 10 10"><rect x=".6" y=".6" width="8.8" height="8.8"/></svg></button>
+          <button class="wb close" aria-label="Luk"><svg viewBox="0 0 10 10"><path d="M0 0l10 10M10 0L0 10"/></svg></button>
+        </div>
+      </div>
+      <nav class="nav" data-nav role="tablist" aria-label="Moduler">
+        <button role="tab" aria-selected="true">Virksomheder</button><button role="tab" aria-selected="false">Ordrer</button><button role="tab" aria-selected="false">Medarbejdere</button><button role="tab" aria-selected="false">Ugesedler</button><button role="tab" aria-selected="false">Løn</button><button role="tab" aria-selected="false">Fakturering</button><button role="tab" aria-selected="false">Rapporter</button>
+      </nav>
+      <div class="navnotch"><i id="notch"></i></div>
+      <div class="wc-body">
+        <div class="h h1">Virksomheder</div>
+        <div class="wgrid">
+          <div class="wleft">
+            <div style="display:flex;flex-direction:column;flex:1" data-accordion>
+              <button class="acc-h" aria-expanded="true">Mangler placering</button>
+              <div class="acc-b">
+                <div class="tree" data-tree><ul>
+                  <li><div class="node"><button class="exp" aria-expanded="true" aria-label="Fold Contoso"></button><span class="nl">Contoso</span></div>
+                    <ul><li><div class="node"><span class="exp leaf"></span><span class="nl">August 2026</span></div></li><li><div class="node"><span class="exp leaf"></span><span class="nl" aria-selected="true">September 2026</span></div></li><li><div class="node"><span class="exp leaf"></span><span class="nl">Oktober 2026</span></div></li></ul></li>
+                  <li><div class="node"><button class="exp" aria-expanded="false" aria-label="Fold Southridge ud"></button><span class="nl">Southridge</span></div><ul hidden><li><div class="node"><span class="exp leaf"></span><span class="nl">Juli 2026</span></div></li></ul></li>
+                  <li><div class="node"><button class="exp" aria-expanded="false" aria-label="Fold Microsoft ud"></button><span class="nl">Microsoft</span></div><ul hidden><li><div class="node"><span class="exp leaf"></span><span class="nl">Juni 2026</span></div></li></ul></li>
+                  <li><div class="node"><button class="exp" aria-expanded="false" aria-label="Fold Fabrikam ud"></button><span class="nl">Fabrikam</span></div><ul hidden><li><div class="node"><span class="exp leaf"></span><span class="nl">Maj 2026</span></div></li></ul></li>
+                  <li><div class="node"><button class="exp" aria-expanded="false" aria-label="Fold Soar Airlines ud"></button><span class="nl">Soar Airlines</span></div><ul hidden><li><div class="node"><span class="exp leaf"></span><span class="nl">April 2026</span></div></li></ul></li>
+                </ul></div>
+              </div>
+              <button class="acc-h" aria-expanded="false">Fornyelse afventer</button><div class="acc-b" hidden>2 kontrakter udløber 31. december.</div>
+              <button class="acc-h" aria-expanded="false">Arkiv</button><div class="acc-b" hidden>148 afsluttede placeringer.</div>
+            </div>
+          </div>
+          <div class="tabc wtabs" data-tabc>
+            <div class="tabstrip" role="tablist"><button class="tab" role="tab" aria-selected="true">Ledige</button><button class="tab" role="tab" aria-selected="false">Tildelte</button><button class="tab" role="tab" aria-selected="false">Forslag</button></div>
+            <div class="tabbody">
+              <div class="lb jps" role="listbox" data-list aria-label="Ledige konsulenter">
+                <div class="item" role="option">Lindsey N. Ballard</div><div class="item" role="option">Charles K. Hoyle</div><div class="item" role="option" aria-selected="true">Daniel S. Tiedemann</div><div class="item" role="option">David J. Ritter</div><div class="item" role="option">Vivian J. Smail</div>
+              </div>
+              <div style="flex:1 1 300px;min-width:0;display:flex;flex-direction:column">
+                <p class="lede">Daniel er backend-udvikler med 9 års erfaring i .NET og SQL Server. Ledig fra mandag i uge 44 på fuld tid, foretrækker opgaver i Aarhus-området.</p>
+                <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:flex-start"><div class="cal" data-cal></div><div class="photo" aria-label="Profilbillede">DT</div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="wform">
+          <div>
+            <div class="h h2">Virksomhedsoplysninger</div>
+            <div class="formfields">
+              <label for="wName">Navn</label><input class="tb" id="wName" value="Contoso A/S">
+              <label for="wHr">HR-kontakt</label><input class="tb" id="wHr" value="Heather A. Andrade">
+              <label for="wPhone">Telefon</label><input class="tb" id="wPhone" value="+45 86 12 34 56">
+            </div>
+            <div class="formfoot"><button class="btn">Send besked</button><button class="btn c-accent">Opdater</button><label class="cb"><input class="sr" type="checkbox"><span class="box"></span>Hold aktiv</label></div>
+          </div>
+          <div class="divider"></div>
+          <div class="wnotes">
+            <div class="h h2">Noter</div>
+            <textarea class="tb dark jps" id="wNotes" aria-label="Noter">Kontrakten er forlænget til 30. juni 2027. Kunden ønsker en ekstra udvikler fra januar, helst med erfaring i WPF og MVVM. Næste statusmøde er torsdag i uge 44 kl. 10 hos Contoso i Aarhus.</textarea>
+          </div>
+        </div>
+      </div>
+      <div class="statusbar"><span>Klar</span><span>5 ledige · 9 tildelte</span><span class="sp">Sidst synkroniseret 09:42</span></div>
+    </div>
+
+    <div class="dialog-demo">
+      <div class="dlg" role="dialog" aria-labelledby="dlgT">
+        <header><span id="dlgT">Slet virksomhed?</span><button aria-label="Luk">×</button></header>
+        <div class="db"><p>Contoso A/S og 3 tilknyttede placeringer slettes permanent. Ugesedler, der allerede er faktureret, bevares i arkivet.</p>
+          <div class="acts"><button class="btn">Annuller</button><button class="btn c-orange">Slet</button></div></div>
+      </div>
+    </div>
+    <p class="note" style="max-width:none;margin-top:10px">ChildWindow / MahApps-dialog: lys titel (StaticControlBackground), krop #E0E0E0, overlay 50 % sort.</p>
+  </section>
+
+  <!-- ================= PALETTE ================= -->
+  <section data-panel="palette" role="tabpanel" hidden>
+    <p class="intro">Ressourcenøglerne, som biblioteket eksponerer. Navnene følger MahApps-skemaet (<code>MahApps.Brushes.Accent</code> → <code>JetPack.Brushes.Accent</code>), så det er nemt at flytte en eksisterende app over. Accent-farverne skifter med vælgeren øverst.</p>
+    <div class="row"><div class="col xwide" style="align-items:stretch"><h3>Accent</h3><span class="key" id="accName">Grøn</span><div class="swatches" id="swAccent"></div></div></div>
+    <div class="row"><div class="col xwide" style="align-items:stretch"><h3>Neutrale og tilstande</h3><span class="key">fælles for alle accenter</span><div class="swatches" id="swNeutral"></div></div></div>
+    <div class="row">
+      <div class="col xwide" style="align-items:stretch"><h3>Typografi</h3><span class="key">JetPack.Font.*</span>
+        <div class="typerow"><code>Heading1 · 36</code><span class="h h1" style="font-size:36px">Virksomheder</span></div>
+        <div class="typerow"><code>Heading2 · 24 · 50 %</code><span class="h h2">Virksomhedsoplysninger</span></div>
+        <div class="typerow"><code>Heading3 · 21</code><span class="h h3">Noter</span></div>
+        <div class="typerow"><code>Heading4 · 18</code><span class="h h4">Kontaktperson</span></div>
+        <div class="typerow"><code>Heading5 · 15</code><span class="h h5">Faneblade og navigation</span></div>
+        <div class="typerow"><code>Content · 13</code><span style="font-size:13px">Brødtekst i indholdsområder</span></div>
+        <div class="typerow"><code>Default · 12,5</code><span style="font-size:12.5px">Standard for vinduer og UserControls</span></div>
+        <div class="typerow"><code>Input/Normal · 11 → 12</code><span style="font-size:var(--fs-ctl)">Kontroller og inputfelter</span></div>
+      </div>
+      <div class="col wide" style="align-items:stretch"><h3>Effekter</h3><span class="key">JetPack.Effects.*</span>
+        <div class="stack" style="gap:16px">
+          <div style="display:flex;gap:12px;align-items:center"><span style="width:60px;height:30px;background:#ccc;border-radius:2px;box-shadow:var(--shadow)"></span><code class="key">ControlShadow · blur 3 · 55 %</code></div>
+          <div style="display:flex;gap:12px;align-items:center"><span style="width:60px;height:30px;background:#ccc;border-radius:2px;box-shadow:var(--shadow-light)"></span><code class="key">LightControlShadow · #55524F</code></div>
+          <div style="display:flex;gap:12px;align-items:center"><span style="width:60px;height:30px;background:#fff;border:1px solid #686868;border-radius:2.5px;box-shadow:var(--inner),var(--outer-hl)"></span><code class="key">InnerShadow Dark/Light</code></div>
+          <div style="display:flex;gap:12px;align-items:center"><span style="width:60px;height:30px;border-radius:2px;background:var(--ctl-normal);box-shadow:var(--hl)"></span><code class="key">ControlHighlight #80FFFFFF</code></div>
+        </div>
+      </div>
+    </div>
+  </section>
+  </main>
+
+  <section class="decisions" aria-labelledby="decT">
+    <h2 id="decT">Det skal vi blive enige om</h2>
+    <p>Mit forslag er markeret med fed. Skriv bare tilbage, hvad du vil ændre, så retter jeg udkastet, før jeg går i gang med WPF-biblioteket.</p>
+    <div class="dlist">
+      <div class="dcard"><h4>Fokusmarkering</h4><p>Originalen havde usynlig fokus (<code class="key">FocusVisualBrush #00000000</code>). Det er et problem for tastaturbrugere.</p><div class="prop">Forslag: <b>1 px ring i accent-highlight</b>, og felter får accentkant. Slå til og fra øverst for at sammenligne.</div></div>
+      <div class="dcard"><h4>Skriftstørrelse</h4><p>Silverlight brugte 11 px på kontroller. På moderne skærme i WPF virker det småt.</p><div class="prop">Forslag: <b>12 px på kontroller</b>, overskrifter uændrede. Begge kan ses via knapperne øverst.</div></div>
+      <div class="dcard"><h4>Accentfarver</h4><p>JetPack har tre accentsæt: grøn, orange og blå. MahApps har 23 og kan lave et sæt ud fra én farve.</p><div class="prop">Forslag: <b>Grøn som standard, orange og blå indbygget</b>, plus en generator, der laver alle gradienter ud fra én farve.</div></div>
+      <div class="dcard"><h4>Vinduets titellinje</h4><p>Ny del, der ikke fandtes i Silverlight. Tre varianter kan ses under fanen Vindue.</p><div class="prop">Forslag: <b>Mørk titellinje</b> (samme gradient som DataGrid-hovedet), så den lyse menulinje står klart nedenunder.</div></div>
+      <div class="dcard"><h4>Lyse og mørke inputfelter</h4><p>Originalen har både "White" og "Dark Gray" TextBox og PasswordBox.</p><div class="prop">Forslag: <b>lys som standard</b>, mørk som navngiven stil <code class="key">JetPack.Styles.TextBox.Dark</code>, også til NumericUpDown og ComboBox.</div></div>
+      <div class="dcard"><h4>Skrifttype</h4><p>Trebuchet MS følger med Windows, så det ligner originalen uden at skulle pakke en skrifttype med.</p><div class="prop">Forslag: <b>Trebuchet MS beholdes</b>, med Segoe UI som reserve.</div></div>
+      <div class="dcard"><h4>Lys/mørk base</h4><p>MahApps har Light- og Dark-basetemaer. JetPack findes kun i den grå teksturerede udgave.</p><div class="prop">Forslag: <b>kun den originale grå base i version 1</b>. En mørkere variant kan komme senere.</div></div>
+      <div class="dcard"><h4>Opbygning af biblioteket</h4><p>Til trin 2: et selvstændigt bibliotek med samme struktur som MahApps, eller et tema oven på MahApps.Metro-pakken.</p><div class="prop">Forslag: <b>selvstændigt bibliotek, JetPack.Wpf (net8.0-windows)</b>, som tager MahApps' kontrolkode med og giver den nye skabeloner.</div></div>
+    </div>
+  </section>
+</div>
+
+<script>
+(function(){
+  const root=document.documentElement;
+  const $=(s,el=document)=>el.querySelector(s), $$=(s,el=document)=>[...el.querySelectorAll(s)];
+  const store={get(k){try{return localStorage.getItem(k)}catch(e){return null}},set(k,v){try{localStorage.setItem(k,v)}catch(e){}}};
+
+  /* top tabs */
+  const tabs=$$('.tabs [data-tab]');
+  function showTab(id){
+    if(!tabs.some(t=>t.dataset.tab===id)) id='core';
+    tabs.forEach(t=>t.setAttribute('aria-selected',t.dataset.tab===id));
+    $$('[data-panel]').forEach(p=>p.hidden=p.dataset.panel!==id);
+    if(id==='window') placeNotch();
+  }
+  tabs.forEach(t=>t.addEventListener('click',()=>{showTab(t.dataset.tab);try{history.replaceState(null,'','#'+t.dataset.tab)}catch(e){}}));
+
+  /* accent / size / focus */
+  const ACC={green:{name:'Grøn',sel:['#98B913','#75A20A'],acc:['#BCD742','#91B006'],over:['#9EBF0A','#C3E040'],sub:['#6D9000','#5A8100'],hl:'#C2DF00',solid:'#75A20A'},
+             orange:{name:'Orange',sel:['#FFB629','#FE770A'],acc:['#FFB72C','#FF8700'],over:['#FFC149','#FF9800'],sub:['#DD870D','#CE5300'],hl:'#FFC600',solid:'#FE770A'},
+             blue:{name:'Blå',sel:['#42BAFF','#148CD1'],acc:['#42BAFF','#148CD1'],over:['#1A9EE8','#74CDFF'],sub:['#1AA0EC','#0072BE'],hl:'#8DDBFF',solid:'#148CD1'}};
+  function setAccent(a){
+    if(!ACC[a]) a='green';
+    if(a==='green') root.removeAttribute('data-accent'); else root.setAttribute('data-accent',a);
+    $$('.sw').forEach(b=>b.setAttribute('aria-pressed',b.dataset.accent===a));
+    renderAccentSwatches(a); store.set('jp-accent',a);
+  }
+  $$('.sw').forEach(b=>b.addEventListener('click',()=>setAccent(b.dataset.accent)));
+  $$('[data-size]').forEach(b=>b.addEventListener('click',()=>{
+    $$('[data-size]').forEach(x=>x.setAttribute('aria-pressed',x===b));
+    if(b.dataset.size==='sl') root.setAttribute('data-size','sl'); else root.removeAttribute('data-size');
+  }));
+  $('#focusToggle').addEventListener('change',e=>{if(e.target.checked) root.removeAttribute('data-focus'); else root.setAttribute('data-focus','off')});
+
+  /* generic toggles */
+  $$('.btn.toggle:not([data-size]):not([data-title])').forEach(b=>b.addEventListener('click',()=>b.setAttribute('aria-pressed',b.getAttribute('aria-pressed')!=='true')));
+  $$('.toolbarx [aria-pressed]').forEach(b=>b.addEventListener('click',()=>b.setAttribute('aria-pressed',b.getAttribute('aria-pressed')!=='true')));
+  $$('[data-indet]').forEach(i=>i.indeterminate=true);
+
+  /* repeat button */
+  let rt,ri,rn=0;const rb=$('#repeatBtn'),rnEl=$('#repeatN');
+  const stopR=()=>{clearTimeout(rt);clearInterval(ri)};
+  rb.addEventListener('pointerdown',()=>{rnEl.textContent=++rn;rt=setTimeout(()=>{ri=setInterval(()=>rnEl.textContent=++rn,60)},400)});
+  ['pointerup','pointerleave','pointercancel'].forEach(e=>rb.addEventListener(e,stopR));
+
+  /* combos */
+  $$('[data-combo]').forEach(c=>{
+    const btn=$('.combo-btn',c),pop=$('.pop',c),inp=$('input',c);
+    btn.addEventListener('click',e=>{e.stopPropagation();const open=pop.hidden;closeAll();pop.hidden=!open;btn.setAttribute('aria-expanded',open)});
+    $$('.item',pop).forEach(it=>it.addEventListener('click',()=>{
+      $$('.item',pop).forEach(x=>x.removeAttribute('aria-selected'));it.setAttribute('aria-selected','true');
+      if(inp) inp.value=it.textContent; else btn.textContent=it.textContent;
+      pop.hidden=true;btn.setAttribute('aria-expanded','false');
+    }));
+  });
+  function closeAll(){
+    $$('[data-combo] .pop').forEach(p=>{p.hidden=true;const b=$('.combo-btn',p.parentElement);b&&b.setAttribute('aria-expanded','false')});
+    $$('[data-menubar] .menu').forEach(m=>{m.hidden=true;m.previousElementSibling.setAttribute('aria-expanded','false')});
+  }
+  document.addEventListener('click',closeAll);
+
+  /* lists, grid */
+  $$('[data-list]').forEach(l=>$$('.item',l).forEach(it=>it.addEventListener('click',()=>{$$('.item',l).forEach(x=>x.removeAttribute('aria-selected'));it.setAttribute('aria-selected','true')})));
+  $$('[data-grid] tbody tr').forEach(r=>r.addEventListener('click',()=>{$$('tr',r.parentElement).forEach(x=>x.classList.remove('sel'));r.classList.add('sel')}));
+
+  /* tab controls */
+  $$('[data-tabc]').forEach(tc=>{
+    const ts=$$('.tab',tc),ps=$$('[data-tp]',tc);
+    ts.forEach((t,i)=>t.addEventListener('click',()=>{ts.forEach(x=>x.setAttribute('aria-selected',x===t));if(ps.length) ps.forEach((p,j)=>p.hidden=j!==i)}));
+  });
+
+  /* expanders / accordions */
+  $$('[data-acc] .acc-h').forEach(h=>h.addEventListener('click',()=>{const o=h.getAttribute('aria-expanded')!=='true';h.setAttribute('aria-expanded',o);h.nextElementSibling.hidden=!o}));
+  $$('[data-accordion]').forEach(a=>{const hs=$$(':scope > .acc-h',a);hs.forEach(h=>h.addEventListener('click',()=>{hs.forEach(x=>{const me=x===h;x.setAttribute('aria-expanded',me);x.nextElementSibling.hidden=!me})}))});
+
+  /* trees */
+  $$('[data-tree]').forEach(tr=>{
+    $$('button.exp',tr).forEach(b=>b.addEventListener('click',()=>{const o=b.getAttribute('aria-expanded')!=='true';b.setAttribute('aria-expanded',o);const ul=b.closest('li').querySelector(':scope > ul');if(ul) ul.hidden=!o}));
+    $$('.nl',tr).forEach(n=>n.addEventListener('click',()=>{$$('.nl',tr).forEach(x=>x.removeAttribute('aria-selected'));n.setAttribute('aria-selected','true')}));
+  });
+
+  /* calendars: October 2026, Monday first */
+  const MONTHS=['januar','februar','marts','april','maj','juni','juli','august','september','oktober','november','december'];
+  $$('[data-cal]').forEach(cal=>{
+    let y=2026,m=9,sel=new Date(2026,9,23);const today=new Date(2026,9,19);
+    function draw(){
+      const first=new Date(y,m,1),off=(first.getDay()+6)%7,start=new Date(y,m,1-off);
+      let h='<div class="cal-head"><button aria-label="Forrige måned"><span class="tri-l"></span></button><span>'+MONTHS[m].replace(/^./,c=>c.toUpperCase())+' '+y+'</span><button aria-label="Næste måned"><span class="tri-r"></span></button></div><div class="cal-grid">';
+      ['Ma','Ti','On','To','Fr','Lø','Sø'].forEach(d=>h+='<span class="dow">'+d+'</span>');
+      for(let i=0;i<42;i++){const d=new Date(start);d.setDate(start.getDate()+i);
+        const cls=['d'];if(d.getMonth()!==m)cls.push('o');if(+d===+today)cls.push('today');if(+d===+sel)cls.push('sel');
+        h+='<span class="'+cls.join(' ')+'" data-t="'+(+d)+'">'+d.getDate()+'</span>';}
+      cal.innerHTML=h+'</div>';
+      const [p,n]=$$('.cal-head button',cal);
+      p.onclick=()=>{m--;if(m<0){m=11;y--}draw()};n.onclick=()=>{m++;if(m>11){m=0;y++}draw()};
+      $$('.d',cal).forEach(c=>c.onclick=()=>{sel=new Date(+c.dataset.t);draw()});
+    }
+    draw();
+  });
+
+  /* sliders */
+  function bindSlider(s){
+    const v=s.hasAttribute('data-v');
+    const set=p=>{p=Math.max(0,Math.min(100,p));s.style.setProperty('--p',p+'%');s.setAttribute('aria-valuenow',Math.round(p))};
+    const at=e=>{const r=s.getBoundingClientRect();return v?(r.bottom-e.clientY)/r.height*100:(e.clientX-r.left)/r.width*100};
+    s.addEventListener('pointerdown',e=>{s.setPointerCapture(e.pointerId);set(at(e));const mv=ev=>set(at(ev));s.addEventListener('pointermove',mv);s.addEventListener('pointerup',()=>s.removeEventListener('pointermove',mv),{once:true})});
+    s.addEventListener('keydown',e=>{const cur=+s.getAttribute('aria-valuenow')||0;if(['ArrowRight','ArrowUp'].includes(e.key)){set(cur+5);e.preventDefault()}if(['ArrowLeft','ArrowDown'].includes(e.key)){set(cur-5);e.preventDefault()}});
+    set(parseFloat(getComputedStyle(s).getPropertyValue('--p'))||+s.getAttribute('aria-valuenow')||0);
+  }
+  $$('[data-slider]').forEach(bindSlider);
+  const rg=$('[data-range]');
+  if(rg){let a=25,b=70;const out=$('#rangeOut');
+    const upd=()=>{rg.style.setProperty('--a',a+'%');rg.style.setProperty('--p',b+'%');out.textContent=(a*100).toLocaleString('da-DK')+' – '+(b*100).toLocaleString('da-DK')+' kr.'};
+    rg.addEventListener('pointerdown',e=>{const r=rg.getBoundingClientRect();const pos=()=>Math.max(0,Math.min(100,(event.clientX-r.left)/r.width*100));
+      const p0=(e.clientX-r.left)/r.width*100;const which=Math.abs(p0-a)<Math.abs(p0-b)?'a':'b';rg.setPointerCapture(e.pointerId);
+      const mv=ev=>{const p=Math.round(Math.max(0,Math.min(100,(ev.clientX-r.left)/r.width*100)));if(which==='a')a=Math.min(p,b);else b=Math.max(p,a);upd()};mv(e);
+      rg.addEventListener('pointermove',mv);rg.addEventListener('pointerup',()=>rg.removeEventListener('pointermove',mv),{once:true})});
+    upd();}
+
+  /* numeric up/down */
+  $$('[data-num]').forEach(f=>{const i=$('input',f);const [u,d]=$$('.spin button',f);
+    const step=k=>{let n=parseFloat(i.value.replace(',','.'))||0;n=Math.round((n+k)*10)/10;i.value=String(n).replace('.',',')};
+    u.onclick=()=>step(i.value.includes(',')?.5:1);d.onclick=()=>step(i.value.includes(',')?-.5:-1)});
+
+  /* rating */
+  $$('[data-rating]').forEach(r=>{let val=+r.dataset.value;
+    const star='<svg viewBox="0 0 18 18"><path d="M9 1.5l2.3 4.8 5.2.7-3.8 3.6.9 5.2L9 13.3l-4.6 2.5.9-5.2L1.5 7l5.2-.7z" stroke-width="1"/></svg>';
+    const draw=()=>{r.innerHTML='';for(let i=1;i<=5;i++){const b=document.createElement('button');b.className=i<=val?'on':'off';b.innerHTML=star;b.setAttribute('role','radio');b.setAttribute('aria-checked',i===val);b.setAttribute('aria-label',i+' stjerner');b.onclick=()=>{val=i;draw()};r.appendChild(b)}};draw()});
+
+  /* chart */
+  (function(){const svg=$('#chart');if(!svg)return;
+    const data=[[120,80,60],[150,95,70],[135,110,55],[170,120,80]],Q=['K1','K2','K3','K4'];
+    const fills=['url(#gG)','url(#gO)','url(#gB)'],y=v=>140-v*0.625;
+    let h='<defs><linearGradient id="gG" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#B2C60D"/><stop offset="1" stop-color="#4C7B00"/></linearGradient><linearGradient id="gO" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#39B7FF"/><stop offset="1" stop-color="#0065AD"/></linearGradient><linearGradient id="gB" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#85878C"/><stop offset="1" stop-color="#33353A"/></linearGradient></defs>';
+    [0,50,100,150,200].forEach(v=>{h+='<line x1="30" x2="290" y1="'+y(v)+'" y2="'+y(v)+'" stroke="rgba(0,0,0,.1)"/><text x="25" y="'+(y(v)+3)+'" fill="#606060" font-size="9" text-anchor="end">'+v+'</text>'});
+    data.forEach((g,i)=>{const x0=30+i*65+11;g.forEach((v,j)=>{h+='<rect x="'+(x0+j*15)+'" y="'+y(v)+'" width="13" height="'+(140-y(v))+'" rx="1" fill="'+fills[j]+'"><title>'+Q[i]+': '+v+' timer</title></rect>'});
+      h+='<text x="'+(x0+21.5)+'" y="155" fill="#303030" font-size="10" text-anchor="middle">'+Q[i]+'</text>'});
+    h+='<line x1="30" x2="290" y1="140" y2="140" stroke="#686868"/>';
+    svg.innerHTML=h})();
+
+  /* flyout */
+  const fo=$('#flyout');$('[data-flyout-open]').onclick=()=>fo.classList.add('open');$('[data-flyout-close]').onclick=()=>fo.classList.remove('open');
+
+  /* hamburger */
+  const HT={Oversigt:'Valgt punkt får accentgradient og samme lille notch som fanerne øverst, her pegende ind mod indholdet.',Ordrer:'14 åbne ordrer, 3 forfalder i denne uge.',Medarbejdere:'23 medarbejdere fordelt på 5 afdelinger.',Indstillinger:'Sprog, accentfarve og synkronisering.'};
+  $$('[data-ham] nav button').forEach(b=>b.addEventListener('click',()=>{$$('[data-ham] nav button').forEach(x=>x.setAttribute('aria-selected',x===b));const t=b.textContent.trim();$('#hamTitle').textContent=t;$('#hamText').textContent=HT[t]}));
+
+  /* infobars */
+  const reset=$('#infoReset');
+  $$('#infobars .x').forEach(x=>x.addEventListener('click',()=>{x.parentElement.hidden=true;reset.hidden=$$('#infobars .info').some(i=>!i.hidden)}));
+  reset.onclick=()=>{$$('#infobars .info').forEach(i=>i.hidden=false);reset.hidden=true};
+
+  /* menubar */
+  $$('[data-menubar] > div > button').forEach(b=>b.addEventListener('click',e=>{e.stopPropagation();const m=b.nextElementSibling,o=m.hidden;closeAll();m.hidden=!o;b.setAttribute('aria-expanded',o)}));
+
+  /* colour picker */
+  const cp=$('[data-colors]');
+  if(cp){['#75A20A','#91B006','#C2DF00','#FE770A','#FFB400','#148CD1','#42BAFF','#4599CA','#DC000C','#EF0A0A','#8E44AD','#2E7D32','#202020','#57575C','#707176','#C6C6C6','#E0E0E0','#FFFFFF','#B62F00','#00538E','#2B3D00','#686868','#DCDCDD','#F7F7F7']
+    .forEach((c,i)=>{const s=document.createElement('i');s.style.background=c;s.title=c;if(i===0)s.className='sel';s.onclick=()=>{$$('i',cp).forEach(x=>x.className='');s.className='sel';const b=cp.previousElementSibling;b.innerHTML='<span style="display:inline-block;width:12px;height:12px;background:'+c+';border:1px solid rgba(0,0,0,.3);vertical-align:-2px;margin-right:6px"></span>'+c};cp.appendChild(s)})}
+
+  /* window: title bar + nav notch */
+  const win=$('#win');
+  $$('[data-title]').forEach(b=>{if(b.classList.contains('btn')) b.addEventListener('click',()=>{$$('.btn[data-title]').forEach(x=>x.setAttribute('aria-pressed',x===b));win.dataset.title=b.dataset.title})});
+  const nav=$('[data-nav]'),notch=$('#notch');
+  function placeNotch(){const a=$('[aria-selected="true"]',nav);if(!a||!a.offsetWidth)return;notch.style.left=(a.offsetLeft-nav.scrollLeft+a.offsetWidth/2-7.5)+'px'}
+  $$('button',nav).forEach(b=>b.addEventListener('click',()=>{$$('button',nav).forEach(x=>x.setAttribute('aria-selected',x===b));placeNotch()}));
+  nav.addEventListener('scroll',placeNotch);window.addEventListener('resize',placeNotch);
+
+  /* palette swatches */
+  const g=(a,b)=>'linear-gradient('+a+','+b+')';
+  function renderAccentSwatches(a){const A=ACC[a];$('#accName').textContent=A.name;
+    const items=[['Selection','JetPack.Brushes.Accent.Selection',g(...A.sel),A.sel.join(' → ')],['Accent','JetPack.Brushes.Accent',g(...A.acc),A.acc.join(' → ')],['AccentOver','JetPack.Brushes.Accent.MouseOver',g(...A.over),A.over.join(' → ')],['AccentSubdued','JetPack.Brushes.Accent.Pressed',g(...A.sub),A.sub.join(' → ')],['Highlight','JetPack.Brushes.Accent.Highlight',A.hl,A.hl],['Solid','JetPack.Colors.Accent',A.solid,A.solid]];
+    $('#swAccent').innerHTML=items.map(i=>'<div class="swatch"><div class="chip" style="background:'+i[2]+'"></div><div class="meta"><b>'+i[0]+'</b><code>'+i[1]+'</code><code>'+i[3]+'</code></div></div>').join('')}
+  const N=[['ControlBackground','Control.Background','var(--ctl-normal)','#F7F7F7 → #C6C6C6'],['ControlBackground.MouseOver','Control.Background.MouseOver','var(--ctl-over)','#FFFFFF → #DEDEDE'],['ControlBackground.Pressed','Control.Background.Pressed','var(--ctl-pressed)','#CECECE → #AFAFAF'],['StaticControlBackground','Static.Background','var(--static)','#E2E2E2 → #C6C6C6'],['Input.Background','Input.Background','#FFFFFF','#FFFFFF'],['Control.Border','Control.Border','#686868','#686868'],['Control.Foreground','Text','#202020','#202020'],['Alt.Background','Track','#57575C','#57575C'],['Dark.Background','Panel.Background','#707176','#707176'],['Dark.Border','Panel.Border','#58585D','#58585D'],['DataGrid.Header','DataGrid.Header','var(--grid-head)','#606066 → #4D4D51'],['Disabled','Disabled','var(--disabled)','#9C9DA0 → #8B8C8E'],['Error','Validation','#EF0A0A','#EF0A0A / #DC000C'],['ScrollBar.Track','ScrollBar.Track','#DCDCDD','#DCDCDD'],['Window.Ground','Window.Background','var(--ground) var(--tex)','#86888D + tekstur']];
+  $('#swNeutral').innerHTML=N.map(i=>'<div class="swatch"><div class="chip" style="background:'+i[2]+'"></div><div class="meta"><b>'+i[0]+'</b><code>JetPack.Brushes.'+i[1]+'</code><code>'+i[3]+'</code></div></div>').join('');
+
+  setAccent(store.get('jp-accent')||'green');
+  showTab((location.hash||'').slice(1)||'core');
+})();
+</script>

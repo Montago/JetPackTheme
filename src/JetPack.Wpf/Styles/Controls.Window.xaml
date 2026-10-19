@@ -1,0 +1,265 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:c="clr-namespace:JetPack.Wpf.Controls">
+
+    <!-- Text buttons placed in the title bar (LeftWindowCommands / RightWindowCommands) -->
+    <Style x:Key="JetPack.Styles.Button.WindowCommand" TargetType="ButtonBase">
+        <Setter Property="Focusable" Value="False" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="FontFamily" Value="{DynamicResource JetPack.Fonts.Family}" />
+        <Setter Property="FontSize" Value="{DynamicResource JetPack.Font.Size.Small}" />
+        <Setter Property="Padding" Value="10,0" />
+        <Setter Property="VerticalAlignment" Value="Stretch" />
+        <Setter Property="WindowChrome.IsHitTestVisibleInChrome" Value="True" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ButtonBase">
+                    <Border x:Name="Bd" Background="{TemplateBinding Background}">
+                        <ContentPresenter Margin="{TemplateBinding Padding}" VerticalAlignment="Center" HorizontalAlignment="Center" RecognizesAccessKey="True" />
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="Bd" Property="Background" Value="#24FFFFFF" />
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="Bd" Property="Background" Value="#1F000000" />
+                        </Trigger>
+                        <Trigger Property="ToggleButton.IsChecked" Value="True">
+                            <Setter TargetName="Bd" Property="Background" Value="#1F000000" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- Minimise / maximise / close -->
+    <Style x:Key="JetPack.Styles.Button.WindowCaption" TargetType="Button">
+        <Setter Property="Focusable" Value="False" />
+        <Setter Property="Width" Value="42" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="WindowChrome.IsHitTestVisibleInChrome" Value="True" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="Bd" Background="{TemplateBinding Background}">
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="Bd" Property="Background" Value="#24FFFFFF" />
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="Bd" Property="Background" Value="#1F000000" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style x:Key="JetPack.Styles.Button.WindowClose" TargetType="Button" BasedOn="{StaticResource JetPack.Styles.Button.WindowCaption}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="Bd" Background="{TemplateBinding Background}">
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="Bd" Property="Background" Value="{DynamicResource JetPack.Brushes.Close.MouseOver}" />
+                            <Setter Property="Foreground" Value="White" />
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="Bd" Property="Background" Value="#FF9E1515" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="c:JetPackWindow">
+        <Setter Property="FontFamily" Value="{DynamicResource JetPack.Fonts.Family}" />
+        <Setter Property="FontSize" Value="{DynamicResource JetPack.Font.Size.Default}" />
+        <Setter Property="Foreground" Value="{DynamicResource JetPack.Brushes.Text}" />
+        <Setter Property="Background" Value="{DynamicResource JetPack.Brushes.Window.Background}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource JetPack.Brushes.Window.Border}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="UseLayoutRounding" Value="True" />
+        <Setter Property="TextOptions.TextFormattingMode" Value="Display" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="c:JetPackWindow">
+                    <Border x:Name="PART_Root" Background="{DynamicResource JetPack.Brushes.Window.Ground}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
+                        <Grid>
+                            <Rectangle Fill="{TemplateBinding Background}" />
+                            <Rectangle x:Name="Vignette" Fill="{DynamicResource JetPack.Brushes.Window.Vignette}" IsHitTestVisible="False" />
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="*" />
+                                </Grid.RowDefinitions>
+
+                                <!-- Title bar -->
+                                <Grid x:Name="TitleBar" Height="{TemplateBinding TitleBarHeight}" Background="{DynamicResource JetPack.Brushes.Window.Title.Dark}"
+                                      TextElement.Foreground="White">
+                                    <Border x:Name="TitleHighlight" BorderBrush="#24FFFFFF" BorderThickness="0,1,0,0" />
+                                    <DockPanel>
+                                        <Image x:Name="Icon" DockPanel.Dock="Left" Width="16" Height="16" Margin="9,0,0,0" Source="{TemplateBinding Icon}"
+                                               RenderOptions.BitmapScalingMode="HighQuality" WindowChrome.IsHitTestVisibleInChrome="True" />
+                                        <ContentPresenter DockPanel.Dock="Left" Content="{TemplateBinding LeftWindowCommands}">
+                                            <ContentPresenter.Resources>
+                                                <Style TargetType="Button" BasedOn="{StaticResource JetPack.Styles.Button.WindowCommand}" />
+                                                <Style TargetType="ToggleButton" BasedOn="{StaticResource JetPack.Styles.Button.WindowCommand}" />
+                                            </ContentPresenter.Resources>
+                                        </ContentPresenter>
+                                        <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
+                                            <ContentPresenter Content="{TemplateBinding RightWindowCommands}">
+                                                <ContentPresenter.Resources>
+                                                    <Style TargetType="Button" BasedOn="{StaticResource JetPack.Styles.Button.WindowCommand}" />
+                                                    <Style TargetType="ToggleButton" BasedOn="{StaticResource JetPack.Styles.Button.WindowCommand}" />
+                                                </ContentPresenter.Resources>
+                                            </ContentPresenter>
+                                            <Button x:Name="MinButton" Style="{StaticResource JetPack.Styles.Button.WindowCaption}" Command="{x:Static SystemCommands.MinimizeWindowCommand}" ToolTip="Minimér">
+                                                <Path Width="10" Height="1" Stretch="Fill" Data="M0,0 H10" Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}" StrokeThickness="1" SnapsToDevicePixels="True" />
+                                            </Button>
+                                            <Button x:Name="MaxButton" Style="{StaticResource JetPack.Styles.Button.WindowCaption}" Command="{x:Static SystemCommands.MaximizeWindowCommand}" ToolTip="Maksimér">
+                                                <Rectangle Width="10" Height="10" Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}" StrokeThickness="1" SnapsToDevicePixels="True" />
+                                            </Button>
+                                            <Button x:Name="RestoreButton" Style="{StaticResource JetPack.Styles.Button.WindowCaption}" Command="{x:Static SystemCommands.RestoreWindowCommand}" ToolTip="Gendan" Visibility="Collapsed">
+                                                <Path Width="10" Height="10" Data="M2,0.5 H9.5 V8 M0.5,2.5 H7.5 V9.5 H0.5 Z" Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}" StrokeThickness="1" SnapsToDevicePixels="True" />
+                                            </Button>
+                                            <Button Style="{StaticResource JetPack.Styles.Button.WindowClose}" Command="{x:Static SystemCommands.CloseWindowCommand}" ToolTip="Luk">
+                                                <Path Width="10" Height="10" Stretch="Fill" Data="M0,0 L10,10 M10,0 L0,10" Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}" StrokeThickness="1.2" />
+                                            </Button>
+                                        </StackPanel>
+                                        <TextBlock x:Name="Title" Margin="9,0" VerticalAlignment="Center" FontWeight="Bold" FontSize="12" Text="{TemplateBinding Title}" TextTrimming="CharacterEllipsis" />
+                                    </DockPanel>
+                                </Grid>
+
+                                <!-- Content, flyouts, dialogs -->
+                                <AdornerDecorator Grid.Row="1">
+                                    <ContentPresenter />
+                                </AdornerDecorator>
+                                <ContentPresenter Grid.Row="1" Content="{TemplateBinding Flyouts}" />
+                                <Grid x:Name="PART_DialogHost" Grid.Row="1" Background="{DynamicResource JetPack.Brushes.Dialog.Overlay}" Visibility="Collapsed" />
+                            </Grid>
+                        </Grid>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="TitleBarMode" Value="Light">
+                            <Setter TargetName="TitleBar" Property="Background" Value="{DynamicResource JetPack.Brushes.Static.Background}" />
+                            <Setter TargetName="TitleBar" Property="TextElement.Foreground" Value="{DynamicResource JetPack.Brushes.Header.Foreground}" />
+                            <Setter TargetName="TitleHighlight" Property="BorderBrush" Value="#B3FFFFFF" />
+                            <Setter TargetName="Title" Property="Effect" Value="{DynamicResource JetPack.Effects.TextEmboss}" />
+                        </Trigger>
+                        <Trigger Property="TitleBarMode" Value="Texture">
+                            <Setter TargetName="TitleBar" Property="Background" Value="Transparent" />
+                            <Setter TargetName="TitleHighlight" Property="Visibility" Value="Collapsed" />
+                            <Setter TargetName="Title" Property="Effect" Value="{DynamicResource JetPack.Effects.TextGlow}" />
+                        </Trigger>
+                        <Trigger Property="ShowIcon" Value="False">
+                            <Setter TargetName="Icon" Property="Visibility" Value="Collapsed" />
+                        </Trigger>
+                        <Trigger Property="Icon" Value="{x:Null}">
+                            <Setter TargetName="Icon" Property="Visibility" Value="Collapsed" />
+                        </Trigger>
+                        <Trigger Property="ShowVignette" Value="False">
+                            <Setter TargetName="Vignette" Property="Visibility" Value="Collapsed" />
+                        </Trigger>
+                        <Trigger Property="ShowMinButton" Value="False">
+                            <Setter TargetName="MinButton" Property="Visibility" Value="Collapsed" />
+                        </Trigger>
+                        <Trigger Property="WindowState" Value="Maximized">
+                            <Setter TargetName="MaxButton" Property="Visibility" Value="Collapsed" />
+                            <Setter TargetName="RestoreButton" Property="Visibility" Value="Visible" />
+                            <Setter TargetName="PART_Root" Property="BorderThickness" Value="0" />
+                        </Trigger>
+                        <Trigger Property="ShowMaxRestoreButton" Value="False">
+                            <Setter TargetName="MaxButton" Property="Visibility" Value="Collapsed" />
+                            <Setter TargetName="RestoreButton" Property="Visibility" Value="Collapsed" />
+                        </Trigger>
+                        <Trigger Property="ResizeMode" Value="NoResize">
+                            <Setter TargetName="MaxButton" Property="Visibility" Value="Collapsed" />
+                            <Setter TargetName="RestoreButton" Property="Visibility" Value="Collapsed" />
+                            <Setter TargetName="MinButton" Property="Visibility" Value="Collapsed" />
+                        </Trigger>
+                        <Trigger Property="IsActive" Value="False">
+                            <Setter TargetName="Title" Property="Opacity" Value="0.7" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- Plain Window with the JetPack ground (keeps the system frame) -->
+    <Style x:Key="JetPack.Styles.Window" TargetType="Window">
+        <Setter Property="FontFamily" Value="{DynamicResource JetPack.Fonts.Family}" />
+        <Setter Property="FontSize" Value="{DynamicResource JetPack.Font.Size.Default}" />
+        <Setter Property="Foreground" Value="{DynamicResource JetPack.Brushes.Text}" />
+        <Setter Property="Background" Value="{DynamicResource JetPack.Brushes.Window.Background}" />
+        <Setter Property="UseLayoutRounding" Value="True" />
+        <Setter Property="TextOptions.TextFormattingMode" Value="Display" />
+    </Style>
+
+    <!-- ===================== Dialog ===================== -->
+    <Style TargetType="c:JetPackDialog">
+        <Setter Property="FontFamily" Value="{DynamicResource JetPack.Fonts.Family}" />
+        <Setter Property="FontSize" Value="{DynamicResource JetPack.Font.Size.Control}" />
+        <Setter Property="Foreground" Value="{DynamicResource JetPack.Brushes.Header.Foreground}" />
+        <Setter Property="Background" Value="{DynamicResource JetPack.Brushes.Dialog.Background}" />
+        <Setter Property="MinWidth" Value="320" />
+        <Setter Property="MaxWidth" Value="480" />
+        <Setter Property="HorizontalAlignment" Value="Center" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="Padding" Value="14,14,14,12" />
+        <Setter Property="AffirmativeButtonStyle" Value="{DynamicResource JetPack.Styles.Button.Accent}" />
+        <Setter Property="KeyboardNavigation.TabNavigation" Value="Cycle" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="c:JetPackDialog">
+                    <Grid>
+                        <Border Background="{TemplateBinding Background}" CornerRadius="2" Effect="{DynamicResource JetPack.Effects.DialogShadow}" />
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="28" />
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
+                            <Border Background="{DynamicResource JetPack.Brushes.Static.Background}" CornerRadius="2,2,0,0">
+                                <Border BorderBrush="#B3FFFFFF" BorderThickness="0,1,0,0" CornerRadius="2,2,0,0">
+                                    <DockPanel>
+                                        <Button x:Name="PART_Close" DockPanel.Dock="Right" Width="24" Height="20" Margin="0,0,3,0" Style="{StaticResource JetPack.Styles.Button.WindowClose}"
+                                                Foreground="#FF505050" ToolTip="Luk">
+                                            <Path Width="8" Height="8" Stretch="Fill" Data="M0,0 L8,8 M8,0 L0,8" Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}" StrokeThickness="1.3" />
+                                        </Button>
+                                        <TextBlock Margin="10,0" VerticalAlignment="Center" FontWeight="Bold" Text="{TemplateBinding Title}" Effect="{DynamicResource JetPack.Effects.TextEmboss}" />
+                                    </DockPanel>
+                                </Border>
+                            </Border>
+                            <StackPanel Grid.Row="1" Margin="{TemplateBinding Padding}">
+                                <ContentPresenter Margin="0,0,0,14">
+                                    <ContentPresenter.Resources>
+                                        <Style TargetType="TextBlock">
+                                            <Setter Property="TextWrapping" Value="Wrap" />
+                                        </Style>
+                                    </ContentPresenter.Resources>
+                                </ContentPresenter>
+                                <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
+                                    <Button x:Name="PART_Negative" Margin="0,0,8,0" MinWidth="80" Content="{TemplateBinding NegativeText}" IsCancel="True" />
+                                    <Button x:Name="PART_Affirmative" MinWidth="80" Content="{TemplateBinding AffirmativeText}" Style="{TemplateBinding AffirmativeButtonStyle}" IsDefault="True" />
+                                </StackPanel>
+                            </StackPanel>
+                        </Grid>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="NegativeText" Value="{x:Null}">
+                            <Setter TargetName="PART_Negative" Property="Visibility" Value="Collapsed" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+</ResourceDictionary>

@@ -1,0 +1,331 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:h="clr-namespace:JetPack.Wpf.Helpers">
+
+    <!-- ===================== Menu / MenuItem / ContextMenu ===================== -->
+    <!-- Light grey menu panel (#E0E0E0) with a dark border; highlighted items in accent (ToolkitStyles.xaml) -->
+
+    <Style x:Key="{x:Static MenuItem.SeparatorStyleKey}" TargetType="Separator">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Separator">
+                    <StackPanel Margin="30,4,6,4" SnapsToDevicePixels="True">
+                        <Rectangle Height="1" Fill="#29000000" />
+                        <Rectangle Height="1" Fill="White" />
+                    </StackPanel>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <ControlTemplate x:Key="JetPack.Templates.MenuItem.Popup" TargetType="ContentControl">
+        <Grid Margin="0,0,6,6" SnapsToDevicePixels="True">
+            <Border Background="{DynamicResource JetPack.Brushes.Menu.Background}" Effect="{DynamicResource JetPack.Effects.PopupShadow}" />
+            <Border BorderBrush="{DynamicResource JetPack.Brushes.Panel.Border}" BorderThickness="1" Padding="0,4">
+                <ContentPresenter />
+            </Border>
+        </Grid>
+    </ControlTemplate>
+
+    <ControlTemplate x:Key="JetPack.Templates.MenuItem.TopLevelHeader" TargetType="MenuItem">
+        <Grid SnapsToDevicePixels="True">
+            <Border x:Name="Bd" Background="Transparent" Padding="{TemplateBinding Padding}">
+                <ContentPresenter x:Name="Header" ContentSource="Header" RecognizesAccessKey="True" VerticalAlignment="Center" Effect="{DynamicResource JetPack.Effects.TextEmboss}" />
+            </Border>
+            <Popup x:Name="PART_Popup" AllowsTransparency="True" Focusable="False" Placement="Bottom" PopupAnimation="Fade"
+                   IsOpen="{Binding IsSubmenuOpen, RelativeSource={RelativeSource TemplatedParent}}">
+                <ContentControl Template="{StaticResource JetPack.Templates.MenuItem.Popup}" Foreground="{DynamicResource JetPack.Brushes.Control.Foreground}">
+                    <ScrollViewer CanContentScroll="True">
+                        <ItemsPresenter Grid.IsSharedSizeScope="True" KeyboardNavigation.DirectionalNavigation="Cycle" KeyboardNavigation.TabNavigation="Cycle" />
+                    </ScrollViewer>
+                </ContentControl>
+            </Popup>
+        </Grid>
+        <ControlTemplate.Triggers>
+            <Trigger Property="IsHighlighted" Value="True">
+                <Setter TargetName="Bd" Property="Background" Value="{DynamicResource JetPack.Brushes.Accent.Selection}" />
+                <Setter TargetName="Header" Property="Effect" Value="{x:Null}" />
+                <Setter Property="Foreground" Value="White" />
+            </Trigger>
+            <Trigger Property="IsSubmenuOpen" Value="True">
+                <Setter TargetName="Bd" Property="Background" Value="{DynamicResource JetPack.Brushes.Accent.Selection}" />
+                <Setter TargetName="Header" Property="Effect" Value="{x:Null}" />
+                <Setter Property="Foreground" Value="White" />
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Foreground" Value="{DynamicResource JetPack.Brushes.Menu.Disabled}" />
+            </Trigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+
+    <ControlTemplate x:Key="JetPack.Templates.MenuItem.TopLevelItem" TargetType="MenuItem">
+        <Border x:Name="Bd" Background="Transparent" Padding="{TemplateBinding Padding}" SnapsToDevicePixels="True">
+            <ContentPresenter x:Name="Header" ContentSource="Header" RecognizesAccessKey="True" VerticalAlignment="Center" Effect="{DynamicResource JetPack.Effects.TextEmboss}" />
+        </Border>
+        <ControlTemplate.Triggers>
+            <Trigger Property="IsHighlighted" Value="True">
+                <Setter TargetName="Bd" Property="Background" Value="{DynamicResource JetPack.Brushes.Accent.Selection}" />
+                <Setter TargetName="Header" Property="Effect" Value="{x:Null}" />
+                <Setter Property="Foreground" Value="White" />
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Foreground" Value="{DynamicResource JetPack.Brushes.Menu.Disabled}" />
+            </Trigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+
+    <ControlTemplate x:Key="JetPack.Templates.MenuItem.Submenu" TargetType="MenuItem">
+        <Border x:Name="Bd" Background="Transparent" Padding="{TemplateBinding Padding}" SnapsToDevicePixels="True">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" MinWidth="22" SharedSizeGroup="Icon" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" SharedSizeGroup="Gesture" />
+                    <ColumnDefinition Width="16" />
+                </Grid.ColumnDefinitions>
+                <ContentPresenter x:Name="Icon" ContentSource="Icon" Width="16" Height="16" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                <Path x:Name="Check" Width="9" Height="8" Stretch="Uniform" Data="{DynamicResource JetPack.Geometry.Check}" Fill="{TemplateBinding Foreground}" Visibility="Collapsed" />
+                <ContentPresenter Grid.Column="1" Margin="4,0,12,0" ContentSource="Header" RecognizesAccessKey="True" VerticalAlignment="Center" />
+                <TextBlock x:Name="Gesture" Grid.Column="2" Margin="12,0,0,0" Text="{TemplateBinding InputGestureText}" Foreground="#FF707070" VerticalAlignment="Center" />
+            </Grid>
+        </Border>
+        <ControlTemplate.Triggers>
+            <Trigger Property="Icon" Value="{x:Null}">
+                <Setter TargetName="Icon" Property="Visibility" Value="Hidden" />
+            </Trigger>
+            <Trigger Property="IsChecked" Value="True">
+                <Setter TargetName="Check" Property="Visibility" Value="Visible" />
+                <Setter TargetName="Icon" Property="Visibility" Value="Hidden" />
+            </Trigger>
+            <Trigger Property="IsHighlighted" Value="True">
+                <Setter TargetName="Bd" Property="Background" Value="{DynamicResource JetPack.Brushes.Accent.Selection}" />
+                <Setter TargetName="Gesture" Property="Foreground" Value="White" />
+                <Setter Property="Foreground" Value="White" />
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Foreground" Value="{DynamicResource JetPack.Brushes.Menu.Disabled}" />
+                <Setter TargetName="Icon" Property="Opacity" Value="0.4" />
+            </Trigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+
+    <ControlTemplate x:Key="JetPack.Templates.MenuItem.SubmenuHeader" TargetType="MenuItem">
+        <Border x:Name="Bd" Background="Transparent" Padding="{TemplateBinding Padding}" SnapsToDevicePixels="True">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" MinWidth="22" SharedSizeGroup="Icon" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" SharedSizeGroup="Gesture" />
+                    <ColumnDefinition Width="16" />
+                </Grid.ColumnDefinitions>
+                <ContentPresenter x:Name="Icon" ContentSource="Icon" Width="16" Height="16" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                <ContentPresenter Grid.Column="1" Margin="4,0,12,0" ContentSource="Header" RecognizesAccessKey="True" VerticalAlignment="Center" />
+                <Path x:Name="Arrow" Grid.Column="3" Width="4" Height="7" HorizontalAlignment="Right" Stretch="Fill" Data="{DynamicResource JetPack.Geometry.ArrowRight}" Fill="{TemplateBinding Foreground}" />
+                <Popup x:Name="PART_Popup" AllowsTransparency="True" Focusable="False" Placement="Right" HorizontalOffset="-2" VerticalOffset="-5" PopupAnimation="Fade"
+                       IsOpen="{Binding IsSubmenuOpen, RelativeSource={RelativeSource TemplatedParent}}">
+                    <ContentControl Template="{StaticResource JetPack.Templates.MenuItem.Popup}" Foreground="{DynamicResource JetPack.Brushes.Control.Foreground}">
+                        <ScrollViewer CanContentScroll="True">
+                            <ItemsPresenter Grid.IsSharedSizeScope="True" KeyboardNavigation.DirectionalNavigation="Cycle" KeyboardNavigation.TabNavigation="Cycle" />
+                        </ScrollViewer>
+                    </ContentControl>
+                </Popup>
+            </Grid>
+        </Border>
+        <ControlTemplate.Triggers>
+            <Trigger Property="Icon" Value="{x:Null}">
+                <Setter TargetName="Icon" Property="Visibility" Value="Hidden" />
+            </Trigger>
+            <Trigger Property="IsHighlighted" Value="True">
+                <Setter TargetName="Bd" Property="Background" Value="{DynamicResource JetPack.Brushes.Accent.Selection}" />
+                <Setter Property="Foreground" Value="White" />
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Foreground" Value="{DynamicResource JetPack.Brushes.Menu.Disabled}" />
+            </Trigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+
+    <Style x:Key="JetPack.Styles.MenuItem" TargetType="MenuItem">
+        <Setter Property="SnapsToDevicePixels" Value="True" />
+        <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+        <Setter Property="FontFamily" Value="{DynamicResource JetPack.Fonts.Family}" />
+        <Setter Property="FontSize" Value="{DynamicResource JetPack.Font.Size.Control}" />
+        <Setter Property="Padding" Value="4,4,6,4" />
+        <Setter Property="Template" Value="{StaticResource JetPack.Templates.MenuItem.Submenu}" />
+        <Style.Triggers>
+            <Trigger Property="Role" Value="TopLevelHeader">
+                <Setter Property="Padding" Value="10,5" />
+                <Setter Property="Template" Value="{StaticResource JetPack.Templates.MenuItem.TopLevelHeader}" />
+            </Trigger>
+            <Trigger Property="Role" Value="TopLevelItem">
+                <Setter Property="Padding" Value="10,5" />
+                <Setter Property="Template" Value="{StaticResource JetPack.Templates.MenuItem.TopLevelItem}" />
+            </Trigger>
+            <Trigger Property="Role" Value="SubmenuHeader">
+                <Setter Property="Template" Value="{StaticResource JetPack.Templates.MenuItem.SubmenuHeader}" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style x:Key="JetPack.Styles.Menu" TargetType="Menu">
+        <Setter Property="SnapsToDevicePixels" Value="True" />
+        <Setter Property="FontFamily" Value="{DynamicResource JetPack.Fonts.Family}" />
+        <Setter Property="FontSize" Value="{DynamicResource JetPack.Font.Size.Control}" />
+        <Setter Property="Foreground" Value="{DynamicResource JetPack.Brushes.Header.Foreground}" />
+        <Setter Property="Background" Value="{DynamicResource JetPack.Brushes.Static.Background}" />
+        <Setter Property="Padding" Value="2,0" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Menu">
+                    <Grid>
+                        <Border Background="{TemplateBinding Background}" CornerRadius="1" Effect="{DynamicResource JetPack.Effects.ControlShadow}" />
+                        <ItemsPresenter Margin="{TemplateBinding Padding}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="JetPack.Styles.ContextMenu" TargetType="ContextMenu">
+        <Setter Property="SnapsToDevicePixels" Value="True" />
+        <Setter Property="OverridesDefaultStyle" Value="True" />
+        <Setter Property="HasDropShadow" Value="False" />
+        <Setter Property="Grid.IsSharedSizeScope" Value="True" />
+        <Setter Property="FontFamily" Value="{DynamicResource JetPack.Fonts.Family}" />
+        <Setter Property="FontSize" Value="{DynamicResource JetPack.Font.Size.Control}" />
+        <Setter Property="Foreground" Value="{DynamicResource JetPack.Brushes.Control.Foreground}" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ContextMenu">
+                    <Grid Margin="0,0,6,6" MinWidth="160">
+                        <Border Background="{DynamicResource JetPack.Brushes.Menu.Background}" Effect="{DynamicResource JetPack.Effects.PopupShadow}" />
+                        <Border BorderBrush="{DynamicResource JetPack.Brushes.Panel.Border}" BorderThickness="1" Padding="0,4">
+                            <ScrollViewer CanContentScroll="True">
+                                <ItemsPresenter KeyboardNavigation.DirectionalNavigation="Cycle" />
+                            </ScrollViewer>
+                        </Border>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- ===================== ToolBar ===================== -->
+    <Style x:Key="JetPack.Styles.ToolBar.Thumb" TargetType="Thumb">
+        <Setter Property="OverridesDefaultStyle" Value="True" />
+        <Setter Property="Cursor" Value="SizeAll" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Thumb">
+                    <Border Width="8" Background="Transparent">
+                        <Rectangle Width="4" Margin="2,3">
+                            <Rectangle.Fill>
+                                <DrawingBrush TileMode="Tile" Viewport="0,0,4,4" ViewportUnits="Absolute">
+                                    <DrawingBrush.Drawing>
+                                        <DrawingGroup>
+                                            <GeometryDrawing Brush="White" Geometry="M1,1 L3,1 3,3 1,3 z" />
+                                            <GeometryDrawing Brush="#FF777777" Geometry="M0,0 L2,0 2,2 0,2 z" />
+                                        </DrawingGroup>
+                                    </DrawingBrush.Drawing>
+                                </DrawingBrush>
+                            </Rectangle.Fill>
+                        </Rectangle>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="JetPack.Styles.ToolBar.Overflow" TargetType="ToggleButton">
+        <Setter Property="OverridesDefaultStyle" Value="True" />
+        <Setter Property="Focusable" Value="False" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ToggleButton">
+                    <Border x:Name="Bd" Width="14" Background="Transparent" CornerRadius="0,2,2,0">
+                        <Path Width="7" Height="4" Margin="0,0,0,4" VerticalAlignment="Bottom" Stretch="Fill" Data="{DynamicResource JetPack.Geometry.ArrowDown}" Fill="{DynamicResource JetPack.Brushes.Control.Glyph.Dark}" />
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="Bd" Property="Background" Value="{DynamicResource JetPack.Brushes.Control.Background.MouseOver}" />
+                        </Trigger>
+                        <Trigger Property="IsChecked" Value="True">
+                            <Setter TargetName="Bd" Property="Background" Value="{DynamicResource JetPack.Brushes.Control.Background.Pressed}" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="{x:Static ToolBar.MenuStyleKey}" TargetType="Menu" BasedOn="{StaticResource JetPack.Styles.Menu}">
+        <Setter Property="Background" Value="Transparent" />
+    </Style>
+    <Style x:Key="{x:Static ToolBar.SeparatorStyleKey}" TargetType="Separator">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Separator">
+                    <StackPanel Margin="4,2" Orientation="Horizontal" SnapsToDevicePixels="True">
+                        <Rectangle Width="1" Fill="#33000000" />
+                        <Rectangle Width="1" Fill="White" />
+                    </StackPanel>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="JetPack.Styles.ToolBar" TargetType="ToolBar">
+        <Setter Property="SnapsToDevicePixels" Value="True" />
+        <Setter Property="FontFamily" Value="{DynamicResource JetPack.Fonts.Family}" />
+        <Setter Property="FontSize" Value="{DynamicResource JetPack.Font.Size.Control}" />
+        <Setter Property="Foreground" Value="{DynamicResource JetPack.Brushes.Header.Foreground}" />
+        <Setter Property="Background" Value="{DynamicResource JetPack.Brushes.Static.Background}" />
+        <Setter Property="Padding" Value="2" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ToolBar">
+                    <Grid>
+                        <Border Background="{TemplateBinding Background}" CornerRadius="2" Effect="{DynamicResource JetPack.Effects.LightControlShadow}" />
+                        <DockPanel Margin="{TemplateBinding Padding}">
+                            <Thumb x:Name="ToolBarThumb" DockPanel.Dock="Left" Style="{StaticResource JetPack.Styles.ToolBar.Thumb}" />
+                            <Grid DockPanel.Dock="Right">
+                                <ToggleButton x:Name="OverflowButton" Style="{StaticResource JetPack.Styles.ToolBar.Overflow}" ClickMode="Press" Visibility="Collapsed"
+                                              IsChecked="{Binding IsOverflowOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}" />
+                                <Popup x:Name="OverflowPopup" AllowsTransparency="True" Focusable="False" Placement="Bottom" StaysOpen="False" PopupAnimation="Slide"
+                                       PlacementTarget="{Binding ElementName=OverflowButton}" IsOpen="{Binding IsOverflowOpen, RelativeSource={RelativeSource TemplatedParent}}">
+                                    <Grid Margin="0,0,6,6">
+                                        <Border Background="{DynamicResource JetPack.Brushes.Menu.Background}" Effect="{DynamicResource JetPack.Effects.PopupShadow}" />
+                                        <Border BorderBrush="{DynamicResource JetPack.Brushes.Panel.Border}" BorderThickness="1">
+                                            <ToolBarOverflowPanel x:Name="PART_ToolBarOverflowPanel" Margin="2" WrapWidth="200" Focusable="True" FocusVisualStyle="{x:Null}"
+                                                                  KeyboardNavigation.TabNavigation="Cycle" KeyboardNavigation.DirectionalNavigation="Cycle" />
+                                        </Border>
+                                    </Grid>
+                                </Popup>
+                            </Grid>
+                            <ToolBarPanel x:Name="PART_ToolBarPanel" IsItemsHost="True" Margin="0,1,2,1" />
+                        </DockPanel>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="HasOverflowItems" Value="True">
+                            <Setter TargetName="OverflowButton" Property="Visibility" Value="Visible" />
+                        </Trigger>
+                        <Trigger Property="ToolBarTray.IsLocked" Value="True">
+                            <Setter TargetName="ToolBarThumb" Property="Visibility" Value="Collapsed" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="JetPack.Styles.ToolBarTray" TargetType="ToolBarTray">
+        <Setter Property="Background" Value="Transparent" />
+    </Style>
+
+    <Style TargetType="MenuItem" BasedOn="{StaticResource JetPack.Styles.MenuItem}" />
+    <Style TargetType="Menu" BasedOn="{StaticResource JetPack.Styles.Menu}" />
+    <Style TargetType="ContextMenu" BasedOn="{StaticResource JetPack.Styles.ContextMenu}" />
+    <Style TargetType="ToolBar" BasedOn="{StaticResource JetPack.Styles.ToolBar}" />
+    <Style TargetType="ToolBarTray" BasedOn="{StaticResource JetPack.Styles.ToolBarTray}" />
+
+</ResourceDictionary>

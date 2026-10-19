@@ -1,0 +1,22 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!-- Drop shadow under buttons, combo boxes and the navigation bar -->
+    <DropShadowEffect x:Key="JetPack.Effects.ControlShadow" BlurRadius="3" Color="#FF000000" Direction="270" Opacity="0.55" ShadowDepth="1" />
+    <!-- Softer shadow under panels, tabs, calendars, menus -->
+    <DropShadowEffect x:Key="JetPack.Effects.LightControlShadow" BlurRadius="4" Color="#FF55524F" Direction="315" Opacity="0.5" ShadowDepth="1" />
+    <!-- Popups (combo box drop-down, tool tips) -->
+    <DropShadowEffect x:Key="JetPack.Effects.PopupShadow" BlurRadius="5" Color="#FF000000" Direction="270" Opacity="0.45" ShadowDepth="2" />
+    <!-- Window frame -->
+    <DropShadowEffect x:Key="JetPack.Effects.DialogShadow" BlurRadius="24" Color="#FF000000" Direction="270" Opacity="0.5" ShadowDepth="6" />
+
+    <!-- Embossed text on light surfaces: white, 1px down -->
+    <DropShadowEffect x:Key="JetPack.Effects.TextEmboss" BlurRadius="0" Color="#FFFFFFFF" Direction="270" Opacity="0.5" ShadowDepth="1" />
+    <!-- Soft glow behind white text on the texture -->
+    <DropShadowEffect x:Key="JetPack.Effects.TextGlow" BlurRadius="5" Color="#FF000000" Direction="293" Opacity="0.25" ShadowDepth="0" />
+
+    <DropShadowEffect x:Key="JetPack.Effects.Button.Green.TextShadow" BlurRadius="0" Color="#FF2B3D00" Direction="90" Opacity="0.5" ShadowDepth="1" />
+    <DropShadowEffect x:Key="JetPack.Effects.Button.Orange.TextShadow" BlurRadius="0" Color="#FFB62F00" Direction="90" Opacity="0.5" ShadowDepth="1" />
+    <DropShadowEffect x:Key="JetPack.Effects.Button.Blue.TextShadow" BlurRadius="0" Color="#FF00538E" Direction="90" Opacity="0.5" ShadowDepth="1" />
+
+</ResourceDictionary>

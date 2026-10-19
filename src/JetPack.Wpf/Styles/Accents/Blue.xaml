@@ -1,0 +1,54 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:sys="clr-namespace:System;assembly=mscorlib">
+
+    <!-- JetPack accent: Blue. Values from the Silverlight theme's Brushes.xaml. -->
+    <sys:String x:Key="JetPack.Accent.Name">Blue</sys:String>
+
+    <Color x:Key="JetPack.Colors.Accent">#FF148CD1</Color>
+    <Color x:Key="JetPack.Colors.Accent.Highlight">#FF8DDBFF</Color>
+    <Color x:Key="JetPack.Colors.Accent.TextShadow">#FF00538E</Color>
+
+    <LinearGradientBrush x:Key="JetPack.Brushes.Accent.Selection" StartPoint="0.5,0" EndPoint="0.5,1">
+        <GradientStop Color="#FF42BAFF" Offset="0" />
+        <GradientStop Color="#FF148CD1" Offset="1" />
+    </LinearGradientBrush>
+    <LinearGradientBrush x:Key="JetPack.Brushes.Accent" StartPoint="0.5,0" EndPoint="0.5,1">
+        <GradientStop Color="#FF42BAFF" Offset="0" />
+        <GradientStop Color="#FF148CD1" Offset="1" />
+    </LinearGradientBrush>
+    <LinearGradientBrush x:Key="JetPack.Brushes.Accent.MouseOver" StartPoint="0.5,0" EndPoint="0.5,1">
+        <GradientStop Color="#FF1A9EE8" Offset="0" />
+        <GradientStop Color="#FF74CDFF" Offset="1" />
+    </LinearGradientBrush>
+    <LinearGradientBrush x:Key="JetPack.Brushes.Accent.Pressed" StartPoint="0.5,0" EndPoint="0.5,1">
+        <GradientStop Color="#FF1AA0EC" Offset="0.31" />
+        <GradientStop Color="#FF0072BE" Offset="0.78" />
+    </LinearGradientBrush>
+    <SolidColorBrush x:Key="JetPack.Brushes.Accent.Highlight" Color="#FF8DDBFF" />
+    <SolidColorBrush x:Key="JetPack.Brushes.Accent.Solid" Color="#FF148CD1" />
+    <SolidColorBrush x:Key="JetPack.Brushes.Accent.Link" Color="#FF8DDBFF" />
+    <SolidColorBrush x:Key="JetPack.Brushes.Accent.Foreground" Color="#FFFFFFFF" />
+
+    <!-- Accent button = the matching coloured button -->
+    <LinearGradientBrush x:Key="JetPack.Brushes.Accent.Button.Normal" StartPoint="0.5,0" EndPoint="0.5,1">
+        <GradientStop Color="#FF99C7E2" Offset="0.14" />
+        <GradientStop Color="#FF87BDDD" Offset="0.375" />
+        <GradientStop Color="#FF4599CA" Offset="0.871" />
+    </LinearGradientBrush>
+    <LinearGradientBrush x:Key="JetPack.Brushes.Accent.Button.MouseOver" StartPoint="0.5,0" EndPoint="0.5,1">
+        <GradientStop Color="#FF81CDF8" Offset="0.237" />
+        <GradientStop Color="#FF2DACF3" Offset="0.866" />
+    </LinearGradientBrush>
+    <LinearGradientBrush x:Key="JetPack.Brushes.Accent.Button.Pressed" StartPoint="0.5,0" EndPoint="0.5,1">
+        <GradientStop Color="#FF769BB1" Offset="0.22" />
+        <GradientStop Color="#FF437694" Offset="0.797" />
+    </LinearGradientBrush>
+    <SolidColorBrush x:Key="JetPack.Brushes.Accent.Button.Highlight" Color="#FFB9DAEC" />
+    <DropShadowEffect x:Key="JetPack.Effects.Accent.TextShadow" Color="#FF00538E" Direction="90" ShadowDepth="1" BlurRadius="0" Opacity="0.5" />
+
+    <!-- Keyboard focus (ThemeManager.ShowFocusVisuals = false overrides these) -->
+    <SolidColorBrush x:Key="JetPack.Brushes.Focus" Color="#FF8DDBFF" />
+    <SolidColorBrush x:Key="JetPack.Brushes.Focus.Border" Color="#FF148CD1" />
+
+</ResourceDictionary>

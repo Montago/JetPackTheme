@@ -1,0 +1,190 @@
+<UserControl x:Class="JetPack.Wpf.Demo.Views.CorePage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="clr-namespace:JetPack.Wpf.Demo"
+             xmlns:jp="urn:jetpack-wpf">
+    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Padding="0,22,0,0" Background="Transparent">
+        <StackPanel>
+            <TextBlock Style="{StaticResource Demo.Intro}"
+                       Text="De grundlæggende WPF-kontroller i samme opstilling som den originale temaoversigt. Farver, gradienter og skygger er taget direkte fra CoreStyles.xaml og Brushes.xaml." />
+
+            <WrapPanel>
+                <HeaderedContentControl Style="{StaticResource Demo.Column}" Header="Button" Tag="JetPack.Styles.Button">
+                    <StackPanel d:Demo.Spacing="10" Width="124">
+                        <Button Content="Normal" />
+                        <Button Content="Disabled" IsEnabled="False" />
+                        <ToggleButton Content="Toggle" />
+                        <ToggleButton Content="Toggle Checked" IsChecked="True" />
+                        <RepeatButton x:Name="Repeat" Content="Repeat (0)" Click="OnRepeat" />
+                        <Button Content="Accent" Style="{StaticResource JetPack.Styles.Button.Accent}" />
+                        <Button Content="Green" Style="{StaticResource JetPack.Styles.Button.Green}" />
+                        <Button Content="Orange" Style="{StaticResource JetPack.Styles.Button.Orange}" />
+                        <Button Content="Blue" Style="{StaticResource JetPack.Styles.Button.Blue}" />
+                    </StackPanel>
+                </HeaderedContentControl>
+
+                <HeaderedContentControl Style="{StaticResource Demo.Column}" Header="TextBox · PasswordBox" Tag="JetPack.Styles.TextBox(.Dark)">
+                    <StackPanel>
+                        <Grid Width="270">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition />
+                                <ColumnDefinition Width="12" />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+                            <StackPanel d:Demo.Spacing="10">
+                                <TextBox Text="Normal" />
+                                <TextBox Text="Read Only" IsReadOnly="True" />
+                                <TextBox Text="Disabled" IsEnabled="False" />
+                                <TextBox Text="abc-123" d:Demo.Error="Værdien skal være et tal." />
+                                <PasswordBox Password="hemmelig" />
+                                <TextBox jp:TextBoxHelper.Watermark="Søg kunde…" />
+                                <TextBlock Style="{StaticResource Demo.State}" Text="Lys (standard)" />
+                            </StackPanel>
+                            <StackPanel Grid.Column="2" d:Demo.Spacing="10">
+                                <TextBox Style="{StaticResource JetPack.Styles.TextBox.Dark}" Text="Normal" />
+                                <TextBox Style="{StaticResource JetPack.Styles.TextBox.Dark}" Text="Read Only" IsReadOnly="True" />
+                                <TextBox Style="{StaticResource JetPack.Styles.TextBox.Dark}" Text="Disabled" IsEnabled="False" />
+                                <TextBox Style="{StaticResource JetPack.Styles.TextBox.Dark}" Text="abc-123" d:Demo.Error="Værdien skal være et tal." />
+                                <PasswordBox Style="{StaticResource JetPack.Styles.PasswordBox.Dark}" Password="hemmelig" />
+                                <TextBox Style="{StaticResource JetPack.Styles.TextBox.Dark}" jp:TextBoxHelper.Watermark="Søg kunde…" />
+                                <TextBlock Style="{StaticResource Demo.State}" Text="Mørk" />
+                            </StackPanel>
+                        </Grid>
+                    </StackPanel>
+                </HeaderedContentControl>
+
+                <HeaderedContentControl Style="{StaticResource Demo.Column}" Header="TextBlock" Tag="TextBlock · Hyperlink · ToolTip">
+                    <StackPanel Width="190" d:Demo.Spacing="12">
+                        <TextBlock FontSize="11" TextAlignment="Center" TextWrapping="Wrap"
+                                   Text="Tidsregistreringen for oktober lukker fredag kl. 16. Ugesedler, der ikke er godkendt inden da, overføres til november." />
+                        <Separator />
+                        <TextBlock HorizontalAlignment="Center"><Hyperlink>Åbn ugeseddel</Hyperlink></TextBlock>
+                        <TextBlock HorizontalAlignment="Center"><Hyperlink IsEnabled="False">Link deaktiveret</Hyperlink></TextBlock>
+                        <Button HorizontalAlignment="Center" Content="Link-knap" Style="{StaticResource JetPack.Styles.Button.Link}" />
+                        <Separator />
+                        <Button HorizontalAlignment="Center" Content="Hold musen her" ToolTip="Gemmer ændringer og sender til godkendelse" />
+                    </StackPanel>
+                </HeaderedContentControl>
+
+                <HeaderedContentControl Style="{StaticResource Demo.Column}" Header="CheckBox · RadioButton" Tag="JetPack.Styles.CheckBox">
+                    <StackPanel d:Demo.Spacing="10" HorizontalAlignment="Left">
+                        <CheckBox Content="Normal" />
+                        <CheckBox Content="Checked" IsChecked="True" />
+                        <CheckBox Content="Indeterminate" IsThreeState="True" IsChecked="{x:Null}" />
+                        <CheckBox Content="Disabled" IsChecked="True" IsEnabled="False" />
+                        <CheckBox Content="Invalid" d:Demo.Error="Du skal acceptere vilkårene." />
+                        <Separator />
+                        <RadioButton Content="Normal" GroupName="r1" />
+                        <RadioButton Content="Checked" GroupName="r1" IsChecked="True" />
+                        <RadioButton Content="Indeterminate" GroupName="r2" IsThreeState="True" IsChecked="{x:Null}" />
+                        <RadioButton Content="Disabled" GroupName="r3" IsChecked="True" IsEnabled="False" />
+                        <RadioButton Content="Invalid" GroupName="r4" d:Demo.Error="Vælg en mulighed." />
+                    </StackPanel>
+                </HeaderedContentControl>
+            </WrapPanel>
+
+            <WrapPanel>
+                <HeaderedContentControl Style="{StaticResource Demo.Column}" Header="ComboBox" Tag="JetPack.Styles.ComboBox">
+                    <StackPanel Width="150" d:Demo.Spacing="10">
+                        <ComboBox SelectedIndex="1">
+                            <ComboBoxItem Content="København" />
+                            <ComboBoxItem Content="Aarhus" />
+                            <ComboBoxItem Content="Odense" />
+                            <ComboBoxItem Content="Aalborg" />
+                            <ComboBoxItem Content="Esbjerg" />
+                        </ComboBox>
+                        <ComboBox SelectedIndex="0" IsEnabled="False">
+                            <ComboBoxItem Content="Aarhus" />
+                        </ComboBox>
+                        <ComboBox IsEditable="True" Text="Odense">
+                            <ComboBoxItem Content="København" />
+                            <ComboBoxItem Content="Aarhus" />
+                            <ComboBoxItem Content="Odense" />
+                        </ComboBox>
+                        <ComboBox jp:TextBoxHelper.Watermark="Vælg uge">
+                            <ComboBoxItem Content="Uge 42" />
+                            <ComboBoxItem Content="Uge 43" />
+                            <ComboBoxItem Content="Uge 44" />
+                        </ComboBox>
+                    </StackPanel>
+                </HeaderedContentControl>
+
+                <HeaderedContentControl Style="{StaticResource Demo.Column}" Header="ListBox" Tag="JetPack.Styles.ListBox">
+                    <StackPanel Width="150" d:Demo.Spacing="10">
+                        <ListBox Height="100" SelectedIndex="1">
+                            <ListBoxItem Content="Lindsey Ballard" />
+                            <ListBoxItem Content="Charles Hoyle" />
+                            <ListBoxItem Content="Daniel Tiedemann" />
+                            <ListBoxItem Content="David Ritter" />
+                            <ListBoxItem Content="Vivian Smail" />
+                            <ListBoxItem Content="Ida Kragh" />
+                            <ListBoxItem Content="Mads Lund" />
+                        </ListBox>
+                        <TextBlock Style="{StaticResource Demo.State}" Text="Invalid" />
+                        <ListBox Height="36" d:Demo.Error="Vælg mindst én medarbejder." />
+                    </StackPanel>
+                </HeaderedContentControl>
+
+                <HeaderedContentControl Style="{StaticResource Demo.Column}" Header="ScrollViewer" Tag="JetPack.Styles.ScrollBar">
+                    <Border Width="130" Height="110" BorderBrush="#80404040" BorderThickness="1" CornerRadius="2.5" Background="#FFC9CACC">
+                        <ScrollViewer HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Visible">
+                            <Rectangle Width="300" Height="260">
+                                <Rectangle.Fill>
+                                    <LinearGradientBrush StartPoint="0,0" EndPoint="0,24" MappingMode="Absolute" SpreadMethod="Repeat">
+                                        <GradientStop Color="#10FFFFFF" Offset="0.5" />
+                                        <GradientStop Color="#00FFFFFF" Offset="0.5" />
+                                    </LinearGradientBrush>
+                                </Rectangle.Fill>
+                            </Rectangle>
+                        </ScrollViewer>
+                    </Border>
+                </HeaderedContentControl>
+
+                <HeaderedContentControl Style="{StaticResource Demo.Column}" Header="ProgressBar" Tag="JetPack.Styles.ProgressBar">
+                    <StackPanel Width="150" d:Demo.Spacing="16">
+                        <ProgressBar Value="75" />
+                        <ProgressBar Value="45" />
+                        <ProgressBar IsIndeterminate="True" />
+                        <ProgressBar IsIndeterminate="True" Height="14" />
+                    </StackPanel>
+                </HeaderedContentControl>
+
+                <HeaderedContentControl Style="{StaticResource Demo.Column}" Header="Slider" Tag="JetPack.Styles.Slider">
+                    <StackPanel Width="150" d:Demo.Spacing="12">
+                        <Slider Value="4" Maximum="10" />
+                        <Slider Value="6" Maximum="10" TickPlacement="BottomRight" TickFrequency="1" IsSnapToTickEnabled="True" />
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" d:Demo.Spacing="20">
+                            <Slider Orientation="Vertical" Height="96" Value="3" Maximum="10" />
+                            <Slider Orientation="Vertical" Height="96" Value="7" Maximum="10" />
+                            <Slider Orientation="Vertical" Height="96" Value="5" Maximum="10" IsEnabled="False" />
+                        </StackPanel>
+                    </StackPanel>
+                </HeaderedContentControl>
+            </WrapPanel>
+
+            <WrapPanel>
+                <HeaderedContentControl Style="{StaticResource Demo.Column}" Header="Typografi" Tag="JetPack.Styles.TextBlock.Heading1–6">
+                    <StackPanel Width="440">
+                        <TextBlock Style="{StaticResource JetPack.Styles.TextBlock.Heading1}" Text="Virksomheder" />
+                        <TextBlock Style="{StaticResource JetPack.Styles.TextBlock.Heading2}" Text="Virksomhedsoplysninger" />
+                        <TextBlock Style="{StaticResource JetPack.Styles.TextBlock.Heading3}" Text="Heading 3 · 21 px" />
+                        <TextBlock Style="{StaticResource JetPack.Styles.TextBlock.Heading4}" Text="Heading 4 · 18 px" />
+                        <TextBlock Style="{StaticResource JetPack.Styles.TextBlock.Heading5}" Text="Heading 5 · 15 px" />
+                        <TextBlock Style="{StaticResource JetPack.Styles.TextBlock.Heading6}" Text="HEADING 6 · 11 PX" />
+                    </StackPanel>
+                </HeaderedContentControl>
+
+                <HeaderedContentControl Style="{StaticResource Demo.Column}" Header="Label · GroupBox" Tag="JetPack.Styles.GroupBox">
+                    <GroupBox Header="Kontaktperson" Width="260">
+                        <StackPanel>
+                            <Label Content="_Navn" Target="{Binding ElementName=ContactName}" />
+                            <TextBox x:Name="ContactName" Text="Heather Andrade" Margin="0,0,0,6" />
+                            <Label Content="_Telefon" Target="{Binding ElementName=ContactPhone}" />
+                            <TextBox x:Name="ContactPhone" Text="+45 86 12 34 56" />
+                        </StackPanel>
+                    </GroupBox>
+                </HeaderedContentControl>
+            </WrapPanel>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

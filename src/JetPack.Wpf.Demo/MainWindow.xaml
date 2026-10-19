@@ -1,0 +1,77 @@
+<jp:JetPackWindow x:Class="JetPack.Wpf.Demo.MainWindow"
+                  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                  xmlns:jp="urn:jetpack-wpf"
+                  xmlns:v="clr-namespace:JetPack.Wpf.Demo.Views"
+                  Title="JetPack for WPF · demo"
+                  Width="1280" Height="880" MinWidth="720" MinHeight="480"
+                  WindowStartupLocation="CenterScreen">
+
+    <jp:JetPackWindow.RightWindowCommands>
+        <StackPanel Orientation="Horizontal">
+            <Button Click="OnAccentClick" Tag="Green" ToolTip="Grøn accent">
+                <Border Width="14" Height="12" CornerRadius="1.5" Background="{DynamicResource JetPack.Brushes.Button.Green.Normal}" />
+            </Button>
+            <Button Click="OnAccentClick" Tag="Orange" ToolTip="Orange accent">
+                <Border Width="14" Height="12" CornerRadius="1.5" Background="{DynamicResource JetPack.Brushes.Button.Orange.Normal}" />
+            </Button>
+            <Button Click="OnAccentClick" Tag="Blue" ToolTip="Blå accent">
+                <Border Width="14" Height="12" CornerRadius="1.5" Background="{DynamicResource JetPack.Brushes.Button.Blue.Normal}" />
+            </Button>
+            <Button Content="Indstillinger" Click="OnSettingsClick" />
+        </StackPanel>
+    </jp:JetPackWindow.RightWindowCommands>
+
+    <jp:JetPackWindow.Flyouts>
+        <Grid>
+            <jp:Flyout x:Name="SettingsFlyout" Header="Indstillinger" Width="300">
+                <StackPanel>
+                    <TextBlock Style="{StaticResource Demo.State}" HorizontalAlignment="Left" Text="Accent" Margin="0,0,0,6" />
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,16">
+                        <RadioButton x:Name="AccentGreen" Content="Grøn" GroupName="Accent" IsChecked="True" Margin="0,0,14,0" Checked="OnAccentRadio" Tag="Green" />
+                        <RadioButton Content="Orange" GroupName="Accent" Margin="0,0,14,0" Checked="OnAccentRadio" Tag="Orange" />
+                        <RadioButton Content="Blå" GroupName="Accent" Checked="OnAccentRadio" Tag="Blue" />
+                    </StackPanel>
+                    <TextBlock Style="{StaticResource Demo.State}" HorizontalAlignment="Left" Text="Egen accentfarve (genereres)" Margin="0,0,0,6" />
+                    <jp:ColorPicker x:Name="CustomAccent" HorizontalAlignment="Left" Width="160" Margin="0,0,0,16" />
+                    <TextBlock Style="{StaticResource Demo.State}" HorizontalAlignment="Left" Text="Skriftstørrelse på kontroller" Margin="0,0,0,6" />
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,16">
+                        <RadioButton Content="12 px (WPF)" GroupName="Size" IsChecked="True" Margin="0,0,14,0" Checked="OnSizeRadio" Tag="12" />
+                        <RadioButton Content="11 px (original)" GroupName="Size" Checked="OnSizeRadio" Tag="11" />
+                    </StackPanel>
+                    <jp:ToggleSwitch x:Name="FocusSwitch" Content="Synlig fokusmarkering" IsChecked="True" Margin="0,0,0,10" />
+                    <jp:ToggleSwitch x:Name="VignetteSwitch" Content="Vignet i hjørnerne" IsChecked="True" />
+                </StackPanel>
+            </jp:Flyout>
+        </Grid>
+    </jp:JetPackWindow.Flyouts>
+
+    <Grid Margin="24,16,24,0">
+        <TabControl x:Name="Pages" Style="{StaticResource JetPack.Styles.TabControl.Strip}">
+            <TabControl.Tag>
+                <StackPanel HorizontalAlignment="Right" Margin="0,4,0,0">
+                    <TextBlock HorizontalAlignment="Right" FontSize="38" Text="Jetpack" Effect="{DynamicResource JetPack.Effects.TextGlow}" />
+                    <TextBlock HorizontalAlignment="Right" Style="{StaticResource Demo.State}" Text="for WPF · .NET 8+" />
+                </StackPanel>
+            </TabControl.Tag>
+            <TabItem Header="Core">
+                <v:CorePage />
+            </TabItem>
+            <TabItem Header="SDK">
+                <v:SdkPage />
+            </TabItem>
+            <TabItem Header="Toolkit">
+                <v:ToolkitPage />
+            </TabItem>
+            <TabItem Header="Udvidelser">
+                <v:ExtrasPage />
+            </TabItem>
+            <TabItem Header="Vindue">
+                <v:WindowPage />
+            </TabItem>
+            <TabItem Header="Palet">
+                <v:PalettePage />
+            </TabItem>
+        </TabControl>
+    </Grid>
+</jp:JetPackWindow>

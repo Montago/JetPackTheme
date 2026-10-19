@@ -1,0 +1,288 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!--
+    Neutral brushes shared by every accent. Values come straight from the
+    Silverlight JetPack theme (Brushes.xaml / CoreStyles.xaml).
+    -->
+
+    <!-- Window ground: tiled grey texture plus a vignette on top -->
+    <ImageBrush x:Key="JetPack.Brushes.Window.Background"
+                ImageSource="pack://application:,,,/JetPack.Wpf;component/Assets/Texture.png"
+                TileMode="Tile" Stretch="None" ViewportUnits="Absolute" Viewport="0,0,200,200" />
+    <ImageBrush x:Key="JetPack.Brushes.Window.Vignette"
+                ImageSource="pack://application:,,,/JetPack.Wpf;component/Assets/Vignette.png"
+                Stretch="Fill" />
+    <SolidColorBrush x:Key="JetPack.Brushes.Window.Ground" Color="#FF86888D" />
+    <LinearGradientBrush x:Key="JetPack.Brushes.Window.Glow" StartPoint="0,0" EndPoint="0,1">
+        <GradientStop Offset="0" Color="#30FFFFFF" />
+        <GradientStop Offset="0.5" Color="#00FFFFFF" />
+    </LinearGradientBrush>
+    <LinearGradientBrush x:Key="JetPack.Brushes.Window.Title.Dark" StartPoint="0,0" EndPoint="0,1">
+        <GradientStop Offset="0" Color="#FF606066" />
+        <GradientStop Offset="1" Color="#FF4D4D51" />
+    </LinearGradientBrush>
+    <SolidColorBrush x:Key="JetPack.Brushes.Window.Border" Color="#FF3B3C40" />
+
+    <!-- Text on the textured ground -->
+    <SolidColorBrush x:Key="JetPack.Brushes.Text" Color="#FFFFFFFF" />
+    <SolidColorBrush x:Key="JetPack.Brushes.Text.Soft" Color="#CCFFFFFF" />
+    <SolidColorBrush x:Key="JetPack.Brushes.Text.Dim" Color="#80FFFFFF" />
+    <SolidColorBrush x:Key="JetPack.Brushes.Text.Disabled" Color="#73FFFFFF" />
+    <SolidColorBrush x:Key="JetPack.Brushes.Header.Foreground" Color="#FF303030" />
+
+    <!-- Light "button" surfaces -->
+    <SolidColorBrush x:Key="JetPack.Brushes.Control.Foreground" Color="#FF202020" />
+    <SolidColorBrush x:Key="JetPack.Brushes.Control.Foreground.Disabled" Color="#80202020" />
+    <LinearGradientBrush x:Key="JetPack.Brushes.Control.Background" StartPoint="0.5,0" EndPoint="0.5,1">
+        <GradientStop Color="#FFF7F7F7" Offset="0.164" />
+        <GradientStop Color="#FFC6C6C6" Offset="0.802" />
+        <GradientStop Color="#FFC6C6C6" Offset="0.953" />
+    </LinearGradientBrush>
+    <LinearGradientBrush x:Key="JetPack.Brushes.Control.Background.MouseOver" StartPoint="0.5,0" EndPoint="0.5,1">
+        <GradientStop Color="#FFFFFFFF" Offset="0.211" />
+        <GradientStop Color="#FFDEDEDE" Offset="0.784" />
+    </LinearGradientBrush>
+    <LinearGradientBrush x:Key="JetPack.Brushes.Control.Background.Pressed" StartPoint="0.5,0" EndPoint="0.5,1">
+        <GradientStop Color="#FFCECECE" Offset="0.204" />
+        <GradientStop Color="#FFAFAFAF" Offset="0.864" />
+    </LinearGradientBrush>
+    <LinearGradientBrush x:Key="JetPack.Brushes.Control.Background.Checked" StartPoint="0,0" EndPoint="0,1">
+        <GradientStop Offset="0.1" Color="#FFE6E6E6" />
+        <GradientStop Offset="0.9" Color="#FFC9C9C9" />
+    </LinearGradientBrush>
+    <SolidColorBrush x:Key="JetPack.Brushes.Control.Border.Checked" Color="#D0494A4D" />
+    <SolidColorBrush x:Key="JetPack.Brushes.Control.Border" Color="#FF686868" />
+    <SolidColorBrush x:Key="JetPack.Brushes.Control.Highlight" Color="#80FFFFFF" />
+    <SolidColorBrush x:Key="JetPack.Brushes.Control.OuterHighlight" Color="#40FFFFFF" />
+    <SolidColorBrush x:Key="JetPack.Brushes.Control.DarkEdge" Color="#FF2E2E30" />
+    <SolidColorBrush x:Key="JetPack.Brushes.Control.Glyph" Color="#FF606060" />
+    <SolidColorBrush x:Key="JetPack.Brushes.Control.Glyph.Dark" Color="#FF404040" />
+
+    <LinearGradientBrush x:Key="JetPack.Brushes.Static.Background" StartPoint="0.5,0" EndPoint="0.5,1">
+        <GradientStop Color="#FFE2E2E2" Offset="0" />
+        <GradientStop Color="#FFC6C6C6" Offset="1" />
+    </LinearGradientBrush>
+    <LinearGradientBrush x:Key="JetPack.Brushes.Static.Background.MouseOver" StartPoint="0.5,0" EndPoint="0.5,1">
+        <GradientStop Color="#FFF8F8F8" Offset="0" />
+        <GradientStop Color="#FFD0D0D0" Offset="1" />
+    </LinearGradientBrush>
+
+    <!-- Disabled -->
+    <LinearGradientBrush x:Key="JetPack.Brushes.Disabled" StartPoint="0.5,0" EndPoint="0.5,1">
+        <GradientStop Color="#FF9C9DA0" />
+        <GradientStop Color="#FF8B8C8E" Offset="1" />
+    </LinearGradientBrush>
+    <SolidColorBrush x:Key="JetPack.Brushes.Disabled.Border" Color="#66000000" />
+
+    <!-- Inputs (light) -->
+    <SolidColorBrush x:Key="JetPack.Brushes.Input.Background" Color="#FFFFFFFF" />
+    <SolidColorBrush x:Key="JetPack.Brushes.Input.Foreground" Color="#FF404040" />
+    <SolidColorBrush x:Key="JetPack.Brushes.Input.Watermark" Color="#FF9B9B9B" />
+    <SolidColorBrush x:Key="JetPack.Brushes.Input.ReadOnly" Color="#2E000000" />
+    <SolidColorBrush x:Key="JetPack.Brushes.Input.Disabled" Color="#59909194" />
+    <SolidColorBrush x:Key="JetPack.Brushes.Input.InnerShadowDark" Color="#50505050" />
+    <SolidColorBrush x:Key="JetPack.Brushes.Input.InnerShadowLight" Color="#20202020" />
+    <SolidColorBrush x:Key="JetPack.Brushes.Input.SelectionForeground" Color="#FFFFFFFF" />
+
+    <!-- Inputs (dark) -->
+    <LinearGradientBrush x:Key="JetPack.Brushes.Dark.Input.Background" StartPoint="0,0" EndPoint="0,1">
+        <GradientStop Color="#FF57575F" Offset="0.3" />
+        <GradientStop Color="#FF505054" Offset="1.0" />
+    </LinearGradientBrush>
+    <SolidColorBrush x:Key="JetPack.Brushes.Dark.Input.Border" Color="#D0505050" />
+    <SolidColorBrush x:Key="JetPack.Brushes.Dark.Input.Foreground" Color="#FFFFFFFF" />
+    <SolidColorBrush x:Key="JetPack.Brushes.Dark.Input.Watermark" Color="#73FFFFFF" />
+    <SolidColorBrush x:Key="JetPack.Brushes.Dark.Input.InnerShadowDark" Color="#50303030" />
+    <SolidColorBrush x:Key="JetPack.Brushes.Dark.Input.InnerShadowLight" Color="#20303030" />
+    <SolidColorBrush x:Key="JetPack.Brushes.Dark.Input.ReadOnly" Color="#20FFFFFF" />
+    <SolidColorBrush x:Key="JetPack.Brushes.Dark.Input.Disabled" Color="#33FFFFFF" />
+
+    <!-- Validation -->
+    <SolidColorBrush x:Key="JetPack.Brushes.Error" Color="#FFEF0A0A" />
+    <SolidColorBrush x:Key="JetPack.Brushes.Error.Tip" Color="#FFDC000C" />
+    <LinearGradientBrush x:Key="JetPack.Brushes.Error.Header" StartPoint="0,0" EndPoint="0,1">
+        <GradientStop Color="#FFF04A4A" Offset="0" />
+        <GradientStop Color="#FFC41212" Offset="1" />
+    </LinearGradientBrush>
+
+    <!-- Tracks: progress bar, slider, check box, switch -->
+    <SolidColorBrush x:Key="JetPack.Brushes.Track" Color="#FF57575C" />
+    <LinearGradientBrush x:Key="JetPack.Brushes.Track.Gradient" StartPoint="0,0" EndPoint="0,1">
+        <GradientStop Color="#FF57575C" Offset="0.3" />
+        <GradientStop Color="#FF505054" Offset="1.0" />
+    </LinearGradientBrush>
+    <LinearGradientBrush x:Key="JetPack.Brushes.Track.Gradient.Vertical" StartPoint="0,0" EndPoint="1,0">
+        <GradientStop Color="#FF57575C" Offset="0.3" />
+        <GradientStop Color="#FF505054" Offset="1.0" />
+    </LinearGradientBrush>
+    <SolidColorBrush x:Key="JetPack.Brushes.Track.Border" Color="#D0505050" />
+    <LinearGradientBrush x:Key="JetPack.Brushes.Slider.Value" StartPoint="0.5,0" EndPoint="0.5,1">
+        <GradientStop Color="#FFCCCCCC" Offset="0" />
+        <GradientStop Color="#FF9F9F9F" Offset="1" />
+    </LinearGradientBrush>
+    <LinearGradientBrush x:Key="JetPack.Brushes.Slider.Value.Vertical" StartPoint="1,0.5" EndPoint="0,0.5">
+        <GradientStop Color="#FFCCCCCC" Offset="0" />
+        <GradientStop Color="#FF9F9F9F" Offset="1" />
+    </LinearGradientBrush>
+    <LinearGradientBrush x:Key="JetPack.Brushes.Slider.Value.Border" StartPoint="0.5,0" EndPoint="0.5,1">
+        <GradientStop Color="#FF38383C" Offset="0" />
+        <GradientStop Color="#FF424247" Offset="1" />
+    </LinearGradientBrush>
+    <LinearGradientBrush x:Key="JetPack.Brushes.Slider.Value.Highlight" StartPoint="0.5,0" EndPoint="0.5,1">
+        <GradientStop Color="#FFF1F1F1" Offset="0" />
+        <GradientStop Color="#FF969696" Offset="1" />
+    </LinearGradientBrush>
+    <LinearGradientBrush x:Key="JetPack.Brushes.Slider.Thumb" StartPoint="0.5,0" EndPoint="0.5,1">
+        <GradientStop Offset="0" Color="#FFFDFDFD" />
+        <GradientStop Offset="1" Color="#FF9D9D9E" />
+    </LinearGradientBrush>
+    <LinearGradientBrush x:Key="JetPack.Brushes.Slider.Thumb.Vertical" StartPoint="0,0.5" EndPoint="1,0.5">
+        <GradientStop Offset="0" Color="#FFFDFDFD" />
+        <GradientStop Offset="1" Color="#FF9D9D9E" />
+    </LinearGradientBrush>
+    <LinearGradientBrush x:Key="JetPack.Brushes.Slider.Thumb.Border" StartPoint="0,0" EndPoint="1,1">
+        <GradientStop Offset="0" Color="#FFFDFDFD" />
+        <GradientStop Offset="1" Color="#FF868788" />
+    </LinearGradientBrush>
+
+    <LinearGradientBrush x:Key="JetPack.Brushes.CheckBox.Background" StartPoint="0,0" EndPoint="0,1">
+        <GradientStop Color="#FF57575C" Offset="0.3" />
+        <GradientStop Color="#FF55555A" Offset="0.5" />
+        <GradientStop Color="#FF4F4F54" Offset="1.0" />
+    </LinearGradientBrush>
+    <SolidColorBrush x:Key="JetPack.Brushes.CheckBox.Border" Color="#FF343537" />
+    <SolidColorBrush x:Key="JetPack.Brushes.CheckBox.InnerShadow" Color="#50303030" />
+    <LinearGradientBrush x:Key="JetPack.Brushes.RadioButton.Background" StartPoint="0,0" EndPoint="1,1">
+        <GradientStop Color="#FF505050" Offset="0.3" />
+        <GradientStop Color="#FF484848" Offset="1.0" />
+    </LinearGradientBrush>
+    <RadialGradientBrush x:Key="JetPack.Brushes.RadioButton.InnerShadow">
+        <GradientStop Color="#00000000" Offset="0.5" />
+        <GradientStop Color="#28000000" Offset="1.0" />
+    </RadialGradientBrush>
+    <SolidColorBrush x:Key="JetPack.Brushes.Toggle.Disabled" Color="#FF8E8F93" />
+    <SolidColorBrush x:Key="JetPack.Brushes.Toggle.Disabled.Border" Color="#FF717276" />
+    <SolidColorBrush x:Key="JetPack.Brushes.Toggle.Disabled.Glyph" Color="#FFC7C8CA" />
+
+    <!-- Lists -->
+    <LinearGradientBrush x:Key="JetPack.Brushes.Selection.MouseOver" StartPoint="0.5,0" EndPoint="0.5,1">
+        <GradientStop Color="#FFEDEDEE" Offset="0" />
+        <GradientStop Color="#FFDEDEDF" Offset="1" />
+    </LinearGradientBrush>
+    <SolidColorBrush x:Key="JetPack.Brushes.ScrollBar.Track" Color="#FFDCDCDD" />
+    <LinearGradientBrush x:Key="JetPack.Brushes.ScrollBar.Thumb" StartPoint="0,0" EndPoint="0,1">
+        <GradientStop Color="#FFF8F8F8" Offset="0.1" />
+        <GradientStop Color="#FFC0C0C0" Offset="1.0" />
+    </LinearGradientBrush>
+    <LinearGradientBrush x:Key="JetPack.Brushes.ScrollBar.Thumb.Vertical" StartPoint="0,0" EndPoint="1,0">
+        <GradientStop Color="#FFF8F8F8" Offset="0.1" />
+        <GradientStop Color="#FFC0C0C0" Offset="1.0" />
+    </LinearGradientBrush>
+
+    <!-- Dark panels -->
+    <SolidColorBrush x:Key="JetPack.Brushes.Panel.Background" Color="#FF707176" />
+    <SolidColorBrush x:Key="JetPack.Brushes.Panel.Border" Color="#FF58585D" />
+    <SolidColorBrush x:Key="JetPack.Brushes.Strip.Background" Color="#FF5B5C61" />
+    <SolidColorBrush x:Key="JetPack.Brushes.Navigation.Inactive" Color="#FF58585D" />
+    <SolidColorBrush x:Key="JetPack.Brushes.Tab.Inactive.Foreground" Color="#E0FFFFFF" />
+
+    <!-- Data grid -->
+    <LinearGradientBrush x:Key="JetPack.Brushes.DataGrid.Header" StartPoint="0.5,0" EndPoint="0.5,1">
+        <GradientStop Color="#FF606066" Offset="0" />
+        <GradientStop Color="#FF4D4D51" Offset="1" />
+    </LinearGradientBrush>
+    <SolidColorBrush x:Key="JetPack.Brushes.DataGrid.Background" Color="#FFF0F0F0" />
+    <SolidColorBrush x:Key="JetPack.Brushes.DataGrid.AlternatingRow" Color="#FFE0E0E0" />
+    <SolidColorBrush x:Key="JetPack.Brushes.DataGrid.GridLines" Color="#20000000" />
+    <SolidColorBrush x:Key="JetPack.Brushes.DataGrid.Header.Separator" Color="#20FFFFFF" />
+
+    <!-- Menus, dialogs, overlays -->
+    <SolidColorBrush x:Key="JetPack.Brushes.Menu.Background" Color="#FFE0E0E0" />
+    <SolidColorBrush x:Key="JetPack.Brushes.Menu.Disabled" Color="#FF9A9A9A" />
+    <SolidColorBrush x:Key="JetPack.Brushes.Dialog.Background" Color="#FFE0E0E0" />
+    <SolidColorBrush x:Key="JetPack.Brushes.Dialog.Overlay" Color="#7F000000" />
+    <LinearGradientBrush x:Key="JetPack.Brushes.Overlay" StartPoint="0.5,0" EndPoint="0.5,1">
+        <GradientStop Color="#4CFFFFFF" Offset="0" />
+        <GradientStop Color="#4C000000" Offset="1" />
+    </LinearGradientBrush>
+    <LinearGradientBrush x:Key="JetPack.Brushes.Close.MouseOver" StartPoint="0,0" EndPoint="0,1">
+        <GradientStop Color="#FFE84B4B" Offset="0" />
+        <GradientStop Color="#FFB71C1C" Offset="1" />
+    </LinearGradientBrush>
+
+    <!-- Fixed coloured buttons (GreenButton / OrangeButton / BlueButton) -->
+    <LinearGradientBrush x:Key="JetPack.Brushes.Button.Green.Normal" StartPoint="0.5,0" EndPoint="0.5,1">
+        <GradientStop Color="#FFA0BB0E" Offset="0.176" />
+        <GradientStop Color="#FF6D9700" Offset="0.894" />
+    </LinearGradientBrush>
+    <LinearGradientBrush x:Key="JetPack.Brushes.Button.Green.MouseOver" StartPoint="0.5,0" EndPoint="0.5,1">
+        <GradientStop Color="#FFAECC07" Offset="0.228" />
+        <GradientStop Color="#FF83B100" Offset="0.849" />
+    </LinearGradientBrush>
+    <LinearGradientBrush x:Key="JetPack.Brushes.Button.Green.Pressed" StartPoint="0.5,0" EndPoint="0.5,1">
+        <GradientStop Color="#FF6D9000" Offset="0.31" />
+        <GradientStop Color="#FF5A8100" Offset="0.78" />
+    </LinearGradientBrush>
+    <SolidColorBrush x:Key="JetPack.Brushes.Button.Green.Highlight" Color="#FFBED126" />
+    <Color x:Key="JetPack.Colors.Button.Green.TextShadow">#FF2B3D00</Color>
+
+    <LinearGradientBrush x:Key="JetPack.Brushes.Button.Orange.Normal" StartPoint="0.5,0" EndPoint="0.5,1">
+        <GradientStop Color="#FFFFB400" Offset="0.169" />
+        <GradientStop Color="#FFFFA700" Offset="0.482" />
+        <GradientStop Color="#FFFF7600" Offset="0.864" />
+    </LinearGradientBrush>
+    <LinearGradientBrush x:Key="JetPack.Brushes.Button.Orange.MouseOver" StartPoint="0.5,0" EndPoint="0.5,1">
+        <GradientStop Color="#FFFFC740" Offset="0.254" />
+        <GradientStop Color="#FFFFB400" Offset="0.496" />
+        <GradientStop Color="#FFFF9900" Offset="1" />
+    </LinearGradientBrush>
+    <LinearGradientBrush x:Key="JetPack.Brushes.Button.Orange.Pressed" StartPoint="0.5,0" EndPoint="0.5,1">
+        <GradientStop Color="#FFDD870D" Offset="0.207" />
+        <GradientStop Color="#FFCE5300" Offset="0.858" />
+    </LinearGradientBrush>
+    <SolidColorBrush x:Key="JetPack.Brushes.Button.Orange.Highlight" Color="#FFFFCC00" />
+    <Color x:Key="JetPack.Colors.Button.Orange.TextShadow">#FFB62F00</Color>
+
+    <LinearGradientBrush x:Key="JetPack.Brushes.Button.Blue.Normal" StartPoint="0.5,0" EndPoint="0.5,1">
+        <GradientStop Color="#FF99C7E2" Offset="0.14" />
+        <GradientStop Color="#FF87BDDD" Offset="0.375" />
+        <GradientStop Color="#FF4599CA" Offset="0.871" />
+    </LinearGradientBrush>
+    <LinearGradientBrush x:Key="JetPack.Brushes.Button.Blue.MouseOver" StartPoint="0.5,0" EndPoint="0.5,1">
+        <GradientStop Color="#FF81CDF8" Offset="0.237" />
+        <GradientStop Color="#FF2DACF3" Offset="0.866" />
+    </LinearGradientBrush>
+    <LinearGradientBrush x:Key="JetPack.Brushes.Button.Blue.Pressed" StartPoint="0.5,0" EndPoint="0.5,1">
+        <GradientStop Color="#FF769BB1" Offset="0.22" />
+        <GradientStop Color="#FF437694" Offset="0.797" />
+    </LinearGradientBrush>
+    <SolidColorBrush x:Key="JetPack.Brushes.Button.Blue.Highlight" Color="#FFB9DAEC" />
+    <Color x:Key="JetPack.Colors.Button.Blue.TextShadow">#FF00538E</Color>
+
+    <!-- Semantic (InfoBar, pills) -->
+    <SolidColorBrush x:Key="JetPack.Brushes.Info" Color="#FF148CD1" />
+    <SolidColorBrush x:Key="JetPack.Brushes.Success" Color="#FF75A20A" />
+    <SolidColorBrush x:Key="JetPack.Brushes.Warning" Color="#FFFE770A" />
+
+    <!-- Chart palette (Silverlight Toolkit chart, first six of eleven) -->
+    <RadialGradientBrush x:Key="JetPack.Brushes.Chart.1" Center="0.075,0.015" GradientOrigin="-0.1,-0.1" RadiusX="1.05" RadiusY="0.9">
+        <GradientStop Color="#FFB2C60D" /><GradientStop Color="#FF4C7B00" Offset="1" />
+    </RadialGradientBrush>
+    <RadialGradientBrush x:Key="JetPack.Brushes.Chart.2" Center="0.075,0.015" GradientOrigin="-0.1,-0.1" RadiusX="1.05" RadiusY="0.9">
+        <GradientStop Color="#FF39B7FF" /><GradientStop Color="#FF0065AD" Offset="1" />
+    </RadialGradientBrush>
+    <RadialGradientBrush x:Key="JetPack.Brushes.Chart.3" Center="0.075,0.015" GradientOrigin="-0.1,-0.1" RadiusX="1.05" RadiusY="0.9">
+        <GradientStop Color="#FF85878C" /><GradientStop Color="#FF33353A" Offset="1" />
+    </RadialGradientBrush>
+    <RadialGradientBrush x:Key="JetPack.Brushes.Chart.4" Center="0.075,0.015" GradientOrigin="-0.1,-0.1" RadiusX="1.05" RadiusY="0.9">
+        <GradientStop Color="#FFFF9600" /><GradientStop Color="#FF942B00" Offset="1" />
+    </RadialGradientBrush>
+    <RadialGradientBrush x:Key="JetPack.Brushes.Chart.5" Center="0.075,0.015" GradientOrigin="-0.1,-0.1" RadiusX="1.05" RadiusY="0.9">
+        <GradientStop Color="#FFEE6028" /><GradientStop Color="#FF8B0000" Offset="1" />
+    </RadialGradientBrush>
+    <RadialGradientBrush x:Key="JetPack.Brushes.Chart.6" Center="0.075,0.015" GradientOrigin="-0.1,-0.1" RadiusX="1.05" RadiusY="0.9">
+        <GradientStop Color="#FFFFC12B" /><GradientStop Color="#FFFF7600" Offset="1" />
+    </RadialGradientBrush>
+
+</ResourceDictionary>

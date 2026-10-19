@@ -1,0 +1,927 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:c="clr-namespace:JetPack.Wpf.Controls"
+                    xmlns:h="clr-namespace:JetPack.Wpf.Helpers">
+
+    <!--
+    Controls JetPack never had in Silverlight, drawn with the same materials:
+    raised light surfaces, dark recessed tracks, accent gradients, 2-3px corners.
+    -->
+
+    <h:ColorToBrushConverter x:Key="JetPack.Converters.ColorToBrush" />
+    <h:ColorToHexConverter x:Key="JetPack.Converters.ColorToHex" />
+
+    <!-- Plain list for drop-downs (no frame of its own) -->
+    <Style x:Key="JetPack.Styles.ListBox.Popup" TargetType="ListBox">
+        <Setter Property="Foreground" Value="{DynamicResource JetPack.Brushes.Input.Foreground}" />
+        <Setter Property="FontFamily" Value="{DynamicResource JetPack.Fonts.Family}" />
+        <Setter Property="FontSize" Value="{DynamicResource JetPack.Font.Size.Control}" />
+        <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ListBox">
+                    <ScrollViewer Focusable="False">
+                        <ItemsPresenter />
+                    </ScrollViewer>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- Small raised button used inside inputs (spinners, picker buttons) -->
+    <Style x:Key="JetPack.Styles.Button.Inline" TargetType="ButtonBase">
+        <Setter Property="OverridesDefaultStyle" Value="True" />
+        <Setter Property="Focusable" Value="False" />
+        <Setter Property="IsTabStop" Value="False" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ButtonBase">
+                    <Grid SnapsToDevicePixels="True">
+                        <Border Background="{DynamicResource JetPack.Brushes.Control.Background}" CornerRadius="1.5">
+                            <Border.Effect>
+                                <DropShadowEffect BlurRadius="2" ShadowDepth="1" Direction="270" Opacity="0.35" />
+                            </Border.Effect>
+                        </Border>
+                        <Border x:Name="MouseOver" Background="{DynamicResource JetPack.Brushes.Control.Background.MouseOver}" CornerRadius="1.5" Opacity="0" />
+                        <Border x:Name="Pressed" Background="{DynamicResource JetPack.Brushes.Control.Background.Pressed}" CornerRadius="1.5" Opacity="0" />
+                        <Border BorderBrush="{DynamicResource JetPack.Brushes.Control.Highlight}" BorderThickness="1,1,0,0" CornerRadius="1.5" />
+                        <ContentPresenter x:Name="Content" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="MouseOver" Property="Opacity" Value="1" />
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="Pressed" Property="Opacity" Value="1" />
+                        </Trigger>
+                        <Trigger Property="ToggleButton.IsChecked" Value="True">
+                            <Setter TargetName="Pressed" Property="Opacity" Value="1" />
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter TargetName="Content" Property="Opacity" Value="0.4" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- ===================== ToggleSwitch ===================== -->
+    <Style TargetType="c:ToggleSwitch">
+        <Setter Property="SnapsToDevicePixels" Value="True" />
+        <Setter Property="FocusVisualStyle" Value="{DynamicResource JetPack.Styles.FocusVisual}" />
+        <Setter Property="FontFamily" Value="{DynamicResource JetPack.Fonts.Family}" />
+        <Setter Property="FontSize" Value="{DynamicResource JetPack.Font.Size.Control}" />
+        <Setter Property="Foreground" Value="{DynamicResource JetPack.Brushes.Text}" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="Padding" Value="8,0,0,0" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="c:ToggleSwitch">
+                    <Grid Background="{TemplateBinding Background}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Grid Width="44" Height="18" VerticalAlignment="{TemplateBinding VerticalContentAlignment}">
+                            <Border Background="{DynamicResource JetPack.Brushes.Track.Gradient}" BorderBrush="#E6343537" BorderThickness="1" CornerRadius="2.5" />
+                            <Border x:Name="On" Background="{DynamicResource JetPack.Brushes.Accent.Selection}" CornerRadius="2.5" Opacity="0" />
+                            <Border BorderBrush="{DynamicResource JetPack.Brushes.Control.DarkEdge}" BorderThickness="1,1,0,0" CornerRadius="2.5" />
+                            <Border BorderBrush="{DynamicResource JetPack.Brushes.Control.OuterHighlight}" BorderThickness="0,0,1,1" CornerRadius="3" Margin="0,0,-1,-1" />
+                            <Grid x:Name="Knob" Width="20" Height="14" Margin="2,0" HorizontalAlignment="Left">
+                                <Grid.RenderTransform>
+                                    <TranslateTransform x:Name="KnobShift" X="0" />
+                                </Grid.RenderTransform>
+                                <Border x:Name="KnobBg" Background="{DynamicResource JetPack.Brushes.Control.Background}" CornerRadius="2">
+                                    <Border.Effect>
+                                        <DropShadowEffect BlurRadius="3" ShadowDepth="1" Direction="270" Opacity="0.55" />
+                                    </Border.Effect>
+                                </Border>
+                                <Border BorderBrush="{DynamicResource JetPack.Brushes.Control.Highlight}" BorderThickness="1,1,0,0" CornerRadius="2" />
+                            </Grid>
+                        </Grid>
+                        <ContentPresenter x:Name="Content" Grid.Column="1" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True"
+                                          HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="HasContent" Value="False">
+                            <Setter TargetName="Content" Property="Margin" Value="0" />
+                        </Trigger>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="KnobBg" Property="Background" Value="{DynamicResource JetPack.Brushes.Control.Background.MouseOver}" />
+                        </Trigger>
+                        <Trigger Property="IsChecked" Value="True">
+                            <Setter TargetName="On" Property="Opacity" Value="1" />
+                            <Trigger.EnterActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation Storyboard.TargetName="KnobShift" Storyboard.TargetProperty="X" To="20" Duration="0:0:0.15" />
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </Trigger.EnterActions>
+                            <Trigger.ExitActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation Storyboard.TargetName="KnobShift" Storyboard.TargetProperty="X" To="0" Duration="0:0:0.15" />
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </Trigger.ExitActions>
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Opacity" Value="0.5" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- ===================== ProgressRing ===================== -->
+    <Style TargetType="c:ProgressRing">
+        <Setter Property="Width" Value="34" />
+        <Setter Property="Height" Value="34" />
+        <Setter Property="IsTabStop" Value="False" />
+        <Setter Property="Foreground" Value="{DynamicResource JetPack.Brushes.Accent}" />
+        <Setter Property="Background" Value="{DynamicResource JetPack.Brushes.Track}" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="c:ProgressRing">
+                    <Viewbox x:Name="Root">
+                        <Grid Width="34" Height="34">
+                            <Ellipse Stroke="{TemplateBinding Background}" StrokeThickness="5" />
+                            <Ellipse Stroke="#59000000" StrokeThickness="1" />
+                            <Ellipse Margin="5" Stroke="{DynamicResource JetPack.Brushes.Control.OuterHighlight}" StrokeThickness="1" />
+                            <Path Stroke="{TemplateBinding Foreground}" StrokeThickness="5" StrokeStartLineCap="Round" StrokeEndLineCap="Round"
+                                  Data="M17,2.5 A14.5,14.5 0 0 1 30.63,21.96" RenderTransformOrigin="0.5,0.5" Width="34" Height="34">
+                                <Path.RenderTransform>
+                                    <RotateTransform x:Name="Spin" Angle="0" />
+                                </Path.RenderTransform>
+                            </Path>
+                        </Grid>
+                    </Viewbox>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsActive" Value="True">
+                            <Trigger.EnterActions>
+                                <BeginStoryboard x:Name="Spinning">
+                                    <Storyboard RepeatBehavior="Forever">
+                                        <DoubleAnimation Storyboard.TargetName="Spin" Storyboard.TargetProperty="Angle" From="0" To="360" Duration="0:0:0.9" />
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </Trigger.EnterActions>
+                            <Trigger.ExitActions>
+                                <StopStoryboard BeginStoryboardName="Spinning" />
+                            </Trigger.ExitActions>
+                        </Trigger>
+                        <Trigger Property="IsActive" Value="False">
+                            <Setter TargetName="Root" Property="Visibility" Value="Hidden" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- ===================== Badged ===================== -->
+    <Style TargetType="c:Badged">
+        <Setter Property="BadgeBackground" Value="{DynamicResource JetPack.Brushes.Button.Orange.Normal}" />
+        <Setter Property="IsTabStop" Value="False" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="c:Badged">
+                    <Grid>
+                        <ContentPresenter />
+                        <Grid x:Name="Badge" MinWidth="18" Height="16" Margin="0,-8,-9,0" HorizontalAlignment="Right" VerticalAlignment="Top" IsHitTestVisible="False">
+                            <Border Background="{TemplateBinding BadgeBackground}" CornerRadius="2" Effect="{DynamicResource JetPack.Effects.ControlShadow}" />
+                            <Border BorderBrush="{DynamicResource JetPack.Brushes.Button.Orange.Highlight}" BorderThickness="0.5,1,0,0" CornerRadius="2" />
+                            <ContentPresenter Margin="4,0" HorizontalAlignment="Center" VerticalAlignment="Center" Content="{TemplateBinding Badge}"
+                                              TextElement.Foreground="White" TextElement.FontWeight="Bold" TextElement.FontSize="10.5"
+                                              Effect="{DynamicResource JetPack.Effects.Button.Orange.TextShadow}" />
+                        </Grid>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="Badge" Value="{x:Null}">
+                            <Setter TargetName="Badge" Property="Visibility" Value="Collapsed" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- ===================== Tile ===================== -->
+    <Style x:Key="JetPack.Styles.Tile" TargetType="c:Tile">
+        <Setter Property="SnapsToDevicePixels" Value="True" />
+        <Setter Property="FocusVisualStyle" Value="{DynamicResource JetPack.Styles.FocusVisual}" />
+        <Setter Property="FontFamily" Value="{DynamicResource JetPack.Fonts.Family}" />
+        <Setter Property="Width" Value="110" />
+        <Setter Property="Height" Value="84" />
+        <Setter Property="Padding" Value="8" />
+        <Setter Property="Foreground" Value="{DynamicResource JetPack.Brushes.Header.Foreground}" />
+        <Setter Property="Background" Value="{DynamicResource JetPack.Brushes.Control.Background}" />
+        <Setter Property="h:ControlHelper.MouseOverBackground" Value="{DynamicResource JetPack.Brushes.Control.Background.MouseOver}" />
+        <Setter Property="h:ControlHelper.PressedBackground" Value="{DynamicResource JetPack.Brushes.Control.Background.Pressed}" />
+        <Setter Property="h:ControlHelper.HighlightBrush" Value="{DynamicResource JetPack.Brushes.Control.Highlight}" />
+        <Setter Property="h:ControlHelper.ContentEffect" Value="{DynamicResource JetPack.Effects.TextEmboss}" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="c:Tile">
+                    <Grid>
+                        <Border x:Name="Normal" Background="{TemplateBinding Background}" CornerRadius="2" Effect="{DynamicResource JetPack.Effects.ControlShadow}" />
+                        <Border x:Name="MouseOver" Background="{TemplateBinding h:ControlHelper.MouseOverBackground}" CornerRadius="2" Opacity="0" />
+                        <Border x:Name="Pressed" Background="{TemplateBinding h:ControlHelper.PressedBackground}" CornerRadius="2" Opacity="0" />
+                        <Border BorderBrush="{TemplateBinding h:ControlHelper.HighlightBrush}" BorderThickness="1,1,0,0" CornerRadius="2" />
+                        <Grid x:Name="Content" Margin="{TemplateBinding Padding}" Effect="{TemplateBinding h:ControlHelper.ContentEffect}">
+                            <TextBlock HorizontalAlignment="Right" VerticalAlignment="Top" FontSize="24" FontWeight="Bold" Text="{Binding Count, RelativeSource={RelativeSource TemplatedParent}}" />
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                            <TextBlock HorizontalAlignment="Left" VerticalAlignment="Bottom" FontSize="12" FontWeight="Bold" TextWrapping="Wrap" Text="{TemplateBinding Title}" />
+                        </Grid>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="MouseOver" Property="Opacity" Value="1" />
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="Pressed" Property="Opacity" Value="1" />
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter TargetName="Content" Property="Opacity" Value="0.5" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style x:Key="JetPack.Styles.Tile.Accent" TargetType="c:Tile" BasedOn="{StaticResource JetPack.Styles.Tile}">
+        <Setter Property="Foreground" Value="White" />
+        <Setter Property="Background" Value="{DynamicResource JetPack.Brushes.Accent.Button.Normal}" />
+        <Setter Property="h:ControlHelper.MouseOverBackground" Value="{DynamicResource JetPack.Brushes.Accent.Button.MouseOver}" />
+        <Setter Property="h:ControlHelper.PressedBackground" Value="{DynamicResource JetPack.Brushes.Accent.Button.Pressed}" />
+        <Setter Property="h:ControlHelper.HighlightBrush" Value="{DynamicResource JetPack.Brushes.Accent.Button.Highlight}" />
+        <Setter Property="h:ControlHelper.ContentEffect" Value="{DynamicResource JetPack.Effects.Accent.TextShadow}" />
+    </Style>
+    <Style x:Key="JetPack.Styles.Tile.Green" TargetType="c:Tile" BasedOn="{StaticResource JetPack.Styles.Tile}">
+        <Setter Property="Foreground" Value="White" />
+        <Setter Property="Background" Value="{DynamicResource JetPack.Brushes.Button.Green.Normal}" />
+        <Setter Property="h:ControlHelper.MouseOverBackground" Value="{DynamicResource JetPack.Brushes.Button.Green.MouseOver}" />
+        <Setter Property="h:ControlHelper.PressedBackground" Value="{DynamicResource JetPack.Brushes.Button.Green.Pressed}" />
+        <Setter Property="h:ControlHelper.HighlightBrush" Value="{DynamicResource JetPack.Brushes.Button.Green.Highlight}" />
+        <Setter Property="h:ControlHelper.ContentEffect" Value="{DynamicResource JetPack.Effects.Button.Green.TextShadow}" />
+    </Style>
+    <Style x:Key="JetPack.Styles.Tile.Orange" TargetType="c:Tile" BasedOn="{StaticResource JetPack.Styles.Tile}">
+        <Setter Property="Foreground" Value="White" />
+        <Setter Property="Background" Value="{DynamicResource JetPack.Brushes.Button.Orange.Normal}" />
+        <Setter Property="h:ControlHelper.MouseOverBackground" Value="{DynamicResource JetPack.Brushes.Button.Orange.MouseOver}" />
+        <Setter Property="h:ControlHelper.PressedBackground" Value="{DynamicResource JetPack.Brushes.Button.Orange.Pressed}" />
+        <Setter Property="h:ControlHelper.HighlightBrush" Value="{DynamicResource JetPack.Brushes.Button.Orange.Highlight}" />
+        <Setter Property="h:ControlHelper.ContentEffect" Value="{DynamicResource JetPack.Effects.Button.Orange.TextShadow}" />
+    </Style>
+    <Style x:Key="JetPack.Styles.Tile.Blue" TargetType="c:Tile" BasedOn="{StaticResource JetPack.Styles.Tile}">
+        <Setter Property="Foreground" Value="White" />
+        <Setter Property="Background" Value="{DynamicResource JetPack.Brushes.Button.Blue.Normal}" />
+        <Setter Property="h:ControlHelper.MouseOverBackground" Value="{DynamicResource JetPack.Brushes.Button.Blue.MouseOver}" />
+        <Setter Property="h:ControlHelper.PressedBackground" Value="{DynamicResource JetPack.Brushes.Button.Blue.Pressed}" />
+        <Setter Property="h:ControlHelper.HighlightBrush" Value="{DynamicResource JetPack.Brushes.Button.Blue.Highlight}" />
+        <Setter Property="h:ControlHelper.ContentEffect" Value="{DynamicResource JetPack.Effects.Button.Blue.TextShadow}" />
+    </Style>
+
+    <!-- ===================== BusyIndicator ===================== -->
+    <Style TargetType="c:BusyIndicator">
+        <Setter Property="IsTabStop" Value="False" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="c:BusyIndicator">
+                    <Grid>
+                        <ContentPresenter x:Name="Content" />
+                        <Rectangle x:Name="Overlay" Fill="#59FFFFFF" Visibility="Collapsed" />
+                        <Grid x:Name="Card" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="Collapsed">
+                            <Border Background="{DynamicResource JetPack.Brushes.Static.Background}" CornerRadius="2" Effect="{DynamicResource JetPack.Effects.LightControlShadow}" />
+                            <Border BorderBrush="{DynamicResource JetPack.Brushes.Control.Highlight}" BorderThickness="1,1,0,0" CornerRadius="2" />
+                            <StackPanel Margin="14,10">
+                                <ContentPresenter HorizontalAlignment="Center" Content="{TemplateBinding BusyContent}" TextElement.Foreground="{DynamicResource JetPack.Brushes.Header.Foreground}"
+                                                  TextElement.FontFamily="{DynamicResource JetPack.Fonts.Family}" TextElement.FontSize="{DynamicResource JetPack.Font.Size.Small}"
+                                                  Effect="{DynamicResource JetPack.Effects.TextEmboss}" />
+                                <ProgressBar Width="120" Height="8" Margin="0,7,0,0" IsIndeterminate="True" />
+                            </StackPanel>
+                        </Grid>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsBusy" Value="True">
+                            <Setter TargetName="Overlay" Property="Visibility" Value="Visible" />
+                            <Setter TargetName="Card" Property="Visibility" Value="Visible" />
+                            <Setter TargetName="Content" Property="IsEnabled" Value="False" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- ===================== Accordion ===================== -->
+    <Style TargetType="c:Accordion">
+        <Setter Property="IsTabStop" Value="False" />
+        <Setter Property="Background" Value="{DynamicResource JetPack.Brushes.Panel.Background}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource JetPack.Brushes.Panel.Border}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="ItemContainerStyle" Value="{DynamicResource JetPack.Styles.Expander.Accordion}" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="c:Accordion">
+                    <Grid>
+                        <Border Background="{TemplateBinding Background}" CornerRadius="2" Effect="{DynamicResource JetPack.Effects.LightControlShadow}" />
+                        <Border BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="2" Padding="0">
+                            <ItemsPresenter />
+                        </Border>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- ===================== NumericUpDown ===================== -->
+    <Style TargetType="c:NumericUpDown">
+        <Setter Property="SnapsToDevicePixels" Value="True" />
+        <Setter Property="Focusable" Value="True" />
+        <Setter Property="IsTabStop" Value="False" />
+        <Setter Property="MinHeight" Value="24" />
+        <Setter Property="h:ControlHelper.InputStyle" Value="{DynamicResource JetPack.Styles.TextBox}" />
+        <Setter Property="Validation.ErrorTemplate" Value="{DynamicResource JetPack.Templates.ValidationError}" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="c:NumericUpDown">
+                    <Grid>
+                        <TextBox x:Name="PART_TextBox" Style="{TemplateBinding h:ControlHelper.InputStyle}" Padding="5,3,24,3" IsReadOnly="{TemplateBinding IsReadOnly}"
+                                 h:TextBoxHelper.Watermark="{TemplateBinding h:TextBoxHelper.Watermark}" />
+                        <Grid x:Name="Spinner" Width="16" Margin="0,3,3,3" HorizontalAlignment="Right">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
+                            <RepeatButton x:Name="PART_Up" Style="{StaticResource JetPack.Styles.Button.Inline}" Margin="0,0,0,0.5" Interval="60" Delay="400">
+                                <Path Width="7" Height="4" Stretch="Fill" Data="{DynamicResource JetPack.Geometry.ArrowUp}" Fill="{DynamicResource JetPack.Brushes.Control.Glyph}" />
+                            </RepeatButton>
+                            <RepeatButton x:Name="PART_Down" Grid.Row="1" Style="{StaticResource JetPack.Styles.Button.Inline}" Margin="0,0.5,0,0" Interval="60" Delay="400">
+                                <Path Width="7" Height="4" Stretch="Fill" Data="{DynamicResource JetPack.Geometry.ArrowDown}" Fill="{DynamicResource JetPack.Brushes.Control.Glyph}" />
+                            </RepeatButton>
+                        </Grid>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="HideUpDownButtons" Value="True">
+                            <Setter TargetName="Spinner" Property="Visibility" Value="Collapsed" />
+                            <Setter TargetName="PART_TextBox" Property="Padding" Value="5,3" />
+                        </Trigger>
+                        <Trigger Property="IsReadOnly" Value="True">
+                            <Setter TargetName="Spinner" Property="IsEnabled" Value="False" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style x:Key="JetPack.Styles.NumericUpDown.Dark" TargetType="c:NumericUpDown" BasedOn="{StaticResource {x:Type c:NumericUpDown}}">
+        <Setter Property="h:ControlHelper.InputStyle" Value="{DynamicResource JetPack.Styles.TextBox.Dark}" />
+    </Style>
+
+    <!-- ===================== DropDownButton / SplitButton ===================== -->
+    <Style x:Key="JetPack.Styles.MenuButtonBase" TargetType="ButtonBase">
+        <Setter Property="SnapsToDevicePixels" Value="True" />
+        <Setter Property="FocusVisualStyle" Value="{DynamicResource JetPack.Styles.FocusVisual}" />
+        <Setter Property="FontFamily" Value="{DynamicResource JetPack.Fonts.Family}" />
+        <Setter Property="FontSize" Value="{DynamicResource JetPack.Font.Size.Control}" />
+        <Setter Property="Foreground" Value="{DynamicResource JetPack.Brushes.Control.Foreground}" />
+        <Setter Property="Background" Value="{DynamicResource JetPack.Brushes.Control.Background}" />
+        <Setter Property="h:ControlHelper.MouseOverBackground" Value="{DynamicResource JetPack.Brushes.Control.Background.MouseOver}" />
+        <Setter Property="h:ControlHelper.PressedBackground" Value="{DynamicResource JetPack.Brushes.Control.Background.Pressed}" />
+        <Setter Property="h:ControlHelper.HighlightBrush" Value="{DynamicResource JetPack.Brushes.Control.Highlight}" />
+        <Setter Property="h:ControlHelper.ContentEffect" Value="{DynamicResource JetPack.Effects.TextEmboss}" />
+        <Setter Property="h:ControlHelper.CornerRadius" Value="2" />
+        <Setter Property="Padding" Value="14,3" />
+        <Setter Property="MinHeight" Value="22" />
+        <Setter Property="HorizontalContentAlignment" Value="Center" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+    </Style>
+
+    <Style TargetType="c:DropDownButton" BasedOn="{StaticResource JetPack.Styles.MenuButtonBase}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="c:DropDownButton">
+                    <Grid>
+                        <Border x:Name="Normal" Background="{TemplateBinding Background}" CornerRadius="2" Effect="{DynamicResource JetPack.Effects.ControlShadow}" />
+                        <Border x:Name="MouseOver" Background="{TemplateBinding h:ControlHelper.MouseOverBackground}" CornerRadius="2" Opacity="0" />
+                        <Border x:Name="Pressed" Background="{TemplateBinding h:ControlHelper.PressedBackground}" CornerRadius="2" Opacity="0" />
+                        <Border x:Name="Highlight" BorderBrush="{TemplateBinding h:ControlHelper.HighlightBrush}" BorderThickness="1,1,0,0" CornerRadius="2" />
+                        <Border x:Name="Disabled" Background="{DynamicResource JetPack.Brushes.Disabled}" BorderBrush="{DynamicResource JetPack.Brushes.Disabled.Border}" BorderThickness="0,0,1,1" CornerRadius="2" Visibility="Collapsed" />
+                        <DockPanel x:Name="Content" Margin="{TemplateBinding Padding}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                   Effect="{TemplateBinding h:ControlHelper.ContentEffect}">
+                            <Path DockPanel.Dock="Right" Width="8" Height="4" Margin="8,0,0,0" VerticalAlignment="Center" Stretch="Fill" Data="{DynamicResource JetPack.Geometry.ArrowDown}"
+                                  Fill="{TemplateBinding Foreground}" Opacity="0.75" />
+                            <ContentPresenter RecognizesAccessKey="True" VerticalAlignment="Center" />
+                        </DockPanel>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="MouseOver" Property="Opacity" Value="1" />
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="Pressed" Property="Opacity" Value="1" />
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter TargetName="Disabled" Property="Visibility" Value="Visible" />
+                            <Setter TargetName="Normal" Property="Effect" Value="{x:Null}" />
+                            <Setter TargetName="Content" Property="Opacity" Value="0.5" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="JetPack.Styles.SplitButton.Arrow" TargetType="ToggleButton">
+        <Setter Property="OverridesDefaultStyle" Value="True" />
+        <Setter Property="Focusable" Value="False" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ToggleButton">
+                    <Grid Background="Transparent">
+                        <Border x:Name="Pressed" Background="#26000000" CornerRadius="0,2,2,0" Visibility="Collapsed" />
+                        <Path Width="8" Height="4" Stretch="Fill" Data="{DynamicResource JetPack.Geometry.ArrowDown}" Fill="{TemplateBinding Foreground}" Opacity="0.75" />
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="Pressed" Property="Visibility" Value="Visible" />
+                            <Setter TargetName="Pressed" Property="Background" Value="#14FFFFFF" />
+                        </Trigger>
+                        <Trigger Property="IsChecked" Value="True">
+                            <Setter TargetName="Pressed" Property="Visibility" Value="Visible" />
+                            <Setter TargetName="Pressed" Property="Background" Value="#26000000" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="c:SplitButton" BasedOn="{StaticResource JetPack.Styles.MenuButtonBase}">
+        <Setter Property="Padding" Value="14,3,12,3" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="c:SplitButton">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="24" />
+                        </Grid.ColumnDefinitions>
+                        <Border x:Name="Normal" Grid.ColumnSpan="2" Background="{TemplateBinding Background}" CornerRadius="2" Effect="{DynamicResource JetPack.Effects.ControlShadow}" />
+                        <Border x:Name="MouseOver" Grid.ColumnSpan="2" Background="{TemplateBinding h:ControlHelper.MouseOverBackground}" CornerRadius="2" Opacity="0" />
+                        <Border x:Name="Pressed" Background="{TemplateBinding h:ControlHelper.PressedBackground}" CornerRadius="2,0,0,2" Opacity="0" />
+                        <Border Grid.ColumnSpan="2" BorderBrush="{TemplateBinding h:ControlHelper.HighlightBrush}" BorderThickness="1,1,0,0" CornerRadius="2" />
+                        <Rectangle Grid.Column="1" Width="1" Margin="0,3" HorizontalAlignment="Left" Fill="#38000000" />
+                        <Rectangle Grid.Column="1" Width="1" Margin="1,3,0,3" HorizontalAlignment="Left" Fill="{TemplateBinding h:ControlHelper.HighlightBrush}" />
+                        <Border x:Name="Disabled" Grid.ColumnSpan="2" Background="{DynamicResource JetPack.Brushes.Disabled}" BorderBrush="{DynamicResource JetPack.Brushes.Disabled.Border}" BorderThickness="0,0,1,1" CornerRadius="2" Visibility="Collapsed" />
+                        <ContentPresenter x:Name="Content" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True"
+                                          HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                          Effect="{TemplateBinding h:ControlHelper.ContentEffect}" />
+                        <ToggleButton x:Name="PART_Arrow" Grid.Column="1" Margin="2,0,0,0" Style="{StaticResource JetPack.Styles.SplitButton.Arrow}" Foreground="{TemplateBinding Foreground}" />
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="MouseOver" Property="Opacity" Value="1" />
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="Pressed" Property="Opacity" Value="1" />
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter TargetName="Disabled" Property="Visibility" Value="Visible" />
+                            <Setter TargetName="Normal" Property="Effect" Value="{x:Null}" />
+                            <Setter TargetName="Content" Property="Opacity" Value="0.5" />
+                            <Setter TargetName="PART_Arrow" Property="Opacity" Value="0.5" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style x:Key="JetPack.Styles.SplitButton.Accent" TargetType="c:SplitButton" BasedOn="{StaticResource {x:Type c:SplitButton}}">
+        <Setter Property="Foreground" Value="White" />
+        <Setter Property="Background" Value="{DynamicResource JetPack.Brushes.Accent.Button.Normal}" />
+        <Setter Property="h:ControlHelper.MouseOverBackground" Value="{DynamicResource JetPack.Brushes.Accent.Button.MouseOver}" />
+        <Setter Property="h:ControlHelper.PressedBackground" Value="{DynamicResource JetPack.Brushes.Accent.Button.Pressed}" />
+        <Setter Property="h:ControlHelper.HighlightBrush" Value="{DynamicResource JetPack.Brushes.Accent.Button.Highlight}" />
+        <Setter Property="h:ControlHelper.ContentEffect" Value="{DynamicResource JetPack.Effects.Accent.TextShadow}" />
+    </Style>
+    <Style x:Key="JetPack.Styles.DropDownButton.Accent" TargetType="c:DropDownButton" BasedOn="{StaticResource {x:Type c:DropDownButton}}">
+        <Setter Property="Foreground" Value="White" />
+        <Setter Property="Background" Value="{DynamicResource JetPack.Brushes.Accent.Button.Normal}" />
+        <Setter Property="h:ControlHelper.MouseOverBackground" Value="{DynamicResource JetPack.Brushes.Accent.Button.MouseOver}" />
+        <Setter Property="h:ControlHelper.PressedBackground" Value="{DynamicResource JetPack.Brushes.Accent.Button.Pressed}" />
+        <Setter Property="h:ControlHelper.HighlightBrush" Value="{DynamicResource JetPack.Brushes.Accent.Button.Highlight}" />
+        <Setter Property="h:ControlHelper.ContentEffect" Value="{DynamicResource JetPack.Effects.Accent.TextShadow}" />
+    </Style>
+
+    <!-- ===================== Flyout ===================== -->
+    <Style x:Key="JetPack.Styles.Flyout.Close" TargetType="Button">
+        <Setter Property="OverridesDefaultStyle" Value="True" />
+        <Setter Property="Focusable" Value="False" />
+        <Setter Property="Width" Value="22" />
+        <Setter Property="Height" Value="22" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Grid Background="Transparent">
+                        <Ellipse x:Name="Ring" Stroke="#B3FFFFFF" StrokeThickness="1.2" />
+                        <Path x:Name="Arrow" Width="5" Height="8" Margin="1,0,0,0" Stretch="Fill" Data="{DynamicResource JetPack.Geometry.ArrowRight}" Fill="White" />
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="Ring" Property="Fill" Value="#26FFFFFF" />
+                            <Setter TargetName="Ring" Property="Stroke" Value="White" />
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="Ring" Property="Fill" Value="#4D000000" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="c:Flyout">
+        <Setter Property="Width" Value="300" />
+        <Setter Property="HorizontalAlignment" Value="Right" />
+        <Setter Property="VerticalAlignment" Value="Stretch" />
+        <Setter Property="Panel.ZIndex" Value="10" />
+        <Setter Property="FontFamily" Value="{DynamicResource JetPack.Fonts.Family}" />
+        <Setter Property="FontSize" Value="{DynamicResource JetPack.Font.Size.Control}" />
+        <Setter Property="Foreground" Value="{DynamicResource JetPack.Brushes.Text}" />
+        <Setter Property="Padding" Value="14,12" />
+        <Setter Property="KeyboardNavigation.TabNavigation" Value="Cycle" />
+        <Setter Property="Background">
+            <Setter.Value>
+                <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                    <GradientStop Color="#FF4F5054" Offset="0" />
+                    <GradientStop Color="#FF5B5C61" Offset="1" />
+                </LinearGradientBrush>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="c:Flyout">
+                    <Grid>
+                        <Border x:Name="Panel" Background="{TemplateBinding Background}" BorderBrush="#FF3B3C40" BorderThickness="1,0,0,0">
+                            <Border.Effect>
+                                <DropShadowEffect BlurRadius="10" ShadowDepth="0" Opacity="0.45" />
+                            </Border.Effect>
+                        </Border>
+                        <DockPanel Margin="{TemplateBinding Padding}">
+                            <DockPanel DockPanel.Dock="Top" Margin="0,0,0,12">
+                                <Button x:Name="PART_Close" Style="{StaticResource JetPack.Styles.Flyout.Close}" Margin="0,0,10,0" ToolTip="Luk" />
+                                <ContentPresenter ContentSource="Header" VerticalAlignment="Center" TextElement.FontSize="{DynamicResource JetPack.Font.Size.Heading5}" TextElement.FontWeight="Bold" />
+                            </DockPanel>
+                            <ContentPresenter />
+                        </DockPanel>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsClosable" Value="False">
+                            <Setter TargetName="PART_Close" Property="Visibility" Value="Collapsed" />
+                        </Trigger>
+                        <Trigger Property="Position" Value="Left">
+                            <Setter TargetName="Panel" Property="BorderThickness" Value="0,0,1,0" />
+                            <Setter TargetName="PART_Close" Property="RenderTransformOrigin" Value="0.5,0.5" />
+                            <Setter TargetName="PART_Close" Property="RenderTransform">
+                                <Setter.Value>
+                                    <ScaleTransform ScaleX="-1" />
+                                </Setter.Value>
+                            </Setter>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <Trigger Property="Position" Value="Left">
+                <Setter Property="HorizontalAlignment" Value="Left" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <!-- ===================== HamburgerMenu ===================== -->
+    <Style x:Key="JetPack.Styles.HamburgerMenu.Toggle" TargetType="ToggleButton">
+        <Setter Property="OverridesDefaultStyle" Value="True" />
+        <Setter Property="FocusVisualStyle" Value="{DynamicResource JetPack.Styles.FocusVisual}" />
+        <Setter Property="Width" Value="40" />
+        <Setter Property="Height" Value="36" />
+        <Setter Property="HorizontalAlignment" Value="Left" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ToggleButton">
+                    <Border x:Name="Bd" Background="Transparent">
+                        <Path Width="16" Height="12" Stretch="Fill" Stroke="White" StrokeThickness="2" Data="M0,1 H16 M0,6 H16 M0,11 H16" />
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="Bd" Property="Background" Value="#14FFFFFF" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="c:HamburgerMenuItem">
+        <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+        <Setter Property="Foreground" Value="{DynamicResource JetPack.Brushes.Tab.Inactive.Foreground}" />
+        <Setter Property="Height" Value="34" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="c:HamburgerMenuItem">
+                    <Grid Background="Transparent">
+                        <Border x:Name="Bd" BorderBrush="Transparent" BorderThickness="0,1,0,0" />
+                        <DockPanel>
+                            <ContentPresenter DockPanel.Dock="Left" Width="16" Height="16" Margin="12,0" VerticalAlignment="Center" Content="{TemplateBinding Icon}" />
+                            <ContentPresenter VerticalAlignment="Center" />
+                        </DockPanel>
+                        <Path x:Name="Notch" Width="6" Height="12" Margin="0,0,-1,0" HorizontalAlignment="Right" VerticalAlignment="Center" Stretch="Fill"
+                              Data="M6,0 L6,12 L0,6 z" Fill="{DynamicResource JetPack.Brushes.Window.Ground}" Visibility="Hidden" />
+                        <Border x:Name="Focus" BorderBrush="{DynamicResource JetPack.Brushes.Focus}" BorderThickness="1" Margin="2" Visibility="Collapsed" />
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="Bd" Property="Background" Value="#14FFFFFF" />
+                        </Trigger>
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter TargetName="Bd" Property="Background" Value="{DynamicResource JetPack.Brushes.Accent.Selection}" />
+                            <Setter TargetName="Bd" Property="BorderBrush" Value="{DynamicResource JetPack.Brushes.Accent.Highlight}" />
+                            <Setter TargetName="Notch" Property="Visibility" Value="Visible" />
+                            <Setter Property="Foreground" Value="White" />
+                        </Trigger>
+                        <Trigger Property="IsKeyboardFocused" Value="True">
+                            <Setter TargetName="Focus" Property="Visibility" Value="Visible" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="c:HamburgerMenu">
+        <Setter Property="FontFamily" Value="{DynamicResource JetPack.Fonts.Family}" />
+        <Setter Property="FontSize" Value="{DynamicResource JetPack.Font.Size.Control}" />
+        <Setter Property="Foreground" Value="{DynamicResource JetPack.Brushes.Text}" />
+        <Setter Property="Background" Value="{DynamicResource JetPack.Brushes.Panel.Border}" />
+        <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="c:HamburgerMenu">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Border x:Name="Pane" Width="{TemplateBinding PaneWidth}" Background="{TemplateBinding Background}" BorderBrush="#33000000" BorderThickness="0,0,1,0">
+                            <DockPanel>
+                                <ToggleButton DockPanel.Dock="Top" Style="{StaticResource JetPack.Styles.HamburgerMenu.Toggle}"
+                                              IsChecked="{Binding IsPaneOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}" />
+                                <ScrollViewer Focusable="False" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                                    <ItemsPresenter />
+                                </ScrollViewer>
+                            </DockPanel>
+                        </Border>
+                        <ContentPresenter Grid.Column="1" Content="{TemplateBinding Content}" ContentTemplate="{TemplateBinding ContentTemplate}" />
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsPaneOpen" Value="False">
+                            <Setter TargetName="Pane" Property="Width" Value="{Binding CompactPaneWidth, RelativeSource={RelativeSource TemplatedParent}}" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- ===================== InfoBar ===================== -->
+    <Style TargetType="c:InfoBar">
+        <Setter Property="FontFamily" Value="{DynamicResource JetPack.Fonts.Family}" />
+        <Setter Property="FontSize" Value="{DynamicResource JetPack.Font.Size.Small}" />
+        <Setter Property="Foreground" Value="{DynamicResource JetPack.Brushes.Header.Foreground}" />
+        <Setter Property="Background" Value="{DynamicResource JetPack.Brushes.Static.Background}" />
+        <Setter Property="Padding" Value="8,6" />
+        <Setter Property="IsTabStop" Value="False" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="c:InfoBar">
+                    <Grid x:Name="Root">
+                        <Border Background="{TemplateBinding Background}" CornerRadius="2" Effect="{DynamicResource JetPack.Effects.LightControlShadow}" />
+                        <Border BorderBrush="{DynamicResource JetPack.Brushes.Control.Highlight}" BorderThickness="1,1,0,0" CornerRadius="2" />
+                        <DockPanel Margin="{TemplateBinding Padding}">
+                            <Grid DockPanel.Dock="Left" Width="18" Height="18" Margin="0,0,9,0" VerticalAlignment="Center">
+                                <Border x:Name="IconBg" Background="{DynamicResource JetPack.Brushes.Button.Blue.Normal}" CornerRadius="2" />
+                                <TextBlock x:Name="Glyph" Text="i" Foreground="White" FontWeight="Bold" FontSize="12" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                            </Grid>
+                            <Button x:Name="PART_Close" DockPanel.Dock="Right" Style="{DynamicResource JetPack.Styles.Button.Clear}" Margin="8,0,0,0" ToolTip="Luk" />
+                            <ContentPresenter DockPanel.Dock="Right" Margin="8,0,0,0" VerticalAlignment="Center" />
+                            <WrapPanel VerticalAlignment="Center" Effect="{DynamicResource JetPack.Effects.TextEmboss}">
+                                <TextBlock x:Name="Title" Margin="0,0,6,0" FontWeight="Bold" Text="{TemplateBinding Title}" />
+                                <TextBlock Text="{TemplateBinding Message}" TextWrapping="Wrap" />
+                            </WrapPanel>
+                        </DockPanel>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="Severity" Value="Success">
+                            <Setter TargetName="IconBg" Property="Background" Value="{DynamicResource JetPack.Brushes.Button.Green.Normal}" />
+                            <Setter TargetName="Glyph" Property="Text" Value="✓" />
+                        </Trigger>
+                        <Trigger Property="Severity" Value="Warning">
+                            <Setter TargetName="IconBg" Property="Background" Value="{DynamicResource JetPack.Brushes.Button.Orange.Normal}" />
+                            <Setter TargetName="Glyph" Property="Text" Value="!" />
+                        </Trigger>
+                        <Trigger Property="Severity" Value="Error">
+                            <Setter TargetName="IconBg" Property="Background" Value="{DynamicResource JetPack.Brushes.Error.Header}" />
+                            <Setter TargetName="Glyph" Property="Text" Value="×" />
+                        </Trigger>
+                        <Trigger Property="Title" Value="{x:Null}">
+                            <Setter TargetName="Title" Property="Visibility" Value="Collapsed" />
+                        </Trigger>
+                        <Trigger Property="IsClosable" Value="False">
+                            <Setter TargetName="PART_Close" Property="Visibility" Value="Collapsed" />
+                        </Trigger>
+                        <Trigger Property="IsOpen" Value="False">
+                            <Setter Property="Visibility" Value="Collapsed" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- ===================== RangeSlider ===================== -->
+    <Style TargetType="c:RangeSlider">
+        <Setter Property="SnapsToDevicePixels" Value="True" />
+        <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+        <Setter Property="Height" Value="18" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="c:RangeSlider">
+                    <Grid Background="Transparent">
+                        <Grid Height="8" Margin="0,3,0,0" VerticalAlignment="Top">
+                            <Border Background="{DynamicResource JetPack.Brushes.Track.Gradient}" BorderBrush="{DynamicResource JetPack.Brushes.Track.Border}" BorderThickness="1" CornerRadius="2" />
+                            <Border BorderBrush="{DynamicResource JetPack.Brushes.Control.DarkEdge}" BorderThickness="1,1,0,0" CornerRadius="2" />
+                            <Border BorderBrush="{DynamicResource JetPack.Brushes.Control.OuterHighlight}" BorderThickness="0,0,1,1" CornerRadius="2" Margin="0,0,-1,-1" />
+                        </Grid>
+                        <Canvas x:Name="PART_Track">
+                            <Border x:Name="PART_Fill" Canvas.Top="3" Height="8" BorderBrush="{DynamicResource JetPack.Brushes.Slider.Value.Border}" BorderThickness="1" CornerRadius="2">
+                                <Border BorderBrush="{DynamicResource JetPack.Brushes.Slider.Value.Highlight}" BorderThickness="1" CornerRadius="1" Background="{DynamicResource JetPack.Brushes.Slider.Value}" />
+                            </Border>
+                            <Thumb x:Name="PART_LowerThumb" Style="{DynamicResource JetPack.Styles.Slider.Thumb.Horizontal}" Focusable="True" FocusVisualStyle="{DynamicResource JetPack.Styles.FocusVisual}" />
+                            <Thumb x:Name="PART_UpperThumb" Style="{DynamicResource JetPack.Styles.Slider.Thumb.Horizontal}" Focusable="True" FocusVisualStyle="{DynamicResource JetPack.Styles.FocusVisual}" />
+                        </Canvas>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Opacity" Value="0.55" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- ===================== Rating ===================== -->
+    <Style TargetType="c:Rating">
+        <Setter Property="FocusVisualStyle" Value="{DynamicResource JetPack.Styles.FocusVisual}" />
+        <Setter Property="Focusable" Value="True" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="c:Rating">
+                    <StackPanel x:Name="PART_Host" Orientation="Horizontal" Background="Transparent" />
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- ===================== TimePicker ===================== -->
+    <Style TargetType="c:TimePicker">
+        <Setter Property="SnapsToDevicePixels" Value="True" />
+        <Setter Property="IsTabStop" Value="False" />
+        <Setter Property="MinHeight" Value="24" />
+        <Setter Property="h:ControlHelper.InputStyle" Value="{DynamicResource JetPack.Styles.TextBox}" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="c:TimePicker">
+                    <Grid>
+                        <TextBox x:Name="PART_TextBox" Style="{TemplateBinding h:ControlHelper.InputStyle}" Padding="5,3,28,3" h:TextBoxHelper.Watermark="{TemplateBinding h:TextBoxHelper.Watermark}" />
+                        <ToggleButton x:Name="DropButton" Width="20" Margin="3" HorizontalAlignment="Right" Style="{StaticResource JetPack.Styles.Button.Inline}"
+                                      IsChecked="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}">
+                            <Canvas Width="12" Height="12">
+                                <Ellipse Width="11" Height="11" Canvas.Left="0.5" Canvas.Top="0.5" Fill="White" Stroke="#FF555555" />
+                                <Path Data="M6,3 L6,6 L8,7.4" Stroke="#FF333333" StrokeThickness="1" />
+                            </Canvas>
+                        </ToggleButton>
+                        <Popup x:Name="PART_Popup" AllowsTransparency="True" Placement="Bottom" StaysOpen="False" PopupAnimation="Slide" VerticalOffset="1"
+                               PlacementTarget="{Binding ElementName=PART_TextBox}" IsOpen="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}">
+                            <Grid Margin="0,0,6,6" Width="{Binding ActualWidth, ElementName=PART_TextBox}" MinWidth="90">
+                                <Border Background="{DynamicResource JetPack.Brushes.Input.Background}" CornerRadius="0,0,4,4" Effect="{DynamicResource JetPack.Effects.PopupShadow}" />
+                                <ListBox x:Name="PART_List" Style="{StaticResource JetPack.Styles.ListBox.Popup}" MaxHeight="220" Margin="0,0,0,4" ItemStringFormat="{}{0:hh\:mm}" />
+                            </Grid>
+                        </Popup>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsDropDownOpen" Value="True">
+                            <Setter TargetName="DropButton" Property="IsHitTestVisible" Value="False" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- ===================== ColorPicker ===================== -->
+    <Style x:Key="JetPack.Styles.ColorPicker.Swatch" TargetType="ListBoxItem">
+        <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+        <Setter Property="Margin" Value="2" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ListBoxItem">
+                    <Grid Width="18" Height="18">
+                        <Border x:Name="Ring" BorderBrush="Transparent" BorderThickness="2" Margin="-2" />
+                        <Border Background="{Binding Converter={StaticResource JetPack.Converters.ColorToBrush}}" BorderBrush="#40000000" BorderThickness="1" />
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="Ring" Property="BorderBrush" Value="{DynamicResource JetPack.Brushes.Accent.Highlight}" />
+                        </Trigger>
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter TargetName="Ring" Property="BorderBrush" Value="{DynamicResource JetPack.Brushes.Accent.Solid}" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="c:ColorPicker">
+        <Setter Property="SnapsToDevicePixels" Value="True" />
+        <Setter Property="FocusVisualStyle" Value="{DynamicResource JetPack.Styles.FocusVisual}" />
+        <Setter Property="FontFamily" Value="{DynamicResource JetPack.Fonts.Family}" />
+        <Setter Property="FontSize" Value="{DynamicResource JetPack.Font.Size.Control}" />
+        <Setter Property="Foreground" Value="{DynamicResource JetPack.Brushes.Control.Foreground}" />
+        <Setter Property="Background" Value="{DynamicResource JetPack.Brushes.Control.Background}" />
+        <Setter Property="MinHeight" Value="22" />
+        <Setter Property="MinWidth" Value="120" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="c:ColorPicker">
+                    <Grid x:Name="Root">
+                        <ToggleButton Style="{DynamicResource JetPack.Styles.ComboBox.Toggle}" Background="{TemplateBinding Background}"
+                                      IsChecked="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}" />
+                        <StackPanel Margin="8,0,32,0" Orientation="Horizontal" VerticalAlignment="Center" IsHitTestVisible="False">
+                            <Border Width="14" Height="14" BorderBrush="#4D000000" BorderThickness="1"
+                                    Background="{Binding SelectedColor, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource JetPack.Converters.ColorToBrush}}" />
+                            <TextBlock Margin="6,0,0,0" VerticalAlignment="Center" Effect="{DynamicResource JetPack.Effects.TextEmboss}"
+                                       Text="{Binding SelectedColor, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource JetPack.Converters.ColorToHex}}" />
+                        </StackPanel>
+                        <Popup AllowsTransparency="True" Placement="Bottom" StaysOpen="False" PopupAnimation="Slide" VerticalOffset="1"
+                               IsOpen="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}">
+                            <Grid Margin="0,0,6,6">
+                                <Border Background="{DynamicResource JetPack.Brushes.Input.Background}" CornerRadius="0,0,4,4" Effect="{DynamicResource JetPack.Effects.PopupShadow}" />
+                                <ListBox x:Name="PART_Palette" Style="{StaticResource JetPack.Styles.ListBox.Popup}" Margin="5" ItemsSource="{TemplateBinding Palette}"
+                                         ItemContainerStyle="{StaticResource JetPack.Styles.ColorPicker.Swatch}">
+                                    <ListBox.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <WrapPanel Width="176" />
+                                        </ItemsPanelTemplate>
+                                    </ListBox.ItemsPanel>
+                                </ListBox>
+                            </Grid>
+                        </Popup>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- ===================== AutoSuggestBox ===================== -->
+    <Style TargetType="c:AutoSuggestBox">
+        <Setter Property="SnapsToDevicePixels" Value="True" />
+        <Setter Property="IsTabStop" Value="False" />
+        <Setter Property="MinHeight" Value="24" />
+        <Setter Property="h:ControlHelper.InputStyle" Value="{DynamicResource JetPack.Styles.TextBox}" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="c:AutoSuggestBox">
+                    <Grid>
+                        <TextBox x:Name="PART_TextBox" Style="{TemplateBinding h:ControlHelper.InputStyle}" h:TextBoxHelper.Watermark="{TemplateBinding h:TextBoxHelper.Watermark}"
+                                 Text="{Binding Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource TemplatedParent}}" />
+                        <Popup x:Name="PART_Popup" AllowsTransparency="True" Placement="Bottom" StaysOpen="False" PopupAnimation="Fade" VerticalOffset="1"
+                               PlacementTarget="{Binding ElementName=PART_TextBox}">
+                            <Grid Margin="0,0,6,6" MinWidth="{Binding ActualWidth, ElementName=PART_TextBox}">
+                                <Border Background="{DynamicResource JetPack.Brushes.Input.Background}" CornerRadius="0,0,4,4" Effect="{DynamicResource JetPack.Effects.PopupShadow}" />
+                                <ListBox x:Name="PART_List" Style="{StaticResource JetPack.Styles.ListBox.Popup}" MaxHeight="220" Margin="0,0,0,4" />
+                            </Grid>
+                        </Popup>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+</ResourceDictionary>
