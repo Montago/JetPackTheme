@@ -9,7 +9,7 @@
 
     <jp:JetPackWindow.Resources>
         <!-- Branding shown at the right end of the full-width navigation bar (see UseNavigationBar) -->
-        <StackPanel x:Key="Demo.Brand.Bar" Orientation="Horizontal" Effect="{DynamicResource JetPack.Effects.TextEmboss}">
+        <StackPanel x:Key="Demo.Brand.Bar" Orientation="Horizontal" Margin="0,0,16,0" Effect="{DynamicResource JetPack.Effects.TextEmboss}">
             <TextBlock VerticalAlignment="Center" FontSize="22" Text="Jetpack" TextOptions.TextFormattingMode="Ideal" />
             <TextBlock VerticalAlignment="Center" Margin="8,3,0,0" FontSize="11" Text="for WPF · .NET 8+" />
         </StackPanel>

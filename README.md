@@ -55,7 +55,7 @@ Two common layouts for the window content:
     <!-- full-width grey navigation bar right under the title bar; Tag goes to its right end -->
     <TabControl Style="{StaticResource JetPack.Styles.TabControl.Navigation}">
         <TabControl.Tag>
-            <TextBlock FontSize="15" FontWeight="Bold" Text="My app" />
+            <TextBlock Margin="0,0,16,0" FontSize="15" FontWeight="Bold" Text="My app" />
         </TabControl.Tag>
         <TabItem Header="Companies">...</TabItem>
         <TabItem Header="Orders">...</TabItem>

@@ -251,8 +251,9 @@
     <!--
     Navigation tabs: the light link bar from the navigation template, with the
     selected link in accent and a small notch pointing down at the content.
-    The bar fills the width of the TabControl, so placed directly under the title bar
-    it runs edge to edge. Tag is shown at the right end of the bar (branding, search, user).
+    The bar fills the width of the TabControl and, as in the original, the first link sits
+    flush with its left edge; placed directly under the title bar it runs edge to edge.
+    Tag is shown at the right end of the bar (branding, search, user).
     -->
     <Style x:Key="JetPack.Styles.TabItem.Navigation" TargetType="TabItem">
         <Setter Property="OverridesDefaultStyle" Value="True" />
@@ -306,7 +307,7 @@
         <Setter Property="SnapsToDevicePixels" Value="True" />
         <Setter Property="Foreground" Value="{DynamicResource JetPack.Brushes.Text}" />
         <Setter Property="Background" Value="{DynamicResource JetPack.Brushes.Static.Background}" />
-        <Setter Property="Padding" Value="16,0" />
+        <Setter Property="Padding" Value="0" />
         <Setter Property="ItemContainerStyle" Value="{StaticResource JetPack.Styles.TabItem.Navigation}" />
         <Setter Property="Template">
             <Setter.Value>
