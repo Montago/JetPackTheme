@@ -1,0 +1,84 @@
+<UserControl x:Class="JetPack.Wpf.Samples.Admin.Views.TimesheetsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:jp="urn:jetpack-wpf"
+             xmlns:local="clr-namespace:JetPack.Wpf.Samples.Admin">
+    <UserControl.Resources>
+        <Style x:Key="Hours" TargetType="TextBlock">
+            <Setter Property="HorizontalAlignment" Value="Right" />
+        </Style>
+        <ContextMenu x:Key="ApproveMenu">
+            <MenuItem Header="Approve all submitted" />
+            <MenuItem Header="Reject selected…" />
+            <Separator />
+            <MenuItem Header="Send reminder to drafts" />
+        </ContextMenu>
+        <ContextMenu x:Key="ExportMenu">
+            <MenuItem Header="Payroll file (.csv)" />
+            <MenuItem Header="Excel (.xlsx)" />
+            <MenuItem Header="PDF report" />
+        </ContextMenu>
+    </UserControl.Resources>
+
+    <Grid Margin="24,16,24,20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <TextBlock Style="{StaticResource Page.Title}" Text="Timesheets" />
+
+        <DockPanel Grid.Row="1" Style="{StaticResource Page.Toolbar}">
+            <ComboBox Width="190" SelectedIndex="0" ItemsSource="{x:Static local:SampleData.Weeks}" />
+            <ComboBox Width="130" Margin="10,0,0,0" SelectedIndex="0" ItemsSource="{x:Static local:SampleData.Statuses}" />
+
+            <jp:DropDownButton DockPanel.Dock="Right" Content="Export" Menu="{StaticResource ExportMenu}" Margin="10,0,0,0" />
+            <jp:SplitButton DockPanel.Dock="Right" Content="Approve selected" Style="{StaticResource JetPack.Styles.SplitButton.Accent}"
+                            Menu="{StaticResource ApproveMenu}" />
+        </DockPanel>
+
+        <DataGrid Grid.Row="2" AutoGenerateColumns="False" IsReadOnly="True" SelectionMode="Extended"
+                  ItemsSource="{x:Static local:SampleData.Timesheet}">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Employee" Binding="{Binding Employee}" Width="150" SortDirection="Ascending" />
+                <DataGridTextColumn Header="Project" Binding="{Binding Project}" Width="*" />
+                <DataGridTextColumn Header="Mon" Binding="{Binding Monday, StringFormat=N1}" Width="52" ElementStyle="{StaticResource Hours}" />
+                <DataGridTextColumn Header="Tue" Binding="{Binding Tuesday, StringFormat=N1}" Width="52" ElementStyle="{StaticResource Hours}" />
+                <DataGridTextColumn Header="Wed" Binding="{Binding Wednesday, StringFormat=N1}" Width="52" ElementStyle="{StaticResource Hours}" />
+                <DataGridTextColumn Header="Thu" Binding="{Binding Thursday, StringFormat=N1}" Width="52" ElementStyle="{StaticResource Hours}" />
+                <DataGridTextColumn Header="Fri" Binding="{Binding Friday, StringFormat=N1}" Width="52" ElementStyle="{StaticResource Hours}" />
+                <DataGridTextColumn Header="Total" Binding="{Binding Total, StringFormat=N1}" Width="60" FontWeight="Bold" ElementStyle="{StaticResource Hours}" />
+                <DataGridTemplateColumn Header="Status" Width="110" SortMemberPath="Status">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate DataType="local:TimesheetRow">
+                            <StackPanel Orientation="Horizontal">
+                                <Ellipse x:Name="Dot" Width="8" Height="8" Margin="0,0,6,0" Fill="#FF9A9A9A" />
+                                <TextBlock Text="{Binding Status}" />
+                            </StackPanel>
+                            <DataTemplate.Triggers>
+                                <DataTrigger Binding="{Binding Status}" Value="Submitted">
+                                    <Setter TargetName="Dot" Property="Fill" Value="{DynamicResource JetPack.Brushes.Button.Blue.Normal}" />
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding Status}" Value="Approved">
+                                    <Setter TargetName="Dot" Property="Fill" Value="{DynamicResource JetPack.Brushes.Button.Green.Normal}" />
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding Status}" Value="Rejected">
+                                    <Setter TargetName="Dot" Property="Fill" Value="{DynamicResource JetPack.Brushes.Button.Orange.Normal}" />
+                                </DataTrigger>
+                            </DataTemplate.Triggers>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <!-- Week summary -->
+        <StackPanel Grid.Row="3" Orientation="Horizontal" Margin="0,12,0,0">
+            <TextBlock Style="{StaticResource Page.Caption}" Text="Approved this week" Margin="0,0,10,0" />
+            <ProgressBar Width="200" Value="38" VerticalAlignment="Center" />
+            <TextBlock Style="{StaticResource Page.Caption}" Margin="10,0,0,0" Text="112.5 of 296 hours · 4 timesheets submitted · 1 rejected" />
+        </StackPanel>
+    </Grid>
+</UserControl>

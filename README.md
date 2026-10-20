@@ -106,7 +106,15 @@ Resource keys follow the MahApps scheme with a `JetPack.` prefix: `JetPack.Brush
 dotnet run --project src/JetPack.Wpf.Demo
 ```
 
-`--snapshot <folder>` renders every page to PNG and exits, plus one picture per control in `<folder>/controls`
+Two sample applications show the controls together in real screen layouts (see
+[Sample apps](https://montago.github.io/JetPackTheme/samples.html)):
+
+```bash
+dotnet run --project samples/JetPack.Wpf.Samples.Admin
+dotnet run --project samples/JetPack.Wpf.Samples.Portal
+```
+
+The demo's `--snapshot <folder>` renders every page to PNG and exits, plus one picture per control in `<folder>/controls`
 (from `Views/GalleryPage.xaml`). The images in `docs/screenshots` were made that way.
 
 ## Layout
@@ -120,6 +128,7 @@ src/JetPack.Wpf/
   Helpers/           attached properties and converters
   Theming/           ThemeManager and AccentGenerator
 src/JetPack.Wpf.Demo/
+samples/             Admin (HamburgerMenu) and Portal (navigation bar) sample apps
 docs/                documentation and screenshots
 tools/               generate_resource_keys.py (rebuilds docs/resource-keys.md)
 design/              the HTML draft the look was approved from

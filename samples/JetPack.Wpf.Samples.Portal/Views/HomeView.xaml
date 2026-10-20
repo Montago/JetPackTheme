@@ -1,0 +1,66 @@
+<UserControl x:Class="JetPack.Wpf.Samples.Portal.Views.HomeView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:jp="urn:jetpack-wpf"
+             xmlns:local="clr-namespace:JetPack.Wpf.Samples.Portal">
+    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+        <Grid Style="{StaticResource Page.Root}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="3*" />
+                <ColumnDefinition Width="20" />
+                <ColumnDefinition Width="2*" />
+            </Grid.ColumnDefinitions>
+
+            <TextBlock Grid.ColumnSpan="3" Style="{StaticResource Page.Title}" Text="Good morning, Lindsey" />
+            <TextBlock Grid.Row="1" Grid.ColumnSpan="3" Style="{StaticResource JetPack.Styles.TextBlock.Content}" Margin="0,-6,0,16"
+                       Text="Friday 16 October · 3 orders are waiting to be packed and 5 products are below their reorder level." />
+
+            <jp:InfoBar Grid.Row="2" Grid.ColumnSpan="3" Severity="Info" Title="New price list." Margin="0,0,0,16" HorizontalAlignment="Left"
+                        Message="Prices for 2027 take effect on 1 January. Customers with open quotes get a reminder on Monday." />
+
+            <WrapPanel Grid.Row="3" Grid.ColumnSpan="3" Margin="0,0,0,20">
+                <jp:Tile Title="Open orders" Count="3" Style="{StaticResource JetPack.Styles.Tile.Green}" Width="150" Margin="0,0,10,10"
+                         Command="NavigationCommands.GoToPage" CommandParameter="Orders" />
+                <jp:Tile Title="Below reorder level" Count="5" Style="{StaticResource JetPack.Styles.Tile.Orange}" Width="150" Margin="0,0,10,10"
+                         Command="NavigationCommands.GoToPage" CommandParameter="Products" />
+                <jp:Tile Title="Customers" Count="7" Style="{StaticResource JetPack.Styles.Tile.Blue}" Width="150" Margin="0,0,10,10"
+                         Command="NavigationCommands.GoToPage" CommandParameter="Customers" />
+                <jp:Tile Title="Sales this month" Count="$8.4k" Width="150" Margin="0,0,10,10" />
+            </WrapPanel>
+
+            <GroupBox Grid.Row="4" Header="Latest orders" VerticalAlignment="Top">
+                <ListView ItemsSource="{x:Static local:SampleData.Orders}" Height="196">
+                    <ListView.View>
+                        <GridView>
+                            <GridViewColumn Header="Order" DisplayMemberBinding="{Binding Number}" Width="80" />
+                            <GridViewColumn Header="Customer" DisplayMemberBinding="{Binding Customer}" Width="170" />
+                            <GridViewColumn Header="Date" DisplayMemberBinding="{Binding Date, StringFormat=d}" Width="90" />
+                            <GridViewColumn Header="Status" DisplayMemberBinding="{Binding Status}" Width="80" />
+                            <GridViewColumn Header="Total" DisplayMemberBinding="{Binding Total, StringFormat=C}" Width="90" />
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+            </GroupBox>
+
+            <GroupBox Grid.Row="4" Grid.Column="2" Header="Top rated products" VerticalAlignment="Top">
+                <ItemsControl ItemsSource="{x:Static local:SampleData.TopRated}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate DataType="local:Product">
+                            <DockPanel Margin="0,2,0,6">
+                                <jp:Rating DockPanel.Dock="Right" Value="{Binding Rating, Mode=OneWay}" IsReadOnly="True" />
+                                <TextBlock Text="{Binding Name}" VerticalAlignment="Center" TextTrimming="CharacterEllipsis" />
+                            </DockPanel>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </GroupBox>
+        </Grid>
+    </ScrollViewer>
+</UserControl>

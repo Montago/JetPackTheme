@@ -5,8 +5,7 @@ namespace JetPack.Wpf.Controls;
 
 /// <summary>
 /// Navigation pane on the left (a list of <see cref="HamburgerMenuItem"/>) and
-/// a content area on the right. The selected item gets the accent gradient
-/// and the same notch as the navigation tabs.
+/// a content area on the right. The selected item gets the accent gradient.
 /// </summary>
 public class HamburgerMenu : ListBox
 {

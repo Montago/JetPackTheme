@@ -31,6 +31,9 @@ src/JetPack.Wpf/            library (net8.0-windows)
   Helpers/                  ControlHelper / TextBoxHelper attached properties, converters
   Theming/                  ThemeManager, AccentGenerator
 src/JetPack.Wpf.Demo/       demo app; pages in Views/
+samples/                    sample apps: JetPack.Wpf.Samples.Admin (HamburgerMenu) and .Portal
+                            (navigation bar); presentation only, fixed data in SampleData.cs, one
+                            UserControl per page in Views/, Shared/WindowSnapshot.cs for --snapshot
 docs/                       component documentation (Markdown); keep it in step with the code
 docs/resource-keys.md       generated: run `python tools/generate_resource_keys.py` after changing Styles/
 design/jetpack-preview.src.html   approved HTML/CSS draft (texture as __TEX__ placeholder)
@@ -58,6 +61,8 @@ src/JetPack.Wpf.Demo/bin/Debug/net8.0-windows/JetPack.Wpf.Demo.exe --snapshot <f
   `d:Demo.Open="True"` get their drop-down, menu, tool tip or validation call-out opened, and
   `GallerySnapshot` draws the popup where its placement would put it. A new control or variant gets a
   sample there and a picture under its heading in `docs/`.
+- The sample apps also take `--snapshot <folder>` (one PNG per page, named `admin-*` / `portal-*`);
+  copy them to `docs/screenshots/samples` when the apps or the look change.
 - RenderTargetBitmap returns blank (fully transparent) images while the PC's screen is off or the
   session is locked; connect (e.g. RDP) before running `--snapshot`.
 - The user often runs the demo from Visual Studio, which locks `bin\...\JetPack.Wpf.dll`. Do not kill

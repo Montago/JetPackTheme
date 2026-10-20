@@ -1,0 +1,94 @@
+<jp:JetPackWindow x:Class="JetPack.Wpf.Samples.Admin.MainWindow"
+                  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                  xmlns:jp="urn:jetpack-wpf"
+                  xmlns:v="clr-namespace:JetPack.Wpf.Samples.Admin.Views"
+                  Title="Contoso Staffing · Administration"
+                  Width="1280" Height="800" MinWidth="960" MinHeight="600"
+                  WindowStartupLocation="CenterScreen" CornerStyle="Rounded">
+
+    <!-- Pages ask for navigation with NavigationCommands.GoToPage and the page name as parameter -->
+    <jp:JetPackWindow.CommandBindings>
+        <CommandBinding Command="NavigationCommands.GoToPage" Executed="OnGoToPage" />
+    </jp:JetPackWindow.CommandBindings>
+
+    <jp:JetPackWindow.RightWindowCommands>
+        <StackPanel Orientation="Horizontal">
+            <Button ToolTip="Timesheets waiting for approval" Command="NavigationCommands.GoToPage" CommandParameter="Timesheets" Padding="10,0,16,0">
+                <jp:Badged Badge="4" Margin="0,6,0,0">
+                    <Path Width="15" Height="15" Stretch="Uniform" Data="{StaticResource Icon.Bell}"
+                          Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}" />
+                </jp:Badged>
+            </Button>
+            <Button Content="Settings" Click="OnSettingsClick" />
+        </StackPanel>
+    </jp:JetPackWindow.RightWindowCommands>
+
+    <jp:JetPackWindow.Flyouts>
+        <Grid>
+            <jp:Flyout x:Name="Settings" Header="Settings" Width="300">
+                <StackPanel>
+                    <TextBlock Style="{StaticResource Page.Caption}" Text="Accent" Margin="0,0,0,6" />
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,18">
+                        <RadioButton Content="Green" GroupName="Accent" IsChecked="True" Margin="0,0,14,0" Tag="Green" Checked="OnAccentChecked" />
+                        <RadioButton Content="Orange" GroupName="Accent" Margin="0,0,14,0" Tag="Orange" Checked="OnAccentChecked" />
+                        <RadioButton Content="Blue" GroupName="Accent" Tag="Blue" Checked="OnAccentChecked" />
+                    </StackPanel>
+                    <TextBlock Style="{StaticResource Page.Caption}" Text="Navigation" Margin="0,0,0,8" />
+                    <jp:ToggleSwitch Content="Show page names" Margin="0,0,0,10"
+                                     IsChecked="{Binding IsPaneOpen, ElementName=Navigation}" />
+                    <jp:ToggleSwitch x:Name="FocusSwitch" Content="Visible keyboard focus" IsChecked="True" Margin="0,0,0,18" />
+                    <TextBlock Style="{StaticResource Page.Caption}" Text="Signed in as" Margin="0,0,0,6" />
+                    <TextBlock FontSize="13" FontWeight="Bold" Text="Ida Kragh" />
+                    <TextBlock Style="{StaticResource Page.Caption}" Text="Controller · Finance" Margin="0,2,0,12" />
+                    <Button Content="Sign out" HorizontalAlignment="Left" />
+                </StackPanel>
+            </jp:Flyout>
+        </Grid>
+    </jp:JetPackWindow.Flyouts>
+
+    <DockPanel>
+        <StatusBar DockPanel.Dock="Bottom">
+            <StatusBarItem Content="Ready" />
+            <StatusBarItem Content="Signed in as Ida Kragh" />
+            <StatusBarItem x:Name="Version" HorizontalAlignment="Right" />
+        </StatusBar>
+
+        <!-- The navigation pane: each item carries its page in Tag, and the content area shows it -->
+        <jp:HamburgerMenu x:Name="Navigation" PaneWidth="190" SelectedIndex="0"
+                          Content="{Binding SelectedItem.Tag, RelativeSource={RelativeSource Self}}">
+            <jp:HamburgerMenuItem Content="Dashboard">
+                <jp:HamburgerMenuItem.Icon>
+                    <Path Style="{StaticResource Navigation.Icon}" Data="{StaticResource Icon.Dashboard}" />
+                </jp:HamburgerMenuItem.Icon>
+                <jp:HamburgerMenuItem.Tag>
+                    <v:DashboardView />
+                </jp:HamburgerMenuItem.Tag>
+            </jp:HamburgerMenuItem>
+            <jp:HamburgerMenuItem Content="Employees">
+                <jp:HamburgerMenuItem.Icon>
+                    <Path Style="{StaticResource Navigation.Icon}" Data="{StaticResource Icon.Employees}" />
+                </jp:HamburgerMenuItem.Icon>
+                <jp:HamburgerMenuItem.Tag>
+                    <v:EmployeesView x:Name="EmployeesView" />
+                </jp:HamburgerMenuItem.Tag>
+            </jp:HamburgerMenuItem>
+            <jp:HamburgerMenuItem Content="Timesheets">
+                <jp:HamburgerMenuItem.Icon>
+                    <Path Style="{StaticResource Navigation.Icon}" Data="{StaticResource Icon.Timesheets}" />
+                </jp:HamburgerMenuItem.Icon>
+                <jp:HamburgerMenuItem.Tag>
+                    <v:TimesheetsView />
+                </jp:HamburgerMenuItem.Tag>
+            </jp:HamburgerMenuItem>
+            <jp:HamburgerMenuItem Content="Projects">
+                <jp:HamburgerMenuItem.Icon>
+                    <Path Style="{StaticResource Navigation.Icon}" Data="{StaticResource Icon.Projects}" />
+                </jp:HamburgerMenuItem.Icon>
+                <jp:HamburgerMenuItem.Tag>
+                    <v:ProjectsView />
+                </jp:HamburgerMenuItem.Tag>
+            </jp:HamburgerMenuItem>
+        </jp:HamburgerMenu>
+    </DockPanel>
+</jp:JetPackWindow>

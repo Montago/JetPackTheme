@@ -1,0 +1,97 @@
+<UserControl x:Class="JetPack.Wpf.Samples.Portal.Views.CustomersView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:jp="urn:jetpack-wpf"
+             xmlns:local="clr-namespace:JetPack.Wpf.Samples.Portal">
+    <!-- The "Companies" layout of the Silverlight navigation template: an accordion on the left,
+         tabs with the selected customer on the right -->
+    <Grid Style="{StaticResource Page.Root}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="230" />
+            <ColumnDefinition Width="24" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <TextBlock Grid.ColumnSpan="3" Style="{StaticResource Page.Title}" Text="Customers" />
+
+        <jp:Accordion Grid.Row="1" VerticalAlignment="Stretch">
+            <Expander Header="By country" IsExpanded="True" Padding="4,6">
+                <TreeView x:Name="Tree" BorderThickness="0" Background="Transparent" Padding="0" ItemsSource="{x:Static local:SampleData.Countries}">
+                    <TreeView.ItemContainerStyle>
+                        <Style TargetType="TreeViewItem" BasedOn="{StaticResource {x:Type TreeViewItem}}">
+                            <Setter Property="IsExpanded" Value="True" />
+                        </Style>
+                    </TreeView.ItemContainerStyle>
+                    <TreeView.ItemTemplate>
+                        <HierarchicalDataTemplate DataType="{x:Type local:Country}" ItemsSource="{Binding Customers}">
+                            <TextBlock Text="{Binding Name}" />
+                            <HierarchicalDataTemplate.ItemTemplate>
+                                <DataTemplate DataType="{x:Type local:Customer}">
+                                    <TextBlock Text="{Binding Company}" />
+                                </DataTemplate>
+                            </HierarchicalDataTemplate.ItemTemplate>
+                        </HierarchicalDataTemplate>
+                    </TreeView.ItemTemplate>
+                </TreeView>
+            </Expander>
+            <Expander Header="Key accounts">
+                <TextBlock TextWrapping="Wrap" Text="Alfreds Futterkiste and Ernst Handel have framework agreements until 2028." />
+            </Expander>
+            <Expander Header="Archive">
+                <TextBlock TextWrapping="Wrap" Text="12 former customers." />
+            </Expander>
+        </jp:Accordion>
+
+        <TabControl Grid.Row="1" Grid.Column="2" DataContext="{Binding SelectedItem, ElementName=Tree}">
+            <TabItem Header="Contact">
+                <Grid Margin="4">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="16" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <StackPanel>
+                        <Label Style="{StaticResource Form.Label}" Content="_Company" Target="{Binding ElementName=CompanyBox}" Margin="0" />
+                        <TextBox x:Name="CompanyBox" Style="{StaticResource JetPack.Styles.TextBox.Dark}" Text="{Binding Company, Mode=OneWay}" />
+                        <Label Style="{StaticResource Form.Label}" Content="C_ontact" Target="{Binding ElementName=ContactBox}" />
+                        <TextBox x:Name="ContactBox" Style="{StaticResource JetPack.Styles.TextBox.Dark}" Text="{Binding Contact, Mode=OneWay}" />
+                        <Label Style="{StaticResource Form.Label}" Content="_Title" Target="{Binding ElementName=TitleBox}" />
+                        <TextBox x:Name="TitleBox" Style="{StaticResource JetPack.Styles.TextBox.Dark}" Text="{Binding Title, Mode=OneWay}" />
+                    </StackPanel>
+                    <StackPanel Grid.Column="2">
+                        <Label Style="{StaticResource Form.Label}" Content="_Phone" Target="{Binding ElementName=PhoneBox}" Margin="0" />
+                        <TextBox x:Name="PhoneBox" Style="{StaticResource JetPack.Styles.TextBox.Dark}" Text="{Binding Phone, Mode=OneWay}" />
+                        <Label Style="{StaticResource Form.Label}" Content="_Email" Target="{Binding ElementName=EmailBox}" />
+                        <TextBox x:Name="EmailBox" Style="{StaticResource JetPack.Styles.TextBox.Dark}" Text="{Binding Email, Mode=OneWay}" />
+                        <Label Style="{StaticResource Form.Label}" Content="C_ity" Target="{Binding ElementName=CityBox}" />
+                        <TextBox x:Name="CityBox" Style="{StaticResource JetPack.Styles.TextBox.Dark}" Text="{Binding City, Mode=OneWay}" />
+                    </StackPanel>
+                    <StackPanel Grid.ColumnSpan="3" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,0,2">
+                        <Button Content="Save" Style="{StaticResource JetPack.Styles.Button.Accent}" MinWidth="70" />
+                        <Button Content="New order" MinWidth="70" Margin="8,0,0,0" />
+                    </StackPanel>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Orders">
+                <ListView ItemsSource="{Binding Orders}" Margin="4">
+                    <ListView.View>
+                        <GridView>
+                            <GridViewColumn Header="Order" DisplayMemberBinding="{Binding Number}" Width="90" />
+                            <GridViewColumn Header="Date" DisplayMemberBinding="{Binding Date, StringFormat=d}" Width="100" />
+                            <GridViewColumn Header="Status" DisplayMemberBinding="{Binding Status}" Width="90" />
+                            <GridViewColumn Header="Total" DisplayMemberBinding="{Binding Total, StringFormat=C}" Width="100" />
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+            </TabItem>
+            <TabItem Header="Notes">
+                <TextBox Style="{StaticResource JetPack.Styles.TextBox.MultiLine.Dark}" Margin="4"
+                         Text="Prefers delivery before 10 am. Invoices go to the accounts department, not to the contact." />
+            </TabItem>
+        </TabControl>
+    </Grid>
+</UserControl>

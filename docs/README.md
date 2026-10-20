@@ -17,6 +17,8 @@ Silverlight 4 Application Themes and adds the extra controls a desktop app usual
 - [Getting started](getting-started.md): install, merge the dictionary, first window.
 - [Theme and accent](theming.md): accents, generated accents, focus visuals, font size, overriding colours.
 - [Typography](typography.md): fonts, heading styles, text rendering.
+- [Sample apps](samples.md): an administration app with a `HamburgerMenu` and a sales portal with the
+  navigation bar, built from the controls.
 
 ## Controls
 

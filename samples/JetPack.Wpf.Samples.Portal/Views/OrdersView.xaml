@@ -1,0 +1,72 @@
+<UserControl x:Class="JetPack.Wpf.Samples.Portal.Views.OrdersView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:jp="urn:jetpack-wpf"
+             xmlns:local="clr-namespace:JetPack.Wpf.Samples.Portal">
+    <UserControl.Resources>
+        <Style x:Key="Amount" TargetType="TextBlock">
+            <Setter Property="HorizontalAlignment" Value="Right" />
+        </Style>
+        <ContextMenu x:Key="ExportMenu">
+            <MenuItem Header="Excel (.xlsx)" />
+            <MenuItem Header="CSV" />
+            <MenuItem Header="Packing slips (PDF)" />
+        </ContextMenu>
+    </UserControl.Resources>
+
+    <Grid Style="{StaticResource Page.Root}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <TextBlock Style="{StaticResource Page.Title}" Text="Orders" />
+
+        <DockPanel Grid.Row="1" Style="{StaticResource Page.Toolbar}">
+            <TextBlock Style="{StaticResource Page.Caption}" Text="From" Margin="0,0,6,0" />
+            <DatePicker x:Name="From" Width="132" />
+            <TextBlock Style="{StaticResource Page.Caption}" Text="to" Margin="8,0,6,0" />
+            <DatePicker x:Name="To" Width="132" />
+            <ComboBox Width="120" Margin="12,0,0,0" SelectedIndex="0" ItemsSource="{x:Static local:SampleData.OrderStatuses}" />
+            <jp:AutoSuggestBox Width="200" Margin="12,0,0,0" ItemsSource="{x:Static local:SampleData.CustomerNames}" jp:TextBoxHelper.Watermark="Customer…" />
+            <Button Content="Search" Style="{StaticResource JetPack.Styles.Button.Accent}" Margin="12,0,0,0" />
+
+            <jp:DropDownButton DockPanel.Dock="Right" Content="Export" Menu="{StaticResource ExportMenu}" />
+        </DockPanel>
+
+        <DataGrid x:Name="Grid" Grid.Row="2" AutoGenerateColumns="False" IsReadOnly="True" SelectionMode="Single"
+                  ItemsSource="{x:Static local:SampleData.Orders}" SelectedIndex="1">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Order" Binding="{Binding Number}" Width="90" SortDirection="Descending" />
+                <DataGridTextColumn Header="Customer" Binding="{Binding Customer}" Width="*" />
+                <DataGridTextColumn Header="Ship to" Binding="{Binding ShipTo}" Width="160" />
+                <DataGridTextColumn Header="Date" Binding="{Binding Date, StringFormat=d}" Width="90" />
+                <DataGridTextColumn Header="Status" Binding="{Binding Status}" Width="90" />
+                <DataGridTextColumn Header="Total" Binding="{Binding Total, StringFormat=C}" Width="90" ElementStyle="{StaticResource Amount}" />
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <!-- Lines of the selected order -->
+        <Expander Grid.Row="3" Header="Order lines" IsExpanded="True" Margin="0,14,0,0" DataContext="{Binding SelectedItem, ElementName=Grid}">
+            <ListView ItemsSource="{Binding Lines}" Height="104">
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn Header="Product" DisplayMemberBinding="{Binding Product}" Width="260" />
+                        <GridViewColumn Header="Quantity" DisplayMemberBinding="{Binding Quantity}" Width="80" />
+                        <GridViewColumn Header="Price" DisplayMemberBinding="{Binding Price, StringFormat=C}" Width="90" />
+                        <GridViewColumn Header="Amount" DisplayMemberBinding="{Binding Amount, StringFormat=C}" Width="100" />
+                    </GridView>
+                </ListView.View>
+            </ListView>
+        </Expander>
+
+        <StackPanel Grid.Row="4" Orientation="Horizontal" Margin="0,12,0,0">
+            <TextBlock Style="{StaticResource Page.Caption}" Text="Shipped on time this month" Margin="0,0,10,0" />
+            <ProgressBar Width="200" Value="92" VerticalAlignment="Center" />
+            <TextBlock Style="{StaticResource Page.Caption}" Margin="10,0,0,0" Text="92 % · 10 orders · $8,412.70" />
+        </StackPanel>
+    </Grid>
+</UserControl>

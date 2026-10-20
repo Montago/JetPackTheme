@@ -1,0 +1,54 @@
+<jp:JetPackWindow x:Class="JetPack.Wpf.Samples.Portal.MainWindow"
+                  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                  xmlns:jp="urn:jetpack-wpf"
+                  xmlns:v="clr-namespace:JetPack.Wpf.Samples.Portal.Views"
+                  Title="Northwind Traders · Sales portal"
+                  Width="1280" Height="800" MinWidth="960" MinHeight="600"
+                  WindowStartupLocation="CenterScreen" CornerStyle="Rounded">
+
+    <!-- Pages ask for navigation with NavigationCommands.GoToPage and the page name as parameter -->
+    <jp:JetPackWindow.CommandBindings>
+        <CommandBinding Command="NavigationCommands.GoToPage" Executed="OnGoToPage" />
+    </jp:JetPackWindow.CommandBindings>
+
+    <jp:JetPackWindow.RightWindowCommands>
+        <StackPanel Orientation="Horizontal">
+            <Button Content="Lindsey Ballard" ToolTip="Signed in" />
+            <Button Content="Help" Command="NavigationCommands.GoToPage" CommandParameter="About" />
+        </StackPanel>
+    </jp:JetPackWindow.RightWindowCommands>
+
+    <DockPanel>
+        <StatusBar DockPanel.Dock="Bottom">
+            <StatusBarItem Content="Ready" />
+            <StatusBarItem Content="Price list 2026 · USD" />
+            <StatusBarItem HorizontalAlignment="Right" Content="Last synced 09:42" />
+        </StatusBar>
+
+        <!-- The light navigation bar runs edge to edge under the title bar; each tab holds one page -->
+        <TabControl x:Name="Pages" Style="{StaticResource JetPack.Styles.TabControl.Navigation}" SelectedIndex="0">
+            <TabControl.Tag>
+                <StackPanel Orientation="Horizontal" Margin="0,0,16,0" Effect="{DynamicResource JetPack.Effects.TextEmboss}">
+                    <TextBlock VerticalAlignment="Center" FontSize="20" FontWeight="Bold" Text="Northwind" TextOptions.TextFormattingMode="Ideal" />
+                    <TextBlock VerticalAlignment="Center" Margin="6,2,0,0" FontSize="13" Text="Traders" />
+                </StackPanel>
+            </TabControl.Tag>
+            <TabItem Header="Home">
+                <v:HomeView />
+            </TabItem>
+            <TabItem Header="Products">
+                <v:ProductsView />
+            </TabItem>
+            <TabItem Header="Orders">
+                <v:OrdersView />
+            </TabItem>
+            <TabItem Header="Customers">
+                <v:CustomersView />
+            </TabItem>
+            <TabItem Header="About">
+                <v:AboutView />
+            </TabItem>
+        </TabControl>
+    </DockPanel>
+</jp:JetPackWindow>
