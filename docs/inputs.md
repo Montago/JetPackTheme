@@ -155,6 +155,53 @@ insensitive). Down/Up move through the suggestions, Enter or a click picks one, 
 
 Event: `SuggestionChosen`; `e.OriginalSource` is the chosen item.
 
+## SearchComboBox
+
+![SearchComboBox filtering 2,000 companies](screenshots/controls/searchcombobox.png)
+
+`jp:SearchComboBox` combines a combo box with type-ahead search, for long lists such as companies or
+car brands. Open it and click an item, or type to filter the list and complete the word. The
+drop-down is virtualized, so lists with thousands of items stay fast.
+
+```xml
+<jp:SearchComboBox ItemsSource="{Binding Companies}" DisplayMemberPath="Name"
+                   SelectedValuePath="Id" SelectedValue="{Binding CompanyId}"
+                   jp:TextBoxHelper.Watermark="Search companies…" />
+<jp:SearchComboBox ItemsSource="{Binding CarBrands}" SelectedItem="{Binding Brand}" FilterMode="StartsWith" />
+```
+
+- Focusing the box (or typing) opens the list. With no typed text it shows every item, with the
+  selected one highlighted.
+- Typing filters the list (`Contains` or `StartsWith`, ignoring case) and highlights the first item
+  that starts with the text. The rest of that item is filled in and selected, so the next key replaces it.
+  Backspace and Delete remove text without completing it again.
+- Down/Up and PageDown/PageUp move the highlight and show it in the box; Down, Alt+Down or F4 open a
+  closed list.
+- Enter, Tab or a click picks the highlighted item. Tab then moves on to the next control as usual.
+- Escape closes the list and puts back the selected item's text.
+- Leaving the box keeps the highlighted item. Text that matches nothing snaps back to the selected
+  item; an empty box clears the selection.
+
+| Property | Type | Default | Description |
+| --- | --- | --- | --- |
+| `ItemsSource` | `IEnumerable` | `null` | `INotifyCollectionChanged` sources are followed. |
+| `SelectedItem` | `object` | `null` | Two-way bindable. |
+| `SelectedValue` | `object` | `null` | Two-way bindable; the `SelectedValuePath` member of the selected item. |
+| `SelectedValuePath` | `string` | `""` | Without a path, `SelectedValue` is the item itself. |
+| `DisplayMemberPath` | `string` | `""` | Text shown, matched and completed (`ToString()` when empty); dotted paths work. |
+| `ItemTemplate` | `DataTemplate` | `null` | Template for the drop-down items; the box still shows `DisplayMemberPath`. |
+| `FilterMode` | `SearchFilterMode` | `Contains` | `Contains` or `StartsWith`. |
+| `IsFilteringEnabled` | `bool` | `true` | When `false`, typing only highlights and completes; the list keeps every item. |
+| `IsAutoCompleteEnabled` | `bool` | `true` | Fills in the rest of the first matching item. |
+| `OpenOnFocus` | `bool` | `true` | |
+| `IsDropDownOpen` | `bool` | `false` | |
+| `MaxDropDownHeight` | `double` | 260 | |
+| `NoMatchesText` | `string` | `No matches` | Shown in the drop-down when nothing matches. |
+| `Text` | `string` | `""` | Read-only: the text in the box. |
+
+Display texts are read once when `ItemsSource` or `DisplayMemberPath` changes (or the collection
+raises `CollectionChanged`), so filtering only compares strings.
+
 ## DatePicker
 
 ![DatePicker with its calendar open](screenshots/controls/datepicker.png)

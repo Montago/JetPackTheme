@@ -63,3 +63,47 @@ public static class Demo
 }
 
 public sealed record Timesheet(string Employee, string Department, double Hours, int Week, string Status);
+
+public sealed record Company(int Id, string Name, string City);
+
+/// <summary>Fixed lists for the SearchComboBox samples.</summary>
+public static class DemoData
+{
+    private static readonly string[] Names =
+    {
+        "A. Datum", "Adventure Works", "Alpine Ski House", "Bellows College", "Best For You Organics", "Blue Yonder Airlines",
+        "City Power & Light", "Coho Winery", "Consolidated Messenger", "Contoso", "Fabrikam", "Fincher Architects", "Fourth Coffee",
+        "Graphic Design Institute", "Humongous Insurance", "Lamna Healthcare", "Litware", "Lucerne Publishing", "Margie's Travel",
+        "Munson's Pickles", "Nod Publishers", "Northwind Traders", "Proseware", "Relecloud", "School of Fine Art", "Southridge Video",
+        "Tailspin Toys", "Tailwind Traders", "Trey Research", "VanArsdel", "Wide World Importers", "Wingtip Toys", "Woodgrove Bank",
+        "Alpine Mountain", "Coastal Freight", "Hillside Dairy", "Lakeshore Energy", "Northern Lights Media", "Riverbend Foods",
+        "Summit Engineering",
+    };
+
+    private static readonly string[] Branches =
+    {
+        "Consulting", "Holdings", "Logistics", "Retail", "Finance", "Labs", "Media", "Services", "Systems", "Group",
+        "Partners", "Studios", "Software", "Supply", "Energy", "Health", "Foods", "Security", "Analytics", "Travel",
+        "Design", "Motors", "Marine", "Robotics", "Capital", "Imports", "Exports", "Networks", "Outdoor", "Print",
+        "Research", "Telecom", "Textiles", "Training", "Ventures", "Water", "Wholesale", "Works", "Hospitality", "Agency",
+        "Construction", "Pharma", "Rentals", "Recycling", "Solar", "Clinics", "Academy", "Bakery", "Brewing", "Catering",
+    };
+
+    private static readonly string[] Cities = { "Seattle", "Portland", "Denver", "Boston", "Chicago", "Austin", "Copenhagen", "Oslo" };
+
+    /// <summary>2,000 companies, sorted by name.</summary>
+    public static readonly Company[] Companies = Names
+        .SelectMany(n => Branches.Select(b => $"{n} {b}"))
+        .Order(StringComparer.Ordinal)
+        .Select((name, i) => new Company(1001 + i, name, Cities[i % Cities.Length]))
+        .ToArray();
+
+    public static readonly string[] CarBrands =
+    {
+        "Alfa Romeo", "Aston Martin", "Audi", "Bentley", "BMW", "Bugatti", "Cadillac", "Chevrolet", "Chrysler", "Citroën", "Cupra",
+        "Dacia", "Dodge", "DS", "Ferrari", "Fiat", "Ford", "Genesis", "Honda", "Hyundai", "Jaguar", "Jeep", "Kia", "Lamborghini",
+        "Land Rover", "Lexus", "Lotus", "Maserati", "Mazda", "McLaren", "Mercedes-Benz", "MG", "Mini", "Mitsubishi", "Nissan",
+        "Opel", "Peugeot", "Polestar", "Porsche", "Renault", "Rolls-Royce", "Seat", "Škoda", "Smart", "Subaru", "Suzuki", "Tesla",
+        "Toyota", "Volkswagen", "Volvo",
+    };
+}

@@ -26,7 +26,7 @@ Silverlight 4 Application Themes and adds the extra controls a desktop app usual
 | --- | --- |
 | [Window and dialogs](window.md) | `JetPackWindow`, window commands, flyout layer, `JetPackDialog`, `ShowMessageAsync`, plain `Window` style |
 | [Buttons](buttons.md) | `Button` and its variants, `ToggleButton`, `RepeatButton`, `Hyperlink`, `SplitButton`, `DropDownButton`, `Tile`, `Badged` |
-| [Text and input](inputs.md) | `TextBox`, `PasswordBox`, `RichTextBox`, `Label`, `ComboBox`, `NumericUpDown`, `AutoSuggestBox`, `DatePicker`, `TimePicker`, `ColorPicker`, watermarks, clear button, validation |
+| [Text and input](inputs.md) | `TextBox`, `PasswordBox`, `RichTextBox`, `Label`, `ComboBox`, `NumericUpDown`, `AutoSuggestBox`, `SearchComboBox`, `DatePicker`, `TimePicker`, `ColorPicker`, watermarks, clear button, validation |
 | [Selection](selection.md) | `CheckBox`, `RadioButton`, `ToggleSwitch`, `Slider`, `RangeSlider`, `Rating` |
 | [Lists and data](lists.md) | `ListBox`, `ListView`/`GridView`, `TreeView`, `DataGrid`, `Calendar`, `ScrollViewer`/`ScrollBar` |
 | [Navigation and layout](navigation.md) | `TabControl` (three looks), `HamburgerMenu`, `Expander`, `Accordion`, `GroupBox`, `Menu`, `ContextMenu`, `ToolBar`, `StatusBar`, `GridSplitter`, `Separator`, `ToolTip` |

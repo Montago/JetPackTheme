@@ -12,6 +12,7 @@ public partial class ExtrasPage : UserControl
         HamOrders.Tag = new[] { "Orders", "14 open orders, 3 due this week." };
         HamPeople.Tag = new[] { "Employees", "23 employees in 5 departments." };
         HamSettings.Tag = new[] { "Settings", "Language, accent colour and syncing." };
+        Company.SelectedValue = 1042;
     }
 
     private void OnOpenFilters(object sender, RoutedEventArgs e) => Filters.IsOpen = true;

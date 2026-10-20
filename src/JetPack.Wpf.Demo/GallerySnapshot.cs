@@ -136,6 +136,14 @@ internal static class GallerySnapshot
                 suggest.Text = "fa";
                 ForceOpen(suggest);
                 break;
+            case SearchComboBox search:
+                // Typed text filters the list (Contains), as if the user had typed it.
+                if (search.Template?.FindName("PART_TextBox", search) is TextBox box)
+                {
+                    box.Text = "light";
+                }
+                search.IsDropDownOpen = true;
+                break;
             case SplitButton { Menu: { } menu }:
                 OpenMenu(element, menu, PlacementMode.Bottom, 0, 2, menus);
                 break;

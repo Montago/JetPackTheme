@@ -71,6 +71,7 @@ When you replace the template of a JetPack control, keep these named parts:
 | `TimePicker` | `PART_TextBox` (TextBox), `PART_Popup` (Popup), `PART_List` (ListBox) |
 | `ColorPicker` | `PART_Palette` (ListBox) |
 | `AutoSuggestBox` | `PART_TextBox` (TextBox), `PART_Popup` (Popup), `PART_List` (ListBox) |
+| `SearchComboBox` | `PART_TextBox` (TextBox), `PART_Popup` (Popup), `PART_List` (ListBox) |
 | `BusyIndicator` | `PART_Content` (UIElement; blurred while busy) |
 
 The standard WPF controls keep their usual parts (`PART_ContentHost`, `PART_Track`, `PART_Popup`,

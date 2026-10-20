@@ -67,6 +67,20 @@
                         <TextBox Style="{StaticResource JetPack.Styles.TextBox.Dark}" jp:TextBoxHelper.Watermark="Tax ID" />
                     </StackPanel>
                 </HeaderedContentControl>
+
+                <HeaderedContentControl Style="{StaticResource Demo.Column}" Header="SearchComboBox" Tag="jp:SearchComboBox">
+                    <StackPanel Width="220" d:Demo.Spacing="10">
+                        <jp:SearchComboBox x:Name="Company" ItemsSource="{x:Static d:DemoData.Companies}" DisplayMemberPath="Name" SelectedValuePath="Id"
+                                           jp:TextBoxHelper.Watermark="Search 2,000 companies…" />
+                        <TextBlock Style="{StaticResource Demo.State}">
+                            <Run Text="SelectedValue:" /> <Run Text="{Binding SelectedValue, ElementName=Company, Mode=OneWay, TargetNullValue=–}" /><Run Text=" · " /><Run Text="{Binding SelectedItem.City, ElementName=Company, Mode=OneWay}" />
+                        </TextBlock>
+                        <jp:SearchComboBox ItemsSource="{x:Static d:DemoData.CarBrands}" FilterMode="StartsWith" SelectedItem="Volvo" />
+                        <jp:SearchComboBox ItemsSource="{x:Static d:DemoData.CarBrands}" SelectedItem="Audi" IsEnabled="False" />
+                        <TextBlock Style="{StaticResource Demo.State}" TextWrapping="Wrap" TextAlignment="Center"
+                                   Text="Open it and click, or type to filter. Up/Down move, Tab or Enter picks the highlighted item." />
+                    </StackPanel>
+                </HeaderedContentControl>
             </WrapPanel>
 
             <WrapPanel>

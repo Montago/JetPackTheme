@@ -20,7 +20,7 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="ListBox">
-                    <ScrollViewer Focusable="False">
+                    <ScrollViewer Focusable="False" CanContentScroll="{TemplateBinding ScrollViewer.CanContentScroll}">
                         <ItemsPresenter />
                     </ScrollViewer>
                 </ControlTemplate>
@@ -953,6 +953,63 @@
                             </Grid>
                         </Popup>
                     </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- ===================== SearchComboBox ===================== -->
+    <!-- The editable ComboBox look; the drop-down is a virtualized list filtered by the typed text -->
+    <Style TargetType="c:SearchComboBox">
+        <Setter Property="SnapsToDevicePixels" Value="True" />
+        <Setter Property="IsTabStop" Value="False" />
+        <Setter Property="FontFamily" Value="{DynamicResource JetPack.Fonts.Family}" />
+        <Setter Property="FontSize" Value="{DynamicResource JetPack.Font.Size.Control}" />
+        <Setter Property="Foreground" Value="{DynamicResource JetPack.Brushes.Input.Foreground}" />
+        <Setter Property="MinHeight" Value="22" />
+        <Setter Property="Validation.ErrorTemplate" Value="{DynamicResource JetPack.Templates.ValidationError}" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="c:SearchComboBox">
+                    <Grid x:Name="Root" SnapsToDevicePixels="True">
+                        <Border Background="{DynamicResource JetPack.Brushes.Input.Background}" BorderBrush="{DynamicResource JetPack.Brushes.Control.Border}" BorderThickness="1" CornerRadius="2.5" />
+                        <Border BorderBrush="{DynamicResource JetPack.Brushes.Control.OuterHighlight}" BorderThickness="0,0,1,1" CornerRadius="3" Margin="0,0,-1,-1" />
+                        <Border BorderBrush="{DynamicResource JetPack.Brushes.Input.InnerShadowDark}" BorderThickness="1,1,0,0" CornerRadius="2" Margin="1" />
+                        <Border BorderBrush="{DynamicResource JetPack.Brushes.Input.InnerShadowLight}" BorderThickness="1,1,0,0" CornerRadius="1" Margin="2" />
+                        <Border x:Name="Focus" BorderBrush="{DynamicResource JetPack.Brushes.Focus.Border}" BorderThickness="1" CornerRadius="2.5" Visibility="Collapsed" />
+                        <ToggleButton x:Name="Toggle" Style="{DynamicResource JetPack.Styles.ComboBox.Toggle.Editable}"
+                                      IsChecked="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}" />
+                        <TextBlock x:Name="Watermark" Margin="6,2,28,2" Padding="2,0,0,0" Text="{TemplateBinding h:TextBoxHelper.Watermark}" Opacity="0.55"
+                                   IsHitTestVisible="False" Visibility="Collapsed" VerticalAlignment="Center" />
+                        <TextBox x:Name="PART_TextBox" Style="{DynamicResource JetPack.Styles.ComboBox.EditableTextBox}" Margin="6,2,28,2" VerticalAlignment="Center"
+                                 FontSize="{TemplateBinding FontSize}" FontFamily="{TemplateBinding FontFamily}" />
+                        <Popup x:Name="PART_Popup" AllowsTransparency="True" Placement="Bottom" Focusable="False" PopupAnimation="Slide" VerticalOffset="1"
+                               IsOpen="{Binding IsDropDownOpen, RelativeSource={RelativeSource TemplatedParent}}">
+                            <Grid x:Name="DropDown" Margin="0,0,6,6" SnapsToDevicePixels="True" MinWidth="{Binding ActualWidth, ElementName=Root}" MaxHeight="{TemplateBinding MaxDropDownHeight}">
+                                <Border Background="{DynamicResource JetPack.Brushes.Input.Background}" CornerRadius="0,0,4,4" Effect="{DynamicResource JetPack.Effects.PopupShadow}" />
+                                <ListBox x:Name="PART_List" Style="{StaticResource JetPack.Styles.ListBox.Popup}" Margin="0,0,0,4" Focusable="False"
+                                         DisplayMemberPath="{TemplateBinding DisplayMemberPath}" ItemTemplate="{TemplateBinding ItemTemplate}"
+                                         ScrollViewer.CanContentScroll="True" VirtualizingPanel.IsVirtualizing="True"
+                                         VirtualizingPanel.VirtualizationMode="Recycling" VirtualizingPanel.ScrollUnit="Pixel" />
+                                <TextBlock x:Name="NoMatches" Margin="8,6" Text="{TemplateBinding NoMatchesText}" Opacity="0.55" Visibility="Collapsed" />
+                            </Grid>
+                        </Popup>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="Text" Value="">
+                            <Setter TargetName="Watermark" Property="Visibility" Value="Visible" />
+                        </Trigger>
+                        <Trigger SourceName="PART_List" Property="HasItems" Value="False">
+                            <Setter TargetName="NoMatches" Property="Visibility" Value="Visible" />
+                        </Trigger>
+                        <Trigger Property="IsKeyboardFocusWithin" Value="True">
+                            <Setter TargetName="Focus" Property="Visibility" Value="Visible" />
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter TargetName="PART_TextBox" Property="Opacity" Value="0.5" />
+                            <Setter TargetName="Watermark" Property="Opacity" Value="0.3" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>

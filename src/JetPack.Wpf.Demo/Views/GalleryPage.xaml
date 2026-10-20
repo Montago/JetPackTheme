@@ -197,6 +197,14 @@
             <jp:AutoSuggestBox x:Name="Suggest" Width="200" d:Demo.Open="True" jp:TextBoxHelper.Watermark="Search companies…" />
         </ContentControl>
 
+        <ContentControl Style="{StaticResource Demo.Sample}" Tag="searchcombobox">
+            <StackPanel Orientation="Horizontal" d:Demo.Spacing="12" VerticalAlignment="Top">
+                <jp:SearchComboBox x:Name="Search" Width="220" ItemsSource="{x:Static d:DemoData.Companies}" DisplayMemberPath="Name" SelectedValuePath="Id"
+                                   d:Demo.Open="True" jp:TextBoxHelper.Watermark="Search companies…" />
+                <jp:SearchComboBox Width="160" ItemsSource="{x:Static d:DemoData.CarBrands}" SelectedItem="Volvo" />
+            </StackPanel>
+        </ContentControl>
+
         <ContentControl Style="{StaticResource Demo.Sample}" Tag="datepicker">
             <StackPanel Orientation="Horizontal" d:Demo.Spacing="12" VerticalAlignment="Top">
                 <DatePicker x:Name="OpenDate" Width="170" d:Demo.Open="True" />
