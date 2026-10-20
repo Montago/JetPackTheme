@@ -4,7 +4,7 @@ The JetPack theme from Microsoft's Silverlight 4 Application Themes, rebuilt as 
 
 ![Core](docs/screenshots/core.png)
 
-**Documentation:** [docs/](docs/README.md) covers every control, the theme and accents, typography and all resource keys.
+**Documentation: [montago.github.io/JetPackTheme](https://montago.github.io/JetPackTheme/)** covers every control, the theme and accents, typography and all resource keys (source in [docs/](docs/README.md)).
 
 ## Getting started
 
