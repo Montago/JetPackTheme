@@ -1,0 +1,102 @@
+name: Control request
+description: Describe a control you use in other suites (Telerik, DevExpress, Syncfusion, ...) so JetPack can get a simple version of it.
+title: "Control request: "
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Describe how **you** use the control, not every feature the original has.
+        A short, concrete description gives a small, focused JetPack control.
+
+  - type: input
+    id: control
+    attributes:
+      label: Control
+      description: Working name for the JetPack control.
+      placeholder: e.g. SearchComboBox
+    validations:
+      required: true
+
+  - type: input
+    id: original
+    attributes:
+      label: Original control
+      description: The control you use today, with the suite name.
+      placeholder: e.g. Telerik RadComboBox (IsEditable, IsFilteringEnabled)
+    validations:
+      required: true
+
+  - type: textarea
+    id: purpose
+    attributes:
+      label: What you use it for
+      description: One or two real screens or situations from your apps.
+      placeholder: |
+        Choosing a customer on an order form. The list has 5,000 customers, so users type part of
+        the name or the customer number and pick from the filtered list.
+    validations:
+      required: true
+
+  - type: textarea
+    id: must-have
+    attributes:
+      label: Must-have
+      description: Features you always use. One per line.
+      placeholder: |
+        - Filter the list while typing (contains, case-insensitive)
+        - Highlight the matching text in each item
+        - Only allow values from the list
+    validations:
+      required: true
+
+  - type: textarea
+    id: nice-to-have
+    attributes:
+      label: Nice to have
+      description: Features you use now and then.
+      placeholder: |
+        - Search in more than one property (name and customer number)
+        - Multiple selection with check boxes
+
+  - type: textarea
+    id: not-needed
+    attributes:
+      label: Not needed
+      description: Features of the original you never use. This keeps the clone simple.
+      placeholder: |
+        - Auto-complete appended in the text box
+        - Load-on-demand from a web service
+
+  - type: textarea
+    id: data
+    attributes:
+      label: Data and binding
+      description: How the control gets its data and reports changes (MVVM, ItemsSource size, async loading, virtualisation, selection binding).
+      placeholder: |
+        ItemsSource bound to an ObservableCollection<Customer> (up to ~5,000 items).
+        SelectedItem bound two-way; DisplayMemberPath = Name; filtering on Name and Number.
+
+  - type: textarea
+    id: example
+    attributes:
+      label: Example from your code
+      description: A short piece of your current XAML (and C# if relevant). It helps keep the JetPack API close, so moving over is easy.
+      render: xml
+
+  - type: textarea
+    id: screenshots
+    attributes:
+      label: Screenshots
+      description: Optional. Drag images here to show how it looks or behaves today.
+
+  - type: dropdown
+    id: priority
+    attributes:
+      label: How much would this help?
+      options:
+        - Blocks me from moving an app to JetPack
+        - Used in most of my apps
+        - Used now and then
+    validations:
+      required: true
