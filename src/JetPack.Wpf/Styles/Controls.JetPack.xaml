@@ -649,8 +649,6 @@
                             <ContentPresenter DockPanel.Dock="Left" Width="16" Height="16" Margin="12,0" VerticalAlignment="Center" Content="{TemplateBinding Icon}" />
                             <ContentPresenter VerticalAlignment="Center" />
                         </DockPanel>
-                        <Path x:Name="Notch" Width="6" Height="12" Margin="0,0,-1,0" HorizontalAlignment="Right" VerticalAlignment="Center" Stretch="Fill"
-                              Data="M6,0 L6,12 L0,6 z" Fill="{DynamicResource JetPack.Brushes.Window.Ground}" Visibility="Hidden" />
                         <Border x:Name="Focus" BorderBrush="{DynamicResource JetPack.Brushes.Focus}" BorderThickness="1" Margin="2" Visibility="Collapsed" />
                     </Grid>
                     <ControlTemplate.Triggers>
@@ -660,7 +658,6 @@
                         <Trigger Property="IsSelected" Value="True">
                             <Setter TargetName="Bd" Property="Background" Value="{DynamicResource JetPack.Brushes.Accent.Selection}" />
                             <Setter TargetName="Bd" Property="BorderBrush" Value="{DynamicResource JetPack.Brushes.Accent.Highlight}" />
-                            <Setter TargetName="Notch" Property="Visibility" Value="Visible" />
                             <Setter Property="Foreground" Value="White" />
                         </Trigger>
                         <Trigger Property="IsKeyboardFocused" Value="True">

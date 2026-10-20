@@ -64,8 +64,7 @@ All three support only `TabStripPlacement="Top"`.
 ![HamburgerMenu](screenshots/controls/hamburgermenu.png)
 
 `jp:HamburgerMenu` is a `ListBox` with a dark pane on the left and a content area on the right. The
-selected item gets the accent gradient and a notch pointing at the content. The ☰ button collapses
-the pane to icons.
+selected item gets the accent gradient. The ☰ button collapses the pane to icons.
 
 ```xml
 <jp:HamburgerMenu SelectedIndex="0" Content="{Binding SelectedItem.Tag, RelativeSource={RelativeSource Self}}">
