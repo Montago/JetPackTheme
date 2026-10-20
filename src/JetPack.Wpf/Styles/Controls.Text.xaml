@@ -79,10 +79,12 @@
             <Border x:Name="Bd" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="2.5">
                 <Grid>
                     <Border x:Name="ReadOnly" Background="{TemplateBinding h:ControlHelper.ReadOnlyBrush}" CornerRadius="2" Visibility="Collapsed" />
-                    <Grid x:Name="Host" Margin="{TemplateBinding Padding}">
+                    <!-- No Padding here: TextBoxBase applies Padding to the text itself, so the watermark
+                         takes it as its margin and both start at the caret -->
+                    <Grid x:Name="Host">
                         <ScrollViewer x:Name="PART_ContentHost" Focusable="False" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden"
                                       VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
-                        <TextBlock x:Name="Watermark" Margin="2,0" Text="{TemplateBinding h:TextBoxHelper.Watermark}" Foreground="{TemplateBinding Foreground}" Opacity="0.5"
+                        <TextBlock x:Name="Watermark" Margin="{TemplateBinding Padding}" Padding="2,0" Text="{TemplateBinding h:TextBoxHelper.Watermark}" Foreground="{TemplateBinding Foreground}" Opacity="0.5"
                                    IsHitTestVisible="False" Visibility="Collapsed" TextTrimming="CharacterEllipsis"
                                    HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
                     </Grid>
@@ -118,7 +120,7 @@
                     <Condition Property="IsReadOnly" Value="False" />
                 </MultiTrigger.Conditions>
                 <Setter TargetName="Clear" Property="Visibility" Value="Visible" />
-                <Setter TargetName="Host" Property="Margin" Value="5,3,20,3" />
+                <Setter TargetName="Host" Property="Margin" Value="0,0,16,0" />
             </MultiTrigger>
         </ControlTemplate.Triggers>
     </ControlTemplate>
@@ -224,10 +226,12 @@
         <Grid SnapsToDevicePixels="True">
             <Border x:Name="Bd" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="2.5">
                 <Grid>
-                    <Grid x:Name="Host" Margin="{TemplateBinding Padding}">
+                    <!-- No Padding here: TextBoxBase applies Padding to the text itself, so the watermark
+                         takes it as its margin and both start at the caret -->
+                    <Grid x:Name="Host">
                         <ScrollViewer x:Name="PART_ContentHost" Focusable="False" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden"
                                       VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
-                        <TextBlock x:Name="Watermark" Margin="2,0" Text="{TemplateBinding h:TextBoxHelper.Watermark}" Foreground="{TemplateBinding Foreground}" Opacity="0.5"
+                        <TextBlock x:Name="Watermark" Margin="{TemplateBinding Padding}" Padding="2,0" Text="{TemplateBinding h:TextBoxHelper.Watermark}" Foreground="{TemplateBinding Foreground}" Opacity="0.5"
                                    IsHitTestVisible="False" Visibility="Collapsed" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
                     </Grid>
                     <Button x:Name="Clear" Style="{DynamicResource JetPack.Styles.Button.Clear}" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,3,0"
@@ -258,7 +262,7 @@
                     <Condition Property="h:TextBoxHelper.HasText" Value="True" />
                 </MultiTrigger.Conditions>
                 <Setter TargetName="Clear" Property="Visibility" Value="Visible" />
-                <Setter TargetName="Host" Property="Margin" Value="5,3,20,3" />
+                <Setter TargetName="Host" Property="Margin" Value="0,0,16,0" />
             </MultiTrigger>
         </ControlTemplate.Triggers>
     </ControlTemplate>

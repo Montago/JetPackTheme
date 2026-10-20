@@ -251,8 +251,11 @@
                             </VisualStateGroup>
                         </VisualStateManager.VisualStateGroups>
                         <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="2.5">
-                            <Grid Margin="{TemplateBinding Padding}">
-                                <ContentControl x:Name="PART_Watermark" Opacity="0" Focusable="False" IsHitTestVisible="False" Margin="2,0" VerticalAlignment="Center" />
+                            <!-- TextBoxBase applies Padding to the text itself, so only the watermark gets it here -->
+                            <Grid>
+                                <Border Margin="{TemplateBinding Padding}">
+                                    <ContentControl x:Name="PART_Watermark" Opacity="0" Focusable="False" IsHitTestVisible="False" Margin="2,0" VerticalAlignment="Center" />
+                                </Border>
                                 <ScrollViewer x:Name="PART_ContentHost" Focusable="False" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden" VerticalAlignment="Center" />
                             </Grid>
                         </Border>
