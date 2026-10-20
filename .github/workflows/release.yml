@@ -39,21 +39,19 @@ jobs:
 
       - name: Push to GitHub Packages
         shell: bash
-        run: >-
-          dotnet nuget push "artifacts/*.nupkg"
-          --source "https://nuget.pkg.github.com/${GITHUB_REPOSITORY_OWNER}/index.json"
-          --api-key "${{ github.token }}"
-          --no-symbols
-          --skip-duplicate
+        # bash expands the glob; dotnet nuget push does not on the Windows runner
+        run: |
+          for pkg in artifacts/*.nupkg; do
+            dotnet nuget push "$pkg" --source "https://nuget.pkg.github.com/${GITHUB_REPOSITORY_OWNER}/index.json" --api-key "${{ github.token }}" --no-symbols --skip-duplicate
+          done
 
       - name: Push to nuget.org
         if: env.NUGET_API_KEY != ''
         shell: bash
-        run: >-
-          dotnet nuget push "artifacts/*.nupkg"
-          --source https://api.nuget.org/v3/index.json
-          --api-key "$NUGET_API_KEY"
-          --skip-duplicate
+        run: |
+          for pkg in artifacts/*.nupkg; do
+            dotnet nuget push "$pkg" --source https://api.nuget.org/v3/index.json --api-key "$NUGET_API_KEY" --skip-duplicate
+          done
 
       - name: GitHub release
         shell: bash
