@@ -4,6 +4,8 @@ The JetPack theme from Microsoft's Silverlight 4 Application Themes, rebuilt as 
 
 ![Core](docs/screenshots/core.png)
 
+**Documentation:** [docs/](docs/README.md) covers every control, the theme and accents, typography and all resource keys.
+
 ## Getting started
 
 Reference the project (or the `JetPack.Wpf` package) and merge the dictionary in `App.xaml`:
@@ -107,6 +109,8 @@ src/JetPack.Wpf/
   Helpers/           attached properties and converters
   Theming/           ThemeManager and AccentGenerator
 src/JetPack.Wpf.Demo/
+docs/                documentation and screenshots
+tools/               generate_resource_keys.py (rebuilds docs/resource-keys.md)
 design/              the HTML draft the look was approved from
 ```
 

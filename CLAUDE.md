@@ -15,6 +15,8 @@ WPF controls library for .NET 8+ in the style of MahApps.Metro. Repo: github.com
 - `Assets/Texture.png` and `Assets/Vignette.png` are Microsoft's files and are excluded from the MIT
   License (see `NOTICE.md`). Do not add more copied Microsoft assets without noting them there.
 - Never commit screen captures that show the user's desktop.
+- When a control, property or style key changes, update the matching page in `docs/` in the same
+  commit and regenerate `docs/resource-keys.md`.
 
 ## Layout
 
@@ -29,6 +31,8 @@ src/JetPack.Wpf/            library (net8.0-windows)
   Helpers/                  ControlHelper / TextBoxHelper attached properties, converters
   Theming/                  ThemeManager, AccentGenerator
 src/JetPack.Wpf.Demo/       demo app; pages in Views/
+docs/                       component documentation (Markdown); keep it in step with the code
+docs/resource-keys.md       generated: run `python tools/generate_resource_keys.py` after changing Styles/
 design/jetpack-preview.src.html   approved HTML/CSS draft (texture as __TEX__ placeholder)
 design/jetpack-preview.html       same file with the texture inlined as base64
 docs/screenshots/           README images, produced by --snapshot
