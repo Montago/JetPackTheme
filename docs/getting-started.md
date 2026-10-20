@@ -12,15 +12,22 @@ nav_order: 2
 
 ## Add the library
 
-Reference the project:
+Install the [JetPack.Wpf](https://www.nuget.org/packages/JetPack.Wpf) package:
+
+```bash
+dotnet add package JetPack.Wpf
+```
+
+or in the project file:
 
 ```xml
 <ItemGroup>
-  <ProjectReference Include="..\JetPack.Wpf\JetPack.Wpf.csproj" />
+  <PackageReference Include="JetPack.Wpf" Version="0.1.0" />
 </ItemGroup>
 ```
 
-or, once published, the `JetPack.Wpf` package.
+To work on the library itself, reference `src/JetPack.Wpf/JetPack.Wpf.csproj` with a
+`ProjectReference` instead.
 
 ## Merge the theme
 

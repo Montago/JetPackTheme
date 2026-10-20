@@ -8,7 +8,13 @@ The JetPack theme from Microsoft's Silverlight 4 Application Themes, rebuilt as 
 
 ## Getting started
 
-Reference the project (or the `JetPack.Wpf` package) and merge the dictionary in `App.xaml`:
+Install the [JetPack.Wpf](https://www.nuget.org/packages/JetPack.Wpf) package:
+
+```bash
+dotnet add package JetPack.Wpf
+```
+
+Then merge the dictionary in `App.xaml`:
 
 ```xml
 <Application.Resources>
@@ -113,6 +119,19 @@ docs/                documentation and screenshots
 tools/               generate_resource_keys.py (rebuilds docs/resource-keys.md)
 design/              the HTML draft the look was approved from
 ```
+
+## Releasing
+
+Releases are published to nuget.org by `.github/workflows/release.yml` when a version tag is pushed:
+
+```bash
+git tag v0.1.0
+git push origin v0.1.0
+```
+
+The workflow packs `JetPack.Wpf` with the tag's version, pushes the package and symbols to nuget.org
+(repository secret `NUGET_API_KEY`) and creates a GitHub release with the packages attached. Every push
+and pull request is built by `.github/workflows/ci.yml`, which also uploads the package as an artifact.
 
 ## License
 

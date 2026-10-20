@@ -10,15 +10,43 @@
     <LangVersion>latest</LangVersion>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <NoWarn>$(NoWarn);CS1591</NoWarn>
+  </PropertyGroup>
 
+  <!-- NuGet package. The release workflow overrides Version from the git tag (v1.2.3 -> 1.2.3). -->
+  <PropertyGroup>
     <PackageId>JetPack.Wpf</PackageId>
     <Version>0.1.0</Version>
-    <Description>The JetPack theme (from the Silverlight 4 theme pack) rebuilt as a complete WPF controls library for .NET 8+.</Description>
-    <PackageTags>wpf;theme;jetpack;controls;styles</PackageTags>
+    <Authors>Martin Kirk</Authors>
+    <Copyright>Copyright (c) 2026 Martin Kirk</Copyright>
+    <Description>The JetPack theme from Silverlight 4, rebuilt as a complete WPF controls library for .NET 8+: styles for every standard control plus JetPackWindow, dialogs, ToggleSwitch, NumericUpDown, Flyout, HamburgerMenu, InfoBar and more.</Description>
+    <PackageTags>wpf;theme;jetpack;controls;styles;silverlight;mahapps</PackageTags>
+    <PackageProjectUrl>https://montago.github.io/JetPackTheme/</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/Montago/JetPackTheme</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageReleaseNotes>https://github.com/Montago/JetPackTheme/releases</PackageReleaseNotes>
+    <PackageIcon>icon.png</PackageIcon>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <!-- A license file rather than an MIT expression: two bundled images are Microsoft's (see NOTICE.md) -->
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(GITHUB_ACTIONS)' == 'true'">
+    <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
   </PropertyGroup>
 
   <ItemGroup>
     <Resource Include="Assets\*.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="icon.png" Pack="true" PackagePath="\" />
+    <None Include="PACKAGE.md" Pack="true" PackagePath="\README.md" />
+    <None Include="..\..\LICENSE" Pack="true" PackagePath="\" />
+    <None Include="..\..\NOTICE.md" Pack="true" PackagePath="\" />
   </ItemGroup>
 
 </Project>

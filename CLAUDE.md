@@ -61,6 +61,17 @@ src/JetPack.Wpf.Demo/bin/Debug/net8.0-windows/JetPack.Wpf.Demo.exe --snapshot <f
 - After editing XAML, check that every `{StaticResource X}` is defined earlier in the same file
   (a small script over `Styles/*.xaml` did this).
 
+## NuGet package and releases
+
+- Package metadata lives in `src/JetPack.Wpf/JetPack.Wpf.csproj`; `PACKAGE.md` becomes the package
+  README on nuget.org (absolute image URLs only), `icon.png` the package icon. The package uses a
+  license file, not an MIT expression, because of the two Microsoft images.
+- `.github/workflows/release.yml` publishes on a `v*.*.*` tag using the `NUGET_API_KEY` secret; the
+  version comes from the tag. Never handle the API key yourself; the user sets the secret.
+- To test the package without touching the global NuGet cache: pack with `-p:Version=0.0.1-localtest`
+  into a scratch feed, then build a small consumer app with its own `nuget.config` and
+  `--packages <scratch>/pkgs`.
+
 ## WPF gotchas found in this project
 
 - **StaticResource / BasedOn across files fails** at runtime. Each `Controls.*.xaml` is loaded on its
