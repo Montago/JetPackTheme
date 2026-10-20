@@ -66,8 +66,9 @@ src/JetPack.Wpf.Demo/bin/Debug/net8.0-windows/JetPack.Wpf.Demo.exe --snapshot <f
 - Package metadata lives in `src/JetPack.Wpf/JetPack.Wpf.csproj`; `PACKAGE.md` becomes the package
   README on nuget.org (absolute image URLs only), `icon.png` the package icon. The package uses a
   license file, not an MIT expression, because of the two Microsoft images.
-- `.github/workflows/release.yml` publishes on a `v*.*.*` tag using the `NUGET_API_KEY` secret; the
-  version comes from the tag. Never handle the API key yourself; the user sets the secret.
+- `.github/workflows/release.yml` publishes on a `v*.*.*` tag: always to GitHub Packages (workflow
+  token, `--no-symbols` because that feed rejects snupkg), to nuget.org only when the `NUGET_API_KEY`
+  secret exists. The version comes from the tag. Never handle API keys yourself; the user sets secrets.
 - To test the package without touching the global NuGet cache: pack with `-p:Version=0.0.1-localtest`
   into a scratch feed, then build a small consumer app with its own `nuget.config` and
   `--packages <scratch>/pkgs`.

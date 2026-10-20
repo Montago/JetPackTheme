@@ -14,6 +14,10 @@ Install the [JetPack.Wpf](https://www.nuget.org/packages/JetPack.Wpf) package:
 dotnet add package JetPack.Wpf
 ```
 
+The package is published to GitHub Packages first; see
+[Getting started](https://montago.github.io/JetPackTheme/getting-started.html#from-github-packages) for
+adding that feed.
+
 Then merge the dictionary in `App.xaml`:
 
 ```xml
@@ -129,8 +133,9 @@ git tag v0.1.0
 git push origin v0.1.0
 ```
 
-The workflow packs `JetPack.Wpf` with the tag's version, pushes the package and symbols to nuget.org
-(repository secret `NUGET_API_KEY`) and creates a GitHub release with the packages attached. Every push
+The workflow packs `JetPack.Wpf` with the tag's version, pushes it to GitHub Packages (with the
+workflow's own token), pushes it to nuget.org when the repository secret `NUGET_API_KEY` exists, and
+creates a GitHub release with the packages attached. Every push
 and pull request is built by `.github/workflows/ci.yml`, which also uploads the package as an artifact.
 
 ## License

@@ -29,6 +29,34 @@ or in the project file:
 To work on the library itself, reference `src/JetPack.Wpf/JetPack.Wpf.csproj` with a
 `ProjectReference` instead.
 
+### From GitHub Packages
+
+Releases are also published to [GitHub Packages](https://github.com/Montago/JetPackTheme/packages).
+That feed needs a GitHub login even for public packages: create a personal access token (classic) with
+the `read:packages` scope, then add the feed once:
+
+```bash
+dotnet nuget add source https://nuget.pkg.github.com/Montago/index.json --name JetPack --username <your-github-user> --password <token>
+```
+
+After that `dotnet add package JetPack.Wpf` finds the package. For a build server, put the token in an
+environment variable and reference it from a `nuget.config`:
+
+```xml
+<configuration>
+  <packageSources>
+    <add key="JetPack" value="https://nuget.pkg.github.com/Montago/index.json" />
+  </packageSources>
+  <packageSourceCredentials>
+    <JetPack>
+      <add key="Username" value="your-github-user" />
+      <add key="ClearTextPassword" value="%GITHUB_PACKAGES_TOKEN%" />
+    </JetPack>
+  </packageSourceCredentials>
+</configuration>
+```
+
+
 ## Merge the theme
 
 Merge one dictionary in `App.xaml`. It brings the brushes, the green accent, fonts, effects and the

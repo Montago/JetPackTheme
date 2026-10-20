@@ -1,7 +1,11 @@
-# Publishes JetPack.Wpf to nuget.org when a version tag is pushed:
+# Publishes JetPack.Wpf when a version tag is pushed:
 #   git tag v0.1.0
 #   git push origin v0.1.0
-# Needs the repository secret NUGET_API_KEY (an API key from nuget.org with push rights for JetPack.Wpf).
+#
+# - GitHub Packages (https://github.com/Montago/JetPackTheme/packages): always, using the workflow token.
+# - nuget.org: only when the repository secret NUGET_API_KEY exists (an API key with push rights for
+#   JetPack.Wpf). Without it the step is skipped.
+# - A GitHub release with the .nupkg and .snupkg attached.
 
 name: Release
 
@@ -11,10 +15,13 @@ on:
 
 permissions:
   contents: write
+  packages: write
 
 jobs:
   publish:
     runs-on: windows-latest
+    env:
+      NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
     steps:
       - uses: actions/checkout@v4
 
@@ -30,9 +37,23 @@ jobs:
       - name: Pack
         run: dotnet pack src/JetPack.Wpf/JetPack.Wpf.csproj -c Release -o artifacts -p:Version=${{ steps.version.outputs.value }}
 
-      - name: Push to nuget.org
+      - name: Push to GitHub Packages
         shell: bash
-        run: dotnet nuget push "artifacts/*.nupkg" --api-key "${{ secrets.NUGET_API_KEY }}" --source https://api.nuget.org/v3/index.json --skip-duplicate
+        run: >-
+          dotnet nuget push "artifacts/*.nupkg"
+          --source "https://nuget.pkg.github.com/${GITHUB_REPOSITORY_OWNER}/index.json"
+          --api-key "${{ github.token }}"
+          --no-symbols
+          --skip-duplicate
+
+      - name: Push to nuget.org
+        if: env.NUGET_API_KEY != ''
+        shell: bash
+        run: >-
+          dotnet nuget push "artifacts/*.nupkg"
+          --source https://api.nuget.org/v3/index.json
+          --api-key "$NUGET_API_KEY"
+          --skip-duplicate
 
       - name: GitHub release
         shell: bash
