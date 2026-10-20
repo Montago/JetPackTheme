@@ -8,6 +8,8 @@ nav_order: 4
 
 ## CheckBox and RadioButton
 
+![Check boxes and radio buttons](screenshots/controls/checkbox-radiobutton.png)
+
 A dark 12px box (or circle) with a 1px dark border, an inner shadow and a faint outer highlight. The
 check mark and the radio dot use the accent highlight colour (bright lime for green). Hover adds an
 accent ring inside the box. `IsThreeState` shows a short bar (check box) or a ring (radio button) for
@@ -31,6 +33,8 @@ Check boxes and radio buttons inside a `ToolBar` use the dark text automatically
 
 ## ToggleSwitch
 
+![ToggleSwitch](screenshots/controls/toggleswitch.png)
+
 `jp:ToggleSwitch` is a `ToggleButton` drawn as a dark recessed track with a light sliding knob; the
 track fills with the accent selection gradient when on. `Content` is the label to the right.
 
@@ -41,6 +45,8 @@ track fills with the accent selection gradient when on. `Content` is the label t
 Use `IsChecked`, `Checked` and `Unchecked` as on any toggle button.
 
 ## Slider
+
+![Sliders](screenshots/controls/slider.png)
 
 The track is a dark recessed bar; the part below the value is a light grey bar, and the thumb is the
 pointed light thumb of the original theme. Horizontal and vertical are both supported, with tick
@@ -56,6 +62,8 @@ marks on either side.
 
 ## RangeSlider
 
+![RangeSlider](screenshots/controls/rangeslider.png)
+
 `jp:RangeSlider` selects a range with two thumbs. Drag a thumb, or focus it and use the arrow keys.
 
 ```xml
@@ -69,6 +77,8 @@ marks on either side.
 | `SmallChange` | `double` | 1 | Arrow-key step. |
 
 ## Rating
+
+![Rating](screenshots/controls/rating.png)
 
 `jp:Rating` shows a row of stars: filled stars use the accent highlight, empty ones the dark track
 colour. Hovering previews a value; clicking the current value again clears it.
@@ -84,5 +94,3 @@ colour. Hovering previews a value; clicking the current value again clears it.
 | `IsReadOnly` | `bool` | `false` |
 
 Arrow keys change the value when the control has focus.
-
-![Extras page](screenshots/extras.png)

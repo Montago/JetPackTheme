@@ -34,6 +34,13 @@ public static class Demo
         }
     }
 
+    /// <summary>Gallery samples: open this element's drop-down, menu or tool tip for the snapshot.</summary>
+    public static readonly DependencyProperty OpenProperty = DependencyProperty.RegisterAttached(
+        "Open", typeof(bool), typeof(Demo), new PropertyMetadata(false));
+
+    public static bool GetOpen(DependencyObject o) => (bool)o.GetValue(OpenProperty);
+    public static void SetOpen(DependencyObject o, bool value) => o.SetValue(OpenProperty, value);
+
     /// <summary>Marks an element as invalid with the given message so the validation look shows.</summary>
     public static readonly DependencyProperty ErrorProperty = DependencyProperty.RegisterAttached(
         "Error", typeof(string), typeof(Demo), new PropertyMetadata(null, OnErrorChanged));

@@ -92,6 +92,9 @@ public partial class App : Application
             window.OpenSettings();
             await Task.Delay(400);
             await SaveAsync(window, Path.Combine(folder, "25-flyout.png"));
+
+            // One picture per control for docs/screenshots/controls.
+            await GallerySnapshot.SaveAsync(Path.Combine(folder, "controls"));
         }
         catch (Exception ex)
         {

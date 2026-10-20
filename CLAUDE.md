@@ -36,6 +36,7 @@ docs/resource-keys.md       generated: run `python tools/generate_resource_keys.
 design/jetpack-preview.src.html   approved HTML/CSS draft (texture as __TEX__ placeholder)
 design/jetpack-preview.html       same file with the texture inlined as base64
 docs/screenshots/           README images, produced by --snapshot
+docs/screenshots/controls/  one picture per control for the docs pages (from Views/GalleryPage.xaml)
 ```
 
 Resource keys follow MahApps with a `JetPack.` prefix (`JetPack.Brushes.Accent`,
@@ -52,6 +53,13 @@ src/JetPack.Wpf.Demo/bin/Debug/net8.0-windows/JetPack.Wpf.Demo.exe --snapshot <f
 - `--snapshot` renders every demo page (plus orange/blue accent, light title bar, dialog, flyout) to
   PNG via RenderTargetBitmap and exits; it forces en-US so screenshots stay English. Look at the
   PNGs after every visual change, then copy the relevant ones to `docs/screenshots`.
+- It also renders each sample of `Views/GalleryPage.xaml` (a `Demo.Sample` whose `Tag` is the file
+  name) to `<folder>/controls`; copy those to `docs/screenshots/controls`. Elements marked
+  `d:Demo.Open="True"` get their drop-down, menu, tool tip or validation call-out opened, and
+  `GallerySnapshot` draws the popup where its placement would put it. A new control or variant gets a
+  sample there and a picture under its heading in `docs/`.
+- RenderTargetBitmap returns blank (fully transparent) images while the PC's screen is off or the
+  session is locked; connect (e.g. RDP) before running `--snapshot`.
 - The user often runs the demo from Visual Studio, which locks `bin\...\JetPack.Wpf.dll`. Do not kill
   it; build to another folder instead: `dotnet build src/JetPack.Wpf.Demo -o <scratch>/out`.
 - RenderTargetBitmap does not show what DWM draws (rounded window corners, system frame) or popups
@@ -100,12 +108,19 @@ src/JetPack.Wpf.Demo/bin/Debug/net8.0-windows/JetPack.Wpf.Demo.exe --snapshot <f
   `HasSystemRoundedCorners` is true.
 - `Checked` handlers on RadioButtons with `IsChecked="True"` fire during `InitializeComponent`,
   before later attributes such as `Tag` are set; guard with `IsLoaded`.
+- **Submenu items inherit Foreground from their header MenuItem through the logical tree**, not from
+  the popup they sit in. Header templates therefore set `TextElement.Foreground` on the header
+  presenter, never `Foreground` on the MenuItem itself.
+- A Binding inside a ControlTemplate cannot be removed with `BindingOperations.ClearBinding` (that
+  only clears local values); setting the property routes through a two-way template binding. Put a
+  local binding on top instead (see `GallerySnapshot.ForceOpen`).
 - Effects (DropShadowEffect) on text turn off ClearType; put shadows on a separate background
   Border rather than on content, except for the deliberate text emboss/glow.
 
 ## Known limitations / ideas
 
 - TabControl supports top tabs only; DatePicker watermark text comes from WPF and is English.
-- Popups (combo drop-downs, menus, tooltips, DatePicker) have not been tested interactively.
+- Popups (combo drop-downs, menus, tooltips, DatePicker) are checked in the gallery snapshots, but
+  not yet driven interactively with the mouse.
 - The HTML draft in `design/` could be turned into a reusable CSS theme (`jetpack.css` styling
   native elements, small JS for drop-downs/tabs).

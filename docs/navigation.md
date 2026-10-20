@@ -12,6 +12,8 @@ There are three looks.
 
 ### Panel tabs (default)
 
+![Panel tabs](screenshots/controls/tabcontrol.png)
+
 The SDK `TabControl`: dark tabs on a dark panel (`#707176`) with a soft shadow. The selected tab
 merges into the panel; unselected tabs are a shade darker. Page content is white text.
 
@@ -23,6 +25,8 @@ merges into the panel; unselected tabs are a shade darker. Page content is white
 ```
 
 ### Navigation bar
+
+![Navigation bar](screenshots/controls/tabcontrol-navigation.png)
 
 `JetPack.Styles.TabControl.Navigation` is the light link bar of the original navigation template:
 a full-width grey bar with bold links, the selected link in the accent gradient with a small notch
@@ -39,9 +43,9 @@ title bar. `Tag` is shown at the right end of the bar (branding, search, user).
 </TabControl>
 ```
 
-![Navigation bar](screenshots/navigation-bar.png)
-
 ### Strip
+
+![Tab strip](screenshots/controls/tabcontrol-strip.png)
 
 `JetPack.Styles.TabControl.Strip` is the dark tab strip from the original theme browser (Core / SDK /
 Toolkit / Charts), with white links and the same accent notch. `Tag` is shown at the right, outside
@@ -56,6 +60,8 @@ the strip. The demo uses it for its pages.
 All three support only `TabStripPlacement="Top"`.
 
 ## HamburgerMenu
+
+![HamburgerMenu](screenshots/controls/hamburgermenu.png)
 
 `jp:HamburgerMenu` is a `ListBox` with a dark pane on the left and a content area on the right. The
 selected item gets the accent gradient and a notch pointing at the content. The ☰ button collapses
@@ -90,6 +96,8 @@ the pane to icons.
 
 ## Expander
 
+![Expanders](screenshots/controls/expander.png)
+
 The header is a raised light bar with a bold label and an arrow that turns down when open; the body is
 a dark panel with a soft shadow.
 
@@ -103,6 +111,8 @@ a dark panel with a soft shadow.
 Only `ExpandDirection="Down"` is styled.
 
 ## Accordion
+
+![Accordion](screenshots/controls/accordion.png)
 
 `jp:Accordion` stacks expanders in one framed panel; opening one closes the others. Given a fixed or
 stretched height, the open section fills the space the closed headers leave, so those headers sit at
@@ -123,6 +133,8 @@ you can also use as the `ItemsPanel` of your own items control.
 
 ## GroupBox
 
+![GroupBox](screenshots/controls/groupbox.png)
+
 A dark panel with a dark gradient header strip and bold white header text.
 
 ```xml
@@ -133,12 +145,18 @@ A dark panel with a dark gradient header strip and bold white header text.
 
 ## Menu, ContextMenu and ToolBar
 
+![Menu with a drop-down open](screenshots/controls/menu.png)
+
 - `Menu`: a light grey bar with a drop shadow; open and hovered top-level items get the accent gradient.
 - Menu drop-downs and `ContextMenu`: light grey (`#E0E0E0`) panels with a dark border and shadow, an
   icon/check column, right-aligned shortcut text and two-tone separators. Highlighted items use the
   accent gradient.
 - `ToolBar`: a light grey bar with a grip and an overflow button. Buttons and toggle buttons in it are
   flat until hovered; check boxes, radio buttons, text boxes and combo boxes get tool-bar sizes.
+
+![ContextMenu](screenshots/controls/contextmenu.png)
+
+![ToolBar](screenshots/controls/toolbar.png)
 
 ```xml
 <Menu>
@@ -160,6 +178,8 @@ A dark panel with a dark gradient header strip and bold white header text.
 
 ## StatusBar
 
+![StatusBar](screenshots/controls/statusbar.png)
+
 A dark grey bar with a light line along its top and small light text. Items are 16px apart and the
 outer ones 10px from the edges. Dock it at the bottom of the window for the footer of the original
 navigation template:
@@ -174,12 +194,14 @@ navigation template:
 
 ## GridSplitter and Separator
 
+![GridSplitter and Separator](screenshots/controls/gridsplitter-separator.png)
+
 `GridSplitter` is a light grey bar with a dotted grip. `Separator` is a two-tone line (dark over light)
 that reads as an engraved rule on the texture.
 
 ## ToolTip
 
+![ToolTip](screenshots/controls/tooltip.png)
+
 Tool tips use the accent button gradient with a light overlay, a highlighted top edge and white small
 text, as in the original theme. They follow the accent.
-
-![Toolkit page](screenshots/toolkit.png)

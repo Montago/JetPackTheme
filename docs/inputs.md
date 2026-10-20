@@ -6,9 +6,9 @@ nav_order: 3
 
 # Text and input
 
-![Inputs on the Core page](screenshots/core.png)
-
 ## TextBox
+
+![TextBox and PasswordBox, light and dark](screenshots/controls/textbox.png)
 
 A white field with a 1px border, an inner shadow along the top and left edges and a faint highlight
 along the bottom and right. Read-only fields get a light grey overlay; disabled fields fade. When the
@@ -31,6 +31,8 @@ The original theme browser showed every input in a "White" and a "Dark Gray" ver
 
 ### Multi-line
 
+![Multi-line text boxes](screenshots/controls/textbox-multiline.png)
+
 `JetPack.Styles.TextBox.MultiLine` (and `.MultiLine.Dark`) set `AcceptsReturn`, wrapping, top
 alignment and a vertical scroll bar:
 
@@ -39,6 +41,8 @@ alignment and a vertical scroll bar:
 ```
 
 ### Watermark and clear button
+
+![Watermarks and clear buttons](screenshots/controls/textbox-helpers.png)
 
 `TextBoxHelper` works on `TextBox`, `PasswordBox` and editable `ComboBox`:
 
@@ -67,6 +71,8 @@ frame without the watermark.
 
 ## Label
 
+![Labels](screenshots/controls/label.png)
+
 White text in the control font size, with access-key support:
 
 ```xml
@@ -75,6 +81,8 @@ White text in the control font size, with access-key support:
 ```
 
 ## Validation
+
+![Validation errors](screenshots/controls/validation.png)
 
 Invalid inputs get a red frame with the folded red corner from the original theme. While the input
 has focus, a red call-out to its right shows the first error message. This is
@@ -86,6 +94,8 @@ WPF validation (`ValidatesOnDataErrors`, `INotifyDataErrorInfo`, validation rule
 ```
 
 ## ComboBox
+
+![ComboBox with its drop-down open](screenshots/controls/combobox.png)
 
 The closed combo box is one raised button with a separator and an arrow; the drop-down is white
 with the accent on the selected item.
@@ -102,6 +112,8 @@ with the accent on the selected item.
 - `MaxDropDownHeight` defaults to 260.
 
 ## NumericUpDown
+
+![NumericUpDown](screenshots/controls/numericupdown.png)
 
 `jp:NumericUpDown` is a number field with stacked up/down buttons. The arrow keys and the mouse wheel
 (while focused) step the value; Enter or leaving the field commits typed text.
@@ -125,6 +137,8 @@ current culture; separators and other characters are ignored.
 
 ## AutoSuggestBox
 
+![AutoSuggestBox with suggestions](screenshots/controls/autosuggestbox.png)
+
 `jp:AutoSuggestBox` suggests entries from `ItemsSource` that contain the typed text (case
 insensitive). Down/Up move through the suggestions, Enter or a click picks one, Escape closes the list.
 
@@ -143,6 +157,8 @@ Event: `SuggestionChosen`; `e.OriginalSource` is the chosen item.
 
 ## DatePicker
 
+![DatePicker with its calendar open](screenshots/controls/datepicker.png)
+
 A text box with a calendar button; the drop-down uses the JetPack [`Calendar`](lists.md#calendar).
 Date format, month names and the first day of the week follow the app's culture. The watermark
 ("Select a date") comes from WPF and is English.
@@ -152,6 +168,8 @@ Date format, month names and the first day of the week follow the app's culture.
 ```
 
 ## TimePicker
+
+![TimePicker with its list open](screenshots/controls/timepicker.png)
 
 `jp:TimePicker` takes typed times (`8:30`, `8.30`, `8`) and offers a drop-down list in
 `MinuteStep` steps. Times show as 24-hour `HH:mm`.
@@ -167,6 +185,8 @@ Date format, month names and the first day of the week follow the app's culture.
 | `IsDropDownOpen` | `bool` | `false` |
 
 ## ColorPicker
+
+![ColorPicker with its palette open](screenshots/controls/colorpicker.png)
 
 `jp:ColorPicker` looks like a combo box showing the colour and its hex value; the drop-down is a grid
 of swatches.

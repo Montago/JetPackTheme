@@ -8,6 +8,8 @@ nav_order: 7
 
 ## ProgressBar
 
+![Progress bars](screenshots/controls/progressbar.png)
+
 A dark recessed track with the accent gradient as the fill and a glassy top half. When indeterminate,
 light diagonal stripes move across the fill.
 
@@ -22,6 +24,8 @@ Default height is 10 (width 10 when vertical); set `Height` for a thicker bar. `
 
 ## ProgressRing
 
+![ProgressRing](screenshots/controls/progressring.png)
+
 `jp:ProgressRing` is an accent arc spinning over a dark recessed ring, 34×34 by default (it scales with
 `Width`/`Height`).
 
@@ -34,6 +38,8 @@ Default height is 10 (width 10 when vertical); set `Height` for a thicker bar. `
 | `IsActive` | `bool` | `true` | When false the ring is hidden but keeps its space. |
 
 ## BusyIndicator
+
+![BusyIndicator](screenshots/controls/busyindicator.png)
 
 `jp:BusyIndicator` wraps content. While `IsBusy` is true it blurs and dims the content, disables it so
 it takes no input, and shows a small light card with `BusyContent` and an indeterminate progress bar.
@@ -53,6 +59,8 @@ it takes no input, and shows a small light card with `BusyContent` and an indete
 The blur is only applied while busy, so the content keeps ClearType text the rest of the time.
 
 ## InfoBar
+
+![InfoBars](screenshots/controls/infobar.png)
 
 `jp:InfoBar` is an inline message strip: a light bar with a coloured severity icon, an optional bold
 title, the message, optional action content and a close button.
@@ -74,5 +82,3 @@ title, the message, optional action content and a close button.
 | `Content` | `object` | | Action area at the right, e.g. a button. |
 
 Event: `Closed`, raised when the user clicks ×.
-
-![Extras page](screenshots/extras.png)

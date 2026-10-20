@@ -27,6 +27,9 @@
         </Grid>
     </ControlTemplate>
 
+    <!-- Headers with a submenu turn only their own header white when open or highlighted: the submenu
+         items inherit Foreground from the header item through the logical tree, so setting it on the
+         MenuItem itself would make them white on the light popup. -->
     <ControlTemplate x:Key="JetPack.Templates.MenuItem.TopLevelHeader" TargetType="MenuItem">
         <Grid SnapsToDevicePixels="True">
             <Border x:Name="Bd" Background="Transparent" Padding="{TemplateBinding Padding}">
@@ -35,7 +38,7 @@
             <Popup x:Name="PART_Popup" AllowsTransparency="True" Focusable="False" Placement="Bottom" PopupAnimation="Fade"
                    IsOpen="{Binding IsSubmenuOpen, RelativeSource={RelativeSource TemplatedParent}}">
                 <ContentControl Template="{StaticResource JetPack.Templates.MenuItem.Popup}" Foreground="{DynamicResource JetPack.Brushes.Control.Foreground}">
-                    <ScrollViewer CanContentScroll="True">
+                    <ScrollViewer CanContentScroll="True" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
                         <ItemsPresenter Grid.IsSharedSizeScope="True" KeyboardNavigation.DirectionalNavigation="Cycle" KeyboardNavigation.TabNavigation="Cycle" />
                     </ScrollViewer>
                 </ContentControl>
@@ -45,12 +48,12 @@
             <Trigger Property="IsHighlighted" Value="True">
                 <Setter TargetName="Bd" Property="Background" Value="{DynamicResource JetPack.Brushes.Accent.Selection}" />
                 <Setter TargetName="Header" Property="Effect" Value="{x:Null}" />
-                <Setter Property="Foreground" Value="White" />
+                <Setter TargetName="Header" Property="TextElement.Foreground" Value="White" />
             </Trigger>
             <Trigger Property="IsSubmenuOpen" Value="True">
                 <Setter TargetName="Bd" Property="Background" Value="{DynamicResource JetPack.Brushes.Accent.Selection}" />
                 <Setter TargetName="Header" Property="Effect" Value="{x:Null}" />
-                <Setter Property="Foreground" Value="White" />
+                <Setter TargetName="Header" Property="TextElement.Foreground" Value="White" />
             </Trigger>
             <Trigger Property="IsEnabled" Value="False">
                 <Setter Property="Foreground" Value="{DynamicResource JetPack.Brushes.Menu.Disabled}" />
@@ -119,12 +122,12 @@
                     <ColumnDefinition Width="16" />
                 </Grid.ColumnDefinitions>
                 <ContentPresenter x:Name="Icon" ContentSource="Icon" Width="16" Height="16" HorizontalAlignment="Center" VerticalAlignment="Center" />
-                <ContentPresenter Grid.Column="1" Margin="4,0,12,0" ContentSource="Header" RecognizesAccessKey="True" VerticalAlignment="Center" />
+                <ContentPresenter x:Name="Header" Grid.Column="1" Margin="4,0,12,0" ContentSource="Header" RecognizesAccessKey="True" VerticalAlignment="Center" />
                 <Path x:Name="Arrow" Grid.Column="3" Width="4" Height="7" HorizontalAlignment="Right" Stretch="Fill" Data="{DynamicResource JetPack.Geometry.ArrowRight}" Fill="{TemplateBinding Foreground}" />
                 <Popup x:Name="PART_Popup" AllowsTransparency="True" Focusable="False" Placement="Right" HorizontalOffset="-2" VerticalOffset="-5" PopupAnimation="Fade"
                        IsOpen="{Binding IsSubmenuOpen, RelativeSource={RelativeSource TemplatedParent}}">
                     <ContentControl Template="{StaticResource JetPack.Templates.MenuItem.Popup}" Foreground="{DynamicResource JetPack.Brushes.Control.Foreground}">
-                        <ScrollViewer CanContentScroll="True">
+                        <ScrollViewer CanContentScroll="True" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
                             <ItemsPresenter Grid.IsSharedSizeScope="True" KeyboardNavigation.DirectionalNavigation="Cycle" KeyboardNavigation.TabNavigation="Cycle" />
                         </ScrollViewer>
                     </ContentControl>
@@ -137,7 +140,8 @@
             </Trigger>
             <Trigger Property="IsHighlighted" Value="True">
                 <Setter TargetName="Bd" Property="Background" Value="{DynamicResource JetPack.Brushes.Accent.Selection}" />
-                <Setter Property="Foreground" Value="White" />
+                <Setter TargetName="Header" Property="TextElement.Foreground" Value="White" />
+                <Setter TargetName="Arrow" Property="Fill" Value="White" />
             </Trigger>
             <Trigger Property="IsEnabled" Value="False">
                 <Setter Property="Foreground" Value="{DynamicResource JetPack.Brushes.Menu.Disabled}" />
@@ -200,7 +204,7 @@
                     <Grid Margin="0,0,6,6" MinWidth="160">
                         <Border Background="{DynamicResource JetPack.Brushes.Menu.Background}" Effect="{DynamicResource JetPack.Effects.PopupShadow}" />
                         <Border BorderBrush="{DynamicResource JetPack.Brushes.Panel.Border}" BorderThickness="1" Padding="0,4">
-                            <ScrollViewer CanContentScroll="True">
+                            <ScrollViewer CanContentScroll="True" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
                                 <ItemsPresenter KeyboardNavigation.DirectionalNavigation="Cycle" />
                             </ScrollViewer>
                         </Border>

@@ -24,6 +24,8 @@ To use another typeface, redefine the two font family keys after merging `JetPac
 
 ## Text styles
 
+![Text styles](screenshots/controls/typography.png)
+
 Use these keyed `TextBlock` styles for text on the textured background:
 
 | Style | Size | Notes |

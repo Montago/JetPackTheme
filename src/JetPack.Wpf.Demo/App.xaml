@@ -31,6 +31,23 @@
                 </Setter>
             </Style>
 
+            <!-- Gallery sample (Views/GalleryPage): a margin of texture around the control. The
+                 AdornerDecorator keeps validation adorners inside the sample, so they are rendered too. -->
+            <Style x:Key="Demo.Sample" TargetType="ContentControl">
+                <Setter Property="HorizontalAlignment" Value="Left" />
+                <Setter Property="VerticalAlignment" Value="Top" />
+                <Setter Property="Focusable" Value="False" />
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="ContentControl">
+                            <AdornerDecorator>
+                                <ContentPresenter Margin="16" />
+                            </AdornerDecorator>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
             <Style x:Key="Demo.Intro" TargetType="TextBlock" BasedOn="{StaticResource JetPack.Styles.TextBlock.Caption}">
                 <Setter Property="FontSize" Value="13" />
                 <Setter Property="MaxWidth" Value="720" />

@@ -106,7 +106,8 @@ Resource keys follow the MahApps scheme with a `JetPack.` prefix: `JetPack.Brush
 dotnet run --project src/JetPack.Wpf.Demo
 ```
 
-`--snapshot <folder>` renders every page to PNG and exits. The images in `docs/screenshots` were made that way.
+`--snapshot <folder>` renders every page to PNG and exits, plus one picture per control in `<folder>/controls`
+(from `Views/GalleryPage.xaml`). The images in `docs/screenshots` were made that way.
 
 ## Layout
 

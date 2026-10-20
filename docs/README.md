@@ -43,4 +43,5 @@ Silverlight 4 Application Themes and adds the extra controls a desktop app usual
   keyed styles named `JetPack.Styles.<Control>.<Variant>`.
 - Use `DynamicResource` for theme brushes in your own XAML, so they follow accent changes.
 - The demo app (`src/JetPack.Wpf.Demo`) shows every control on six pages; the screenshots in these
-  pages come from it.
+  pages come from it. The picture under each control's heading is rendered from the demo's gallery
+  (`Views/GalleryPage.xaml`), with drop-downs and menus open where the control has one.

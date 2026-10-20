@@ -284,6 +284,7 @@
         <Setter Property="h:ControlHelper.HighlightBrush" Value="{DynamicResource JetPack.Brushes.Button.Blue.Highlight}" />
         <Setter Property="h:ControlHelper.ContentEffect" Value="{DynamicResource JetPack.Effects.Button.Blue.TextShadow}" />
     </Style>
+    <Style TargetType="c:Tile" BasedOn="{StaticResource JetPack.Styles.Tile}" />
 
     <!-- ===================== BusyIndicator ===================== -->
     <Style TargetType="c:BusyIndicator">

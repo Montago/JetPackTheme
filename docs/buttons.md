@@ -6,9 +6,9 @@ nav_order: 2
 
 # Buttons
 
-![Buttons on the Core page](screenshots/core.png)
-
 ## Button
+
+![Buttons](screenshots/controls/button.png)
 
 Every `Button` gets the JetPack chrome: a light gradient slab with a drop shadow, a white top-left
 highlight and embossed dark text. Hover lightens it, pressing darkens it, and disabled buttons turn
@@ -60,10 +60,14 @@ style with five setters:
 
 ## ToggleButton and RepeatButton
 
+![ToggleButton and RepeatButton](screenshots/controls/toggle-button.png)
+
 `ToggleButton` uses the same chrome; when checked it looks pressed into the surface (light grey with an
 inner shadow). `RepeatButton` looks like `Button`.
 
 ## Hyperlink
+
+![Hyperlinks](screenshots/controls/hyperlink.png)
 
 `Hyperlink` inside a `TextBlock` uses the accent link colour (bright lime for green) and underlines on
 hover. Disabled links turn 45% white.
@@ -73,6 +77,8 @@ hover. Disabled links turn 45% white.
 ```
 
 ## SplitButton
+
+![SplitButton with its menu open](screenshots/controls/split-button.png)
 
 `jp:SplitButton` is a `Button` with a separate arrow part. Clicking the main part raises `Click`;
 clicking the arrow opens `Menu` below the button.
@@ -92,6 +98,8 @@ clicking the arrow opens `Menu` below the button.
 
 ## DropDownButton
 
+![DropDownButton with its menu open](screenshots/controls/drop-down-button.png)
+
 `jp:DropDownButton` opens its `Menu` when clicked (it still raises `Click`). The menu is at least as
 wide as the button. `JetPack.Styles.DropDownButton.Accent` gives the accent colour.
 
@@ -107,6 +115,8 @@ wide as the button. `JetPack.Styles.DropDownButton.Accent` gives the accent colo
 ```
 
 ## Tile
+
+![Tiles](screenshots/controls/tile.png)
 
 `jp:Tile` is a 110×84 button with a large count in the top-right corner and a title bottom-left.
 Content, if any, is centred.
@@ -124,6 +134,8 @@ Styles: `JetPack.Styles.Tile` (light, the default), `.Accent`, `.Green`, `.Orang
 
 ## Badged
 
+![Badged](screenshots/controls/badged.png)
+
 `jp:Badged` puts a small orange count badge on the top-right corner of any element:
 
 ```xml
@@ -136,5 +148,3 @@ Styles: `JetPack.Styles.Tile` (light, the default), `.Accent`, `.Green`, `.Orang
 | --- | --- | --- | --- |
 | `Badge` | `object` | `null` | Badge content; the badge is hidden when null. |
 | `BadgeBackground` | `Brush` | orange button gradient | |
-
-![Extras page](screenshots/extras.png)
