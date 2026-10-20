@@ -78,14 +78,20 @@ public partial class App : Application
             await SaveAsync(window, Path.Combine(folder, "22-window-light.png"));
             window.TitleBarMode = TitleBarMode.Dark;
 
+            pages.SelectedIndex = 0;
+            window.UseNavigationBar(true);
+            await SaveAsync(window, Path.Combine(folder, "23-navigation-bar.png"));
+            window.UseNavigationBar(false);
+            pages.SelectedIndex = 4;
+
             var dialog = window.ShowMessageAsync("Delete company?",
                 "Contoso Corporation and 3 linked placements will be deleted permanently. Timesheets that have already been billed stay in the archive.",
                 "Delete", "Cancel");
-            await SaveAsync(window, Path.Combine(folder, "23-dialog.png"));
+            await SaveAsync(window, Path.Combine(folder, "24-dialog.png"));
 
             window.OpenSettings();
             await Task.Delay(400);
-            await SaveAsync(window, Path.Combine(folder, "24-flyout.png"));
+            await SaveAsync(window, Path.Combine(folder, "25-flyout.png"));
         }
         catch (Exception ex)
         {

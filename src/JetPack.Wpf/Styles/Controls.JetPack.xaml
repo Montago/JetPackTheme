@@ -291,8 +291,8 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="c:BusyIndicator">
-                    <Grid>
-                        <ContentPresenter x:Name="Content" />
+                    <Grid x:Name="Root">
+                        <ContentPresenter x:Name="PART_Content" />
                         <Rectangle x:Name="Overlay" Fill="#59FFFFFF" Visibility="Collapsed" />
                         <Grid x:Name="Card" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="Collapsed">
                             <Border Background="{DynamicResource JetPack.Brushes.Static.Background}" CornerRadius="2" Effect="{DynamicResource JetPack.Effects.LightControlShadow}" />
@@ -309,7 +309,8 @@
                         <Trigger Property="IsBusy" Value="True">
                             <Setter TargetName="Overlay" Property="Visibility" Value="Visible" />
                             <Setter TargetName="Card" Property="Visibility" Value="Visible" />
-                            <Setter TargetName="Content" Property="IsEnabled" Value="False" />
+                            <Setter TargetName="PART_Content" Property="IsEnabled" Value="False" />
+                            <Setter TargetName="Root" Property="ClipToBounds" Value="True" />
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>

@@ -22,127 +22,134 @@
 
             <!-- "Companies" sample from the Silverlight navigation template -->
             <Border BorderBrush="#FF3B3C40" BorderThickness="1" CornerRadius="3" ClipToBounds="True" Background="{DynamicResource JetPack.Brushes.Window.Background}" Margin="0,0,0,24">
-                <TabControl Style="{StaticResource JetPack.Styles.TabControl.Navigation}" SelectedIndex="0">
-                    <TabItem Header="Companies">
-                        <Grid Margin="24,12,24,22">
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="Auto" />
-                            </Grid.RowDefinitions>
-                            <TextBlock Style="{StaticResource JetPack.Styles.TextBlock.Heading1}" Text="Companies" Margin="0,0,0,16" />
+                <DockPanel>
+                    <StatusBar DockPanel.Dock="Bottom">
+                        <StatusBarItem Content="Ready" />
+                        <StatusBarItem Content="5 available · 9 assigned" />
+                        <StatusBarItem HorizontalAlignment="Right" Content="Last synced 09:42" />
+                    </StatusBar>
+                    <TabControl Style="{StaticResource JetPack.Styles.TabControl.Navigation}" SelectedIndex="0">
+                        <TabItem Header="Companies">
+                            <Grid Margin="24,12,24,22">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+                                <TextBlock Style="{StaticResource JetPack.Styles.TextBlock.Heading1}" Text="Companies" Margin="0,0,0,16" />
 
-                            <Grid Grid.Row="1">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="200" />
-                                    <ColumnDefinition Width="20" />
-                                    <ColumnDefinition Width="*" />
-                                </Grid.ColumnDefinitions>
-                                <jp:Accordion VerticalAlignment="Stretch">
-                                    <Expander Header="Need Placement" IsExpanded="True" Padding="4,6">
-                                        <TreeView BorderThickness="0" Background="Transparent" Padding="0">
-                                            <TreeViewItem Header="Contoso" IsExpanded="True">
-                                                <TreeViewItem Header="August 2026" />
-                                                <TreeViewItem Header="September 2026" IsSelected="True" />
-                                                <TreeViewItem Header="October 2026" />
-                                            </TreeViewItem>
-                                            <TreeViewItem Header="Southridge"><TreeViewItem Header="July 2026" /></TreeViewItem>
-                                            <TreeViewItem Header="Microsoft"><TreeViewItem Header="June 2026" /></TreeViewItem>
-                                            <TreeViewItem Header="Fabrikam"><TreeViewItem Header="May 2026" /></TreeViewItem>
-                                            <TreeViewItem Header="Soar Airlines"><TreeViewItem Header="April 2026" /></TreeViewItem>
-                                        </TreeView>
-                                    </Expander>
-                                    <Expander Header="Renewal Pending">
-                                        <TextBlock TextWrapping="Wrap" Text="2 contracts expire on 31 December." />
-                                    </Expander>
-                                    <Expander Header="Archive">
-                                        <TextBlock TextWrapping="Wrap" Text="148 completed placements." />
-                                    </Expander>
-                                </jp:Accordion>
+                                <Grid Grid.Row="1">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="200" />
+                                        <ColumnDefinition Width="20" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <jp:Accordion VerticalAlignment="Stretch">
+                                        <Expander Header="Need Placement" IsExpanded="True" Padding="4,6">
+                                            <TreeView BorderThickness="0" Background="Transparent" Padding="0">
+                                                <TreeViewItem Header="Contoso" IsExpanded="True">
+                                                    <TreeViewItem Header="August 2026" />
+                                                    <TreeViewItem Header="September 2026" IsSelected="True" />
+                                                    <TreeViewItem Header="October 2026" />
+                                                </TreeViewItem>
+                                                <TreeViewItem Header="Southridge"><TreeViewItem Header="July 2026" /></TreeViewItem>
+                                                <TreeViewItem Header="Microsoft"><TreeViewItem Header="June 2026" /></TreeViewItem>
+                                                <TreeViewItem Header="Fabrikam"><TreeViewItem Header="May 2026" /></TreeViewItem>
+                                                <TreeViewItem Header="Soar Airlines"><TreeViewItem Header="April 2026" /></TreeViewItem>
+                                            </TreeView>
+                                        </Expander>
+                                        <Expander Header="Renewal Pending">
+                                            <TextBlock TextWrapping="Wrap" Text="2 contracts expire on 31 December." />
+                                        </Expander>
+                                        <Expander Header="Archive">
+                                            <TextBlock TextWrapping="Wrap" Text="148 completed placements." />
+                                        </Expander>
+                                    </jp:Accordion>
 
-                                <TabControl Grid.Column="2">
-                                    <TabItem Header="Available">
-                                        <Grid>
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="200" />
-                                                <ColumnDefinition Width="12" />
-                                                <ColumnDefinition Width="*" />
-                                            </Grid.ColumnDefinitions>
-                                            <ListBox Height="170" SelectedIndex="2">
-                                                <ListBoxItem Content="Lindsey N. Ballard" />
-                                                <ListBoxItem Content="Charles K. Hoyle" />
-                                                <ListBoxItem Content="Daniel S. Tiedemann" />
-                                                <ListBoxItem Content="David J. Ritter" />
-                                                <ListBoxItem Content="Vivian J. Smail" />
-                                            </ListBox>
-                                            <StackPanel Grid.Column="2">
-                                                <TextBlock TextWrapping="Wrap" Margin="0,0,0,8"
-                                                           Text="Daniel is a back-end developer with 9 years of experience in .NET and SQL Server. Available full time from week 44." />
-                                                <StackPanel Orientation="Horizontal">
-                                                    <Calendar x:Name="Cal" />
-                                                    <Border Width="92" Height="118" Margin="8,0,0,0" VerticalAlignment="Top" BorderBrush="White" BorderThickness="3"
-                                                            Effect="{DynamicResource JetPack.Effects.LightControlShadow}">
-                                                        <Border.Background>
-                                                            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-                                                                <GradientStop Color="#FF9AA0A8" Offset="0" />
-                                                                <GradientStop Color="#FF5C6168" Offset="1" />
-                                                            </LinearGradientBrush>
-                                                        </Border.Background>
-                                                        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="30" FontWeight="Bold" Text="DT" />
-                                                    </Border>
+                                    <TabControl Grid.Column="2">
+                                        <TabItem Header="Available">
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="200" />
+                                                    <ColumnDefinition Width="12" />
+                                                    <ColumnDefinition Width="*" />
+                                                </Grid.ColumnDefinitions>
+                                                <ListBox Height="170" SelectedIndex="2">
+                                                    <ListBoxItem Content="Lindsey N. Ballard" />
+                                                    <ListBoxItem Content="Charles K. Hoyle" />
+                                                    <ListBoxItem Content="Daniel S. Tiedemann" />
+                                                    <ListBoxItem Content="David J. Ritter" />
+                                                    <ListBoxItem Content="Vivian J. Smail" />
+                                                </ListBox>
+                                                <StackPanel Grid.Column="2">
+                                                    <TextBlock TextWrapping="Wrap" Margin="0,0,0,8"
+                                                               Text="Daniel is a back-end developer with 9 years of experience in .NET and SQL Server. Available full time from week 44." />
+                                                    <StackPanel Orientation="Horizontal">
+                                                        <Calendar x:Name="Cal" />
+                                                        <Border Width="92" Height="118" Margin="8,0,0,0" VerticalAlignment="Top" BorderBrush="White" BorderThickness="3"
+                                                                Effect="{DynamicResource JetPack.Effects.LightControlShadow}">
+                                                            <Border.Background>
+                                                                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                                                    <GradientStop Color="#FF9AA0A8" Offset="0" />
+                                                                    <GradientStop Color="#FF5C6168" Offset="1" />
+                                                                </LinearGradientBrush>
+                                                            </Border.Background>
+                                                            <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="30" FontWeight="Bold" Text="DT" />
+                                                        </Border>
+                                                    </StackPanel>
                                                 </StackPanel>
-                                            </StackPanel>
-                                        </Grid>
-                                    </TabItem>
-                                    <TabItem Header="Assigned">
-                                        <TextBlock Text="9 consultants are assigned to projects." />
-                                    </TabItem>
-                                    <TabItem Header="Suggestions">
-                                        <TextBlock Text="3 suggestions are awaiting a reply." />
-                                    </TabItem>
-                                </TabControl>
-                            </Grid>
-
-                            <Grid Grid.Row="2" Margin="0,22,0,0">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="2" />
-                                    <ColumnDefinition Width="240" />
-                                </Grid.ColumnDefinitions>
-                                <StackPanel Margin="220,0,20,0" MaxWidth="320" HorizontalAlignment="Left">
-                                    <TextBlock Style="{StaticResource JetPack.Styles.TextBlock.Heading2}" Text="Company Details" Margin="0,0,0,8" />
-                                    <Label Content="Name" />
-                                    <TextBox Text="Contoso Corporation" Width="300" HorizontalAlignment="Left" />
-                                    <Label Content="HR Contact" Margin="0,6,0,0" />
-                                    <TextBox Text="Heather A. Andrade" Width="300" HorizontalAlignment="Left" />
-                                    <Label Content="Phone" Margin="0,6,0,0" />
-                                    <TextBox Text="(555) 555-1234" Width="300" HorizontalAlignment="Left" />
-                                    <DockPanel Margin="0,16,0,0" Width="300" HorizontalAlignment="Left">
-                                        <CheckBox DockPanel.Dock="Right" Content="Keep Active" />
-                                        <StackPanel Orientation="Horizontal">
-                                            <Button Content="Send Message" Margin="0,0,8,0" />
-                                            <Button Content="Update" Style="{StaticResource JetPack.Styles.Button.Accent}" />
-                                        </StackPanel>
-                                    </DockPanel>
-                                </StackPanel>
-                                <Grid Grid.Column="1">
-                                    <Rectangle Width="1" HorizontalAlignment="Left" Fill="#29000000" />
-                                    <Rectangle Width="1" HorizontalAlignment="Right" Fill="#1AFFFFFF" />
+                                            </Grid>
+                                        </TabItem>
+                                        <TabItem Header="Assigned">
+                                            <TextBlock Text="9 consultants are assigned to projects." />
+                                        </TabItem>
+                                        <TabItem Header="Suggestions">
+                                            <TextBlock Text="3 suggestions are awaiting a reply." />
+                                        </TabItem>
+                                    </TabControl>
                                 </Grid>
-                                <StackPanel Grid.Column="2" Margin="20,0,0,0">
-                                    <TextBlock Style="{StaticResource JetPack.Styles.TextBlock.Heading2}" Text="Notes" Margin="0,0,0,10" />
-                                    <TextBox Style="{StaticResource JetPack.Styles.TextBox.MultiLine.Dark}" Height="170"
-                                             Text="The contract has been extended to 30 June 2027. The customer wants an extra developer from January, ideally with WPF and MVVM experience. Next status meeting is Thursday in week 44 at 10 am." />
-                                </StackPanel>
+
+                                <Grid Grid.Row="2" Margin="0,22,0,0">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="2" />
+                                        <ColumnDefinition Width="240" />
+                                    </Grid.ColumnDefinitions>
+                                    <StackPanel Margin="220,0,20,0" MaxWidth="320" HorizontalAlignment="Left">
+                                        <TextBlock Style="{StaticResource JetPack.Styles.TextBlock.Heading2}" Text="Company Details" Margin="0,0,0,8" />
+                                        <Label Content="Name" />
+                                        <TextBox Text="Contoso Corporation" Width="300" HorizontalAlignment="Left" />
+                                        <Label Content="HR Contact" Margin="0,6,0,0" />
+                                        <TextBox Text="Heather A. Andrade" Width="300" HorizontalAlignment="Left" />
+                                        <Label Content="Phone" Margin="0,6,0,0" />
+                                        <TextBox Text="(555) 555-1234" Width="300" HorizontalAlignment="Left" />
+                                        <DockPanel Margin="0,16,0,0" Width="300" HorizontalAlignment="Left">
+                                            <CheckBox DockPanel.Dock="Right" Content="Keep Active" />
+                                            <StackPanel Orientation="Horizontal">
+                                                <Button Content="Send Message" Margin="0,0,8,0" />
+                                                <Button Content="Update" Style="{StaticResource JetPack.Styles.Button.Accent}" />
+                                            </StackPanel>
+                                        </DockPanel>
+                                    </StackPanel>
+                                    <Grid Grid.Column="1">
+                                        <Rectangle Width="1" HorizontalAlignment="Left" Fill="#29000000" />
+                                        <Rectangle Width="1" HorizontalAlignment="Right" Fill="#1AFFFFFF" />
+                                    </Grid>
+                                    <StackPanel Grid.Column="2" Margin="20,0,0,0">
+                                        <TextBlock Style="{StaticResource JetPack.Styles.TextBlock.Heading2}" Text="Notes" Margin="0,0,0,10" />
+                                        <TextBox Style="{StaticResource JetPack.Styles.TextBox.MultiLine.Dark}" Height="170"
+                                                 Text="The contract has been extended to 30 June 2027. The customer wants an extra developer from January, ideally with WPF and MVVM experience. Next status meeting is Thursday in week 44 at 10 am." />
+                                    </StackPanel>
+                                </Grid>
                             </Grid>
-                        </Grid>
-                    </TabItem>
-                    <TabItem Header="Orders" />
-                    <TabItem Header="Employees" />
-                    <TabItem Header="Timesheets" />
-                    <TabItem Header="Payroll" />
-                    <TabItem Header="Billing" />
-                </TabControl>
+                        </TabItem>
+                        <TabItem Header="Orders" />
+                        <TabItem Header="Employees" />
+                        <TabItem Header="Timesheets" />
+                        <TabItem Header="Payroll" />
+                        <TabItem Header="Billing" />
+                    </TabControl>
+                </DockPanel>
             </Border>
         </StackPanel>
     </ScrollViewer>

@@ -2,6 +2,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Media;
+using System.Windows.Media.Effects;
 
 namespace JetPack.Wpf.Controls;
 
@@ -87,16 +88,24 @@ public class Tile : Button
     }
 }
 
-/// <summary>Dims its content and shows a small "working" card on top while <see cref="IsBusy"/> is true.</summary>
+/// <summary>
+/// Blurs and dims its content and shows a small "working" card on top while <see cref="IsBusy"/> is true.
+/// The content is disabled while busy, so it takes no mouse or keyboard input.
+/// </summary>
+[TemplatePart(Name = PartContent, Type = typeof(UIElement))]
 public class BusyIndicator : ContentControl
 {
+    private const string PartContent = "PART_Content";
+
+    private UIElement? content;
+
     static BusyIndicator()
     {
         DefaultStyleKeyProperty.OverrideMetadata(typeof(BusyIndicator), new FrameworkPropertyMetadata(typeof(BusyIndicator)));
     }
 
     public static readonly DependencyProperty IsBusyProperty = DependencyProperty.Register(
-        nameof(IsBusy), typeof(bool), typeof(BusyIndicator), new PropertyMetadata(false));
+        nameof(IsBusy), typeof(bool), typeof(BusyIndicator), new PropertyMetadata(false, OnBlurChanged));
 
     public bool IsBusy
     {
@@ -111,6 +120,41 @@ public class BusyIndicator : ContentControl
     {
         get => GetValue(BusyContentProperty);
         set => SetValue(BusyContentProperty, value);
+    }
+
+    /// <summary>Blur radius applied to the content while busy; 0 turns the blur off.</summary>
+    public static readonly DependencyProperty BlurRadiusProperty = DependencyProperty.Register(
+        nameof(BlurRadius), typeof(double), typeof(BusyIndicator), new PropertyMetadata(3.0, OnBlurChanged));
+
+    public double BlurRadius
+    {
+        get => (double)GetValue(BlurRadiusProperty);
+        set => SetValue(BlurRadiusProperty, value);
+    }
+
+    public override void OnApplyTemplate()
+    {
+        if (content != null)
+        {
+            content.Effect = null;
+        }
+
+        base.OnApplyTemplate();
+
+        content = GetTemplateChild(PartContent) as UIElement;
+        UpdateBlur();
+    }
+
+    private static void OnBlurChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) => ((BusyIndicator)d).UpdateBlur();
+
+    // Set from code rather than a template trigger: a BlurEffect turns off ClearType, so the content
+    // should only carry it while busy, and the radius has to follow BlurRadius.
+    private void UpdateBlur()
+    {
+        if (content != null)
+        {
+            content.Effect = IsBusy && BlurRadius > 0 ? new BlurEffect { Radius = BlurRadius, KernelType = KernelType.Gaussian } : null;
+        }
     }
 }
 

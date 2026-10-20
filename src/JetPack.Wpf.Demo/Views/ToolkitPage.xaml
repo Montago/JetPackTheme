@@ -48,11 +48,15 @@
                 <HeaderedContentControl Style="{StaticResource Demo.Column}" Header="Rating · BusyIndicator" Tag="jp:Rating · jp:BusyIndicator">
                     <StackPanel Width="220" d:Demo.Spacing="14">
                         <jp:Rating Value="4" HorizontalAlignment="Center" />
-                        <jp:BusyIndicator IsBusy="True" BusyContent="Loading orders…" Height="110">
+                        <jp:BusyIndicator x:Name="Busy" IsBusy="True" BusyContent="Loading orders…" Height="128">
                             <Border Background="{DynamicResource JetPack.Brushes.Panel.Background}" CornerRadius="2.5" Padding="10">
-                                <TextBlock FontSize="11" Text="Customer: Fabrikam&#10;Contact: Ida Kragh&#10;Orders: 14&#10;Latest: 10/12/2026" />
+                                <StackPanel>
+                                    <TextBlock FontSize="11" Text="Customer: Fabrikam&#10;Contact: Ida Kragh&#10;Orders: 14&#10;Latest: 10/12/2026" />
+                                    <Button Content="Open orders" HorizontalAlignment="Left" Margin="0,8,0,0" />
+                                </StackPanel>
                             </Border>
                         </jp:BusyIndicator>
+                        <jp:ToggleSwitch Content="IsBusy" HorizontalAlignment="Center" IsChecked="{Binding IsBusy, ElementName=Busy}" />
                     </StackPanel>
                 </HeaderedContentControl>
             </WrapPanel>

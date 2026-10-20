@@ -251,6 +251,9 @@
     <!--
     Navigation tabs: the light link bar from the navigation template, with the
     selected link in accent and a small notch pointing down at the content.
+    The bar fills the width of the TabControl and, as in the original, the first link sits
+    flush with its left edge; placed directly under the title bar it runs edge to edge.
+    Tag is shown at the right end of the bar (branding, search, user).
     -->
     <Style x:Key="JetPack.Styles.TabItem.Navigation" TargetType="TabItem">
         <Setter Property="OverridesDefaultStyle" Value="True" />
@@ -304,7 +307,7 @@
         <Setter Property="SnapsToDevicePixels" Value="True" />
         <Setter Property="Foreground" Value="{DynamicResource JetPack.Brushes.Text}" />
         <Setter Property="Background" Value="{DynamicResource JetPack.Brushes.Static.Background}" />
-        <Setter Property="Padding" Value="16,0" />
+        <Setter Property="Padding" Value="0" />
         <Setter Property="ItemContainerStyle" Value="{StaticResource JetPack.Styles.TabItem.Navigation}" />
         <Setter Property="Template">
             <Setter.Value>
@@ -315,6 +318,10 @@
                             <RowDefinition Height="*" />
                         </Grid.RowDefinitions>
                         <Border Height="38" VerticalAlignment="Top" Background="{TemplateBinding Background}" Effect="{DynamicResource JetPack.Effects.ControlShadow}" />
+                        <Grid Height="38" Margin="{TemplateBinding Padding}" VerticalAlignment="Top">
+                            <ContentPresenter HorizontalAlignment="Right" VerticalAlignment="Center" Content="{TemplateBinding Tag}"
+                                              TextElement.Foreground="{DynamicResource JetPack.Brushes.Navigation.Inactive}" />
+                        </Grid>
                         <TabPanel x:Name="HeaderPanel" Margin="{TemplateBinding Padding}" Panel.ZIndex="1" IsItemsHost="True" KeyboardNavigation.TabIndex="1" />
                         <ContentPresenter x:Name="PART_SelectedContentHost" Grid.Row="1" ContentSource="SelectedContent" KeyboardNavigation.TabIndex="2" />
                     </Grid>
@@ -393,12 +400,12 @@
         <Setter Property="FontSize" Value="{DynamicResource JetPack.Font.Size.Small}" />
         <Setter Property="Foreground" Value="{DynamicResource JetPack.Brushes.Tab.Inactive.Foreground}" />
         <Setter Property="Background" Value="{DynamicResource JetPack.Brushes.Panel.Border}" />
-        <Setter Property="Padding" Value="6,2" />
+        <Setter Property="Padding" Value="2,3,2,4" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="StatusBar">
-                    <Border Background="{TemplateBinding Background}" BorderBrush="#FF47474B" BorderThickness="0,1,0,0" Padding="{TemplateBinding Padding}">
-                        <Border BorderBrush="#1AFFFFFF" BorderThickness="0,1,0,0" Margin="0,-2,0,0" Padding="0,2,0,0">
+                    <Border Background="{TemplateBinding Background}" BorderBrush="#FF47474B" BorderThickness="0,1,0,0">
+                        <Border BorderBrush="#1AFFFFFF" BorderThickness="0,1,0,0" Padding="{TemplateBinding Padding}">
                             <ItemsPresenter />
                         </Border>
                     </Border>
@@ -406,8 +413,9 @@
             </Setter.Value>
         </Setter>
     </Style>
+    <!-- Items are 16px apart and the outer ones 10px from the edges, as in the HTML draft -->
     <Style x:Key="JetPack.Styles.StatusBarItem" TargetType="StatusBarItem">
-        <Setter Property="Padding" Value="4,1" />
+        <Setter Property="Padding" Value="8,1" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
         <Setter Property="Template">
             <Setter.Value>
