@@ -144,6 +144,16 @@ internal static class GallerySnapshot
                 }
                 search.IsDropDownOpen = true;
                 break;
+            case JetPackGrid grid:
+                // The filter box of the first filtered column, as if its funnel had been clicked.
+                var header = Descendants(grid).OfType<DataGridColumnHeader>()
+                    .FirstOrDefault(h => h.Column != null && JetPackGrid.GetHasFilter(h.Column));
+                if (header?.Template?.FindName("PART_FilterPopup", header) is Popup filter)
+                {
+                    BindingOperations.SetBinding(filter, Popup.IsOpenProperty, new Binding { Source = true, Mode = BindingMode.OneWay });
+                    ((ToggleButton)header.Template.FindName("PART_FilterButton", header)).IsChecked = true;
+                }
+                break;
             case SplitButton { Menu: { } menu }:
                 OpenMenu(element, menu, PlacementMode.Bottom, 0, 2, menus);
                 break;

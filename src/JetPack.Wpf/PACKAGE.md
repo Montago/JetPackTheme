@@ -4,7 +4,7 @@ The JetPack theme from Microsoft's Silverlight 4 Application Themes, rebuilt as 
 library for WPF on .NET 8 and later. One resource dictionary gives every standard WPF control the
 JetPack look, and the library adds the controls a desktop app usually needs: `JetPackWindow`, in-window
 dialogs, `ToggleSwitch`, `NumericUpDown`, `Flyout`, `HamburgerMenu`, `InfoBar`, `RangeSlider`,
-`TimePicker`, `ColorPicker`, `AutoSuggestBox`, `SearchComboBox`, `BusyIndicator` and more.
+`TimePicker`, `ColorPicker`, `AutoSuggestBox`, `SearchComboBox`, `JetPackGrid`, `BusyIndicator` and more.
 
 ![JetPack for WPF](https://raw.githubusercontent.com/Montago/JetPackTheme/master/docs/screenshots/core.png)
 

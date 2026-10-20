@@ -111,6 +111,9 @@
                 <TabItem Header="Extras">
                     <v:ExtrasPage />
                 </TabItem>
+                <TabItem Header="Grid">
+                    <v:GridPage />
+                </TabItem>
                 <TabItem Header="Window">
                     <v:WindowPage />
                 </TabItem>

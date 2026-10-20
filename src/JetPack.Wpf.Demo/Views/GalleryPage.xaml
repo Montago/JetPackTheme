@@ -342,6 +342,45 @@
             </DataGrid>
         </ContentControl>
 
+        <ContentControl Style="{StaticResource Demo.Sample}" Tag="jetpackgrid">
+            <jp:JetPackGrid x:Name="CarGrid" Width="560" Height="200" SearchText="volvo auto" SearchDelay="0">
+                <jp:JetPackGrid.Columns>
+                    <jp:JetPackGridColumn Header="Make" Binding="{Binding Make}" Width="110" />
+                    <jp:JetPackGridColumn Header="Model" Binding="{Binding Model}" Width="100" />
+                    <jp:JetPackGridColumn Header="Body" Binding="{Binding Body}" Width="80" />
+                    <jp:JetPackGridColumn Header="Year" Binding="{Binding Year}" Width="62" />
+                    <jp:JetPackGridColumn Header="Gearbox" Binding="{Binding Gearbox}" Width="80" />
+                    <jp:JetPackGridColumn Header="Price" Binding="{Binding Price, StringFormat=N0}" Width="*" SortDirection="Descending" />
+                </jp:JetPackGrid.Columns>
+            </jp:JetPackGrid>
+        </ContentControl>
+
+        <ContentControl Style="{StaticResource Demo.Sample}" Tag="jetpackgrid-filter">
+            <jp:JetPackGrid x:Name="FilterGrid" Width="560" Height="200" SearchDelay="0" d:Demo.Open="True">
+                <jp:JetPackGrid.Columns>
+                    <jp:JetPackGridColumn Header="Make" Binding="{Binding Make}" Width="110" />
+                    <jp:JetPackGridColumn Header="Model" Binding="{Binding Model}" Width="100" />
+                    <jp:JetPackGridColumn Header="Body" Binding="{Binding Body}" Width="80" FilterText="estate suv" />
+                    <jp:JetPackGridColumn Header="Year" Binding="{Binding Year}" Width="62" />
+                    <jp:JetPackGridColumn Header="Gearbox" Binding="{Binding Gearbox}" Width="80" />
+                    <jp:JetPackGridColumn Header="Price" Binding="{Binding Price, StringFormat=N0}" Width="*" />
+                </jp:JetPackGrid.Columns>
+            </jp:JetPackGrid>
+        </ContentControl>
+
+        <ContentControl Style="{StaticResource Demo.Sample}" Tag="jetpackgrid-groups">
+            <jp:JetPackGrid x:Name="GroupGrid" Width="560" Height="220" GroupMemberPath="Make" SearchDelay="0">
+                <jp:JetPackGrid.Columns>
+                    <jp:JetPackGridColumn Header="Make" Binding="{Binding Make}" Width="110" />
+                    <jp:JetPackGridColumn Header="Model" Binding="{Binding Model}" Width="100" />
+                    <jp:JetPackGridColumn Header="Body" Binding="{Binding Body}" Width="80" />
+                    <jp:JetPackGridColumn Header="Year" Binding="{Binding Year}" Width="62" />
+                    <jp:JetPackGridColumn Header="Gearbox" Binding="{Binding Gearbox}" Width="80" />
+                    <jp:JetPackGridColumn Header="Price" Binding="{Binding Price, StringFormat=N0}" Width="*" />
+                </jp:JetPackGrid.Columns>
+            </jp:JetPackGrid>
+        </ContentControl>
+
         <ContentControl Style="{StaticResource Demo.Sample}" Tag="calendar">
             <Calendar x:Name="Calendar" />
         </ContentControl>

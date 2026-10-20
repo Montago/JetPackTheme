@@ -1,5 +1,11 @@
 <ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:c="clr-namespace:JetPack.Wpf.Controls"
+                    xmlns:h="clr-namespace:JetPack.Wpf.Helpers"
+                    xmlns:jp="urn:jetpack-wpf">
+
+    <!-- Binding paths use jp: rather than c:. They are resolved at run time, and a clr-namespace without an
+         assembly then points at the app's assembly, so (c:JetPackGrid.HeaderColumn) would not be found. -->
 
     <!-- Dark gradient header, light grey body with alternating rows, accent selection (SDKStyles.xaml) -->
 
@@ -235,10 +241,212 @@
         </Style.Triggers>
     </Style>
 
+    <!-- ===================== JetPackGrid ===================== -->
+    <!-- The DataGrid look plus a funnel button in each header that opens a value filter -->
+
+    <Style x:Key="JetPack.Styles.JetPackGrid.FilterButton" TargetType="ToggleButton">
+        <Setter Property="OverridesDefaultStyle" Value="True" />
+        <Setter Property="Focusable" Value="False" />
+        <Setter Property="Cursor" Value="Hand" />
+        <Setter Property="Width" Value="16" />
+        <Setter Property="Height" Value="16" />
+        <Setter Property="ToolTip" Value="Filter" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ToggleButton">
+                    <Border x:Name="Bg" Background="Transparent" CornerRadius="2">
+                        <Path x:Name="Glyph" Width="9" Height="8.5" Stretch="Fill" Fill="White" Opacity="0.5" Data="{DynamicResource JetPack.Geometry.Filter}" />
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="Glyph" Property="Opacity" Value="1" />
+                            <Setter TargetName="Bg" Property="Background" Value="#26FFFFFF" />
+                        </Trigger>
+                        <Trigger Property="IsChecked" Value="True">
+                            <Setter TargetName="Glyph" Property="Opacity" Value="1" />
+                            <Setter TargetName="Bg" Property="Background" Value="#40000000" />
+                        </Trigger>
+                        <DataTrigger Binding="{Binding (jp:JetPackGrid.HeaderColumn).(jp:JetPackGrid.HasFilter), RelativeSource={RelativeSource AncestorType=DataGridColumnHeader}}" Value="True">
+                            <Setter TargetName="Glyph" Property="Opacity" Value="1" />
+                            <Setter TargetName="Glyph" Property="Fill" Value="{DynamicResource JetPack.Brushes.Accent.Highlight}" />
+                        </DataTrigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="JetPack.Styles.JetPackGrid.ColumnHeader" TargetType="DataGridColumnHeader" BasedOn="{StaticResource JetPack.Styles.DataGridColumnHeader}">
+        <!-- Fills JetPackGrid.HeaderColumn, which the template binds to (DataGridColumnHeader.Column does not notify) -->
+        <Setter Property="c:JetPackGrid.TracksHeaderColumn" Value="{Binding DisplayIndex, RelativeSource={RelativeSource Self}}" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="DataGridColumnHeader">
+                    <Grid x:Name="Root">
+                        <Border x:Name="Bg" Background="{TemplateBinding Background}" />
+                        <Border x:Name="Hover" Background="#14FFFFFF" Visibility="Collapsed" />
+                        <Border BorderBrush="#40000000" BorderThickness="0,0,1,0" />
+                        <Rectangle Width="1" HorizontalAlignment="Left" Fill="{TemplateBinding SeparatorBrush}" Visibility="{TemplateBinding SeparatorVisibility}" />
+                        <DockPanel Margin="{TemplateBinding Padding}">
+                            <ToggleButton x:Name="PART_FilterButton" DockPanel.Dock="Right" Margin="4,-3,-4,-3" VerticalAlignment="Center" Visibility="Collapsed"
+                                          Style="{StaticResource JetPack.Styles.JetPackGrid.FilterButton}" />
+                            <Path x:Name="SortArrow" DockPanel.Dock="Right" Width="8" Height="4" Margin="6,0,0,0" VerticalAlignment="Center" Stretch="Fill"
+                                  Fill="White" Opacity="0.85" Visibility="Collapsed" Data="{DynamicResource JetPack.Geometry.ArrowUp}" />
+                            <ContentPresenter RecognizesAccessKey="True" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+                        </DockPanel>
+                        <Thumb x:Name="PART_LeftHeaderGripper" HorizontalAlignment="Left" Style="{StaticResource JetPack.Styles.DataGrid.Gripper}" />
+                        <Thumb x:Name="PART_RightHeaderGripper" HorizontalAlignment="Right" Style="{StaticResource JetPack.Styles.DataGrid.Gripper}" />
+                        <Popup x:Name="PART_FilterPopup" AllowsTransparency="True" Placement="Bottom" PlacementTarget="{Binding ElementName=Root}" StaysOpen="False"
+                               Focusable="False" PopupAnimation="Slide" IsOpen="{Binding IsChecked, ElementName=PART_FilterButton, Mode=TwoWay}">
+                            <Grid Margin="0,0,6,6" Width="240" SnapsToDevicePixels="True"
+                                  TextElement.Foreground="{DynamicResource JetPack.Brushes.Control.Foreground}" TextElement.FontWeight="Normal">
+                                <Border Background="{DynamicResource JetPack.Brushes.Input.Background}" BorderBrush="{DynamicResource JetPack.Brushes.Control.Border}"
+                                        BorderThickness="1,0,1,1" CornerRadius="0,0,4,4" Effect="{DynamicResource JetPack.Effects.PopupShadow}" />
+                                <StackPanel Margin="10,8,10,10">
+                                    <TextBlock Margin="0,0,0,6" FontWeight="Bold" TextTrimming="CharacterEllipsis"
+                                               Text="{Binding (jp:JetPackGrid.HeaderColumn).Header, RelativeSource={RelativeSource TemplatedParent}, Mode=OneWay, StringFormat='Filter {0}'}" />
+                                    <!-- The column's values to tick, when it has few enough of them (JetPackGrid.FilterListLimit) -->
+                                    <Border x:Name="FilterList" Margin="0,0,0,8" BorderBrush="{DynamicResource JetPack.Brushes.DataGrid.GridLines}" BorderThickness="0,0,0,1" Padding="0,0,0,6">
+                                        <ScrollViewer MaxHeight="220" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Focusable="False">
+                                            <ItemsControl Focusable="False"
+                                                          ItemsSource="{Binding (jp:JetPackGrid.HeaderColumn).(jp:JetPackGrid.FilterOptions), RelativeSource={RelativeSource TemplatedParent}}">
+                                                <ItemsControl.ItemTemplate>
+                                                    <DataTemplate>
+                                                        <CheckBox Margin="0,2" IsChecked="{Binding IsChecked}" Style="{DynamicResource JetPack.Styles.CheckBox.OnLight}">
+                                                            <TextBlock TextTrimming="CharacterEllipsis">
+                                                                <Run Text="{Binding Text, Mode=OneWay}" />
+                                                                <Run Text="{Binding Count, Mode=OneWay, StringFormat='({0:N0})'}" Foreground="#FF808080" />
+                                                            </TextBlock>
+                                                        </CheckBox>
+                                                    </DataTemplate>
+                                                </ItemsControl.ItemTemplate>
+                                            </ItemsControl>
+                                        </ScrollViewer>
+                                    </Border>
+                                    <TextBox x:Name="PART_FilterBox" h:TextBoxHelper.Watermark="Values, e.g. volvo, saab" h:TextBoxHelper.ClearTextButton="True"
+                                             Text="{Binding (jp:JetPackGrid.HeaderColumn).(jp:JetPackGrid.FilterText), RelativeSource={RelativeSource TemplatedParent}, UpdateSourceTrigger=PropertyChanged}" />
+                                    <TextBlock Margin="0,6,0,0" TextWrapping="Wrap" Opacity="0.7" FontSize="{DynamicResource JetPack.Font.Size.Small}"
+                                               Text="Tick values or type them, separated by spaces or commas. Quote values with spaces; * matches any text." />
+                                    <StackPanel Margin="0,10,0,0" Orientation="Horizontal" HorizontalAlignment="Right">
+                                        <Button MinWidth="64" Content="Clear" Command="{x:Static c:JetPackGrid.ClearFilterCommand}"
+                                                CommandParameter="{Binding (jp:JetPackGrid.HeaderColumn), RelativeSource={RelativeSource TemplatedParent}}" />
+                                        <Button MinWidth="64" Margin="6,0,0,0" Content="Done" Style="{DynamicResource JetPack.Styles.Button.Accent}"
+                                                Command="{x:Static c:JetPackGrid.CloseFilterCommand}" CommandParameter="{Binding RelativeSource={RelativeSource TemplatedParent}}" />
+                                    </StackPanel>
+                                </StackPanel>
+                            </Grid>
+                        </Popup>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="Hover" Property="Visibility" Value="Visible" />
+                        </Trigger>
+                        <Trigger Property="SortDirection" Value="Ascending">
+                            <Setter TargetName="SortArrow" Property="Visibility" Value="Visible" />
+                        </Trigger>
+                        <Trigger Property="SortDirection" Value="Descending">
+                            <Setter TargetName="SortArrow" Property="Visibility" Value="Visible" />
+                            <Setter TargetName="SortArrow" Property="Data" Value="{DynamicResource JetPack.Geometry.ArrowDown}" />
+                        </Trigger>
+                        <!-- The filler header after the last column has no Column, so it never gets the button -->
+                        <DataTrigger Binding="{Binding (jp:JetPackGrid.HeaderColumn).(jp:JetPackGrid.IsFilterable), RelativeSource={RelativeSource Self}}" Value="True">
+                            <Setter TargetName="PART_FilterButton" Property="Visibility" Value="Visible" />
+                        </DataTrigger>
+                        <!-- Too many different values (or none read yet): only the text box -->
+                        <DataTrigger Binding="{Binding (jp:JetPackGrid.HeaderColumn).(jp:JetPackGrid.FilterOptions), RelativeSource={RelativeSource Self}}" Value="{x:Null}">
+                            <Setter TargetName="FilterList" Property="Visibility" Value="Collapsed" />
+                        </DataTrigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- Group header row: light raised strip with an expand arrow, the group's value and its row count -->
+    <Style x:Key="JetPack.Styles.JetPackGrid.GroupHeader" TargetType="ToggleButton">
+        <Setter Property="OverridesDefaultStyle" Value="True" />
+        <Setter Property="Focusable" Value="False" />
+        <Setter Property="Foreground" Value="{DynamicResource JetPack.Brushes.Header.Foreground}" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ToggleButton">
+                    <Border x:Name="Bg" Background="{DynamicResource JetPack.Brushes.Static.Background}" BorderBrush="#30000000" BorderThickness="0,0,0,1" SnapsToDevicePixels="True">
+                        <Border BorderBrush="{DynamicResource JetPack.Brushes.Control.Highlight}" BorderThickness="0,1,0,0">
+                            <StackPanel Orientation="Horizontal" Margin="6,4">
+                                <Path x:Name="Arrow" Width="8" Height="4" Margin="0,0,7,0" VerticalAlignment="Center" Stretch="Fill"
+                                      Fill="{DynamicResource JetPack.Brushes.Control.Glyph.Dark}" Data="{DynamicResource JetPack.Geometry.ArrowDown}" />
+                                <TextBlock FontWeight="Bold" Text="{Binding Name}" />
+                                <TextBlock Margin="6,0,0,0" Opacity="0.65" Text="{Binding ItemCount, StringFormat='({0:N0})'}" />
+                            </StackPanel>
+                        </Border>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="Bg" Property="Background" Value="{DynamicResource JetPack.Brushes.Static.Background.MouseOver}" />
+                        </Trigger>
+                        <Trigger Property="IsChecked" Value="False">
+                            <Setter TargetName="Arrow" Property="Width" Value="4" />
+                            <Setter TargetName="Arrow" Property="Height" Value="8" />
+                            <Setter TargetName="Arrow" Property="Margin" Value="2,0,9,0" />
+                            <Setter TargetName="Arrow" Property="Data" Value="{DynamicResource JetPack.Geometry.ArrowRight}" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <GroupStyle x:Key="JetPack.GroupStyles.JetPackGrid">
+        <GroupStyle.ContainerStyle>
+            <Style TargetType="GroupItem">
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="GroupItem">
+                            <StackPanel>
+                                <ToggleButton x:Name="Header" IsChecked="True" Style="{StaticResource JetPack.Styles.JetPackGrid.GroupHeader}" />
+                                <ItemsPresenter x:Name="Rows" />
+                            </StackPanel>
+                            <ControlTemplate.Triggers>
+                                <Trigger SourceName="Header" Property="IsChecked" Value="False">
+                                    <Setter TargetName="Rows" Property="Visibility" Value="Collapsed" />
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+        </GroupStyle.ContainerStyle>
+    </GroupStyle>
+
+    <Style x:Key="JetPack.Styles.JetPackGrid" TargetType="c:JetPackGrid" BasedOn="{StaticResource JetPack.Styles.DataGrid}">
+        <Setter Property="IsReadOnly" Value="True" />
+        <Setter Property="CanUserAddRows" Value="False" />
+        <Setter Property="CanUserDeleteRows" Value="False" />
+        <Setter Property="EnableRowVirtualization" Value="True" />
+        <Setter Property="EnableColumnVirtualization" Value="True" />
+        <Setter Property="VirtualizingPanel.VirtualizationMode" Value="Recycling" />
+        <Setter Property="VirtualizingPanel.IsVirtualizingWhenGrouping" Value="True" />
+        <Setter Property="HighlightBrush" Value="{DynamicResource JetPack.Brushes.Accent.Highlight}" />
+        <Setter Property="HighlightForeground" Value="{DynamicResource JetPack.Brushes.Control.Foreground}" />
+        <Setter Property="ColumnHeaderStyle" Value="{StaticResource JetPack.Styles.JetPackGrid.ColumnHeader}" />
+        <Style.Resources>
+            <!-- An implicit DataGridColumnHeader style in the app wins over ColumnHeaderStyle; this one is found first -->
+            <Style TargetType="DataGridColumnHeader" BasedOn="{StaticResource JetPack.Styles.JetPackGrid.ColumnHeader}" />
+        </Style.Resources>
+        <Style.Triggers>
+            <!-- Keep virtualizing with groups (the plain DataGrid style turns it off) -->
+            <Trigger Property="IsGrouping" Value="True">
+                <Setter Property="ScrollViewer.CanContentScroll" Value="True" />
+                <Setter Property="VirtualizingPanel.ScrollUnit" Value="Pixel" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
     <Style TargetType="DataGridColumnHeader" BasedOn="{StaticResource JetPack.Styles.DataGridColumnHeader}" />
     <Style TargetType="DataGridRowHeader" BasedOn="{StaticResource JetPack.Styles.DataGridRowHeader}" />
     <Style TargetType="DataGridCell" BasedOn="{StaticResource JetPack.Styles.DataGridCell}" />
     <Style TargetType="DataGridRow" BasedOn="{StaticResource JetPack.Styles.DataGridRow}" />
     <Style TargetType="DataGrid" BasedOn="{StaticResource JetPack.Styles.DataGrid}" />
+    <Style TargetType="c:JetPackGrid" BasedOn="{StaticResource JetPack.Styles.JetPackGrid}" />
 
 </ResourceDictionary>

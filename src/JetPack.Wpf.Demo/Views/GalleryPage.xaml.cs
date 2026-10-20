@@ -1,3 +1,4 @@
+using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -12,6 +13,13 @@ public partial class GalleryPage : UserControl
         Grid.ItemsSource = SdkPage.Timesheets;
         Grid.SelectedIndex = 1;
         List.ItemsSource = SdkPage.Timesheets;
+
+        // Each grid gets its own array: grids on the same collection share its view, filters included.
+        CarGrid.ItemsSource = CarData.Cars.Where(c => c.Make is "Volvo" or "Toyota" or "Kia").Take(60).ToArray();
+        CarGrid.Items.SortDescriptions.Add(new SortDescription(nameof(Car.Price), ListSortDirection.Descending));
+        CarGrid.SelectedIndex = 1;
+        FilterGrid.ItemsSource = CarData.Cars.Take(80).ToArray();
+        GroupGrid.ItemsSource = CarData.Cars.Where(c => c.Make is "Skoda" or "Tesla").Take(14).OrderBy(c => c.Make).ToArray();
 
         // Fixed dates keep the pictures stable from run to run.
         var day = new DateTime(2026, 10, 16);

@@ -242,6 +242,10 @@ variants and building blocks; use them with `Style="{StaticResource ...}"` or as
 | `JetPack.Styles.DataGridColumnHeader` | `DataGridColumnHeader` | Controls.DataGrid.xaml |
 | `JetPack.Styles.DataGridRow` | `DataGridRow` | Controls.DataGrid.xaml |
 | `JetPack.Styles.DataGridRowHeader` | `DataGridRowHeader` | Controls.DataGrid.xaml |
+| `JetPack.Styles.JetPackGrid` | `c:JetPackGrid` | Controls.DataGrid.xaml |
+| `JetPack.Styles.JetPackGrid.ColumnHeader` | `DataGridColumnHeader` | Controls.DataGrid.xaml |
+| `JetPack.Styles.JetPackGrid.FilterButton` | `ToggleButton` | Controls.DataGrid.xaml |
+| `JetPack.Styles.JetPackGrid.GroupHeader` | `ToggleButton` | Controls.DataGrid.xaml |
 | `JetPack.Styles.Button.Inline` | `ButtonBase` | Controls.JetPack.xaml |
 | `JetPack.Styles.ColorPicker.Swatch` | `ListBoxItem` | Controls.JetPack.xaml |
 | `JetPack.Styles.DropDownButton.Accent` | `c:DropDownButton` | Controls.JetPack.xaml |

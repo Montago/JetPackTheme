@@ -10,6 +10,7 @@
     <Geometry x:Key="JetPack.Geometry.Close">M0,0 L8,8 M8,0 L0,8</Geometry>
     <Geometry x:Key="JetPack.Geometry.Notch">M0,0 L15,0 L7.5,9 z</Geometry>
     <Geometry x:Key="JetPack.Geometry.ErrorCorner">M0,0 L8,0 L8,8 z</Geometry>
+    <Geometry x:Key="JetPack.Geometry.Filter">M0,0 L9,0 L5.5,4 L5.5,8.5 L3.5,7.5 L3.5,4 z</Geometry>
 
     <!-- Keyboard focus: 1px accent ring (transparent when ThemeManager.ShowFocusVisuals is off) -->
     <Style x:Key="JetPack.Styles.FocusVisual">

@@ -1,0 +1,159 @@
+<UserControl x:Class="JetPack.Wpf.Demo.Views.GridPage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="clr-namespace:JetPack.Wpf.Demo"
+             xmlns:jp="urn:jetpack-wpf">
+    <UserControl.Resources>
+        <Style x:Key="Right" TargetType="TextBlock">
+            <Setter Property="HorizontalAlignment" Value="Right" />
+        </Style>
+    </UserControl.Resources>
+
+    <Grid Margin="0,22,0,14">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <TextBlock MaxWidth="900"
+                   Margin="0,0,0,16"
+                   Style="{StaticResource Demo.Intro}"
+                   Text="jp:JetPackGrid with 3,000 used cars in 20 columns. Every word of the search must be found somewhere in a row, and the hits are marked. Click a header to sort ascending, descending and back to the stock order; the funnel keeps only the rows with the values you list. Rows and columns are virtualized." />
+
+        <DockPanel Grid.Row="1"
+                   Margin="0,0,0,10"
+                   LastChildFill="False">
+            <TextBox x:Name="Search"
+                     Width="300"
+                     jp:TextBoxHelper.ClearTextButton="True"
+                     jp:TextBoxHelper.Watermark="Search, e.g. volvo estate automatic"
+                     Text="volvo automatic" />
+            <TextBlock Margin="20,0,8,0"
+                       VerticalAlignment="Center"
+                       Text="Group by" />
+            <ComboBox x:Name="GroupBy"
+                      Width="110"
+                      SelectedIndex="0">
+                <ComboBoxItem Content="Nothing" Tag="" />
+                <ComboBoxItem Content="Make" Tag="Make" />
+                <ComboBoxItem Content="Body" Tag="Body" />
+                <ComboBoxItem Content="Fuel" Tag="Fuel" />
+                <ComboBoxItem Content="Dealer" Tag="Dealer" />
+            </ComboBox>
+            <CheckBox x:Name="Multi"
+                      Margin="20,0,0,0"
+                      VerticalAlignment="Center"
+                      Checked="OnMultiChanged"
+                      Content="Select several rows"
+                      Unchecked="OnMultiChanged" />
+            <Button Click="OnCopyVisible"
+                    Content="Copy visible rows"
+                    DockPanel.Dock="Right"
+                    ToolTip="Copies the rows left after the search and filters as tab-separated text" />
+            <Button Margin="0,0,8,0"
+                    Command="{x:Static jp:JetPackGrid.ClearFilterCommand}"
+                    CommandTarget="{Binding ElementName=Cars}"
+                    Content="Clear filters"
+                    DockPanel.Dock="Right" />
+        </DockPanel>
+
+        <jp:JetPackGrid x:Name="Cars"
+                        Grid.Row="2"
+                        Filtered="OnFiltered"
+                        FrozenColumnCount="2"
+                        GroupMemberPath="{Binding SelectedItem.Tag, ElementName=GroupBy}"
+                        ItemsSource="{x:Static d:CarData.Cars}"
+                        SearchText="{Binding Text, ElementName=Search}"
+                        SelectedItemChanged="OnSelectedItemChanged"
+                        SelectionMode="Single">
+            <jp:JetPackGrid.Columns>
+                <jp:JetPackGridColumn Width="84"
+                                      Binding="{Binding StockNo}"
+                                      Header="Stock no." />
+                <jp:JetPackGridColumn Width="100"
+                                      Binding="{Binding Make}"
+                                      Header="Make" />
+                <jp:JetPackGridColumn Width="120"
+                                      Binding="{Binding Model}"
+                                      Header="Model" />
+                <jp:JetPackGridColumn Width="75"
+                                      Binding="{Binding Trim}"
+                                      Header="Trim" />
+                <jp:JetPackGridColumn Width="85"
+                                      Binding="{Binding Body}"
+                                      FilterText="estate suv"
+                                      Header="Body" />
+                <jp:JetPackGridColumn Width="62"
+                                      Binding="{Binding Year}"
+                                      ElementStyle="{StaticResource Right}"
+                                      Header="Year" />
+                <jp:JetPackGridColumn Width="108"
+                                      Binding="{Binding Mileage, StringFormat=N0}"
+                                      ElementStyle="{StaticResource Right}"
+                                      Header="Mileage (km)"
+                                      IsSearchable="False" />
+                <jp:JetPackGridColumn Width="70"
+                                      Binding="{Binding Fuel}"
+                                      Header="Fuel" />
+                <jp:JetPackGridColumn Width="80"
+                                      Binding="{Binding Gearbox}"
+                                      Header="Gearbox" />
+                <jp:JetPackGridColumn Width="64"
+                                      Binding="{Binding Drive}"
+                                      Header="Drive" />
+                <jp:JetPackGridColumn Width="72"
+                                      Binding="{Binding Power, StringFormat='{}{0} hp'}"
+                                      ElementStyle="{StaticResource Right}"
+                                      Header="Power" />
+                <jp:JetPackGridColumn Width="76"
+                                      Binding="{Binding Co2, StringFormat='{}{0} g/km'}"
+                                      ElementStyle="{StaticResource Right}"
+                                      Header="CO₂"
+                                      IsSearchable="False" />
+                <jp:JetPackGridColumn Width="80"
+                                      Binding="{Binding Colour}"
+                                      Header="Colour" />
+                <jp:JetPackGridColumn Width="66"
+                                      Binding="{Binding Doors}"
+                                      ElementStyle="{StaticResource Right}"
+                                      Header="Doors"
+                                      IsSearchable="False" />
+                <jp:JetPackGridColumn Width="64"
+                                      Binding="{Binding Seats}"
+                                      ElementStyle="{StaticResource Right}"
+                                      Header="Seats"
+                                      IsSearchable="False" />
+                <jp:JetPackGridColumn Width="74"
+                                      Binding="{Binding Owners}"
+                                      ElementStyle="{StaticResource Right}"
+                                      Header="Owners"
+                                      IsSearchable="False" />
+                <jp:JetPackGridColumn Width="96"
+                                      Binding="{Binding Registered, StringFormat=d}"
+                                      ElementStyle="{StaticResource Right}"
+                                      Header="Registered"
+                                      IsSearchable="False" />
+                <jp:JetPackGridColumn Width="96"
+                                      Binding="{Binding Price, StringFormat=N0}"
+                                      ElementStyle="{StaticResource Right}"
+                                      Header="Price (EUR)"
+                                      IsSearchable="False" />
+                <jp:JetPackGridColumn Width="90"
+                                      Binding="{Binding Dealer}"
+                                      Header="Dealer" />
+                <jp:JetPackGridColumn Width="84"
+                                      Binding="{Binding Status}"
+                                      Header="Status" />
+            </jp:JetPackGrid.Columns>
+        </jp:JetPackGrid>
+
+        <DockPanel Grid.Row="3" Margin="0,8,0,0">
+            <TextBlock x:Name="Selection"
+                       DockPanel.Dock="Right"
+                       Foreground="{DynamicResource JetPack.Brushes.Text.Soft}" />
+            <TextBlock x:Name="Status" Foreground="{DynamicResource JetPack.Brushes.Text.Soft}" />
+        </DockPanel>
+    </Grid>
+</UserControl>

@@ -73,6 +73,7 @@ When you replace the template of a JetPack control, keep these named parts:
 | `AutoSuggestBox` | `PART_TextBox` (TextBox), `PART_Popup` (Popup), `PART_List` (ListBox) |
 | `SearchComboBox` | `PART_TextBox` (TextBox), `PART_Popup` (Popup), `PART_List` (ListBox) |
 | `BusyIndicator` | `PART_Content` (UIElement; blurred while busy) |
+| `JetPackGrid` column header | `PART_FilterButton` (ToggleButton), `PART_FilterPopup` (Popup), `PART_FilterBox` (TextBox). Bind to the header's column through `jp:JetPackGrid.HeaderColumn`. |
 
 The standard WPF controls keep their usual parts (`PART_ContentHost`, `PART_Track`, `PART_Popup`,
 `PART_EditableTextBox`, and so on).

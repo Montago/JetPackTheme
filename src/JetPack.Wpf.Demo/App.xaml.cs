@@ -66,6 +66,7 @@ public partial class App : Application
                 await SaveAsync(window, Path.Combine(folder, $"{i + 1:00}-{name}.png"));
             }
 
+            var windowPage = pages.Items.Cast<TabItem>().ToList().FindIndex(t => Equals(t.Header, "Window"));
             pages.SelectedIndex = 0;
             ThemeManager.ChangeAccent(JetPackAccent.Orange);
             await SaveAsync(window, Path.Combine(folder, "20-core-orange.png"));
@@ -73,7 +74,7 @@ public partial class App : Application
             await SaveAsync(window, Path.Combine(folder, "21-core-blue.png"));
             ThemeManager.ChangeAccent(JetPackAccent.Green);
 
-            pages.SelectedIndex = 4;
+            pages.SelectedIndex = windowPage;
             window.TitleBarMode = TitleBarMode.Light;
             await SaveAsync(window, Path.Combine(folder, "22-window-light.png"));
             window.TitleBarMode = TitleBarMode.Dark;
@@ -82,7 +83,7 @@ public partial class App : Application
             window.UseNavigationBar(true);
             await SaveAsync(window, Path.Combine(folder, "23-navigation-bar.png"));
             window.UseNavigationBar(false);
-            pages.SelectedIndex = 4;
+            pages.SelectedIndex = windowPage;
 
             var dialog = window.ShowMessageAsync("Delete company?",
                 "Contoso Corporation and 3 linked placements will be deleted permanently. Timesheets that have already been billed stay in the archive.",
