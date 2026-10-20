@@ -17,7 +17,7 @@ public partial class ToolkitPage : UserControl
     private void DrawChart()
     {
         int[][] data = { new[] { 120, 80, 60 }, new[] { 150, 95, 70 }, new[] { 135, 110, 55 }, new[] { 170, 120, 80 } };
-        string[] quarters = { "K1", "K2", "K3", "K4" };
+        string[] quarters = { "Q1", "Q2", "Q3", "Q4" };
         const double bottom = 135, scale = 125.0 / 200, left = 30;
         var grid = new SolidColorBrush(Color.FromArgb(0x1A, 0, 0, 0));
         var label = new SolidColorBrush(Color.FromRgb(0x60, 0x60, 0x60));
