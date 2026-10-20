@@ -1,6 +1,7 @@
 <ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:h="clr-namespace:JetPack.Wpf.Helpers">
+                    xmlns:h="clr-namespace:JetPack.Wpf.Helpers"
+                    xmlns:jp="urn:jetpack-wpf">
 
     <!-- ===================== ToolTip ===================== -->
     <!-- Accent-button gradient with a light overlay and a highlighted top edge -->
@@ -286,7 +287,7 @@
                                 <Condition Property="IsMouseOver" Value="True" />
                                 <Condition Property="IsSelected" Value="False" />
                             </MultiTrigger.Conditions>
-                            <Setter TargetName="Bd" Property="Background" Value="{Binding (h:ControlHelper.MouseOverBackground), RelativeSource={RelativeSource TemplatedParent}}" />
+                            <Setter TargetName="Bd" Property="Background" Value="{Binding (jp:ControlHelper.MouseOverBackground), RelativeSource={RelativeSource TemplatedParent}}" />
                         </MultiTrigger>
                         <Trigger Property="IsSelected" Value="True">
                             <Setter TargetName="Bd" Property="Background" Value="{DynamicResource JetPack.Brushes.Accent.Selection}" />

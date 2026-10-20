@@ -128,6 +128,14 @@ src/JetPack.Wpf.Demo/bin/Debug/net8.0-windows/JetPack.Wpf.Demo.exe --snapshot <f
 - A Binding inside a ControlTemplate cannot be removed with `BindingOperations.ClearBinding` (that
   only clears local values); setting the property routes through a two-way template binding. Put a
   local binding on top instead (see `GallerySnapshot.ForceOpen`).
+- **Attached properties in binding paths need `jp:` (`urn:jetpack-wpf`), not `c:`/`h:`.** A path such
+  as `{Binding (h:ControlHelper.X)}` is resolved at run time, and a `clr-namespace` without
+  `assembly=` then points at the app's assembly, so the binding silently finds nothing. Adding
+  `assembly=JetPack.Wpf` breaks the build instead (the compiler cannot load its own assembly).
+  Setters, `TemplateBinding` and `TargetType` are resolved at compile time and are fine with `c:`/`h:`.
+- **An implicit `DataGridColumnHeader` style wins over `DataGrid.ColumnHeaderStyle`**, and
+  `DataGridColumnHeader.Column` does not notify. JetPackGrid puts its header style in
+  `Style.Resources` and binds through `JetPackGrid.HeaderColumn`.
 - Effects (DropShadowEffect) on text turn off ClearType; put shadows on a separate background
   Border rather than on content, except for the deliberate text emboss/glow.
 
