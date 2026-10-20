@@ -3,9 +3,12 @@
 #   git push origin v0.1.0
 #
 # - GitHub Packages (https://github.com/Montago/JetPackTheme/packages): always, using the workflow token.
-# - nuget.org: only when the repository secret NUGET_API_KEY exists (an API key with push rights for
-#   JetPack.Wpf). Without it the step is skipped.
-# - A GitHub release with the .nupkg and .snupkg attached.
+# - nuget.org: with Trusted Publishing (no API key stored anywhere). Runs only when the repository
+#   secret NUGET_USER holds the nuget.org profile name, and needs a Trusted Publishing policy on
+#   nuget.org: owner Montago, repository JetPackTheme, workflow file release.yml.
+#   https://learn.microsoft.com/nuget/nuget-org/trusted-publishing
+# - A GitHub release with the .nupkg and .snupkg attached (assets are replaced if the release exists,
+#   so the workflow can be re-run for the same tag).
 
 name: Release
 
@@ -16,12 +19,13 @@ on:
 permissions:
   contents: write
   packages: write
+  id-token: write # OIDC token for nuget.org Trusted Publishing
 
 jobs:
   publish:
     runs-on: windows-latest
     env:
-      NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
+      NUGET_USER: ${{ secrets.NUGET_USER }}
     steps:
       - uses: actions/checkout@v4
 
@@ -45,16 +49,29 @@ jobs:
             dotnet nuget push "$pkg" --source "https://nuget.pkg.github.com/${GITHUB_REPOSITORY_OWNER}/index.json" --api-key "${{ github.token }}" --no-symbols --skip-duplicate
           done
 
+      # Exchanges the GitHub OIDC token for a nuget.org API key that is valid for one hour
+      - name: nuget.org login (Trusted Publishing)
+        if: env.NUGET_USER != ''
+        id: nuget-login
+        uses: NuGet/login@v1
+        with:
+          user: ${{ secrets.NUGET_USER }}
+
       - name: Push to nuget.org
-        if: env.NUGET_API_KEY != ''
+        if: env.NUGET_USER != ''
         shell: bash
         run: |
           for pkg in artifacts/*.nupkg; do
-            dotnet nuget push "$pkg" --source https://api.nuget.org/v3/index.json --api-key "$NUGET_API_KEY" --skip-duplicate
+            dotnet nuget push "$pkg" --source https://api.nuget.org/v3/index.json --api-key "${{ steps.nuget-login.outputs.NUGET_API_KEY }}" --skip-duplicate
           done
 
       - name: GitHub release
         shell: bash
         env:
           GH_TOKEN: ${{ github.token }}
-        run: gh release create "$GITHUB_REF_NAME" artifacts/* --title "JetPack.Wpf ${{ steps.version.outputs.value }}" --generate-notes
+        run: |
+          if gh release view "$GITHUB_REF_NAME" > /dev/null 2>&1; then
+            gh release upload "$GITHUB_REF_NAME" artifacts/* --clobber
+          else
+            gh release create "$GITHUB_REF_NAME" artifacts/* --title "JetPack.Wpf ${{ steps.version.outputs.value }}" --generate-notes
+          fi
