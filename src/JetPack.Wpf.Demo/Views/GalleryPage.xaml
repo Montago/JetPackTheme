@@ -625,6 +625,29 @@
             </Grid>
         </ContentControl>
 
+        <ContentControl Style="{StaticResource Demo.Sample}" Tag="flyout-top">
+            <Grid Width="380" Height="140" ClipToBounds="True">
+                <Border BorderBrush="#FF3D3E42" BorderThickness="1" CornerRadius="3" Background="{DynamicResource JetPack.Brushes.Window.Background}" />
+                <TextBlock Margin="12" Style="{StaticResource Demo.State}" VerticalAlignment="Bottom" HorizontalAlignment="Left" Text="Page content" />
+                <jp:Flyout Position="Top" Header="Update available" IsOpen="True" Padding="12,8">
+                    <DockPanel>
+                        <Button DockPanel.Dock="Right" Content="Restart" Style="{StaticResource JetPack.Styles.Button.Accent}" Margin="8,0,0,0" VerticalAlignment="Center" />
+                        <TextBlock Text="Version 2.4 is ready to install." VerticalAlignment="Center" />
+                    </DockPanel>
+                </jp:Flyout>
+            </Grid>
+        </ContentControl>
+
+        <ContentControl Style="{StaticResource Demo.Sample}" Tag="flyout-bottom">
+            <Grid Width="380" Height="140" ClipToBounds="True">
+                <Border BorderBrush="#FF3D3E42" BorderThickness="1" CornerRadius="3" Background="{DynamicResource JetPack.Brushes.Window.Background}" />
+                <TextBlock Margin="12" Style="{StaticResource Demo.State}" HorizontalAlignment="Left" Text="Page content" />
+                <jp:Flyout Position="Bottom" Header="Saved" IsOpen="True" Padding="12,8">
+                    <TextBlock Text="The timesheet has been sent for approval." />
+                </jp:Flyout>
+            </Grid>
+        </ContentControl>
+
         <!-- Typography -->
         <ContentControl Style="{StaticResource Demo.Sample}" Tag="typography">
             <StackPanel Width="440">

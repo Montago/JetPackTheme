@@ -87,7 +87,7 @@ When maximised, the window keeps its content inside the screen's work area (the 
 
 ![Flyout](screenshots/controls/flyout.png)
 
-Put `Flyout` panels in the `Flyouts` layer. They cover the content area from the right (or left) and
+Put `Flyout` panels in the `Flyouts` layer. They cover the content area from one of its edges and
 slide in when `IsOpen` becomes true:
 
 ```xml
@@ -109,12 +109,45 @@ private void OnSettings(object sender, RoutedEventArgs e) => SettingsFlyout.IsOp
 | Property | Type | Default | Description |
 | --- | --- | --- | --- |
 | `IsOpen` | `bool` | `false` | Two-way bindable. |
-| `Position` | `FlyoutPosition` | `Right` | `Right` or `Left`; sets the alignment and slide direction. |
+| `Position` | `FlyoutPosition` | `Right` | `Right`, `Left`, `Top` or `Bottom`; sets the alignment, the slide direction and which way the back button points. |
 | `IsClosable` | `bool` | `true` | Shows the round back button next to the header. |
 | `Header` | `object` | | Bold title next to the back button. |
+| `IsAutoCloseEnabled` | `bool` | `false` | Closes the flyout `AutoCloseInterval` after it opens, as in MahApps. Unlike MahApps, the timer stops while the mouse is over the flyout and starts again when it leaves. |
+| `AutoCloseInterval` | `long` | `5000` | Time in milliseconds before an auto-closing flyout closes. |
+
+### Top and bottom
+
+`Top` and `Bottom` flyouts span the full width and take the height of their content (the default
+`Width` of 300 only applies to `Right` and `Left`). A bottom flyout with `IsAutoCloseEnabled` works
+as a short notification; a top flyout without it as a message that stays until it is dismissed, such
+as an available update:
+
+![Top flyout](screenshots/controls/flyout-top.png)
+
+```xml
+<jp:Flyout x:Name="UpdateFlyout" Position="Top" Header="Update available">
+    <DockPanel>
+        <Button DockPanel.Dock="Right" Content="Restart" Style="{StaticResource JetPack.Styles.Button.Accent}" />
+        <TextBlock Text="Version 2.4 is ready to install." VerticalAlignment="Center" />
+    </DockPanel>
+</jp:Flyout>
+```
+
+![Bottom flyout](screenshots/controls/flyout-bottom.png)
+
+```xml
+<jp:Flyout x:Name="SavedFlyout" Position="Bottom" Header="Saved"
+           IsAutoCloseEnabled="True" AutoCloseInterval="3000">
+    <TextBlock Text="The timesheet has been sent for approval." />
+</jp:Flyout>
+```
+
+Set `IsClosable="False"` on a message the user must not dismiss. The `Flyouts` layer clips its
+content, so a top flyout slides out from under the title bar rather than over it.
 
 A `Flyout` works in any `Grid`, not only in the window layer: the demo uses one inside a small panel
-on the *Extras* page.
+on the *Extras* page. The *Window* page has a row of buttons that open a flyout at each edge of the
+demo window, with a field for how long the bottom notification stays open.
 
 ![Flyout in the window](screenshots/flyout.png)
 

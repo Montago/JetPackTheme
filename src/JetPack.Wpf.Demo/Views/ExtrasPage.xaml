@@ -93,7 +93,9 @@
                         <Border BorderBrush="#FF3D3E42" BorderThickness="1" CornerRadius="3" Background="{DynamicResource JetPack.Brushes.Window.Background}" />
                         <StackPanel Margin="12" d:Demo.Spacing="8" HorizontalAlignment="Left">
                             <Button Content="Open filters" Click="OnOpenFilters" HorizontalAlignment="Left" />
-                            <TextBlock Style="{StaticResource Demo.State}" HorizontalAlignment="Left" TextWrapping="Wrap" Width="110" Text="Slides in from the right over the content." />
+                            <Button Content="Notification" Click="OnShowSaved" HorizontalAlignment="Left" />
+                            <Button Content="Update" Click="OnShowUpdate" HorizontalAlignment="Left" />
+                            <TextBlock Style="{StaticResource Demo.State}" HorizontalAlignment="Left" TextWrapping="Wrap" Width="110" Text="Slides in from an edge over the content." />
                         </StackPanel>
                         <jp:Flyout x:Name="Filters" Header="Filters" Width="190" IsOpen="True" Padding="12,10">
                             <StackPanel d:Demo.Spacing="10">
@@ -106,6 +108,15 @@
                                 </ComboBox>
                                 <Button Content="Apply" Style="{StaticResource JetPack.Styles.Button.Accent}" HorizontalAlignment="Left" />
                             </StackPanel>
+                        </jp:Flyout>
+                        <jp:Flyout x:Name="Saved" Position="Bottom" Header="Saved" Padding="12,8" IsAutoCloseEnabled="True" AutoCloseInterval="3000">
+                            <TextBlock Text="The timesheet has been sent for approval." TextWrapping="Wrap" />
+                        </jp:Flyout>
+                        <jp:Flyout x:Name="Update" Position="Top" Header="Update available" Padding="12,8">
+                            <DockPanel>
+                                <Button DockPanel.Dock="Right" Content="Restart" Style="{StaticResource JetPack.Styles.Button.Accent}" Margin="8,0,0,0" VerticalAlignment="Center" />
+                                <TextBlock Text="Version 2.4 is ready to install." TextWrapping="Wrap" VerticalAlignment="Center" />
+                            </DockPanel>
                         </jp:Flyout>
                     </Grid>
                 </HeaderedContentControl>

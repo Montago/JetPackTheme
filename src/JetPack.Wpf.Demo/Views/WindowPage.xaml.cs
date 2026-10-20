@@ -31,6 +31,11 @@ public partial class WindowPage : UserControl
         }
     }
 
+    private void OnShowFlyout(object sender, RoutedEventArgs e) =>
+        (Window.GetWindow(this) as MainWindow)?.ShowFlyout(
+            Enum.Parse<FlyoutPosition>((string)((FrameworkElement)sender).Tag),
+            (long)((NotificationSeconds.Value ?? 0) * 1000));
+
     private async void OnShowDialog(object sender, RoutedEventArgs e)
     {
         if (Host is { } window)

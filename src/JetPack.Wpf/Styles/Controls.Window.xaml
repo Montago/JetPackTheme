@@ -143,7 +143,7 @@
                                 <AdornerDecorator Grid.Row="1">
                                     <ContentPresenter />
                                 </AdornerDecorator>
-                                <ContentPresenter Grid.Row="1" Content="{TemplateBinding Flyouts}" />
+                                <ContentPresenter Grid.Row="1" Content="{TemplateBinding Flyouts}" ClipToBounds="True" />
                                 <Grid x:Name="PART_DialogHost" Grid.Row="1" Background="{DynamicResource JetPack.Brushes.Dialog.Overlay}" Visibility="Collapsed" />
                             </Grid>
                         </Grid>

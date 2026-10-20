@@ -8,7 +8,7 @@
             <TextBlock Style="{StaticResource Demo.Intro}"
                        Text="JetPackWindow replaces MetroWindow: texture and vignette, its own title bar with window commands, a flyout layer and an overlay for dialogs. Below is the 'Companies' screen from the navigation template, built with the controls from the other tabs." />
 
-            <StackPanel Orientation="Horizontal" Margin="0,0,0,22" d:Demo.Spacing="8">
+            <StackPanel Orientation="Horizontal" Margin="0,0,0,10" d:Demo.Spacing="8">
                 <TextBlock VerticalAlignment="Center" Style="{StaticResource Demo.State}" Text="Title bar:" />
                 <RadioButton x:Name="TitleDark" Content="Dark" GroupName="Title" IsChecked="True" Checked="OnTitleMode" Tag="Dark" Margin="0,0,6,0" />
                 <RadioButton Content="Light" GroupName="Title" Checked="OnTitleMode" Tag="Light" Margin="0,0,6,0" />
@@ -18,6 +18,17 @@
                 <RadioButton Content="Rounded" GroupName="Corners" Checked="OnCornerStyle" Tag="Rounded" Margin="0,0,24,0" />
                 <Button Content="Show dialog" Click="OnShowDialog" />
                 <Button Content="Confirm delete" Click="OnShowDelete" Style="{StaticResource JetPack.Styles.Button.Orange}" />
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal" Margin="0,0,0,22" d:Demo.Spacing="8">
+                <TextBlock VerticalAlignment="Center" Style="{StaticResource Demo.State}" Text="Flyouts:" />
+                <Button Content="Right · settings" Click="OnShowFlyout" Tag="Right" />
+                <Button Content="Left · recent" Click="OnShowFlyout" Tag="Left" />
+                <Button Content="Top · update" Click="OnShowFlyout" Tag="Top" />
+                <Button Content="Bottom · notification" Click="OnShowFlyout" Tag="Bottom" />
+                <TextBlock VerticalAlignment="Center" Style="{StaticResource Demo.State}" Margin="8,0,0,0" Text="Notification closes after" />
+                <jp:NumericUpDown x:Name="NotificationSeconds" Width="64" Value="4" Minimum="0" Maximum="60" />
+                <TextBlock VerticalAlignment="Center" Style="{StaticResource Demo.State}" Text="s (0 = stays open)" />
             </StackPanel>
 
             <!-- "Companies" sample from the Silverlight navigation template -->

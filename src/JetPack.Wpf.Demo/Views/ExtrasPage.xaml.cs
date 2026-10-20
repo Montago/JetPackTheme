@@ -15,4 +15,8 @@ public partial class ExtrasPage : UserControl
     }
 
     private void OnOpenFilters(object sender, RoutedEventArgs e) => Filters.IsOpen = true;
+
+    private void OnShowSaved(object sender, RoutedEventArgs e) => Saved.IsOpen = true;
+
+    private void OnShowUpdate(object sender, RoutedEventArgs e) => Update.IsOpen = true;
 }

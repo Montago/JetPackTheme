@@ -602,6 +602,24 @@
                                 </Setter.Value>
                             </Setter>
                         </Trigger>
+                        <Trigger Property="Position" Value="Top">
+                            <Setter TargetName="Panel" Property="BorderThickness" Value="0,0,0,1" />
+                            <Setter TargetName="PART_Close" Property="RenderTransformOrigin" Value="0.5,0.5" />
+                            <Setter TargetName="PART_Close" Property="RenderTransform">
+                                <Setter.Value>
+                                    <RotateTransform Angle="-90" />
+                                </Setter.Value>
+                            </Setter>
+                        </Trigger>
+                        <Trigger Property="Position" Value="Bottom">
+                            <Setter TargetName="Panel" Property="BorderThickness" Value="0,1,0,0" />
+                            <Setter TargetName="PART_Close" Property="RenderTransformOrigin" Value="0.5,0.5" />
+                            <Setter TargetName="PART_Close" Property="RenderTransform">
+                                <Setter.Value>
+                                    <RotateTransform Angle="90" />
+                                </Setter.Value>
+                            </Setter>
+                        </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
@@ -609,6 +627,16 @@
         <Style.Triggers>
             <Trigger Property="Position" Value="Left">
                 <Setter Property="HorizontalAlignment" Value="Left" />
+            </Trigger>
+            <Trigger Property="Position" Value="Top">
+                <Setter Property="Width" Value="Auto" />
+                <Setter Property="HorizontalAlignment" Value="Stretch" />
+                <Setter Property="VerticalAlignment" Value="Top" />
+            </Trigger>
+            <Trigger Property="Position" Value="Bottom">
+                <Setter Property="Width" Value="Auto" />
+                <Setter Property="HorizontalAlignment" Value="Stretch" />
+                <Setter Property="VerticalAlignment" Value="Bottom" />
             </Trigger>
         </Style.Triggers>
     </Style>

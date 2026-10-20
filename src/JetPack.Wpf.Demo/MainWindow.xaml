@@ -56,6 +56,26 @@
                     <jp:ToggleSwitch x:Name="VignetteSwitch" Content="Vignette in the corners" IsChecked="True" />
                 </StackPanel>
             </jp:Flyout>
+            <jp:Flyout x:Name="RecentFlyout" Position="Left" Header="Recent" Width="260">
+                <ListBox SelectedIndex="0" VerticalAlignment="Top">
+                    <ListBoxItem Content="Contoso Corporation" />
+                    <ListBoxItem Content="Fabrikam, Inc." />
+                    <ListBoxItem Content="Northwind Traders" />
+                    <ListBoxItem Content="Adventure Works" />
+                </ListBox>
+            </jp:Flyout>
+            <jp:Flyout x:Name="UpdateFlyout" Position="Top" Header="Update available">
+                <DockPanel>
+                    <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" VerticalAlignment="Center">
+                        <Button Content="Later" Click="OnCloseUpdate" Margin="0,0,8,0" />
+                        <Button Content="Restart" Click="OnCloseUpdate" Style="{StaticResource JetPack.Styles.Button.Accent}" />
+                    </StackPanel>
+                    <TextBlock Text="Version 2.4 is ready to install. The update is applied when the program restarts." TextWrapping="Wrap" VerticalAlignment="Center" />
+                </DockPanel>
+            </jp:Flyout>
+            <jp:Flyout x:Name="SavedFlyout" Position="Bottom" Header="Saved" IsAutoCloseEnabled="True" AutoCloseInterval="4000">
+                <TextBlock Text="Contoso Corporation has been saved. The time before this message closes starts again when the mouse leaves it." TextWrapping="Wrap" />
+            </jp:Flyout>
         </Grid>
     </jp:JetPackWindow.Flyouts>
 

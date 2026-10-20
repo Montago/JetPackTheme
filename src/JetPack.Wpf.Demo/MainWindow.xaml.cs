@@ -26,6 +26,27 @@ public partial class MainWindow : JetPackWindow
     public void OpenSettings() => SettingsFlyout.IsOpen = true;
 
     /// <summary>
+    /// Opens the demo flyout at the given edge: settings, recent items, an update banner or a
+    /// notification that closes after <paramref name="notificationMs"/> milliseconds (zero keeps it open).
+    /// </summary>
+    public void ShowFlyout(FlyoutPosition position, long notificationMs)
+    {
+        SavedFlyout.IsAutoCloseEnabled = notificationMs > 0;
+        SavedFlyout.AutoCloseInterval = notificationMs;
+
+        var flyout = position switch
+        {
+            FlyoutPosition.Left => RecentFlyout,
+            FlyoutPosition.Top => UpdateFlyout,
+            FlyoutPosition.Bottom => SavedFlyout,
+            _ => SettingsFlyout,
+        };
+        flyout.IsOpen = true;
+    }
+
+    private void OnCloseUpdate(object sender, RoutedEventArgs e) => UpdateFlyout.IsOpen = false;
+
+    /// <summary>
     /// Switches the page tabs between the dark tab strip and the full-width grey navigation bar
     /// that runs edge to edge under the title bar.
     /// </summary>
