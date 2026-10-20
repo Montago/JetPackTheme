@@ -108,6 +108,7 @@ public partial class App : Application
     {
         await window.Dispatcher.InvokeAsync(() => { }, DispatcherPriority.ApplicationIdle);
         await Task.Delay(250);
+        Samples.SnapshotAnimations.Freeze(window);
         await window.Dispatcher.InvokeAsync(() => { }, DispatcherPriority.ApplicationIdle);
 
         var root = (FrameworkElement)VisualTreeHelper.GetChild(window, 0);

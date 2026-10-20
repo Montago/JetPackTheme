@@ -13,6 +13,7 @@
     <ProjectReference Include="..\..\src\JetPack.Wpf\JetPack.Wpf.csproj" />
     <!-- Renders every page to PNG for the documentation; see App.OnStartup -->
     <Compile Include="..\Shared\WindowSnapshot.cs" Link="WindowSnapshot.cs" />
+    <Compile Include="..\Shared\SnapshotAnimations.cs" Link="SnapshotAnimations.cs" />
   </ItemGroup>
 
 </Project>

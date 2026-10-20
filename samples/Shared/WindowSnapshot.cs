@@ -49,6 +49,7 @@ internal static class WindowSnapshot
     {
         await window.Dispatcher.InvokeAsync(() => { }, DispatcherPriority.ApplicationIdle);
         await Task.Delay(delay);
+        SnapshotAnimations.Freeze(window);
         await window.Dispatcher.InvokeAsync(() => { }, DispatcherPriority.ApplicationIdle);
 
         Directory.CreateDirectory(Folder!);

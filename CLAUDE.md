@@ -36,6 +36,8 @@ samples/                    sample apps: JetPack.Wpf.Samples.Admin (HamburgerMen
                             UserControl per page in Views/, Shared/WindowSnapshot.cs for --snapshot
 docs/                       component documentation (Markdown); keep it in step with the code
 docs/resource-keys.md       generated: run `python tools/generate_resource_keys.py` after changing Styles/
+tools/update_docs.py        rebuilds all screenshots + resource keys and runs the docs checks
+.claude/skills/update-docs/ the /update-docs skill: runs the script, reviews pictures, fixes the text
 design/jetpack-preview.src.html   approved HTML/CSS draft (texture as __TEX__ placeholder)
 design/jetpack-preview.html       same file with the texture inlined as base64
 docs/screenshots/           README images, produced by --snapshot
@@ -71,14 +73,18 @@ src/JetPack.Wpf.Demo/bin/Debug/net8.0-windows/JetPack.Wpf.Demo.exe --snapshot <f
   (drop-downs, menus, tooltips). For those, start the exe on screen, drive it with UI Automation from
   PowerShell (SelectionItemPattern on named elements) and capture with `Graphics.CopyFromScreen`
   after `SetProcessDPIAware`.
-- After editing XAML, check that every `{StaticResource X}` is defined earlier in the same file
-  (a small script over `Styles/*.xaml` did this).
+- After editing XAML, check that every `{StaticResource X}` is defined earlier in the same file:
+  `python tools/update_docs.py --check` does this along with the docs checks.
+- **Updating the docs:** run `/update-docs` (or `python tools/update_docs.py` for just the mechanical
+  part) before a release and after larger changes. It renders the demo pages, the gallery and the
+  sample apps with endless animations frozen, so pictures only change when the look does.
 
 ## NuGet package and releases
 
 - Package metadata lives in `src/JetPack.Wpf/JetPack.Wpf.csproj`; `PACKAGE.md` becomes the package
   README on nuget.org (absolute image URLs only), `icon.png` the package icon. The package uses a
   license file, not an MIT expression, because of the two Microsoft images.
+- Before tagging a release, run `/update-docs` so screenshots and docs match the code.
 - `.github/workflows/release.yml` publishes on a `v*.*.*` tag: always to GitHub Packages (workflow
   token, `--no-symbols` because that feed rejects snupkg), and to nuget.org with Trusted Publishing
   (`NuGet/login@v1`, OIDC, policy for `release.yml`) when the `NUGET_USER` secret exists. The version
@@ -113,6 +119,9 @@ src/JetPack.Wpf.Demo/bin/Debug/net8.0-windows/JetPack.Wpf.Demo.exe --snapshot <f
   `HasSystemRoundedCorners` is true.
 - `Checked` handlers on RadioButtons with `IsChecked="True"` fire during `InitializeComponent`,
   before later attributes such as `Tag` are set; guard with `IsLoaded`.
+- **TextBox and PasswordBox apply `Padding` to their text themselves.** Do not also put `Padding` on
+  the element around `PART_ContentHost`, or the text gets it twice and no longer lines up with the
+  watermark. Give the watermark `Margin="{TemplateBinding Padding}"` plus the 2px text inset instead.
 - **Submenu items inherit Foreground from their header MenuItem through the logical tree**, not from
   the popup they sit in. Header templates therefore set `TextElement.Foreground` on the header
   presenter, never `Foreground` on the MenuItem itself.

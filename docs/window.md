@@ -85,6 +85,8 @@ When maximised, the window keeps its content inside the screen's work area (the 
 
 ## Flyouts
 
+![Flyout](screenshots/controls/flyout.png)
+
 Put `Flyout` panels in the `Flyouts` layer. They cover the content area from the right (or left) and
 slide in when `IsOpen` becomes true:
 
@@ -114,7 +116,7 @@ private void OnSettings(object sender, RoutedEventArgs e) => SettingsFlyout.IsOp
 A `Flyout` works in any `Grid`, not only in the window layer: the demo uses one inside a small panel
 on the *Extras* page.
 
-![Flyout](screenshots/flyout.png)
+![Flyout in the window](screenshots/flyout.png)
 
 ## Dialogs
 

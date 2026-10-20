@@ -78,6 +78,8 @@ internal static class GallerySnapshot
                     AddPopup(parts, sample, menu, target, placement, h, v);
                 }
 
+                Samples.SnapshotAnimations.Freeze(sample);
+                await IdleAsync(window, 0);
                 Save(window, sample, parts, Path.Combine(folder, $"{sample.Tag}.png"));
 
                 foreach (var popup in opened)

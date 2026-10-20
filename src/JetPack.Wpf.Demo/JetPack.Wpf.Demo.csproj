@@ -12,6 +12,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\JetPack.Wpf\JetPack.Wpf.csproj" />
+    <!-- Stops endless animations in snapshot mode; shared with the sample apps -->
+    <Compile Include="..\..\samples\Shared\SnapshotAnimations.cs" Link="SnapshotAnimations.cs" />
   </ItemGroup>
 
 </Project>
