@@ -1,3 +1,9 @@
+---
+title: Helpers and custom templates
+parent: Reference
+nav_order: 2
+---
+
 # Helpers and custom templates
 
 ## ControlHelper

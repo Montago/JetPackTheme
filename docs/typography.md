@@ -1,3 +1,8 @@
+---
+title: Typography
+nav_order: 4
+---
+
 # Typography
 
 ## Fonts

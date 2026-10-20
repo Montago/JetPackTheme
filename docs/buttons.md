@@ -1,3 +1,9 @@
+---
+title: Buttons
+parent: Controls
+nav_order: 2
+---
+
 # Buttons
 
 ![Buttons on the Core page](screenshots/core.png)

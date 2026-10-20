@@ -1,3 +1,9 @@
+---
+title: Navigation and layout
+parent: Controls
+nav_order: 6
+---
+
 # Navigation and layout
 
 ## TabControl

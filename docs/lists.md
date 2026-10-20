@@ -1,3 +1,9 @@
+---
+title: Lists and data
+parent: Controls
+nav_order: 5
+---
+
 # Lists and data
 
 ![Lists and data on the SDK page](screenshots/sdk.png)

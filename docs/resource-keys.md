@@ -1,3 +1,9 @@
+---
+title: Resource keys
+parent: Reference
+nav_order: 1
+---
+
 # Resource keys
 
 Every brush, colour, font size and effect the theme defines, generated from the XAML in

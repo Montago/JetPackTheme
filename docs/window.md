@@ -1,3 +1,9 @@
+---
+title: Window and dialogs
+parent: Controls
+nav_order: 1
+---
+
 # Window and dialogs
 
 ![JetPackWindow with the Companies sample](screenshots/window.png)

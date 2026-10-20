@@ -1,3 +1,8 @@
+---
+title: Theme and accent
+nav_order: 3
+---
+
 # Theme and accent
 
 ![Orange accent](screenshots/core-orange.png)

@@ -1,3 +1,9 @@
+---
+title: Progress and status
+parent: Controls
+nav_order: 7
+---
+
 # Progress and status
 
 ## ProgressBar

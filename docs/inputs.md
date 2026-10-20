@@ -1,3 +1,9 @@
+---
+title: Text and input
+parent: Controls
+nav_order: 3
+---
+
 # Text and input
 
 ![Inputs on the Core page](screenshots/core.png)

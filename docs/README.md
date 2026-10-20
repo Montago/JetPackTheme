@@ -1,3 +1,9 @@
+---
+title: Home
+nav_order: 1
+permalink: /
+---
+
 # JetPack for WPF documentation
 
 JetPack for WPF restyles every standard WPF control with the JetPack look from Microsoft's
