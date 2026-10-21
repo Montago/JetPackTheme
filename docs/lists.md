@@ -94,6 +94,8 @@ people need to narrow down. It adds:
 - **Three-state sorting:** clicking a header sorts ascending, then descending, then back to the
   source order. Shift+click sorts by more columns, as in DataGrid.
 - **Grouping** by one member (`GroupMemberPath`), with a header row per group that folds up.
+- **Paging** (`PageSize`): with more rows than that, the grid shows one page at a time and a pager
+  below the rows.
 - **Virtualization** of rows and columns, kept on while grouping.
 - Read-only by default, with no new-item row and no auto-generated columns.
 
@@ -151,6 +153,30 @@ Set `GroupMemberPath` to group the rows. The default group header shows the valu
 count, and a click folds the group. A `GroupStyle` of your own replaces it. The default one is
 `JetPack.GroupStyles.JetPackGrid`.
 
+### Paging
+
+![The pager below the rows, on page 2 of 5](screenshots/controls/jetpackgrid-paging.png)
+
+Set `PageSize` to the number of rows per page. The pager appears only when more rows than that pass
+the search and the filters, so a short result shows no pager. It has buttons for the first,
+previous, next and last page, the page number, and which rows the page holds (`21–40 of 95`).
+
+```xml
+<jp:JetPackGrid ItemsSource="{Binding Cars}" PageSize="100" PageIndex="{Binding CarPage}" />
+```
+
+- Sorting and grouping apply to all rows, not just the page. The pages are then cut from the
+  sorted rows, and a group can continue on the next page.
+- A new search, filter or sort goes back to the first page. Rows added to or removed from the source
+  keep the current page.
+- `FilteredItemCount`, the `Filtered` event and `GetVisibleItems()` count and return the rows of
+  every page.
+- A row selected on one page is deselected when another page is shown.
+- Paging needs an `ItemsSource`, and a view that can filter, so `DataView` rows are not paged.
+
+Paging shortens the list, but each scroll step costs the same as without it. The cost comes from
+the rows and cells on screen, not from the number of rows in the source.
+
 ### Grid properties
 
 | Property | Type | Default | Description |
@@ -165,6 +191,12 @@ count, and a click folds the group. A `GroupStyle` of your own replaces it. The 
 | `FilteredItemCount` | `int` | 0 | Read-only: rows left after the search and filters. |
 | `TotalItemCount` | `int` | 0 | Read-only: rows in the source. |
 | `IsFiltered` | `bool` | `false` | Read-only: true while a search or a filter is applied. |
+| `PageSize` | `int` | 0 | Rows per page; 0 shows every row. |
+| `PageIndex` | `int` | 0 | Two-way bindable: the page shown, from 0. |
+| `PageCount` | `int` | 1 | Read-only: number of pages; 1 when not paging. |
+| `IsPaging` | `bool` | `false` | Read-only: true when there is more than one page; the pager is shown then. |
+| `PageNumber` | `int` | 1 | Read-only: the page shown, from 1, for display. |
+| `PageFirstRow`, `PageLastRow` | `int` | 0 | Read-only: numbers (from 1) of the first and last row on the page, among the rows that pass the filters. |
 
 Everything else is DataGrid: `SelectedItem` (two-way), `SelectionMode` (`Single` or `Extended`),
 `CanUserResizeColumns`, `FrozenColumnCount`, `IsReadOnly` and so on.
@@ -196,10 +228,11 @@ columns are still searched.
 | --- | --- |
 | `Filtered` event | After the rows have been filtered. The `GridFilteredEventArgs` give the rows left (`e.Count`) and in all (`e.TotalCount`). |
 | `SelectedItemChanged` event | When `SelectedItem` changes. Unlike `SelectionChanged`, it is not raised by combo boxes inside cells. |
-| `GetVisibleItems()` | The rows left after the search and filters, in the order shown (sorted, grouped), for example to export them. |
+| `GetVisibleItems()` | The rows left after the search and filters, in the order shown (sorted, grouped), for example to export them. With paging, the rows of every page. |
 | `ClearFilters()` | Clears the search and every column filter. |
-| `ApplyFilters()` | Filters at once instead of after `SearchDelay`. Also re-reads values that changed in the items. |
+| `ApplyFilters()` | Filters at once instead of after `SearchDelay`, and goes back to the first page. Also re-reads values that changed in the items. |
 | `ClearFilterCommand` | Routed command. With a column as parameter it clears that column's filter; without one it clears everything. Use `CommandTarget` to point a button outside the grid at it. |
+| `FirstPageCommand`, `PreviousPageCommand`, `NextPageCommand`, `LastPageCommand` | Routed commands the pager uses; they can also drive a pager of your own (with `CommandTarget`). |
 
 Notes:
 

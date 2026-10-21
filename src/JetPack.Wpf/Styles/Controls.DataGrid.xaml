@@ -164,6 +164,43 @@
         </Setter>
     </Style>
 
+    <!-- Header row, rows, scroll bars and the select-all corner; shared by DataGrid and JetPackGrid -->
+    <ControlTemplate x:Key="JetPack.Templates.DataGrid.ScrollViewer" TargetType="ScrollViewer">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <Button Command="{x:Static DataGrid.SelectAllCommand}" Style="{StaticResource JetPack.Styles.DataGrid.SelectAll}"
+                    Width="{Binding CellsPanelHorizontalOffset, RelativeSource={RelativeSource AncestorType=DataGrid}}"
+                    Visibility="{Binding HeadersVisibility, ConverterParameter={x:Static DataGridHeadersVisibility.All}, Converter={x:Static DataGrid.HeadersVisibilityConverter}, RelativeSource={RelativeSource AncestorType=DataGrid}}" />
+            <DataGridColumnHeadersPresenter x:Name="PART_ColumnHeadersPresenter" Grid.Column="1"
+                                            Visibility="{Binding HeadersVisibility, ConverterParameter={x:Static DataGridHeadersVisibility.Column}, Converter={x:Static DataGrid.HeadersVisibilityConverter}, RelativeSource={RelativeSource AncestorType=DataGrid}}" />
+            <Border Grid.Column="2" Background="{DynamicResource JetPack.Brushes.DataGrid.Header}"
+                    Visibility="{Binding Visibility, ElementName=PART_ColumnHeadersPresenter}" />
+            <ScrollContentPresenter x:Name="PART_ScrollContentPresenter" Grid.Row="1" Grid.ColumnSpan="2" CanContentScroll="{TemplateBinding CanContentScroll}" />
+            <ScrollBar x:Name="PART_VerticalScrollBar" Grid.Column="2" Grid.Row="1" Orientation="Vertical" Maximum="{TemplateBinding ScrollableHeight}"
+                       ViewportSize="{TemplateBinding ViewportHeight}" Value="{Binding VerticalOffset, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}"
+                       Visibility="{TemplateBinding ComputedVerticalScrollBarVisibility}" />
+            <Grid Grid.Column="1" Grid.Row="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="{Binding NonFrozenColumnsViewportHorizontalOffset, RelativeSource={RelativeSource AncestorType=DataGrid}}" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <ScrollBar x:Name="PART_HorizontalScrollBar" Grid.Column="1" Orientation="Horizontal" Maximum="{TemplateBinding ScrollableWidth}"
+                           ViewportSize="{TemplateBinding ViewportWidth}" Value="{Binding HorizontalOffset, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}"
+                           Visibility="{TemplateBinding ComputedHorizontalScrollBarVisibility}" />
+            </Grid>
+            <Rectangle Grid.Column="2" Grid.Row="2" Fill="{DynamicResource JetPack.Brushes.ScrollBar.Track}" />
+        </Grid>
+    </ControlTemplate>
+
     <Style x:Key="JetPack.Styles.DataGrid" TargetType="DataGrid">
         <Setter Property="SnapsToDevicePixels" Value="True" />
         <Setter Property="FontFamily" Value="{DynamicResource JetPack.Fonts.Family}" />
@@ -190,44 +227,7 @@
                 <ControlTemplate TargetType="DataGrid">
                     <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}"
                             CornerRadius="3,3,0,0" Padding="{TemplateBinding Padding}" SnapsToDevicePixels="True">
-                        <ScrollViewer x:Name="DG_ScrollViewer" Focusable="False">
-                            <ScrollViewer.Template>
-                                <ControlTemplate TargetType="ScrollViewer">
-                                    <Grid>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="Auto" />
-                                            <ColumnDefinition Width="*" />
-                                            <ColumnDefinition Width="Auto" />
-                                        </Grid.ColumnDefinitions>
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition Height="Auto" />
-                                            <RowDefinition Height="*" />
-                                            <RowDefinition Height="Auto" />
-                                        </Grid.RowDefinitions>
-                                        <Button Command="{x:Static DataGrid.SelectAllCommand}" Style="{StaticResource JetPack.Styles.DataGrid.SelectAll}"
-                                                Width="{Binding CellsPanelHorizontalOffset, RelativeSource={RelativeSource AncestorType=DataGrid}}"
-                                                Visibility="{Binding HeadersVisibility, ConverterParameter={x:Static DataGridHeadersVisibility.All}, Converter={x:Static DataGrid.HeadersVisibilityConverter}, RelativeSource={RelativeSource AncestorType=DataGrid}}" />
-                                        <DataGridColumnHeadersPresenter x:Name="PART_ColumnHeadersPresenter" Grid.Column="1"
-                                                                        Visibility="{Binding HeadersVisibility, ConverterParameter={x:Static DataGridHeadersVisibility.Column}, Converter={x:Static DataGrid.HeadersVisibilityConverter}, RelativeSource={RelativeSource AncestorType=DataGrid}}" />
-                                        <Border Grid.Column="2" Background="{DynamicResource JetPack.Brushes.DataGrid.Header}"
-                                                Visibility="{Binding Visibility, ElementName=PART_ColumnHeadersPresenter}" />
-                                        <ScrollContentPresenter x:Name="PART_ScrollContentPresenter" Grid.Row="1" Grid.ColumnSpan="2" CanContentScroll="{TemplateBinding CanContentScroll}" />
-                                        <ScrollBar x:Name="PART_VerticalScrollBar" Grid.Column="2" Grid.Row="1" Orientation="Vertical" Maximum="{TemplateBinding ScrollableHeight}"
-                                                   ViewportSize="{TemplateBinding ViewportHeight}" Value="{Binding VerticalOffset, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}"
-                                                   Visibility="{TemplateBinding ComputedVerticalScrollBarVisibility}" />
-                                        <Grid Grid.Column="1" Grid.Row="2">
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="{Binding NonFrozenColumnsViewportHorizontalOffset, RelativeSource={RelativeSource AncestorType=DataGrid}}" />
-                                                <ColumnDefinition Width="*" />
-                                            </Grid.ColumnDefinitions>
-                                            <ScrollBar x:Name="PART_HorizontalScrollBar" Grid.Column="1" Orientation="Horizontal" Maximum="{TemplateBinding ScrollableWidth}"
-                                                       ViewportSize="{TemplateBinding ViewportWidth}" Value="{Binding HorizontalOffset, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}"
-                                                       Visibility="{TemplateBinding ComputedHorizontalScrollBarVisibility}" />
-                                        </Grid>
-                                        <Rectangle Grid.Column="2" Grid.Row="2" Fill="{DynamicResource JetPack.Brushes.ScrollBar.Track}" />
-                                    </Grid>
-                                </ControlTemplate>
-                            </ScrollViewer.Template>
+                        <ScrollViewer x:Name="DG_ScrollViewer" Focusable="False" Template="{StaticResource JetPack.Templates.DataGrid.ScrollViewer}">
                             <ItemsPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
                         </ScrollViewer>
                     </Border>
@@ -418,6 +418,40 @@
         </GroupStyle.ContainerStyle>
     </GroupStyle>
 
+    <Geometry x:Key="JetPack.Geometry.Pager.First">M0,0 L1.5,0 L1.5,8 L0,8 z M9,0 L9,8 L2.5,4 z</Geometry>
+    <Geometry x:Key="JetPack.Geometry.Pager.Previous">M7,0 L7,8 L0.5,4 z</Geometry>
+    <Geometry x:Key="JetPack.Geometry.Pager.Next">M0,0 L0,8 L6.5,4 z</Geometry>
+    <Geometry x:Key="JetPack.Geometry.Pager.Last">M0,0 L0,8 L6.5,4 z M7.5,0 L9,0 L9,8 L7.5,8 z</Geometry>
+
+    <!-- Pager buttons: white glyphs on the dark header gradient -->
+    <Style x:Key="JetPack.Styles.JetPackGrid.PagerButton" TargetType="Button">
+        <Setter Property="OverridesDefaultStyle" Value="True" />
+        <Setter Property="Focusable" Value="False" />
+        <Setter Property="Width" Value="24" />
+        <Setter Property="Height" Value="20" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="Bg" Background="Transparent" CornerRadius="2">
+                        <Path x:Name="Glyph" Width="9" Height="8" Stretch="Fill" Fill="White" Opacity="0.85" Data="{TemplateBinding Content}" />
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="Bg" Property="Background" Value="#26FFFFFF" />
+                            <Setter TargetName="Glyph" Property="Opacity" Value="1" />
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="Bg" Property="Background" Value="#40000000" />
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter TargetName="Glyph" Property="Opacity" Value="0.3" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
     <Style x:Key="JetPack.Styles.JetPackGrid" TargetType="c:JetPackGrid" BasedOn="{StaticResource JetPack.Styles.DataGrid}">
         <Setter Property="IsReadOnly" Value="True" />
         <Setter Property="CanUserAddRows" Value="False" />
@@ -429,6 +463,60 @@
         <Setter Property="HighlightBrush" Value="{DynamicResource JetPack.Brushes.Accent.Highlight}" />
         <Setter Property="HighlightForeground" Value="{DynamicResource JetPack.Brushes.Control.Foreground}" />
         <Setter Property="ColumnHeaderStyle" Value="{StaticResource JetPack.Styles.JetPackGrid.ColumnHeader}" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <!-- The DataGrid template with a pager below the rows, shown while there is more than one page -->
+                <ControlTemplate TargetType="c:JetPackGrid">
+                    <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}"
+                            CornerRadius="3,3,0,0" Padding="{TemplateBinding Padding}" SnapsToDevicePixels="True">
+                        <DockPanel>
+                            <Border x:Name="Pager" DockPanel.Dock="Bottom" Background="{DynamicResource JetPack.Brushes.DataGrid.Header}" Visibility="Collapsed"
+                                    TextElement.Foreground="White" TextOptions.TextFormattingMode="Display">
+                                <Border BorderBrush="{DynamicResource JetPack.Brushes.DataGrid.Header.Separator}" BorderThickness="0,1,0,0" Padding="4,3">
+                                    <DockPanel>
+                                        <TextBlock DockPanel.Dock="Right" Margin="12,0,6,0" VerticalAlignment="Center" Opacity="0.8">
+                                            <TextBlock.Text>
+                                                <MultiBinding StringFormat="{}{0:N0}–{1:N0} of {2:N0}">
+                                                    <Binding Path="PageFirstRow" RelativeSource="{RelativeSource TemplatedParent}" />
+                                                    <Binding Path="PageLastRow" RelativeSource="{RelativeSource TemplatedParent}" />
+                                                    <Binding Path="FilteredItemCount" RelativeSource="{RelativeSource TemplatedParent}" />
+                                                </MultiBinding>
+                                            </TextBlock.Text>
+                                        </TextBlock>
+                                        <StackPanel Orientation="Horizontal">
+                                            <Button Style="{StaticResource JetPack.Styles.JetPackGrid.PagerButton}" Command="{x:Static c:JetPackGrid.FirstPageCommand}"
+                                                    ToolTip="First page" Content="{StaticResource JetPack.Geometry.Pager.First}" />
+                                            <Button Style="{StaticResource JetPack.Styles.JetPackGrid.PagerButton}" Command="{x:Static c:JetPackGrid.PreviousPageCommand}"
+                                                    ToolTip="Previous page" Content="{StaticResource JetPack.Geometry.Pager.Previous}" />
+                                            <TextBlock Margin="8,0" VerticalAlignment="Center">
+                                                <TextBlock.Text>
+                                                    <MultiBinding StringFormat="{}Page {0:N0} of {1:N0}">
+                                                        <Binding Path="PageNumber" RelativeSource="{RelativeSource TemplatedParent}" />
+                                                        <Binding Path="PageCount" RelativeSource="{RelativeSource TemplatedParent}" />
+                                                    </MultiBinding>
+                                                </TextBlock.Text>
+                                            </TextBlock>
+                                            <Button Style="{StaticResource JetPack.Styles.JetPackGrid.PagerButton}" Command="{x:Static c:JetPackGrid.NextPageCommand}"
+                                                    ToolTip="Next page" Content="{StaticResource JetPack.Geometry.Pager.Next}" />
+                                            <Button Style="{StaticResource JetPack.Styles.JetPackGrid.PagerButton}" Command="{x:Static c:JetPackGrid.LastPageCommand}"
+                                                    ToolTip="Last page" Content="{StaticResource JetPack.Geometry.Pager.Last}" />
+                                        </StackPanel>
+                                    </DockPanel>
+                                </Border>
+                            </Border>
+                            <ScrollViewer x:Name="DG_ScrollViewer" Focusable="False" Template="{StaticResource JetPack.Templates.DataGrid.ScrollViewer}">
+                                <ItemsPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                            </ScrollViewer>
+                        </DockPanel>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsPaging" Value="True">
+                            <Setter TargetName="Pager" Property="Visibility" Value="Visible" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
         <Style.Resources>
             <!-- An implicit DataGridColumnHeader style in the app wins over ColumnHeaderStyle; this one is found first -->
             <Style TargetType="DataGridColumnHeader" BasedOn="{StaticResource JetPack.Styles.JetPackGrid.ColumnHeader}" />

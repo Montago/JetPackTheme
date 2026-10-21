@@ -107,8 +107,14 @@ public class JetPackGridColumn : DataGridTextColumn
                 block.Inlines.Add(new Run(text[position..start]));
             }
             var run = new Run(text[start..end]);
-            run.SetBinding(TextElement.BackgroundProperty, new Binding(nameof(JetPackGrid.HighlightBrush)) { Source = grid });
-            run.SetBinding(TextElement.ForegroundProperty, new Binding(nameof(JetPackGrid.HighlightForeground)) { Source = grid });
+            if (grid is JetPackGrid { HighlightBrush: var background, HighlightForeground: var foreground })
+            {
+                run.Background = background;
+                if (foreground != null)
+                {
+                    run.Foreground = foreground;
+                }
+            }
             block.Inlines.Add(run);
             position = end;
         }

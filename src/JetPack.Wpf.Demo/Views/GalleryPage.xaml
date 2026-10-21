@@ -368,6 +368,19 @@
             </jp:JetPackGrid>
         </ContentControl>
 
+        <ContentControl Style="{StaticResource Demo.Sample}" Tag="jetpackgrid-paging">
+            <jp:JetPackGrid x:Name="PagedGrid" Width="560" Height="230" PageSize="20" SearchDelay="0">
+                <jp:JetPackGrid.Columns>
+                    <jp:JetPackGridColumn Header="Make" Binding="{Binding Make}" Width="110" />
+                    <jp:JetPackGridColumn Header="Model" Binding="{Binding Model}" Width="100" />
+                    <jp:JetPackGridColumn Header="Body" Binding="{Binding Body}" Width="80" />
+                    <jp:JetPackGridColumn Header="Year" Binding="{Binding Year}" Width="62" />
+                    <jp:JetPackGridColumn Header="Gearbox" Binding="{Binding Gearbox}" Width="80" />
+                    <jp:JetPackGridColumn Header="Price" Binding="{Binding Price, StringFormat=N0}" Width="*" />
+                </jp:JetPackGrid.Columns>
+            </jp:JetPackGrid>
+        </ContentControl>
+
         <ContentControl Style="{StaticResource Demo.Sample}" Tag="jetpackgrid-groups">
             <jp:JetPackGrid x:Name="GroupGrid" Width="560" Height="220" GroupMemberPath="Make" SearchDelay="0">
                 <jp:JetPackGrid.Columns>

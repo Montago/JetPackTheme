@@ -20,7 +20,7 @@
         <TextBlock MaxWidth="900"
                    Margin="0,0,0,16"
                    Style="{StaticResource Demo.Intro}"
-                   Text="jp:JetPackGrid with 3,000 used cars in 20 columns. Every word of the search must be found somewhere in a row, and the hits are marked. Click a header to sort ascending, descending and back to the stock order; the funnel keeps only the rows with the values you list. Rows and columns are virtualized." />
+                   Text="jp:JetPackGrid with 3,000 used cars in 20 columns. Every word of the search must be found somewhere in a row, and the hits are marked. Click a header to sort ascending, descending and back to the stock order; the funnel keeps only the rows with the values you list. With more rows than fit on a page, a pager appears below them. Rows and columns are virtualized." />
 
         <DockPanel Grid.Row="1"
                    Margin="0,0,0,10"
@@ -41,6 +41,17 @@
                 <ComboBoxItem Content="Body" Tag="Body" />
                 <ComboBoxItem Content="Fuel" Tag="Fuel" />
                 <ComboBoxItem Content="Dealer" Tag="Dealer" />
+            </ComboBox>
+            <TextBlock Margin="20,0,8,0"
+                       VerticalAlignment="Center"
+                       Text="Rows per page" />
+            <ComboBox x:Name="PageSize"
+                      Width="70"
+                      SelectedIndex="2">
+                <ComboBoxItem Content="All" Tag="0" />
+                <ComboBoxItem Content="50" Tag="50" />
+                <ComboBoxItem Content="100" Tag="100" />
+                <ComboBoxItem Content="500" Tag="500" />
             </ComboBox>
             <CheckBox x:Name="Multi"
                       Margin="20,0,0,0"
@@ -65,6 +76,7 @@
                         FrozenColumnCount="2"
                         GroupMemberPath="{Binding SelectedItem.Tag, ElementName=GroupBy}"
                         ItemsSource="{x:Static d:CarData.Cars}"
+                        PageSize="{Binding SelectedItem.Tag, ElementName=PageSize}"
                         SearchText="{Binding Text, ElementName=Search}"
                         SelectedItemChanged="OnSelectedItemChanged"
                         SelectionMode="Single">

@@ -96,11 +96,23 @@ public class JetPackGrid : DataGrid
     /// <summary>Closes the filter box of the column header in the parameter.</summary>
     public static readonly RoutedUICommand CloseFilterCommand = new("Done", nameof(CloseFilterCommand), typeof(JetPackGrid));
 
+    public static readonly RoutedUICommand FirstPageCommand = new("First page", nameof(FirstPageCommand), typeof(JetPackGrid));
+    public static readonly RoutedUICommand PreviousPageCommand = new("Previous page", nameof(PreviousPageCommand), typeof(JetPackGrid));
+    public static readonly RoutedUICommand NextPageCommand = new("Next page", nameof(NextPageCommand), typeof(JetPackGrid));
+    public static readonly RoutedUICommand LastPageCommand = new("Last page", nameof(LastPageCommand), typeof(JetPackGrid));
+
     /// <summary>Key of the <see cref="System.Windows.Controls.GroupStyle"/> used when <see cref="GroupMemberPath"/> is set and no GroupStyle is given.</summary>
     public const string GroupStyleKey = "JetPack.GroupStyles.JetPackGrid";
 
     private readonly DispatcherTimer timer;
     private object? lastSelected;
+
+    // The search and column filters of the last ApplyFilters; null when nothing filters.
+    private Predicate<object>? match;
+    // While PageSize is set: every matching row in the order shown, sliced into pages. Null otherwise.
+    private List<object>? ordered;
+    private bool showingPage;
+    private bool repagePending;
 
     static JetPackGrid()
     {
@@ -108,6 +120,14 @@ public class JetPackGrid : DataGrid
         AutoGenerateColumnsProperty.OverrideMetadata(typeof(JetPackGrid), new FrameworkPropertyMetadata(false));
         CommandManager.RegisterClassCommandBinding(typeof(JetPackGrid), new CommandBinding(ClearFilterCommand, OnClearFilter));
         CommandManager.RegisterClassCommandBinding(typeof(JetPackGrid), new CommandBinding(CloseFilterCommand, OnCloseFilter));
+        CommandManager.RegisterClassCommandBinding(typeof(JetPackGrid), new CommandBinding(FirstPageCommand,
+            (s, _) => ((JetPackGrid)s).PageIndex = 0, (s, e) => e.CanExecute = ((JetPackGrid)s).PageIndex > 0));
+        CommandManager.RegisterClassCommandBinding(typeof(JetPackGrid), new CommandBinding(PreviousPageCommand,
+            (s, _) => ((JetPackGrid)s).PageIndex--, (s, e) => e.CanExecute = ((JetPackGrid)s).PageIndex > 0));
+        CommandManager.RegisterClassCommandBinding(typeof(JetPackGrid), new CommandBinding(NextPageCommand,
+            (s, _) => ((JetPackGrid)s).PageIndex++, (s, e) => e.CanExecute = ((JetPackGrid)s).PageIndex < ((JetPackGrid)s).PageCount - 1));
+        CommandManager.RegisterClassCommandBinding(typeof(JetPackGrid), new CommandBinding(LastPageCommand,
+            (s, _) => ((JetPackGrid)s).PageIndex = ((JetPackGrid)s).PageCount - 1, (s, e) => e.CanExecute = ((JetPackGrid)s).PageIndex < ((JetPackGrid)s).PageCount - 1));
         // The filter box lives in a popup of the column header; its events still bubble up to the grid.
         EventManager.RegisterClassHandler(typeof(JetPackGrid), ToggleButton.CheckedEvent, new RoutedEventHandler(OnFilterButtonChecked));
         EventManager.RegisterClassHandler(typeof(JetPackGrid), PreviewKeyDownEvent, new KeyEventHandler(OnFilterBoxKeyDown));
@@ -119,6 +139,9 @@ public class JetPackGrid : DataGrid
         timer.Tick += (_, _) => ApplyFilters();
         Columns.CollectionChanged += OnColumnsChanged;
         Loaded += (_, _) => EnsureGroupStyle();
+        // Sorting or grouping changes which rows land on which page.
+        ((INotifyCollectionChanged)Items.SortDescriptions).CollectionChanged += (_, _) => ScheduleRepage(keepPage: false);
+        Items.GroupDescriptions.CollectionChanged += (_, _) => ScheduleRepage(keepPage: false);
     }
 
     // ---------------- Search ----------------
@@ -166,7 +189,7 @@ public class JetPackGrid : DataGrid
     public IReadOnlyList<string> SearchWords => (IReadOnlyList<string>)GetValue(SearchWordsProperty);
 
     public static readonly DependencyProperty HighlightBrushProperty = DependencyProperty.Register(
-        nameof(HighlightBrush), typeof(Brush), typeof(JetPackGrid), new PropertyMetadata(null));
+        nameof(HighlightBrush), typeof(Brush), typeof(JetPackGrid), new PropertyMetadata(null, OnHighlightChanged));
 
     /// <summary>Background of the search hits in <see cref="JetPackGridColumn"/> cells.</summary>
     public Brush? HighlightBrush
@@ -176,7 +199,18 @@ public class JetPackGrid : DataGrid
     }
 
     public static readonly DependencyProperty HighlightForegroundProperty = DependencyProperty.Register(
-        nameof(HighlightForeground), typeof(Brush), typeof(JetPackGrid), new PropertyMetadata(null));
+        nameof(HighlightForeground), typeof(Brush), typeof(JetPackGrid), new PropertyMetadata(null, OnHighlightChanged));
+
+    // The cells copy the brushes into their runs (bindings per run made scrolling slower), so a new
+    // brush (an accent change) hands them a new word list to rebuild the runs from.
+    private static void OnHighlightChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+    {
+        var grid = (JetPackGrid)d;
+        if (grid.SearchWords.Count > 0)
+        {
+            grid.SetValue(SearchWordsPropertyKey, grid.SearchWords.ToArray());
+        }
+    }
 
     public Brush? HighlightForeground
     {
@@ -219,6 +253,83 @@ public class JetPackGrid : DataGrid
 
     /// <summary>True while a search or a column filter is applied.</summary>
     public bool IsFiltered => (bool)GetValue(IsFilteredProperty);
+
+    // ---------------- Paging ----------------
+
+    public static readonly DependencyProperty PageSizeProperty = DependencyProperty.Register(
+        nameof(PageSize), typeof(int), typeof(JetPackGrid), new PropertyMetadata(0, (d, _) => ((JetPackGrid)d).Refilter(keepPage: false)));
+
+    /// <summary>
+    /// Rows per page. When more rows than this pass the search and filters, the grid shows one page
+    /// at a time and a pager below the rows; 0 (the default) shows every row.
+    /// </summary>
+    public int PageSize
+    {
+        get => (int)GetValue(PageSizeProperty);
+        set => SetValue(PageSizeProperty, value);
+    }
+
+    public static readonly DependencyProperty PageIndexProperty = DependencyProperty.Register(
+        nameof(PageIndex), typeof(int), typeof(JetPackGrid),
+        new FrameworkPropertyMetadata(0, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, OnPageIndexChanged, CoercePageIndex));
+
+    /// <summary>The page shown, from 0. A new search, filter or sort goes back to the first page.</summary>
+    public int PageIndex
+    {
+        get => (int)GetValue(PageIndexProperty);
+        set => SetValue(PageIndexProperty, value);
+    }
+
+    private static readonly DependencyPropertyKey PageCountPropertyKey = DependencyProperty.RegisterReadOnly(
+        nameof(PageCount), typeof(int), typeof(JetPackGrid), new PropertyMetadata(1));
+
+    public static readonly DependencyProperty PageCountProperty = PageCountPropertyKey.DependencyProperty;
+
+    /// <summary>Number of pages; 1 when not paging.</summary>
+    public int PageCount => (int)GetValue(PageCountProperty);
+
+    private static readonly DependencyPropertyKey IsPagingPropertyKey = DependencyProperty.RegisterReadOnly(
+        nameof(IsPaging), typeof(bool), typeof(JetPackGrid), new PropertyMetadata(false));
+
+    public static readonly DependencyProperty IsPagingProperty = IsPagingPropertyKey.DependencyProperty;
+
+    /// <summary>True when there is more than one page; the pager is shown then.</summary>
+    public bool IsPaging => (bool)GetValue(IsPagingProperty);
+
+    private static readonly DependencyPropertyKey PageNumberPropertyKey = DependencyProperty.RegisterReadOnly(
+        nameof(PageNumber), typeof(int), typeof(JetPackGrid), new PropertyMetadata(1));
+
+    public static readonly DependencyProperty PageNumberProperty = PageNumberPropertyKey.DependencyProperty;
+
+    /// <summary>The page shown, from 1 (for display).</summary>
+    public int PageNumber => (int)GetValue(PageNumberProperty);
+
+    private static readonly DependencyPropertyKey PageFirstRowPropertyKey = DependencyProperty.RegisterReadOnly(
+        nameof(PageFirstRow), typeof(int), typeof(JetPackGrid), new PropertyMetadata(0));
+
+    public static readonly DependencyProperty PageFirstRowProperty = PageFirstRowPropertyKey.DependencyProperty;
+
+    /// <summary>Number (from 1) of the first row on the page, among the rows that pass the filters.</summary>
+    public int PageFirstRow => (int)GetValue(PageFirstRowProperty);
+
+    private static readonly DependencyPropertyKey PageLastRowPropertyKey = DependencyProperty.RegisterReadOnly(
+        nameof(PageLastRow), typeof(int), typeof(JetPackGrid), new PropertyMetadata(0));
+
+    public static readonly DependencyProperty PageLastRowProperty = PageLastRowPropertyKey.DependencyProperty;
+
+    /// <summary>Number (from 1) of the last row on the page.</summary>
+    public int PageLastRow => (int)GetValue(PageLastRowProperty);
+
+    private static object CoercePageIndex(DependencyObject d, object value) => Math.Max(0, (int)value);
+
+    private static void OnPageIndexChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+    {
+        var grid = (JetPackGrid)d;
+        if (!grid.showingPage)
+        {
+            grid.ShowPage((int)e.NewValue, scrollToTop: true);
+        }
+    }
 
     // ---------------- Column settings (attached to any DataGridColumn) ----------------
 
@@ -334,9 +445,16 @@ public class JetPackGrid : DataGrid
 
     // ---------------- Public methods ----------------
 
-    /// <summary>The rows left after the search and the filters, in the order shown (sorted, grouped).</summary>
+    /// <summary>
+    /// The rows left after the search and the filters, in the order shown (sorted, grouped); with
+    /// paging, the rows of every page.
+    /// </summary>
     public IReadOnlyList<object> GetVisibleItems()
     {
+        if (ordered != null)
+        {
+            return ordered.ToList();
+        }
         var items = new List<object>(Items.Count);
         foreach (var item in Items)
         {
@@ -359,8 +477,13 @@ public class JetPackGrid : DataGrid
         ApplyFilters();
     }
 
-    /// <summary>Filters the rows now instead of after <see cref="SearchDelay"/>; also re-reads changed item values.</summary>
-    public void ApplyFilters()
+    /// <summary>
+    /// Filters the rows now instead of after <see cref="SearchDelay"/>, and goes back to the first
+    /// page; also re-reads changed item values.
+    /// </summary>
+    public void ApplyFilters() => Refilter(keepPage: false);
+
+    private void Refilter(bool keepPage)
     {
         timer.Stop();
 
@@ -395,14 +518,11 @@ public class JetPackGrid : DataGrid
             ? null
             : item => Matches(item, searchWords, searched, filters);
 
-        if (Items.CanFilter && (predicate != null || Items.Filter != null))
-        {
-            // Setting a new predicate refreshes the view.
-            Items.Filter = predicate;
-        }
+        match = predicate;
+        ordered = PageSize > 0 && ItemsSource != null && Items.CanFilter ? OrderRows(predicate) : null;
+        ShowPage(keepPage ? PageIndex : 0, scrollToTop: !keepPage);
 
         SetValue(IsFilteredPropertyKey, predicate != null);
-        UpdateCounts();
         RaiseEvent(new GridFilteredEventArgs(FilteredEvent, this, FilteredItemCount, TotalItemCount));
     }
 
@@ -411,8 +531,25 @@ public class JetPackGrid : DataGrid
     protected override void OnItemsSourceChanged(IEnumerable oldValue, IEnumerable newValue)
     {
         base.OnItemsSourceChanged(oldValue, newValue);
+        // With paging, rows that are added or removed in the source move the pages along.
+        if (oldValue is INotifyCollectionChanged oldSource)
+        {
+            CollectionChangedEventManager.RemoveHandler(oldSource, OnSourceChanged);
+        }
+        if (newValue is INotifyCollectionChanged newSource)
+        {
+            CollectionChangedEventManager.AddHandler(newSource, OnSourceChanged);
+        }
         UpdateGrouping();
         ApplyFilters();
+    }
+
+    private void OnSourceChanged(object? sender, NotifyCollectionChangedEventArgs e)
+    {
+        if (ordered != null)
+        {
+            ScheduleRepage(keepPage: true);
+        }
     }
 
     protected override void OnItemsChanged(NotifyCollectionChangedEventArgs e)
@@ -471,6 +608,101 @@ public class JetPackGrid : DataGrid
     }
 
     // ---------------- Implementation ----------------
+
+    /// <summary>Shows one page of the ordered rows (or every matching row when they fit on one page).</summary>
+    private void ShowPage(int index, bool scrollToTop)
+    {
+        var total = ordered?.Count ?? 0;
+        var size = PageSize;
+        var pages = ordered != null && total > size ? (total + size - 1) / size : 1;
+        index = Math.Clamp(index, 0, pages - 1);
+
+        var filter = match;
+        if (pages > 1)
+        {
+            var page = new HashSet<object>(ordered!.Skip(index * size).Take(size));
+            filter = page.Contains;
+        }
+        if (Items.CanFilter && (filter != null || Items.Filter != null))
+        {
+            // Setting a new predicate refreshes the view.
+            Items.Filter = filter;
+        }
+
+        showingPage = true;
+        try
+        {
+            SetCurrentValue(PageIndexProperty, index);
+        }
+        finally
+        {
+            showingPage = false;
+        }
+        SetValue(PageCountPropertyKey, pages);
+        SetValue(PageNumberPropertyKey, index + 1);
+        SetValue(IsPagingPropertyKey, pages > 1);
+        SetValue(PageFirstRowPropertyKey, pages > 1 ? index * size + 1 : Math.Min(1, total));
+        SetValue(PageLastRowPropertyKey, pages > 1 ? Math.Min(total, (index + 1) * size) : total);
+        UpdateCounts();
+        CommandManager.InvalidateRequerySuggested();
+
+        if (scrollToTop && GetTemplateChild("DG_ScrollViewer") is ScrollViewer viewer)
+        {
+            viewer.ScrollToTop();
+        }
+    }
+
+    /// <summary>Every row that passes the filters, in the order the grid shows them (sorted, then by group).</summary>
+    private List<object> OrderRows(Predicate<object>? predicate)
+    {
+        var view = new ListCollectionView(Items.SourceCollection.Cast<object>().Where(i => i != CollectionView.NewItemPlaceholder).ToList());
+        using (view.DeferRefresh())
+        {
+            view.Filter = predicate;
+            foreach (var sort in Items.SortDescriptions)
+            {
+                view.SortDescriptions.Add(sort);
+            }
+            foreach (var group in Items.GroupDescriptions)
+            {
+                view.GroupDescriptions.Add(group);
+            }
+        }
+
+        var rows = new List<object>(view.Count);
+        void AddLeaves(IEnumerable entries)
+        {
+            foreach (var entry in entries)
+            {
+                if (entry is CollectionViewGroup group)
+                {
+                    AddLeaves(group.Items);
+                }
+                else
+                {
+                    rows.Add(entry);
+                }
+            }
+        }
+        AddLeaves(view.Groups ?? (IEnumerable)view);
+        view.DetachFromSourceCollection();
+        return rows;
+    }
+
+    // Sort and source changes arrive in steps (DataGrid clears, then adds); repage once they are done.
+    private void ScheduleRepage(bool keepPage)
+    {
+        if (PageSize <= 0 || repagePending)
+        {
+            return;
+        }
+        repagePending = true;
+        Dispatcher.BeginInvoke(DispatcherPriority.DataBind, () =>
+        {
+            repagePending = false;
+            Refilter(keepPage);
+        });
+    }
 
     private void ScheduleFilter()
     {
@@ -620,10 +852,10 @@ public class JetPackGrid : DataGrid
         var total = Items.SourceCollection switch
         {
             ICollection collection => collection.Count,
-            IEnumerable source when Items.Filter != null => source.Cast<object>().Count(),
+            IEnumerable source when Items.Filter != null || ordered != null => source.Cast<object>().Count(),
             _ => count,
         };
-        SetValue(FilteredItemCountPropertyKey, count);
+        SetValue(FilteredItemCountPropertyKey, ordered?.Count ?? count);
         SetValue(TotalItemCountPropertyKey, total);
     }
 

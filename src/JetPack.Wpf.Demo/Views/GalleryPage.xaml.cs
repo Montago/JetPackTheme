@@ -19,6 +19,8 @@ public partial class GalleryPage : UserControl
         CarGrid.Items.SortDescriptions.Add(new SortDescription(nameof(Car.Price), ListSortDirection.Descending));
         CarGrid.SelectedIndex = 1;
         FilterGrid.ItemsSource = CarData.Cars.Take(80).ToArray();
+        PagedGrid.ItemsSource = CarData.Cars.Skip(100).Take(95).ToArray();
+        PagedGrid.PageIndex = 1;
         GroupGrid.ItemsSource = CarData.Cars.Where(c => c.Make is "Skoda" or "Tesla").Take(14).OrderBy(c => c.Make).ToArray();
 
         // Fixed dates keep the pictures stable from run to run.
