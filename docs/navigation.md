@@ -59,6 +59,26 @@ the strip. The demo uses it for its pages.
 
 All three support only `TabStripPlacement="Top"`.
 
+### Notch animation and page transitions
+
+The notch of the navigation bar and the strip moves to the selected tab. With
+`jp:TabControlHelper.SelectionAnimation` it slides along the bar and settles with a small overshoot
+(`Slide`, the default), pulls up into the bar and drops down under the new tab (`Drop`), or jumps
+straight there (`None`).
+
+Pages change at once by default. `jp:TabControlHelper.ContentTransition="Fade"` fades the old page out
+and the new one in. It works with all three TabControl styles.
+
+```xml
+<TabControl Style="{StaticResource JetPack.Styles.TabControl.Strip}"
+            jp:TabControlHelper.SelectionAnimation="Drop"
+            jp:TabControlHelper.ContentTransition="Fade">
+    ...
+</TabControl>
+```
+
+The demo's settings flyout switches between them.
+
 ## HamburgerMenu
 
 ![HamburgerMenu](screenshots/controls/hamburgermenu.png)

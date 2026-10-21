@@ -47,6 +47,16 @@ Drives the auto-hiding bars of `JetPack.Styles.ScrollViewer.Thin` (see
 | `AutoHideDelay` | `TimeSpan` (default 1.5 s) | How long the bars stay after the last scroll or mouse move. |
 | `IsScrollBarActive` | `bool`, read-only | True while the bars should show; always true when `AutoHide` is off. Templates fade the bars on it. |
 
+## TabControlHelper
+
+Selection animations for `TabControl` (see [Navigation](navigation.md#notch-animation-and-page-transitions)).
+
+| Attached property | Type | Description |
+| --- | --- | --- |
+| `SelectionAnimation` | `TabSelectionAnimation`: `Slide` (default), `Drop`, `None` | How the notch of the navigation and strip tabs moves to the selected tab. |
+| `ContentTransition` | `TabContentTransition`: `None` (default), `Fade` | How the page changes. Works with any `TabControl` template that has a `PART_SelectedContentHost`. |
+| `IsSelectionIndicator` | `bool` | Set on the element in a `TabControl` template that should sit under the selected tab (the notch). It needs a parent panel the width of the tab row, such as a `Canvas`; the helper moves it with a `RenderTransform`. |
+
 ## Converters
 
 | Key | Class | Converts |
