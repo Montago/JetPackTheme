@@ -2,6 +2,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.ComponentModel;
 using JetPack.Wpf.Controls;
+using JetPack.Wpf.Helpers;
 using JetPack.Wpf.Theming;
 
 namespace JetPack.Wpf.Demo;
@@ -82,6 +83,22 @@ public partial class MainWindow : JetPackWindow
         if (IsLoaded)
         {
             UseNavigationBar((string)((FrameworkElement)sender).Tag == "Bar");
+        }
+    }
+
+    private void OnNotchRadio(object sender, RoutedEventArgs e)
+    {
+        if (IsLoaded)
+        {
+            TabControlHelper.SetSelectionAnimation(Pages, Enum.Parse<TabSelectionAnimation>((string)((FrameworkElement)sender).Tag));
+        }
+    }
+
+    private void OnTransitionRadio(object sender, RoutedEventArgs e)
+    {
+        if (IsLoaded)
+        {
+            TabControlHelper.SetContentTransition(Pages, Enum.Parse<TabContentTransition>((string)((FrameworkElement)sender).Tag));
         }
     }
 

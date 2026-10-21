@@ -254,7 +254,8 @@
     selected link in accent and a small notch pointing down at the content.
     The bar fills the width of the TabControl and, as in the original, the first link sits
     flush with its left edge; placed directly under the title bar it runs edge to edge.
-    Tag is shown at the right end of the bar (branding, search, user).
+    Tag is shown at the right end of the bar (branding, search, user). The notch belongs to the
+    TabControl template, so it can move between links (TabControlHelper.SelectionAnimation).
     -->
     <Style x:Key="JetPack.Styles.TabItem.Navigation" TargetType="TabItem">
         <Setter Property="OverridesDefaultStyle" Value="True" />
@@ -278,8 +279,6 @@
                                               TextElement.FontSize="{DynamicResource JetPack.Font.Size.Navigation}" TextElement.FontWeight="Bold" TextOptions.TextFormattingMode="Ideal"
                                               TextElement.Foreground="{TemplateBinding h:ControlHelper.HeaderForeground}" />
                         </Border>
-                        <Path x:Name="Notch" Width="15" Height="9" VerticalAlignment="Bottom" HorizontalAlignment="Center" Data="{DynamicResource JetPack.Geometry.Notch}"
-                              Fill="{DynamicResource JetPack.Brushes.Accent.Solid}" Visibility="Hidden" Effect="{DynamicResource JetPack.Effects.ControlShadow}" />
                     </Grid>
                     <ControlTemplate.Triggers>
                         <MultiTrigger>
@@ -291,7 +290,6 @@
                         </MultiTrigger>
                         <Trigger Property="IsSelected" Value="True">
                             <Setter TargetName="Bd" Property="Background" Value="{DynamicResource JetPack.Brushes.Accent.Selection}" />
-                            <Setter TargetName="Notch" Property="Visibility" Value="Visible" />
                             <Setter TargetName="Content" Property="Effect" Value="{DynamicResource JetPack.Effects.Accent.TextShadow}" />
                             <Setter TargetName="Content" Property="TextElement.Foreground" Value="White" />
                         </Trigger>
@@ -324,6 +322,15 @@
                                               TextElement.Foreground="{DynamicResource JetPack.Brushes.Navigation.Inactive}" />
                         </Grid>
                         <TabPanel x:Name="HeaderPanel" Margin="{TemplateBinding Padding}" Panel.ZIndex="1" IsItemsHost="True" KeyboardNavigation.TabIndex="1" />
+                        <!-- The notch under the selected tab; TabControlHelper places and animates it. The lane clips
+                             its top edge so the Drop animation can pull the notch up into the bar. -->
+                        <Canvas Height="9" VerticalAlignment="Top" Margin="0,38,0,0" Panel.ZIndex="2" IsHitTestVisible="False">
+                            <Canvas.Clip>
+                                <RectangleGeometry Rect="-10000,0,20000,40" />
+                            </Canvas.Clip>
+                            <Path Width="15" Height="9" Data="{DynamicResource JetPack.Geometry.Notch}" Fill="{DynamicResource JetPack.Brushes.Accent.Solid}"
+                                  Effect="{DynamicResource JetPack.Effects.ControlShadow}" Visibility="Hidden" h:TabControlHelper.IsSelectionIndicator="True" />
+                        </Canvas>
                         <ContentPresenter x:Name="PART_SelectedContentHost" Grid.Row="1" ContentSource="SelectedContent" KeyboardNavigation.TabIndex="2" />
                     </Grid>
                 </ControlTemplate>
@@ -353,6 +360,15 @@
                         <Grid HorizontalAlignment="Left">
                             <Border Height="38" VerticalAlignment="Top" Background="{TemplateBinding Background}" Effect="{DynamicResource JetPack.Effects.ControlShadow}" />
                             <TabPanel x:Name="HeaderPanel" Margin="{TemplateBinding Padding}" Panel.ZIndex="1" IsItemsHost="True" KeyboardNavigation.TabIndex="1" />
+                            <!-- The notch under the selected tab; TabControlHelper places and animates it. The lane clips
+                                 its top edge so the Drop animation can pull the notch up into the bar. -->
+                            <Canvas Height="9" VerticalAlignment="Top" Margin="0,38,0,0" Panel.ZIndex="2" IsHitTestVisible="False">
+                                <Canvas.Clip>
+                                    <RectangleGeometry Rect="-10000,0,20000,40" />
+                                </Canvas.Clip>
+                                <Path Width="15" Height="9" Data="{DynamicResource JetPack.Geometry.Notch}" Fill="{DynamicResource JetPack.Brushes.Accent.Solid}"
+                                      Effect="{DynamicResource JetPack.Effects.ControlShadow}" Visibility="Hidden" h:TabControlHelper.IsSelectionIndicator="True" />
+                            </Canvas>
                         </Grid>
                         <ContentPresenter Grid.Row="0" HorizontalAlignment="Right" VerticalAlignment="Top" Content="{TemplateBinding Tag}" />
                         <ContentPresenter x:Name="PART_SelectedContentHost" Grid.Row="1" ContentSource="SelectedContent" KeyboardNavigation.TabIndex="2" />

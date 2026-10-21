@@ -52,6 +52,17 @@
                         <RadioButton Content="Tab strip" GroupName="Navigation" IsChecked="True" Margin="0,0,14,0" Checked="OnNavigationRadio" Tag="Strip" />
                         <RadioButton Content="Full-width bar" GroupName="Navigation" Checked="OnNavigationRadio" Tag="Bar" />
                     </StackPanel>
+                    <TextBlock Style="{StaticResource Demo.State}" HorizontalAlignment="Left" Text="Notch animation" Margin="0,0,0,6" />
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,16">
+                        <RadioButton Content="Slide" GroupName="Notch" IsChecked="True" Margin="0,0,14,0" Checked="OnNotchRadio" Tag="Slide" />
+                        <RadioButton Content="Drop" GroupName="Notch" Margin="0,0,14,0" Checked="OnNotchRadio" Tag="Drop" />
+                        <RadioButton Content="None" GroupName="Notch" Checked="OnNotchRadio" Tag="None" />
+                    </StackPanel>
+                    <TextBlock Style="{StaticResource Demo.State}" HorizontalAlignment="Left" Text="Page transition" Margin="0,0,0,6" />
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,16">
+                        <RadioButton Content="None" GroupName="Transition" IsChecked="True" Margin="0,0,14,0" Checked="OnTransitionRadio" Tag="None" />
+                        <RadioButton Content="Fade" GroupName="Transition" Checked="OnTransitionRadio" Tag="Fade" />
+                    </StackPanel>
                     <jp:ToggleSwitch x:Name="FocusSwitch" Content="Visible focus indicator" IsChecked="True" Margin="0,0,0,10" />
                     <jp:ToggleSwitch x:Name="VignetteSwitch" Content="Vignette in the corners" IsChecked="True" />
                 </StackPanel>
