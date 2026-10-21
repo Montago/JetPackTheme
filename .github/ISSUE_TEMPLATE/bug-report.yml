@@ -1,0 +1,87 @@
+name: Bug report
+description: A control looks wrong, behaves differently from WPF or the original JetPack theme, or crashes.
+title: "Bug: "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        One bug per issue. A screenshot and a few lines of XAML usually say more than a long description.
+
+  - type: input
+    id: control
+    attributes:
+      label: Control
+      description: The control or style the bug is in.
+      placeholder: e.g. Slider, JetPackGrid, JetPack.Styles.Button.Accent
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual
+    attributes:
+      label: What happens
+      description: What you see or what goes wrong.
+      placeholder: The thumb stops between the tick marks instead of on them.
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: What you expected
+      placeholder: The thumb follows the tick marks when IsSnapToTickEnabled is set.
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      description: Where to find it in the demo app, or what to do in your own app.
+      placeholder: |
+        1. Open the demo app, Core page
+        2. Drag the second slider towards the right end
+        3. ...
+
+  - type: textarea
+    id: example
+    attributes:
+      label: XAML
+      description: The smallest piece of XAML (and C# if relevant) that shows the bug.
+      render: xml
+      placeholder: |
+        <Slider Maximum="10" TickPlacement="BottomRight" TickFrequency="1" IsSnapToTickEnabled="True" />
+
+  - type: textarea
+    id: screenshots
+    attributes:
+      label: Screenshots
+      description: Drag images here. Crop them to the control, so no private desktop content is shown.
+
+  - type: input
+    id: version
+    attributes:
+      label: JetPack.Wpf version
+      description: The NuGet package version, or the commit if you build from source.
+      placeholder: e.g. 0.2.0
+    validations:
+      required: true
+
+  - type: dropdown
+    id: windows
+    attributes:
+      label: Windows
+      options:
+        - Windows 11
+        - Windows 10
+        - Other
+    validations:
+      required: true
+
+  - type: input
+    id: environment
+    attributes:
+      label: Other details
+      description: Optional. .NET version, accent (green, orange, blue, custom), display scaling, light title bar.
+      placeholder: e.g. .NET 8, orange accent, 150% scaling

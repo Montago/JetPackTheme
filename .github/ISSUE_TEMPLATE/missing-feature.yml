@@ -1,0 +1,61 @@
+name: Missing feature
+description: Something is missing from an existing control or style, e.g. a property, a variant or a WPF feature that is not styled yet.
+title: "Missing: "
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        For a control JetPack does not have at all, use the **Control request** template instead.
+
+  - type: input
+    id: control
+    attributes:
+      label: Control
+      description: The control or style that lacks the feature.
+      placeholder: e.g. TabControl, DatePicker, JetPackWindow
+    validations:
+      required: true
+
+  - type: textarea
+    id: missing
+    attributes:
+      label: What is missing
+      placeholder: TabControl only supports tabs at the top. I need tabs on the left side.
+    validations:
+      required: true
+
+  - type: textarea
+    id: purpose
+    attributes:
+      label: What you use it for
+      description: A real screen or situation from your app.
+      placeholder: A settings window with a long list of sections, shown as vertical tabs.
+    validations:
+      required: true
+
+  - type: textarea
+    id: example
+    attributes:
+      label: How you would like to use it
+      description: Optional. The XAML you would like to write.
+      render: xml
+      placeholder: |
+        <TabControl TabStripPlacement="Left">
+
+  - type: textarea
+    id: screenshots
+    attributes:
+      label: Screenshots
+      description: Optional. How it looks today, or how it looks in another suite.
+
+  - type: dropdown
+    id: priority
+    attributes:
+      label: How much would this help?
+      options:
+        - Blocks me from moving an app to JetPack
+        - Used in most of my apps
+        - Used now and then
+    validations:
+      required: true
