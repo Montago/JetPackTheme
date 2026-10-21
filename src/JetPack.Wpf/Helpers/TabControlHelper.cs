@@ -143,6 +143,8 @@ public static class TabControlHelper
         private PageSnapshot? oldPage;
         private PageSnapshot? snapshot;
         private UIElement? fadingHost;
+        private CacheMode? fadingCache;
+        private int fadeId;
 
         private Transitions(TabControl tabs)
         {
@@ -361,6 +363,11 @@ public static class TabControlHelper
             };
             page.BeginAnimation(UIElement.OpacityProperty, fadeOut);
 
+            // While it fades in, the new page is drawn once into a cached bitmap; otherwise every
+            // frame of the opacity animation renders the whole page again.
+            fadingCache = host.CacheMode;
+            host.CacheMode = new BitmapCache { SnapsToDevicePixels = true };
+
             var fadeIn = new DoubleAnimationUsingKeyFrames
             {
                 FillBehavior = FillBehavior.Stop,
@@ -370,6 +377,14 @@ public static class TabControlHelper
                     new DiscreteDoubleKeyFrame(0, FadeInStart),
                     new EasingDoubleKeyFrame(1, FadeInEnd, new QuadraticEase { EasingMode = EasingMode.EaseOut }),
                 },
+            };
+            var id = ++fadeId;
+            fadeIn.Completed += (_, _) =>
+            {
+                if (id == fadeId)
+                {
+                    EndFade();
+                }
             };
             host.BeginAnimation(UIElement.OpacityProperty, fadeIn);
         }
@@ -382,8 +397,13 @@ public static class TabControlHelper
                 AdornerLayer.GetAdornerLayer(snapshot.AdornedElement)?.Remove(snapshot);
                 snapshot = null;
             }
-            fadingHost?.BeginAnimation(UIElement.OpacityProperty, null);
-            fadingHost = null;
+            if (fadingHost != null)
+            {
+                fadingHost.BeginAnimation(UIElement.OpacityProperty, null);
+                fadingHost.CacheMode = fadingCache;
+                fadingHost = null;
+                fadingCache = null;
+            }
             oldPage = null;
         }
     }
