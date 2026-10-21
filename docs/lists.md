@@ -269,3 +269,32 @@ FrameworkElement.LanguageProperty.OverrideMetadata(typeof(FrameworkElement),
 Scroll bars are 16px with a light grey track, small grey arrows and the light gradient thumb with a
 white top edge from the original theme. All `ScrollViewer`s, including the ones inside text boxes and
 lists, use them.
+
+### Thin scroll bars
+
+![Thin scroll bars](screenshots/controls/scrollviewer-thin.png)
+
+`JetPack.Styles.ScrollViewer.Thin` is a modern alternative: a slim rounded thumb in the accent
+gradient with a soft shadow, no arrows and no track. The bars lie over the content instead of taking
+space beside it. They are 12px wide to grab, the thumb is 5px and grows to 8px with a faint track
+under the mouse. They fade in when the content scrolls or the mouse moves over the scroll viewer, and
+fade out again after `ScrollViewerHelper.AutoHideDelay` (1.5 seconds) without activity. They stay while
+the mouse is on a bar or a thumb is being dragged. The demo uses it for its pages.
+
+```xml
+<ScrollViewer Style="{StaticResource JetPack.Styles.ScrollViewer.Thin}"
+              jp:ScrollViewerHelper.AutoHideDelay="0:0:3">
+    ...
+</ScrollViewer>
+```
+
+Set `jp:ScrollViewerHelper.AutoHide="False"` to keep the bars visible. To use the thin bars
+everywhere, add an implicit style after the JetPack dictionary:
+
+```xml
+<Style TargetType="ScrollViewer" BasedOn="{StaticResource JetPack.Styles.ScrollViewer.Thin}" />
+```
+
+Leave room at the right edge (or bottom) of the content if the bars must not cover anything. The
+`ScrollBar` style alone is `JetPack.Styles.ScrollBar.Thin`. The implicit style also reaches the scroll
+viewers inside list and text box templates; `DataGrid` and `JetPackGrid` keep their own.

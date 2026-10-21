@@ -36,6 +36,17 @@ own styles to recolour a control without copying its template (see the example i
 | `IsMonitoring` | attached `bool` | Tracks text changes and handles `ClearTextCommand`. The JetPack styles turn it on; set it yourself only in a style that does not derive from them. |
 | `ClearTextCommand` | `RoutedUICommand` | Clears the text box it is raised in. |
 
+## ScrollViewerHelper
+
+Drives the auto-hiding bars of `JetPack.Styles.ScrollViewer.Thin` (see
+[Lists and data](lists.md#thin-scroll-bars)).
+
+| Attached property | Type | Description |
+| --- | --- | --- |
+| `AutoHide` | `bool` | Hides the bars until the content scrolls or the mouse moves over the scroll viewer. The thin style turns it on. |
+| `AutoHideDelay` | `TimeSpan` (default 1.5 s) | How long the bars stay after the last scroll or mouse move. |
+| `IsScrollBarActive` | `bool`, read-only | True while the bars should show; always true when `AutoHide` is off. Templates fade the bars on it. |
+
 ## Converters
 
 | Key | Class | Converts |

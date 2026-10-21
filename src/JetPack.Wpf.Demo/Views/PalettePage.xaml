@@ -1,7 +1,7 @@
 <UserControl x:Class="JetPack.Wpf.Demo.Views.PalettePage"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Padding="0,22,0,0">
+    <ScrollViewer Style="{StaticResource JetPack.Styles.ScrollViewer.Thin}" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Padding="0,22,0,0">
         <StackPanel>
             <TextBlock Style="{StaticResource Demo.Intro}"
                        Text="The resource keys the library exposes. Names follow the MahApps scheme (MahApps.Brushes.Accent → JetPack.Brushes.Accent), so moving an existing app over is easy. The accent colours change with the picker in the title bar." />

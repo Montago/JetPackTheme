@@ -146,6 +146,164 @@
         </Setter>
     </Style>
 
+    <!-- ===================== Thin ScrollBar / ScrollViewer =====================
+         Modern overlay scroll bars: a slim rounded thumb in the accent gradient, without arrows or
+         track, which widens under the mouse. JetPack.Styles.ScrollViewer.Thin lays them over the
+         content and fades them out after ScrollViewerHelper.AutoHideDelay. -->
+    <Style x:Key="JetPack.Styles.ScrollBar.Thin.Thumb" TargetType="Thumb">
+        <Setter Property="OverridesDefaultStyle" Value="True" />
+        <Setter Property="IsTabStop" Value="False" />
+        <Setter Property="Focusable" Value="False" />
+        <Setter Property="Background" Value="{DynamicResource JetPack.Brushes.Accent}" />
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="{DynamicResource JetPack.Brushes.Accent.MouseOver}" />
+            </Trigger>
+            <Trigger Property="IsDragging" Value="True">
+                <Setter Property="Background" Value="{DynamicResource JetPack.Brushes.Accent.Pressed}" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <!-- The accent gradients run top to bottom; the vertical thumb turns its border a quarter so
+         the gradient runs across the thumb as it does on the horizontal one. -->
+    <ControlTemplate x:Key="JetPack.Templates.ScrollBar.Thin.Thumb.Vertical" TargetType="Thumb">
+        <Grid>
+            <Grid.Effect>
+                <DropShadowEffect ShadowDepth="1" BlurRadius="3" Opacity="0.45" />
+            </Grid.Effect>
+            <Border CornerRadius="4" Background="{TemplateBinding Background}">
+                <Border.LayoutTransform>
+                    <RotateTransform Angle="-90" />
+                </Border.LayoutTransform>
+            </Border>
+        </Grid>
+    </ControlTemplate>
+    <ControlTemplate x:Key="JetPack.Templates.ScrollBar.Thin.Thumb.Horizontal" TargetType="Thumb">
+        <Border CornerRadius="4" Background="{TemplateBinding Background}">
+            <Border.Effect>
+                <DropShadowEffect ShadowDepth="1" BlurRadius="3" Opacity="0.45" />
+            </Border.Effect>
+        </Border>
+    </ControlTemplate>
+
+    <ControlTemplate x:Key="JetPack.Templates.ScrollBar.Thin.Vertical" TargetType="ScrollBar">
+        <Border x:Name="Track" Background="Transparent" CornerRadius="6" SnapsToDevicePixels="True">
+            <Track x:Name="PART_Track" IsDirectionReversed="True">
+                <Track.DecreaseRepeatButton>
+                    <RepeatButton Style="{DynamicResource JetPack.Styles.RepeatButton.Transparent}" Command="ScrollBar.PageUpCommand" />
+                </Track.DecreaseRepeatButton>
+                <Track.Thumb>
+                    <Thumb x:Name="Thumb" Width="5" Margin="0,3,3,3" MinHeight="32" HorizontalAlignment="Right" Style="{StaticResource JetPack.Styles.ScrollBar.Thin.Thumb}" Template="{StaticResource JetPack.Templates.ScrollBar.Thin.Thumb.Vertical}" />
+                </Track.Thumb>
+                <Track.IncreaseRepeatButton>
+                    <RepeatButton Style="{DynamicResource JetPack.Styles.RepeatButton.Transparent}" Command="ScrollBar.PageDownCommand" />
+                </Track.IncreaseRepeatButton>
+            </Track>
+        </Border>
+        <ControlTemplate.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter TargetName="Track" Property="Background" Value="#1A000000" />
+                <Setter TargetName="Thumb" Property="Width" Value="8" />
+                <Setter TargetName="Thumb" Property="Margin" Value="0,2,2,2" />
+            </Trigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+
+    <ControlTemplate x:Key="JetPack.Templates.ScrollBar.Thin.Horizontal" TargetType="ScrollBar">
+        <Border x:Name="Track" Background="Transparent" CornerRadius="6" SnapsToDevicePixels="True">
+            <Track x:Name="PART_Track">
+                <Track.DecreaseRepeatButton>
+                    <RepeatButton Style="{DynamicResource JetPack.Styles.RepeatButton.Transparent}" Command="ScrollBar.PageLeftCommand" />
+                </Track.DecreaseRepeatButton>
+                <Track.Thumb>
+                    <Thumb x:Name="Thumb" Height="5" Margin="3,0,3,3" MinWidth="32" VerticalAlignment="Bottom" Style="{StaticResource JetPack.Styles.ScrollBar.Thin.Thumb}" Template="{StaticResource JetPack.Templates.ScrollBar.Thin.Thumb.Horizontal}" />
+                </Track.Thumb>
+                <Track.IncreaseRepeatButton>
+                    <RepeatButton Style="{DynamicResource JetPack.Styles.RepeatButton.Transparent}" Command="ScrollBar.PageRightCommand" />
+                </Track.IncreaseRepeatButton>
+            </Track>
+        </Border>
+        <ControlTemplate.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter TargetName="Track" Property="Background" Value="#1A000000" />
+                <Setter TargetName="Thumb" Property="Height" Value="8" />
+                <Setter TargetName="Thumb" Property="Margin" Value="2,0,2,2" />
+            </Trigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+
+    <Style x:Key="JetPack.Styles.ScrollBar.Thin" TargetType="ScrollBar">
+        <Setter Property="SnapsToDevicePixels" Value="True" />
+        <Setter Property="IsTabStop" Value="False" />
+        <Setter Property="OverridesDefaultStyle" Value="True" />
+        <Setter Property="Width" Value="12" />
+        <Setter Property="Height" Value="Auto" />
+        <Setter Property="MinWidth" Value="12" />
+        <Setter Property="Template" Value="{StaticResource JetPack.Templates.ScrollBar.Thin.Vertical}" />
+        <Style.Triggers>
+            <Trigger Property="Orientation" Value="Horizontal">
+                <Setter Property="Width" Value="Auto" />
+                <Setter Property="Height" Value="12" />
+                <Setter Property="MinWidth" Value="0" />
+                <Setter Property="MinHeight" Value="12" />
+                <Setter Property="Template" Value="{StaticResource JetPack.Templates.ScrollBar.Thin.Horizontal}" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style x:Key="JetPack.Styles.ScrollViewer.Thin" TargetType="ScrollViewer">
+        <Setter Property="h:ScrollViewerHelper.AutoHide" Value="True" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ScrollViewer">
+                    <Grid Background="{TemplateBinding Background}">
+                        <ScrollContentPresenter x:Name="PART_ScrollContentPresenter" Margin="{TemplateBinding Padding}" CanContentScroll="{TemplateBinding CanContentScroll}"
+                                                CanHorizontallyScroll="False" CanVerticallyScroll="False"
+                                                Content="{TemplateBinding Content}" ContentTemplate="{TemplateBinding ContentTemplate}" />
+                        <ScrollBar x:Name="PART_VerticalScrollBar" Style="{StaticResource JetPack.Styles.ScrollBar.Thin}" HorizontalAlignment="Right" Margin="0,0,0,12"
+                                   Cursor="Arrow" Maximum="{TemplateBinding ScrollableHeight}" Minimum="0"
+                                   ViewportSize="{TemplateBinding ViewportHeight}" Value="{Binding VerticalOffset, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}"
+                                   Visibility="{TemplateBinding ComputedVerticalScrollBarVisibility}" AutomationProperties.AutomationId="VerticalScrollBar" />
+                        <ScrollBar x:Name="PART_HorizontalScrollBar" Style="{StaticResource JetPack.Styles.ScrollBar.Thin}" VerticalAlignment="Bottom" Margin="0,0,12,0"
+                                   Cursor="Arrow" Orientation="Horizontal" Maximum="{TemplateBinding ScrollableWidth}" Minimum="0"
+                                   ViewportSize="{TemplateBinding ViewportWidth}" Value="{Binding HorizontalOffset, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}"
+                                   Visibility="{TemplateBinding ComputedHorizontalScrollBarVisibility}" AutomationProperties.AutomationId="HorizontalScrollBar" />
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <!-- The bars only share the corner when both show. -->
+                        <Trigger Property="ComputedHorizontalScrollBarVisibility" Value="Collapsed">
+                            <Setter TargetName="PART_VerticalScrollBar" Property="Margin" Value="0" />
+                        </Trigger>
+                        <Trigger Property="ComputedVerticalScrollBarVisibility" Value="Collapsed">
+                            <Setter TargetName="PART_HorizontalScrollBar" Property="Margin" Value="0" />
+                        </Trigger>
+                        <Trigger Property="h:ScrollViewerHelper.IsScrollBarActive" Value="False">
+                            <Setter TargetName="PART_VerticalScrollBar" Property="Opacity" Value="0" />
+                            <Setter TargetName="PART_HorizontalScrollBar" Property="Opacity" Value="0" />
+                            <Trigger.EnterActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation Storyboard.TargetName="PART_VerticalScrollBar" Storyboard.TargetProperty="Opacity" To="0" Duration="0:0:0.4" />
+                                        <DoubleAnimation Storyboard.TargetName="PART_HorizontalScrollBar" Storyboard.TargetProperty="Opacity" To="0" Duration="0:0:0.4" />
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </Trigger.EnterActions>
+                            <Trigger.ExitActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation Storyboard.TargetName="PART_VerticalScrollBar" Storyboard.TargetProperty="Opacity" To="1" Duration="0:0:0.15" />
+                                        <DoubleAnimation Storyboard.TargetName="PART_HorizontalScrollBar" Storyboard.TargetProperty="Opacity" To="1" Duration="0:0:0.15" />
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </Trigger.ExitActions>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
     <!-- ===================== ListBox ===================== -->
     <Style x:Key="JetPack.Styles.ListBoxItem" TargetType="ListBoxItem">
         <Setter Property="SnapsToDevicePixels" Value="True" />

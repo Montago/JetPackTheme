@@ -413,6 +413,22 @@
             </Border>
         </ContentControl>
 
+        <ContentControl Style="{StaticResource Demo.Sample}" Tag="scrollviewer-thin">
+            <Border Width="200" Height="120" BorderBrush="#80404040" BorderThickness="1" CornerRadius="2.5" Background="#FFC9CACC">
+                <ScrollViewer Style="{StaticResource JetPack.Styles.ScrollViewer.Thin}" jp:ScrollViewerHelper.AutoHide="False"
+                              HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Visible">
+                    <Rectangle Width="400" Height="300">
+                        <Rectangle.Fill>
+                            <LinearGradientBrush StartPoint="0,0" EndPoint="0,24" MappingMode="Absolute" SpreadMethod="Repeat">
+                                <GradientStop Color="#10FFFFFF" Offset="0.5" />
+                                <GradientStop Color="#00FFFFFF" Offset="0.5" />
+                            </LinearGradientBrush>
+                        </Rectangle.Fill>
+                    </Rectangle>
+                </ScrollViewer>
+            </Border>
+        </ContentControl>
+
         <!-- Navigation and layout -->
         <ContentControl Style="{StaticResource Demo.Sample}" Tag="tabcontrol">
             <TabControl Width="340" Height="130">

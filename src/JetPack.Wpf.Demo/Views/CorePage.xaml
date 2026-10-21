@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="clr-namespace:JetPack.Wpf.Demo"
              xmlns:jp="urn:jetpack-wpf">
-    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Padding="0,22,0,0" Background="Transparent">
+    <ScrollViewer Style="{StaticResource JetPack.Styles.ScrollViewer.Thin}" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Padding="0,22,0,0" Background="Transparent">
         <StackPanel>
             <TextBlock Style="{StaticResource Demo.Intro}"
                        Text="The basic WPF controls, laid out like the original theme browser. Colours, gradients and shadows are taken directly from CoreStyles.xaml and Brushes.xaml." />
@@ -138,6 +138,24 @@
                             </Rectangle>
                         </ScrollViewer>
                     </Border>
+                </HeaderedContentControl>
+
+                <HeaderedContentControl Style="{StaticResource Demo.Column}" Header="ScrollViewer · Thin" Tag="JetPack.Styles.ScrollViewer.Thin">
+                    <StackPanel>
+                        <Border Width="130" Height="110" BorderBrush="#80404040" BorderThickness="1" CornerRadius="2.5" Background="#FFC9CACC">
+                            <ScrollViewer Style="{StaticResource JetPack.Styles.ScrollViewer.Thin}" HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Visible">
+                                <Rectangle Width="300" Height="260">
+                                    <Rectangle.Fill>
+                                        <LinearGradientBrush StartPoint="0,0" EndPoint="0,24" MappingMode="Absolute" SpreadMethod="Repeat">
+                                            <GradientStop Color="#10FFFFFF" Offset="0.5" />
+                                            <GradientStop Color="#00FFFFFF" Offset="0.5" />
+                                        </LinearGradientBrush>
+                                    </Rectangle.Fill>
+                                </Rectangle>
+                            </ScrollViewer>
+                        </Border>
+                        <TextBlock Style="{StaticResource Demo.State}" Text="Hides after 1.5 s" />
+                    </StackPanel>
                 </HeaderedContentControl>
 
                 <HeaderedContentControl Style="{StaticResource Demo.Column}" Header="ProgressBar" Tag="JetPack.Styles.ProgressBar">

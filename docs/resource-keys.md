@@ -274,8 +274,11 @@ variants and building blocks; use them with `Style="{StaticResource ...}"` or as
 | `JetPack.Styles.ListViewItem` | `ListViewItem` | Controls.Lists.xaml |
 | `JetPack.Styles.ScrollBar` | `ScrollBar` | Controls.Lists.xaml |
 | `JetPack.Styles.ScrollBar.Arrow` | `RepeatButton` | Controls.Lists.xaml |
+| `JetPack.Styles.ScrollBar.Thin` | `ScrollBar` | Controls.Lists.xaml |
+| `JetPack.Styles.ScrollBar.Thin.Thumb` | `Thumb` | Controls.Lists.xaml |
 | `JetPack.Styles.ScrollViewer` | `ScrollViewer` | Controls.Lists.xaml |
 | `JetPack.Styles.ScrollViewer.GridView` | `ScrollViewer` | Controls.Lists.xaml |
+| `JetPack.Styles.ScrollViewer.Thin` | `ScrollViewer` | Controls.Lists.xaml |
 | `JetPack.Styles.TreeView` | `TreeView` | Controls.Lists.xaml |
 | `JetPack.Styles.TreeViewItem` | `TreeViewItem` | Controls.Lists.xaml |
 | `JetPack.Styles.TreeViewItem.Expander` | `ToggleButton` | Controls.Lists.xaml |
