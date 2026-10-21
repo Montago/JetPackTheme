@@ -158,7 +158,7 @@ public class JetPackGrid : DataGrid
     }
 
     public static readonly DependencyProperty SearchDelayProperty = DependencyProperty.Register(
-        nameof(SearchDelay), typeof(TimeSpan), typeof(JetPackGrid), new PropertyMetadata(TimeSpan.FromMilliseconds(150)));
+        nameof(SearchDelay), typeof(TimeSpan), typeof(JetPackGrid), new PropertyMetadata(TimeSpan.FromMilliseconds(300)));
 
     /// <summary>Pause after the last change to the search or a filter before the rows are filtered; zero filters at once.</summary>
     public TimeSpan SearchDelay

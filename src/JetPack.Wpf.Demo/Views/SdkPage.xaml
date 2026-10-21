@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="clr-namespace:JetPack.Wpf.Demo"
              xmlns:jp="urn:jetpack-wpf">
-    <ScrollViewer Style="{StaticResource JetPack.Styles.ScrollViewer.Thin}" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Padding="0,22,0,0">
+    <ScrollViewer Style="{StaticResource JetPack.Styles.ScrollViewer.Thin}" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Padding="0,22,12,0">
         <StackPanel>
             <TextBlock Style="{StaticResource Demo.Intro}"
                        Text="The Silverlight SDK controls, all of which exist in WPF: TabControl, Calendar, DatePicker, TreeView, DataGrid and GridSplitter. The dark panels use DarkBackground #707176 and DarkBorder #58585D." />

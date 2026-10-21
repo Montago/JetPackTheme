@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="clr-namespace:JetPack.Wpf.Demo"
              xmlns:jp="urn:jetpack-wpf">
-    <ScrollViewer Style="{StaticResource JetPack.Styles.ScrollViewer.Thin}" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Padding="0,22,0,0" Background="Transparent">
+    <ScrollViewer Style="{StaticResource JetPack.Styles.ScrollViewer.Thin}" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Padding="0,22,12,0" Background="Transparent">
         <StackPanel>
             <TextBlock Style="{StaticResource Demo.Intro}"
                        Text="The basic WPF controls, laid out like the original theme browser. Colours, gradients and shadows are taken directly from CoreStyles.xaml and Brushes.xaml." />

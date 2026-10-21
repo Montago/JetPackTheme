@@ -182,7 +182,7 @@ the rows and cells on screen, not from the number of rows in the source.
 | Property | Type | Default | Description |
 | --- | --- | --- | --- |
 | `SearchText` | `string` | `""` | Two-way bindable. Words separated by spaces; each must be found in the row. |
-| `SearchDelay` | `TimeSpan` | 150 ms | Pause after the last change to the search or a filter before filtering; zero filters at once. |
+| `SearchDelay` | `TimeSpan` | 300 ms | Debounce: the rows are filtered once the search or a filter has not changed for this long, not on every key. Zero filters at once. |
 | `SearchWords` | `IReadOnlyList<string>` | empty | Read-only: the words the rows are filtered by and the cells mark. |
 | `FilterListLimit` | `int` | 20 | A header filter lists the values to tick when the column has at most this many different values; 0 never lists them. |
 | `GroupMemberPath` | `string` | `null` | Member to group by; empty for no groups. |
@@ -295,6 +295,7 @@ everywhere, add an implicit style after the JetPack dictionary:
 <Style TargetType="ScrollViewer" BasedOn="{StaticResource JetPack.Styles.ScrollViewer.Thin}" />
 ```
 
-Leave room at the right edge (or bottom) of the content if the bars must not cover anything. The
+The bars cover the whole scroll viewer, padding included, so a right `Padding` of 12 keeps a free lane
+for them when content runs to the edge (the demo pages use `Padding="0,22,12,0"`). The
 `ScrollBar` style alone is `JetPack.Styles.ScrollBar.Thin`. The implicit style also reaches the scroll
 viewers inside list and text box templates; `DataGrid` and `JetPackGrid` keep their own.
