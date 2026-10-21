@@ -172,6 +172,8 @@
         </Setter>
     </Style>
 
+    <!-- The tick bars get no margin along the track: TickBar already leaves half a thumb free at each
+         end (ReservedSpace binds to the thumb), so extra margin moves the ticks off the snap positions -->
     <ControlTemplate x:Key="JetPack.Templates.Slider.Horizontal" TargetType="Slider">
         <Grid SnapsToDevicePixels="True" Background="Transparent">
             <Grid.RowDefinitions>
@@ -179,7 +181,7 @@
                 <RowDefinition Height="18" />
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
-            <TickBar x:Name="TopTick" Height="4" Margin="6,0,6,2" Placement="Top" Fill="{DynamicResource JetPack.Brushes.Text.Dim}" Visibility="Collapsed" />
+            <TickBar x:Name="TopTick" Height="4" Margin="0,0,0,2" Placement="Top" Fill="{DynamicResource JetPack.Brushes.Text.Dim}" Visibility="Collapsed" />
             <Grid Grid.Row="1" Height="8" Margin="0,3,0,0" VerticalAlignment="Top">
                 <Border Background="{DynamicResource JetPack.Brushes.Track.Gradient}" BorderBrush="{DynamicResource JetPack.Brushes.Track.Border}" BorderThickness="1" CornerRadius="2" />
                 <Border BorderBrush="{DynamicResource JetPack.Brushes.Control.DarkEdge}" BorderThickness="1,1,0,0" CornerRadius="2" />
@@ -197,7 +199,7 @@
                     <RepeatButton Style="{DynamicResource JetPack.Styles.RepeatButton.Transparent}" Command="Slider.IncreaseLarge" />
                 </Track.IncreaseRepeatButton>
             </Track>
-            <TickBar x:Name="BottomTick" Grid.Row="2" Height="4" Margin="6,1,6,0" Placement="Bottom" Fill="{DynamicResource JetPack.Brushes.Text.Dim}" Visibility="Collapsed" />
+            <TickBar x:Name="BottomTick" Grid.Row="2" Height="4" Margin="0,1,0,0" Placement="Bottom" Fill="{DynamicResource JetPack.Brushes.Text.Dim}" Visibility="Collapsed" />
         </Grid>
         <ControlTemplate.Triggers>
             <Trigger Property="TickPlacement" Value="TopLeft">
@@ -223,7 +225,7 @@
                 <ColumnDefinition Width="18" />
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
-            <TickBar x:Name="TopTick" Width="4" Margin="0,6,2,6" Placement="Left" Fill="{DynamicResource JetPack.Brushes.Text.Dim}" Visibility="Collapsed" />
+            <TickBar x:Name="TopTick" Width="4" Margin="0,0,2,0" Placement="Left" Fill="{DynamicResource JetPack.Brushes.Text.Dim}" Visibility="Collapsed" />
             <Grid Grid.Column="1" Width="8" Margin="3,0,0,0" HorizontalAlignment="Left">
                 <Border Background="{DynamicResource JetPack.Brushes.Track.Gradient.Vertical}" BorderBrush="{DynamicResource JetPack.Brushes.Track.Border}" BorderThickness="1" CornerRadius="2" />
                 <Border BorderBrush="{DynamicResource JetPack.Brushes.Control.DarkEdge}" BorderThickness="1,1,0,0" CornerRadius="2" />
@@ -241,7 +243,7 @@
                     <RepeatButton Style="{DynamicResource JetPack.Styles.RepeatButton.Transparent}" Command="Slider.IncreaseLarge" />
                 </Track.IncreaseRepeatButton>
             </Track>
-            <TickBar x:Name="BottomTick" Grid.Column="2" Width="4" Margin="1,6,0,6" Placement="Right" Fill="{DynamicResource JetPack.Brushes.Text.Dim}" Visibility="Collapsed" />
+            <TickBar x:Name="BottomTick" Grid.Column="2" Width="4" Margin="1,0,0,0" Placement="Right" Fill="{DynamicResource JetPack.Brushes.Text.Dim}" Visibility="Collapsed" />
         </Grid>
         <ControlTemplate.Triggers>
             <Trigger Property="TickPlacement" Value="TopLeft">

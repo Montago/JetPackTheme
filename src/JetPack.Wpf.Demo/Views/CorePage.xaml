@@ -155,7 +155,7 @@
                         <Slider Value="6" Maximum="10" TickPlacement="BottomRight" TickFrequency="1" IsSnapToTickEnabled="True" />
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" d:Demo.Spacing="20">
                             <Slider Orientation="Vertical" Height="96" Value="3" Maximum="10" />
-                            <Slider Orientation="Vertical" Height="96" Value="7" Maximum="10" />
+                            <Slider Orientation="Vertical" Height="96" Value="4" Maximum="6" TickPlacement="BottomRight" TickFrequency="1" IsSnapToTickEnabled="True" />
                             <Slider Orientation="Vertical" Height="96" Value="5" Maximum="10" IsEnabled="False" />
                         </StackPanel>
                     </StackPanel>
