@@ -223,7 +223,10 @@ public static class TabControlHelper
                 return null;
             }
 
-            return item.TranslatePoint(new Point(item.ActualWidth / 2, 0), lane).X - indicator.ActualWidth / 2;
+            // Whole device pixels keep the notch's edges sharp, as layout rounding did for the old per-tab notch.
+            var x = item.TranslatePoint(new Point(item.ActualWidth / 2, 0), lane).X - indicator.ActualWidth / 2;
+            var scale = VisualTreeHelper.GetDpi(indicator).DpiScaleX;
+            return Math.Round(x * scale) / scale;
         }
 
         // Follows tabs that change width or move (other font size, items added) while nothing animates.

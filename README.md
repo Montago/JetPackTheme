@@ -76,7 +76,9 @@ Two common layouts for the window content:
 ```
 
 For the dark tab strip of the original theme browser, use `JetPack.Styles.TabControl.Strip` instead
-(the demo can switch between the two under *Settings → Page navigation*).
+(the demo can switch between the two under *Settings → Page navigation*). The notch slides to the
+selected tab; `jp:TabControlHelper.SelectionAnimation` and `jp:TabControlHelper.ContentTransition="Fade"`
+change that and add a cross-fade between pages.
 
 ## Theme and accent
 
@@ -98,7 +100,7 @@ Resource keys follow the MahApps scheme with a `JetPack.` prefix: `JetPack.Brush
 | Standard WPF (implicit styles) | Button, RepeatButton, ToggleButton, Hyperlink, TextBox, PasswordBox, RichTextBox, Label, CheckBox, RadioButton, ComboBox, ListBox, ListView/GridView, TreeView, ScrollBar, ScrollViewer, ProgressBar, Slider, ToolTip, GroupBox, Expander, TabControl, Calendar, DatePicker, DataGrid, GridSplitter, Separator, Menu, ContextMenu, ToolBar, StatusBar, validation errors |
 | Named variants | `Button.Accent/Green/Orange/Blue/Square/Flat/Link`, `TextBox.Dark`, `TextBox.MultiLine(.Dark)`, `PasswordBox.Dark`, `TabControl.Navigation` (the full-width light link bar with the notch), `TabControl.Strip` (the dark tab strip), `Expander.Accordion`, `TextBlock.Heading1–6` |
 | Own controls (`jp:`) | JetPackWindow, JetPackDialog, ToggleSwitch, NumericUpDown, SplitButton, DropDownButton, ProgressRing, Badged, Tile, Flyout, HamburgerMenu, InfoBar, RangeSlider, Rating, TimePicker, ColorPicker, AutoSuggestBox, SearchComboBox, JetPackGrid, BusyIndicator, Accordion |
-| Helpers | `TextBoxHelper.Watermark`, `TextBoxHelper.ClearTextButton`, `ControlHelper.CornerRadius` and others |
+| Helpers | `TextBoxHelper.Watermark`, `TextBoxHelper.ClearTextButton`, `TabControlHelper.SelectionAnimation`, `TabControlHelper.ContentTransition`, `ControlHelper.CornerRadius` and others |
 
 ## Demo
 
