@@ -6,6 +6,7 @@ using System.Windows.Documents;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
+using System.Windows.Threading;
 
 namespace JetPack.Wpf.Helpers;
 
@@ -28,7 +29,7 @@ public enum TabContentTransition
     /// <summary>The new page replaces the old one at once.</summary>
     None,
 
-    /// <summary>The old page fades out, then the new one fades in.</summary>
+    /// <summary>The old page fades into the new one.</summary>
     Fade,
 }
 
@@ -131,9 +132,7 @@ public static class TabControlHelper
         private static readonly Duration SlideDuration = TimeSpan.FromMilliseconds(320);
         private static readonly TimeSpan DropUp = TimeSpan.FromMilliseconds(120);
         private static readonly TimeSpan DropDown = TimeSpan.FromMilliseconds(380);
-        private static readonly Duration FadeOut = TimeSpan.FromMilliseconds(140);
-        private static readonly TimeSpan FadeInStart = TimeSpan.FromMilliseconds(100);
-        private static readonly TimeSpan FadeInEnd = TimeSpan.FromMilliseconds(300);
+        private static readonly Duration CrossFade = TimeSpan.FromMilliseconds(260);
 
         private readonly TabControl tabs;
         private FrameworkElement? indicator;
@@ -193,6 +192,7 @@ public static class TabControlHelper
         public void Snap()
         {
             moving = false;
+            moveId++;
             if (indicator is null || offset is null)
             {
                 return;
@@ -262,22 +262,40 @@ public static class TabControlHelper
                 return;
             }
 
-            Move();
-            if (oldPage is { } page)
+            var move = PrepareMove();
+            var fade = oldPage is { } page ? PrepareFade(page) : null;
+            oldPage = null;
+            if (move is null && fade is null)
             {
-                oldPage = null;
-                Fade(page);
+                return;
             }
+
+            // The new page is built in the next layout pass, which takes a while on a heavy page. Animations
+            // started now would lose their first frames to it, so they wait until the page has been drawn
+            // once; until then the notch stays put and the old page stays on top.
+            tabs.Dispatcher.BeginInvoke(DispatcherPriority.Loaded, () =>
+            {
+                EventHandler? start = null;
+                start = (_, _) =>
+                {
+                    // Rendering runs with a fresh tick time, so the animations start at their beginning.
+                    CompositionTarget.Rendering -= start;
+                    move?.Invoke();
+                    fade?.Invoke();
+                };
+                CompositionTarget.Rendering += start;
+            });
         }
 
-        private void Move()
+        /// <summary>Returns the move to the selected tab, or snaps the indicator there and returns null.</summary>
+        private Action? PrepareMove()
         {
             var animation = GetSelectionAnimation(tabs);
-            if (indicator is null || offset is null || indicator.Visibility != Visibility.Visible || animation == TabSelectionAnimation.None
+            if (indicator is null || offset is not { } target || indicator.Visibility != Visibility.Visible || animation == TabSelectionAnimation.None
                 || TargetX() is not { } to)
             {
                 Snap();
-                return;
+                return null;
             }
 
             moving = true;
@@ -311,8 +329,15 @@ public static class TabControlHelper
                     moving = false;
                 }
             };
-            offset.BeginAnimation(TranslateTransform.XProperty, x);
-            offset.BeginAnimation(TranslateTransform.YProperty, y);
+            return () =>
+            {
+                // A later selection or a snap replaces this move.
+                if (id == moveId && offset == target)
+                {
+                    target.BeginAnimation(TranslateTransform.XProperty, x);
+                    target.BeginAnimation(TranslateTransform.YProperty, y);
+                }
+            };
         }
 
         private PageSnapshot? CapturePage()
@@ -330,8 +355,14 @@ public static class TabControlHelper
             var visual = new DrawingVisual();
             using (var dc = visual.RenderOpen())
             {
-                // The brush draws the host at its offset in the parent, so the view box starts there.
-                var brush = new VisualBrush(host) { Viewbox = new Rect((Point)VisualTreeHelper.GetOffset(host), size), ViewboxUnits = BrushMappingMode.Absolute };
+                // Taken from the window, so the picture includes the background behind the page and hides the
+                // new page completely. Without a window, the host alone; a brush draws it at its offset in
+                // the parent, so the view box starts there.
+                var window = Window.GetWindow(host);
+                var area = window != null
+                    ? host.TransformToAncestor(window).TransformBounds(new Rect(size))
+                    : new Rect((Point)VisualTreeHelper.GetOffset(host), size);
+                var brush = new VisualBrush(window ?? (Visual)host) { Viewbox = area, ViewboxUnits = BrushMappingMode.Absolute };
                 dc.DrawRectangle(brush, null, new Rect(size));
             }
             bitmap.Render(visual);
@@ -339,59 +370,51 @@ public static class TabControlHelper
             return new PageSnapshot(host, bitmap);
         }
 
-        /// <summary>Lays the picture of the old page over the new one and fades it out, then fades the new page in.</summary>
-        private void Fade(PageSnapshot page)
+        /// <summary>
+        /// Lays the picture of the old page over the new one and returns the fade, which cross-fades from
+        /// the picture to the new page. Only the picture is animated, so each frame stays cheap.
+        /// </summary>
+        private Action? PrepareFade(PageSnapshot page)
         {
             var host = page.AdornedElement;
             if (AdornerLayer.GetAdornerLayer(host) is not { } layer)
             {
-                return;
+                return null;
             }
 
             snapshot = page;
             fadingHost = host;
-            layer.Add(page);
-
-            var fadeOut = new DoubleAnimation(0, FadeOut) { EasingFunction = new QuadraticEase { EasingMode = EasingMode.EaseIn } };
-            fadeOut.Completed += (_, _) =>
-            {
-                if (snapshot == page)
-                {
-                    layer.Remove(page);
-                    snapshot = null;
-                }
-            };
-            page.BeginAnimation(UIElement.OpacityProperty, fadeOut);
-
-            // While it fades in, the new page is drawn once into a cached bitmap; otherwise every
-            // frame of the opacity animation renders the whole page again.
             fadingCache = host.CacheMode;
-            host.CacheMode = new BitmapCache { SnapsToDevicePixels = true };
-
-            var fadeIn = new DoubleAnimationUsingKeyFrames
-            {
-                FillBehavior = FillBehavior.Stop,
-                KeyFrames =
-                {
-                    new DiscreteDoubleKeyFrame(0, TimeSpan.Zero),
-                    new DiscreteDoubleKeyFrame(0, FadeInStart),
-                    new EasingDoubleKeyFrame(1, FadeInEnd, new QuadraticEase { EasingMode = EasingMode.EaseOut }),
-                },
-            };
+            layer.Add(page);
             var id = ++fadeId;
-            fadeIn.Completed += (_, _) =>
+
+            return () =>
             {
-                if (id == fadeId)
+                // A later selection or EndFade replaces this fade.
+                if (id != fadeId)
                 {
-                    EndFade();
+                    return;
                 }
+
+                // The new page under the picture is drawn once into a cached bitmap for the length of the
+                // fade, instead of being drawn again in every frame.
+                host.CacheMode = new BitmapCache { SnapsToDevicePixels = true };
+                var fade = new DoubleAnimation(0, CrossFade) { EasingFunction = new QuadraticEase { EasingMode = EasingMode.EaseInOut } };
+                fade.Completed += (_, _) =>
+                {
+                    if (id == fadeId)
+                    {
+                        EndFade();
+                    }
+                };
+                page.BeginAnimation(UIElement.OpacityProperty, fade);
             };
-            host.BeginAnimation(UIElement.OpacityProperty, fadeIn);
         }
 
-        /// <summary>Ends a page fade that is under way and shows the current page fully.</summary>
+        /// <summary>Ends a page fade that is under way (or waiting to start) and shows the current page fully.</summary>
         public void EndFade()
         {
+            fadeId++;
             if (snapshot != null)
             {
                 AdornerLayer.GetAdornerLayer(snapshot.AdornedElement)?.Remove(snapshot);
@@ -399,7 +422,6 @@ public static class TabControlHelper
             }
             if (fadingHost != null)
             {
-                fadingHost.BeginAnimation(UIElement.OpacityProperty, null);
                 fadingHost.CacheMode = fadingCache;
                 fadingHost = null;
                 fadingCache = null;

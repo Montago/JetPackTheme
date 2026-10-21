@@ -66,8 +66,10 @@ The notch of the navigation bar and the strip moves to the selected tab. With
 (`Slide`, the default), pulls up into the bar and drops down under the new tab (`Drop`), or jumps
 straight there (`None`).
 
-Pages change at once by default. `jp:TabControlHelper.ContentTransition="Fade"` fades the old page out
-and the new one in. It works with all three TabControl styles.
+Pages change at once by default. `jp:TabControlHelper.ContentTransition="Fade"` cross-fades from the
+old page to the new one. It works with all three TabControl styles. The notch and the fade start once
+the new page has been drawn, so a heavy page does not eat their first frames; until then the old page
+stays in place.
 
 ```xml
 <TabControl Style="{StaticResource JetPack.Styles.TabControl.Strip}"
