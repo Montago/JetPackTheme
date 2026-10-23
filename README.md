@@ -141,11 +141,12 @@ design/              the HTML draft the look was approved from
 
 ## Releasing
 
-Releases are published to nuget.org by `.github/workflows/release.yml` when a version tag is pushed:
+Releases are published to nuget.org by `.github/workflows/release.yml` when a version tag is pushed
+(`v1.2.3` publishes version 1.2.3):
 
 ```bash
-git tag v0.1.0
-git push origin v0.1.0
+git tag -a v1.2.3 -m "JetPack.Wpf 1.2.3"
+git push origin v1.2.3
 ```
 
 The workflow packs `JetPack.Wpf` with the tag's version, pushes it to GitHub Packages (with the
@@ -167,7 +168,7 @@ and pull request is built by `.github/workflows/ci.yml`, which also uploads the 
 
 MIT License (see [LICENSE](LICENSE)). The look follows the JetPack theme in Microsoft's [Silverlight 4 Application Themes](https://www.microsoft.com/en-us/download/details.aspx?id=14590): colours and shadow values come from it, while all WPF styles and both background images (drawn by `tools/generate_backgrounds.py`) are made from scratch. See [NOTICE.md](NOTICE.md) for details.
 
-## Limitations in version 0.1
+## Known limitations
 
 - TabControl only supports tabs at the top.
 - The DatePicker watermark ("Select a date") comes from WPF's own resources and does not follow the app language.
