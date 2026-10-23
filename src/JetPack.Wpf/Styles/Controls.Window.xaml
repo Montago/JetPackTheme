@@ -117,7 +117,7 @@
                             <Grid x:Name="Ground" Background="{DynamicResource JetPack.Brushes.Window.Ground}">
                                 <Rectangle Fill="{TemplateBinding Background}" />
                             </Grid>
-                            <Rectangle x:Name="Vignette" Fill="{DynamicResource JetPack.Brushes.Window.Vignette}" IsHitTestVisible="False" />
+                            <c:Vignette x:Name="Vignette" />
                             <Grid>
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="Auto" />

@@ -126,7 +126,7 @@ The demo's `--snapshot <folder>` renders every page to PNG and exits, plus one p
 
 ```
 src/JetPack.Wpf/
-  Assets/            texture and vignette from the Silverlight theme
+  Assets/            window texture, drawn by tools/generate_backgrounds.py
   Styles/            Brushes, Fonts, Effects, Accents/*, Controls.*.xaml, JetPack.xaml
   Themes/Generic.xaml
   Controls/          own controls

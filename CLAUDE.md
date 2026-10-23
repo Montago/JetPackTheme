@@ -12,8 +12,8 @@ WPF controls library for .NET 8+ in the style of MahApps.Metro. Repo: github.com
   `CoreStyles.xaml`, `SDKStyles.xaml`, `ToolkitStyles.xaml`). Originals live in
   `D:\Dropbox\SL4Themes-RawAssets\JetPack`, `D:\Dropbox\SL4Themes-templates` and the old demo in
   `D:\Dropbox\Projects\Jetpack.Demo`.
-- Everything in the repo is MIT, including `Assets/Texture.png` and `Assets/Vignette.png`, which
-  `tools/generate_backgrounds.py` draws from scratch. Never copy Microsoft's image or XAML files in;
+- Everything in the repo is MIT, including `Assets/Texture.png`, which `tools/generate_backgrounds.py`
+  draws from scratch (the vignette is drawn in code by `Controls/Vignette.cs`). Never copy Microsoft's image or XAML files in;
   take values (colours, sizes) from them and draw or write the rest yourself.
 - Never commit screen captures that show the user's desktop.
 - When a control, property or style key changes, update the matching page in `docs/` in the same
@@ -37,7 +37,7 @@ samples/                    sample apps: JetPack.Wpf.Samples.Admin (HamburgerMen
                             UserControl per page in Views/, Shared/WindowSnapshot.cs for --snapshot
 docs/                       component documentation (Markdown); keep it in step with the code
 docs/resource-keys.md       generated: run `python tools/generate_resource_keys.py` after changing Styles/
-tools/generate_backgrounds.py   draws Assets/Texture.png and Assets/Vignette.png (numpy + Pillow)
+tools/generate_backgrounds.py   draws Assets/Texture.png (numpy + Pillow)
 tools/update_docs.py        rebuilds all screenshots + resource keys and runs the docs checks
 .claude/skills/update-docs/ the /update-docs skill: runs the script, reviews pictures, fixes the text
 design/jetpack-preview.src.html   approved HTML/CSS draft (texture as __TEX__ placeholder)

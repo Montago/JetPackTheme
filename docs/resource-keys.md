@@ -45,7 +45,6 @@ Shared by every accent.
 | Key | Type | Value |
 | --- | --- | --- |
 | `JetPack.Brushes.Window.Background` | ImageBrush | `Texture.png` |
-| `JetPack.Brushes.Window.Vignette` | ImageBrush | `Vignette.png` |
 | `JetPack.Brushes.Window.Ground` | SolidColorBrush | `#FF86888D` |
 | `JetPack.Brushes.Window.Glow` | LinearGradientBrush | `#30FFFFFF` 0 → `#00FFFFFF` 0.5 |
 | `JetPack.Brushes.Window.Title.Dark` | LinearGradientBrush | `#FF606066` 0 → `#FF4D4D51` 1 |
