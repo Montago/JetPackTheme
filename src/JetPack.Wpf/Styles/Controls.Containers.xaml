@@ -429,6 +429,12 @@
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
+        <!-- Keep the last item clear of the window's resize grip -->
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding ResizeMode, RelativeSource={RelativeSource AncestorType=Window}}" Value="CanResizeWithGrip">
+                <Setter Property="Padding" Value="2,3,16,4" />
+            </DataTrigger>
+        </Style.Triggers>
     </Style>
     <!-- Items are 16px apart and the outer ones 10px from the edges, as in the HTML draft -->
     <Style x:Key="JetPack.Styles.StatusBarItem" TargetType="StatusBarItem">

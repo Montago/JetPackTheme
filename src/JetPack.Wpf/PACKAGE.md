@@ -57,6 +57,4 @@ Source, demo app and issues: https://github.com/Montago/JetPackTheme
 
 ## License
 
-MIT, except the two images `Assets/Texture.png` and `Assets/Vignette.png`, which are copied unchanged
-from Microsoft's Silverlight 4 Application Themes and belong to Microsoft. See `NOTICE.md` in the
-package.
+MIT. See `NOTICE.md` in the package for where the look comes from.

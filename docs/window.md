@@ -42,7 +42,7 @@ the system menu keep working.
 | `ShowIcon` | `bool` | `true` | Shows `Icon` at the left of the title bar. |
 | `ShowVignette` | `bool` | `true` | The darkened edges of the original theme. |
 | `ShowMinButton` | `bool` | `true` | |
-| `ShowMaxRestoreButton` | `bool` | `true` | Also hidden when `ResizeMode="NoResize"`. |
+| `ShowMaxRestoreButton` | `bool` | `true` | Also hidden when `ResizeMode` is `NoResize` or `CanMinimize`. |
 | `LeftWindowCommands` | `object` | `null` | Content after the icon. |
 | `RightWindowCommands` | `object` | `null` | Content before the minimise button. |
 | `Flyouts` | `object` | `null` | A layer above the window content for `Flyout` panels; usually a `Grid`. |
@@ -77,6 +77,50 @@ template:
 
 For the dark tab strip of the original theme browser, use `JetPack.Styles.TabControl.Strip` inside a
 margin instead. See [Navigation and layout](navigation.md#tabcontrol).
+
+### Status bar
+
+`JetPackWindow` has no status bar property: the footer is an ordinary `StatusBar` docked at the bottom
+of the window content (first child of the `DockPanel`, so it takes the full width), and it gets the
+JetPack look from the implicit style. To turn it off, leave it out; to change it, change its items.
+
+```xml
+<StatusBar DockPanel.Dock="Bottom">
+    <StatusBarItem Content="{Binding StatusText}" />
+    <StatusBarItem DockPanel.Dock="Right" Content="{Binding Version}" />
+    <StatusBarItem DockPanel.Dock="Right" Content="Last synced 09:42" />
+    <StatusBarItem>
+        <ProgressBar Width="80" Height="8" IsIndeterminate="{Binding IsBusy}" />
+    </StatusBarItem>
+</StatusBar>
+```
+
+The items are laid out in a `DockPanel`: items dock left in order, and `DockPanel.Dock="Right"` puts
+an item at the right end (the first one furthest right). With only one right-hand item,
+`HorizontalAlignment="Right"` on the last item does the same. Set `Background`, `Foreground` or
+`FontSize` on the `StatusBar` to change its colours or text size, or base your own style on
+`JetPack.Styles.StatusBar` / `JetPack.Styles.StatusBarItem`. See also
+[StatusBar](navigation.md#statusbar).
+
+### Resizing and the grip
+
+![ResizeGrip](screenshots/controls/resizegrip.png)
+
+`ResizeMode` works as on a normal `Window`:
+
+| `ResizeMode` | Resize by the edges | Caption buttons | Grip |
+| --- | --- | --- | --- |
+| `CanResize` (default) | yes | minimise, maximise | no |
+| `CanResizeWithGrip` | yes | minimise, maximise | yes |
+| `CanMinimize` | no | minimise | no |
+| `NoResize` | no | none | no |
+
+As in WPF, `CanResizeWithGrip` does not limit resizing to the grip: the edges still work, and the grip
+is an extra, visible handle in the bottom-right corner. It is six embossed dots
+(`JetPack.Styles.ResizeGrip`, also the implicit `ResizeGrip` style), drawn above the content and the
+flyouts, and hidden while the window is maximised. It sits inside the rounded corner when
+`CornerStyle="Rounded"`. A `StatusBar` in a window with the grip gets 16px more padding on the right,
+so its last item stays clear of the dots.
 
 ### Maximised windows
 

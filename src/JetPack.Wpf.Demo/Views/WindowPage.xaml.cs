@@ -31,6 +31,14 @@ public partial class WindowPage : UserControl
         }
     }
 
+    private void OnResizeGrip(object sender, RoutedEventArgs e)
+    {
+        if (Host is { } window)
+        {
+            window.ResizeMode = ((CheckBox)sender).IsChecked == true ? ResizeMode.CanResizeWithGrip : ResizeMode.CanResize;
+        }
+    }
+
     private void OnShowFlyout(object sender, RoutedEventArgs e) =>
         (Window.GetWindow(this) as MainWindow)?.ShowFlyout(
             Enum.Parse<FlyoutPosition>((string)((FrameworkElement)sender).Tag),

@@ -54,6 +54,9 @@ public partial class MainWindow : JetPack.Wpf.Controls.JetPackWindow { ... }
 | `CornerStyle` | `Square` (default, as in the original theme) or `Rounded`. Rounded corners are drawn by the Windows 11 compositor; on Windows 10 the corners stay square. |
 | `ShowVignette`, `ShowIcon`, `ShowMinButton`, `ShowMaxRestoreButton` | `bool` |
 | `LeftWindowCommands`, `RightWindowCommands`, `Flyouts` | any content |
+| `ResizeMode` | `CanResizeWithGrip` adds a dotted grip in the bottom-right corner |
+
+The window has no status bar of its own: dock a `StatusBar` at the bottom of the content, as below.
 
 Two common layouts for the window content:
 
@@ -97,7 +100,7 @@ Resource keys follow the MahApps scheme with a `JetPack.` prefix: `JetPack.Brush
 
 | Group | Controls |
 | --- | --- |
-| Standard WPF (implicit styles) | Button, RepeatButton, ToggleButton, Hyperlink, TextBox, PasswordBox, RichTextBox, Label, CheckBox, RadioButton, ComboBox, ListBox, ListView/GridView, TreeView, ScrollBar, ScrollViewer, ProgressBar, Slider, ToolTip, GroupBox, Expander, TabControl, Calendar, DatePicker, DataGrid, GridSplitter, Separator, Menu, ContextMenu, ToolBar, StatusBar, validation errors |
+| Standard WPF (implicit styles) | Button, RepeatButton, ToggleButton, Hyperlink, TextBox, PasswordBox, RichTextBox, Label, CheckBox, RadioButton, ComboBox, ListBox, ListView/GridView, TreeView, ScrollBar, ScrollViewer, ProgressBar, Slider, ToolTip, GroupBox, Expander, TabControl, Calendar, DatePicker, DataGrid, GridSplitter, Separator, Menu, ContextMenu, ToolBar, StatusBar, ResizeGrip, validation errors |
 | Named variants | `Button.Accent/Green/Orange/Blue/Square/Flat/Link`, `TextBox.Dark`, `TextBox.MultiLine(.Dark)`, `PasswordBox.Dark`, `TabControl.Navigation` (the full-width light link bar with the notch), `TabControl.Strip` (the dark tab strip), `Expander.Accordion`, `TextBlock.Heading1–6` |
 | Own controls (`jp:`) | JetPackWindow, JetPackDialog, ToggleSwitch, NumericUpDown, SplitButton, DropDownButton, ProgressRing, Badged, Tile, Flyout, HamburgerMenu, InfoBar, RangeSlider, Rating, TimePicker, ColorPicker, AutoSuggestBox, SearchComboBox, JetPackGrid, BusyIndicator, Accordion |
 | Helpers | `TextBoxHelper.Watermark`, `TextBoxHelper.ClearTextButton`, `TabControlHelper.SelectionAnimation`, `TabControlHelper.ContentTransition`, `ControlHelper.CornerRadius` and others |
@@ -162,7 +165,7 @@ and pull request is built by `.github/workflows/ci.yml`, which also uploads the 
 
 ## License
 
-The code is licensed under the MIT License (see [LICENSE](LICENSE)), **except** `src/JetPack.Wpf/Assets/Texture.png` and `src/JetPack.Wpf/Assets/Vignette.png`. Those two images are copied unchanged from Microsoft's [Silverlight 4 Application Themes](https://www.microsoft.com/en-us/download/details.aspx?id=14590) and belong to Microsoft. Colours and shadow values come from the same theme; all WPF styles are written from scratch. See [NOTICE.md](NOTICE.md) for details.
+MIT License (see [LICENSE](LICENSE)). The look follows the JetPack theme in Microsoft's [Silverlight 4 Application Themes](https://www.microsoft.com/en-us/download/details.aspx?id=14590): colours and shadow values come from it, while all WPF styles and both background images (drawn by `tools/generate_backgrounds.py`) are made from scratch. See [NOTICE.md](NOTICE.md) for details.
 
 ## Limitations in version 0.1
 

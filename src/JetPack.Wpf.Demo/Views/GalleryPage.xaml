@@ -620,6 +620,18 @@
             </StatusBar>
         </ContentControl>
 
+        <ContentControl Style="{StaticResource Demo.Sample}" Tag="resizegrip">
+            <Grid Width="340" Height="110" ClipToBounds="True">
+                <Border BorderBrush="#FF3D3E42" BorderThickness="1" CornerRadius="3" Background="{DynamicResource JetPack.Brushes.Window.Background}" />
+                <TextBlock Margin="12" Style="{StaticResource Demo.State}" HorizontalAlignment="Left" Text="Page content" />
+                <StatusBar Margin="1" VerticalAlignment="Bottom" Padding="2,3,16,4">
+                    <StatusBarItem Content="Ready" />
+                    <StatusBarItem HorizontalAlignment="Right" Content="Last synced 09:42" />
+                </StatusBar>
+                <ResizeGrip Margin="1" HorizontalAlignment="Right" VerticalAlignment="Bottom" />
+            </Grid>
+        </ContentControl>
+
         <ContentControl Style="{StaticResource Demo.Sample}" Tag="gridsplitter-separator">
             <StackPanel Width="320" d:Demo.Spacing="14">
                 <Grid Height="90">

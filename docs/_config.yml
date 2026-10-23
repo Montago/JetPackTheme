@@ -26,5 +26,4 @@ gh_edit_source: docs
 gh_edit_view_mode: "edit"
 
 footer_content: >-
-  JetPack for WPF is MIT licensed, except two images copied from Microsoft's Silverlight 4
-  Application Themes. See <a href="https://github.com/Montago/JetPackTheme/blob/master/NOTICE.md">NOTICE</a>.
+  JetPack for WPF is MIT licensed. See <a href="https://github.com/Montago/JetPackTheme/blob/master/NOTICE.md">NOTICE</a>.

@@ -80,6 +80,25 @@
         </Setter>
     </Style>
 
+    <!-- Bottom-right corner grip for ResizeMode="CanResizeWithGrip": six embossed dots in a triangle -->
+    <Style x:Key="JetPack.Styles.ResizeGrip" TargetType="ResizeGrip">
+        <Setter Property="OverridesDefaultStyle" Value="True" />
+        <Setter Property="Width" Value="16" />
+        <Setter Property="Height" Value="16" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ResizeGrip">
+                    <Grid Background="Transparent" SnapsToDevicePixels="True">
+                        <Grid HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,3,3">
+                            <Path Margin="1,1,0,0" Fill="#66000000" Data="M8,0h2v2h-2z M4,4h2v2h-2z M8,4h2v2h-2z M0,8h2v2h-2z M4,8h2v2h-2z M8,8h2v2h-2z" />
+                            <Path Margin="0,0,1,1" Fill="#B3FFFFFF" Data="M8,0h2v2h-2z M4,4h2v2h-2z M8,4h2v2h-2z M0,8h2v2h-2z M4,8h2v2h-2z M8,8h2v2h-2z" />
+                        </Grid>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
     <Style TargetType="c:JetPackWindow">
         <Setter Property="FontFamily" Value="{DynamicResource JetPack.Fonts.Family}" />
         <Setter Property="FontSize" Value="{DynamicResource JetPack.Font.Size.Default}" />
@@ -144,6 +163,9 @@
                                     <ContentPresenter />
                                 </AdornerDecorator>
                                 <ContentPresenter Grid.Row="1" Content="{TemplateBinding Flyouts}" ClipToBounds="True" />
+                                <!-- WindowChrome turns the grip's area into the bottom-right resize border -->
+                                <ResizeGrip x:Name="WindowResizeGrip" Grid.Row="1" HorizontalAlignment="Right" VerticalAlignment="Bottom" IsTabStop="False"
+                                            Style="{StaticResource JetPack.Styles.ResizeGrip}" WindowChrome.ResizeGripDirection="BottomRight" Visibility="Collapsed" />
                                 <Grid x:Name="PART_DialogHost" Grid.Row="1" Background="{DynamicResource JetPack.Brushes.Dialog.Overlay}" Visibility="Collapsed" />
                             </Grid>
                         </Grid>
@@ -189,6 +211,17 @@
                             <Setter TargetName="RestoreButton" Property="Visibility" Value="Collapsed" />
                             <Setter TargetName="MinButton" Property="Visibility" Value="Collapsed" />
                         </Trigger>
+                        <Trigger Property="ResizeMode" Value="CanMinimize">
+                            <Setter TargetName="MaxButton" Property="Visibility" Value="Collapsed" />
+                            <Setter TargetName="RestoreButton" Property="Visibility" Value="Collapsed" />
+                        </Trigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="ResizeMode" Value="CanResizeWithGrip" />
+                                <Condition Property="WindowState" Value="Normal" />
+                            </MultiTrigger.Conditions>
+                            <Setter TargetName="WindowResizeGrip" Property="Visibility" Value="Visible" />
+                        </MultiTrigger>
                         <Trigger Property="IsActive" Value="False">
                             <Setter TargetName="Title" Property="Opacity" Value="0.7" />
                         </Trigger>
@@ -266,5 +299,7 @@
             </Setter.Value>
         </Setter>
     </Style>
+
+    <Style TargetType="ResizeGrip" BasedOn="{StaticResource JetPack.Styles.ResizeGrip}" />
 
 </ResourceDictionary>
