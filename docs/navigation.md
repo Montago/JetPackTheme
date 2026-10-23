@@ -213,6 +213,10 @@ navigation template:
 </StatusBar>
 ```
 
+Use `DockPanel.Dock="Right"` on items for more than one at the right end. In a window with
+`ResizeMode="CanResizeWithGrip"` the bar gets extra right padding for the grip. See
+[Status bar](window.md#status-bar) for the window footer.
+
 ## GridSplitter and Separator
 
 ![GridSplitter and Separator](screenshots/controls/gridsplitter-separator.png)

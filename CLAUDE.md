@@ -12,8 +12,9 @@ WPF controls library for .NET 8+ in the style of MahApps.Metro. Repo: github.com
   `CoreStyles.xaml`, `SDKStyles.xaml`, `ToolkitStyles.xaml`). Originals live in
   `D:\Dropbox\SL4Themes-RawAssets\JetPack`, `D:\Dropbox\SL4Themes-templates` and the old demo in
   `D:\Dropbox\Projects\Jetpack.Demo`.
-- `Assets/Texture.png` and `Assets/Vignette.png` are Microsoft's files and are excluded from the MIT
-  License (see `NOTICE.md`). Do not add more copied Microsoft assets without noting them there.
+- Everything in the repo is MIT, including `Assets/Texture.png` and `Assets/Vignette.png`, which
+  `tools/generate_backgrounds.py` draws from scratch. Never copy Microsoft's image or XAML files in;
+  take values (colours, sizes) from them and draw or write the rest yourself.
 - Never commit screen captures that show the user's desktop.
 - When a control, property or style key changes, update the matching page in `docs/` in the same
   commit and regenerate `docs/resource-keys.md`.
@@ -36,6 +37,7 @@ samples/                    sample apps: JetPack.Wpf.Samples.Admin (HamburgerMen
                             UserControl per page in Views/, Shared/WindowSnapshot.cs for --snapshot
 docs/                       component documentation (Markdown); keep it in step with the code
 docs/resource-keys.md       generated: run `python tools/generate_resource_keys.py` after changing Styles/
+tools/generate_backgrounds.py   draws Assets/Texture.png and Assets/Vignette.png (numpy + Pillow)
 tools/update_docs.py        rebuilds all screenshots + resource keys and runs the docs checks
 .claude/skills/update-docs/ the /update-docs skill: runs the script, reviews pictures, fixes the text
 design/jetpack-preview.src.html   approved HTML/CSS draft (texture as __TEX__ placeholder)
@@ -82,8 +84,7 @@ src/JetPack.Wpf.Demo/bin/Debug/net8.0-windows/JetPack.Wpf.Demo.exe --snapshot <f
 ## NuGet package and releases
 
 - Package metadata lives in `src/JetPack.Wpf/JetPack.Wpf.csproj`; `PACKAGE.md` becomes the package
-  README on nuget.org (absolute image URLs only), `icon.png` the package icon. The package uses a
-  license file, not an MIT expression, because of the two Microsoft images.
+  README on nuget.org (absolute image URLs only), `icon.png` the package icon. License: MIT expression.
 - Before tagging a release, run `/update-docs` so screenshots and docs match the code.
 - `.github/workflows/release.yml` publishes on a `v*.*.*` tag: always to GitHub Packages (workflow
   token, `--no-symbols` because that feed rejects snupkg), and to nuget.org with Trusted Publishing

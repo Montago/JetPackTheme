@@ -323,4 +323,5 @@ variants and building blocks; use them with `Style="{StaticResource ...}"` or as
 | `JetPack.Styles.Button.WindowCaption` | `Button` | Controls.Window.xaml |
 | `JetPack.Styles.Button.WindowClose` | `Button` | Controls.Window.xaml |
 | `JetPack.Styles.Button.WindowCommand` | `ButtonBase` | Controls.Window.xaml |
+| `JetPack.Styles.ResizeGrip` | `ResizeGrip` | Controls.Window.xaml |
 | `JetPack.Styles.Window` | `Window` | Controls.Window.xaml |
