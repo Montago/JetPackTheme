@@ -49,6 +49,7 @@ public class JetPackWindow : Window
     static JetPackWindow()
     {
         DefaultStyleKeyProperty.OverrideMetadata(typeof(JetPackWindow), new FrameworkPropertyMetadata(typeof(JetPackWindow)));
+        ResizeModeProperty.OverrideMetadata(typeof(JetPackWindow), new FrameworkPropertyMetadata(ResizeMode.CanResize, (d, _) => ((JetPackWindow)d).UpdateResizeBorder()));
     }
 
     public JetPackWindow()
@@ -66,6 +67,16 @@ public class JetPackWindow : Window
         CommandBindings.Add(new CommandBinding(SystemCommands.MaximizeWindowCommand, (_, _) => SystemCommands.MaximizeWindow(this)));
         CommandBindings.Add(new CommandBinding(SystemCommands.RestoreWindowCommand, (_, _) => SystemCommands.RestoreWindow(this)));
         CommandBindings.Add(new CommandBinding(SystemCommands.CloseWindowCommand, (_, _) => SystemCommands.CloseWindow(this)));
+    }
+
+    private void UpdateResizeBorder()
+    {
+        // Only CanResize resizes by the edges; CanResizeWithGrip resizes by the grip alone
+        // (its WindowChrome.ResizeGripDirection works without a resize border).
+        if (WindowChrome.GetWindowChrome(this) is { } chrome)
+        {
+            chrome.ResizeBorderThickness = ResizeMode == ResizeMode.CanResize ? new Thickness(6) : new Thickness(0);
+        }
     }
 
     public static readonly DependencyProperty TitleBarModeProperty = DependencyProperty.Register(
