@@ -1,0 +1,12 @@
+<script>
+  // Second-level headings of each page by URL (from _data/nav_headings.yml), for nav-headings.js
+  window.jetpackNavHeadings = {
+  {%- for p in site.pages -%}
+    {%- assign headings = site.data.nav_headings[p.path] -%}
+    {%- if headings %}
+    {{ p.url | relative_url | jsonify }}: {{ headings | jsonify }},
+    {%- endif -%}
+  {%- endfor %}
+  };
+</script>
+<script src="{{ '/assets/js/nav-headings.js' | relative_url }}" defer></script>

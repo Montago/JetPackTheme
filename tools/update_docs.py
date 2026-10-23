@@ -11,7 +11,7 @@ Steps:
   2. Runs each app with --snapshot and checks that no picture is blank. RenderTargetBitmap returns
      transparent images while the screen is off or the session is locked.
   3. Copies the pictures to docs/screenshots, docs/screenshots/controls and docs/screenshots/samples.
-  4. Regenerates docs/resource-keys.md.
+  4. Regenerates docs/resource-keys.md and docs/_data/nav_headings.yml (the headings in the docs menu).
   5. Checks that every {StaticResource} in Styles/ is defined earlier in the same file, that every
      image the docs reference exists, and that every gallery picture is used by a docs page.
 
@@ -171,6 +171,13 @@ def regenerate_resource_keys(report):
         report.error('generate_resource_keys.py failed:\n' + result.stdout + result.stderr)
 
 
+def regenerate_nav_headings(report):
+    step('Regenerating docs/_data/nav_headings.yml')
+    result = subprocess.run([sys.executable, os.path.join(ROOT, 'tools', 'generate_nav_headings.py')], capture_output=True, text=True)
+    if result.returncode != 0:
+        report.error('generate_nav_headings.py failed:\n' + result.stdout + result.stderr)
+
+
 def check_static_resources(report):
     """StaticResource and BasedOn across the Controls.*.xaml files fail at runtime (each is loaded on its own)."""
     step('Checking {StaticResource} order in Styles/')
@@ -249,6 +256,7 @@ def main():
         folders = build_and_render(args.scratch, report)
         copy_pictures(folders, report)
     regenerate_resource_keys(report)
+    regenerate_nav_headings(report)
     check_static_resources(report)
     check_doc_images(report)
     check_controls_documented(report)
