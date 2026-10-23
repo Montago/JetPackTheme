@@ -42,7 +42,7 @@ the system menu keep working.
 | `ShowIcon` | `bool` | `true` | Shows `Icon` at the left of the title bar. |
 | `ShowVignette` | `bool` | `true` | The darkened edges of the original theme. |
 | `EnableMica` | `bool` | `false` | Lets the Windows 11 Mica backdrop show through the ground and the title bar. See [Mica backdrop](#mica-backdrop). |
-| `GroundOpacity` | `double` | 0.5 | How much the ground, texture and title bar cover Mica: 0 shows Mica alone, 1 hides it. Only used while Mica is on. |
+| `GroundOpacity` | `double` | 0.5 | How much the ground, texture and title bar cover Mica: 0 shows Mica alone, 1 hides it. Only used while Mica is on. Around 0.75 is recommended to keep the JetPack look. |
 | `IsMicaActive` | `bool` (read-only) | | True while Windows draws Mica behind the window. |
 | `ShowMinButton` | `bool` | `true` | |
 | `ShowMaxRestoreButton` | `bool` | `true` | Also hidden when `ResizeMode` is `NoResize` or `CanMinimize`. |
@@ -136,8 +136,13 @@ wallpaper, and lays the JetPack ground, texture and title bar over it at `Ground
 a switch and a slider for both in its settings flyout.
 
 ```xml
-<jp:JetPackWindow ... EnableMica="True" GroundOpacity="0.4">
+<jp:JetPackWindow ... EnableMica="True" GroundOpacity="0.75">
 ```
+
+A `GroundOpacity` of around 0.75 is recommended: the grey ground and texture stay in charge and
+Mica adds a faint tint. Lower values let more of Mica through, but the window turns darker and moves
+away from the original JetPack look. The default of 0.5 is lower so the effect is easy to see when
+you first turn it on.
 
 - Mica needs Windows 11 22H2 (build 22621) or later. Elsewhere `IsMicaActive` stays false and the
   window looks as usual.
