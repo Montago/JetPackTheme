@@ -6,13 +6,10 @@
     Silverlight JetPack theme (Brushes.xaml / CoreStyles.xaml).
     -->
 
-    <!-- Window ground: tiled grey texture plus a vignette on top -->
+    <!-- Window ground: tiled grey texture (the vignette on top is drawn by Controls/Vignette.cs) -->
     <ImageBrush x:Key="JetPack.Brushes.Window.Background"
                 ImageSource="pack://application:,,,/JetPack.Wpf;component/Assets/Texture.png"
                 TileMode="Tile" Stretch="None" ViewportUnits="Absolute" Viewport="0,0,200,200" />
-    <ImageBrush x:Key="JetPack.Brushes.Window.Vignette"
-                ImageSource="pack://application:,,,/JetPack.Wpf;component/Assets/Vignette.png"
-                Stretch="Fill" />
     <SolidColorBrush x:Key="JetPack.Brushes.Window.Ground" Color="#FF86888D" />
     <LinearGradientBrush x:Key="JetPack.Brushes.Window.Glow" StartPoint="0,0" EndPoint="0,1">
         <GradientStop Offset="0" Color="#30FFFFFF" />

@@ -40,7 +40,7 @@ the system menu keep working.
 | `HasSystemRoundedCorners` | `bool` (read-only) | | True while Windows draws rounded corners; the template then leaves out its own 1px border. |
 | `TitleBarHeight` | `double` | 30 | Height of the title bar and of the draggable caption area. |
 | `ShowIcon` | `bool` | `true` | Shows `Icon` at the left of the title bar. |
-| `ShowVignette` | `bool` | `true` | The darkened edges of the original theme. |
+| `ShowVignette` | `bool` | `true` | The darkened edges of the original theme. See [Vignette](#vignette). |
 | `EnableMica` | `bool` | `false` | Lets the Windows 11 Mica backdrop show through the ground and the title bar. See [Mica backdrop](#mica-backdrop). |
 | `GroundOpacity` | `double` | 0.5 | How much the ground, texture and title bar cover Mica: 0 shows Mica alone, 1 hides it. Only used while Mica is on. Around 0.75 is recommended to keep the JetPack look. |
 | `IsMicaActive` | `bool` (read-only) | | True while Windows draws Mica behind the window. |
@@ -128,6 +128,27 @@ so its last item stays clear of the dots.
 
 When maximised, the window keeps its content inside the screen's work area (the resize border that
 `WindowChrome` hangs over the edge is compensated) and drops its border.
+
+### Vignette
+
+The darkened edges come from a `Vignette` element between the ground and the content. It is drawn in
+code: a shade of fixed width along every edge, darker in the corners, with fine noise mixed in so the
+gradient shows no bands. Its width does not change with the window size, and it is drawn on whole
+device pixels, so resizing does not stretch it.
+
+| Property | Type | Default | Description |
+| --- | --- | --- | --- |
+| `Reach` | `double` | 180 | How far in from each edge the shade reaches. In a window smaller than two reaches the shades meet in the middle. |
+| `Strength` | `double` | 0.3 | Opacity of the shade at the middle of an edge. |
+
+To change it for every window, add an implicit style to the application resources:
+
+```xml
+<Style TargetType="jp:Vignette">
+    <Setter Property="Reach" Value="240" />
+    <Setter Property="Strength" Value="0.25" />
+</Style>
+```
 
 ### Mica backdrop
 

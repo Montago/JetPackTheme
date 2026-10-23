@@ -86,5 +86,6 @@ use the new value.
 ## Window background
 
 The window background is a tiled 200×200 texture (`JetPack.Brushes.Window.Background`) with a
-vignette on top (`JetPack.Brushes.Window.Vignette`). Turn the vignette off per window with
-`ShowVignette="False"`, or replace the texture brush with your own `ImageBrush` using the same key.
+vignette on top, drawn in code by the `Vignette` element (see [Vignette](window.md#vignette)). Turn
+the vignette off per window with `ShowVignette="False"`, or replace the texture brush with your own
+`ImageBrush` using the same key.
