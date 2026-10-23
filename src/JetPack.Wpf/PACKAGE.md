@@ -8,6 +8,39 @@ dialogs, `ToggleSwitch`, `NumericUpDown`, `Flyout`, `HamburgerMenu`, `InfoBar`, 
 
 ![JetPack for WPF](https://raw.githubusercontent.com/Montago/JetPackTheme/master/docs/screenshots/core.png)
 
+## Highlights
+
+**JetPackGrid: a free data grid for large lists.** It brings the features that usually send WPF
+developers to a commercial grid such as Telerik's RadGridView, in a free, MIT-licensed `DataGrid`:
+
+- Search across all columns, with every hit marked in the cells (`volvo "dark blue" automatic`)
+- A filter in every column header: tick values from a list with row counts, or type them with `*`
+  wildcards
+- Grouping with headers that fold up, three-state sorting and paging
+- Virtualized rows and columns, also while grouping, for thousands of rows in tens of columns
+
+It does not try to match everything a commercial suite offers, such as hierarchical child grids or
+built-in export. [Documentation](https://montago.github.io/JetPackTheme/lists.html#jetpackgrid)
+
+![JetPackGrid with the search "volvo auto" marked in the cells](https://raw.githubusercontent.com/Montago/JetPackTheme/master/docs/screenshots/controls/jetpackgrid.png)
+
+**SearchComboBox: a light alternative to RadComboBox.** A combo box you can type in, for long lists
+such as customers or products. Typing filters the virtualized drop-down (`Contains` or `StartsWith`)
+and completes the first match. It binds like a ComboBox (`ItemsSource`, `SelectedItem`,
+`SelectedValue`, `DisplayMemberPath`, `ItemTemplate`) and works fully from the keyboard.
+[Documentation](https://montago.github.io/JetPackTheme/inputs.html#searchcombobox)
+
+![SearchComboBox filtering 2,000 companies](https://raw.githubusercontent.com/Montago/JetPackTheme/master/docs/screenshots/controls/searchcombobox.png)
+
+**Mica backdrop on Windows 11.** `EnableMica="True"` lets the Mica material show through the
+JetPack ground, so the window picks up a soft tint from the wallpaper and keeps its texture and title
+bar. `GroundOpacity` sets the balance (about 0.75 keeps the classic look). The compositor draws it,
+so it costs next to nothing; on Windows 10 the window stays opaque.
+[Documentation](https://montago.github.io/JetPackTheme/window.html#mica-backdrop)
+
+*Telerik, RadGridView and RadComboBox are trademarks of Progress Software Corporation. JetPack for
+WPF is not affiliated with or endorsed by Progress.*
+
 ## Getting started
 
 ```bash

@@ -47,7 +47,7 @@ DEMO_PAGES = {
     '02-sdk.png': 'sdk.png',
     '03-toolkit.png': 'toolkit.png',
     '04-extras.png': 'extras.png',
-    '05-grid.png': 'grid.png',
+    '05-jetpackgrid.png': 'jetpackgrid.png',
     '06-window.png': 'window.png',
     '07-palette.png': 'palette.png',
     '20-core-orange.png': 'core-orange.png',

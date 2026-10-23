@@ -131,7 +131,7 @@
                 <TabItem Header="Extras">
                     <v:ExtrasPage />
                 </TabItem>
-                <TabItem Header="Grid">
+                <TabItem Header="JetPackGrid">
                     <v:GridPage />
                 </TabItem>
                 <TabItem Header="Window">

@@ -114,10 +114,10 @@ people need to narrow down. It adds:
 </jp:JetPackGrid>
 ```
 
-The demo's *Grid* page shows 3,000 cars in 20 columns, searched for `volvo automatic` with the
+The demo's *JetPackGrid* page shows 3,000 cars in 20 columns, searched for `volvo automatic` with the
 *Body* column filtered to `estate suv`:
 
-![The Grid page of the demo](screenshots/grid.png)
+![The JetPackGrid page of the demo](screenshots/jetpackgrid.png)
 
 ### Header filter
 

@@ -1,10 +1,85 @@
 # JetPack for WPF
 
-The JetPack theme from Microsoft's Silverlight 4 Application Themes, rebuilt as a complete controls library for WPF on .NET 8 and later. It follows the same model as MahApps.Metro: one resource dictionary gives every standard control the JetPack look, and the library adds its own controls (window, ToggleSwitch, NumericUpDown, Flyout, HamburgerMenu and more).
+The JetPack theme from Microsoft's Silverlight 4 Application Themes, rebuilt as a complete controls library for WPF on .NET 8 and later. It follows the same model as MahApps.Metro: one resource dictionary gives every standard control the JetPack look, and the library adds its own controls (window, ToggleSwitch, NumericUpDown, Flyout, HamburgerMenu and more), including a searchable, filterable data grid and a type-ahead combo box (see [Highlights](#highlights)).
 
 ![Core](docs/screenshots/core.png)
 
 **Documentation: [montago.github.io/JetPackTheme](https://montago.github.io/JetPackTheme/)** covers every control, the theme and accents, typography and all resource keys (source in [docs/](docs/README.md)).
+
+## Highlights
+
+### JetPackGrid: a free data grid for large lists
+
+![JetPackGrid with the search "volvo auto" marked in the cells](docs/screenshots/controls/jetpackgrid.png)
+
+`JetPackGrid` brings the features that usually send WPF developers to a commercial grid such as
+Telerik's RadGridView, in a free, MIT-licensed `DataGrid`:
+
+- **Search across all columns.** Every word must match somewhere in the row, every hit is marked in
+  the cells, and quotes keep a phrase together: `volvo "dark blue" automatic`.
+- **Filter in every column header.** Tick values from a list with row counts, or type them, with `*`
+  as a wildcard.
+- **Grouping** with headers that fold up, **three-state sorting** and **paging**.
+- **Virtualized rows and columns**, also while grouping, so thousands of rows in tens of columns
+  stay fast.
+
+It derives from `DataGrid`, so columns, bindings, selection and templates work as usual:
+
+```xml
+<jp:JetPackGrid ItemsSource="{Binding Cars}" SearchText="{Binding Text, ElementName=Search}"
+                GroupMemberPath="Make" PageSize="100">
+    <jp:JetPackGrid.Columns>
+        <jp:JetPackGridColumn Header="Make" Binding="{Binding Make}" />
+        <jp:JetPackGridColumn Header="Body" Binding="{Binding Body}" FilterText="estate suv" />
+    </jp:JetPackGrid.Columns>
+</jp:JetPackGrid>
+```
+
+It is built for searching, filtering and browsing large lists. It does not try to match everything a
+commercial suite offers, such as hierarchical child grids or built-in export.
+[JetPackGrid documentation](https://montago.github.io/JetPackTheme/lists.html#jetpackgrid)
+
+### SearchComboBox: a light alternative to RadComboBox
+
+![SearchComboBox filtering 2,000 companies](docs/screenshots/controls/searchcombobox.png)
+
+`SearchComboBox` is a combo box you can type in, for long lists such as customers or products. It
+covers what RadComboBox is most often used for, filtering and autocomplete, without a commercial
+licence:
+
+- **Typing filters the drop-down** (`Contains` or `StartsWith`, ignoring case) and completes the
+  first match.
+- **Virtualized drop-down**, so thousands of items stay fast.
+- **The usual bindings:** `ItemsSource`, `SelectedItem`, `SelectedValue` with `SelectedValuePath`,
+  `DisplayMemberPath` and `ItemTemplate`.
+- **Full keyboard use:** arrow keys, PageUp/PageDown, Enter, Tab and Escape.
+
+```xml
+<jp:SearchComboBox ItemsSource="{Binding Companies}" DisplayMemberPath="Name"
+                   SelectedValuePath="Id" SelectedValue="{Binding CompanyId}" />
+```
+
+[SearchComboBox documentation](https://montago.github.io/JetPackTheme/inputs.html#searchcombobox)
+
+### Mica backdrop on Windows 11
+
+![The demo window: the left half without Mica, the right half with Mica](docs/screenshots/mica.png)
+
+`EnableMica="True"` lets the Windows 11 Mica material show through the JetPack ground. The window
+picks up a soft tint from the desktop wallpaper, like the apps that come with Windows, and keeps its
+grey texture, vignette and title bar. `GroundOpacity` sets the balance: about 0.75 keeps the classic
+JetPack look, and the default of 0.5 shows more Mica.
+
+```xml
+<jp:JetPackWindow ... EnableMica="True" GroundOpacity="0.75">
+```
+
+It costs next to nothing. The compositor draws Mica from a sampled wallpaper, and the window does
+not use `AllowsTransparency`. On Windows 10 and early Windows 11 the window stays opaque.
+[Mica documentation](https://montago.github.io/JetPackTheme/window.html#mica-backdrop)
+
+<sub>Telerik, RadGridView and RadComboBox are trademarks of Progress Software Corporation. JetPack for
+WPF is not affiliated with or endorsed by Progress.</sub>
 
 ## Getting started
 

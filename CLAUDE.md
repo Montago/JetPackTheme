@@ -65,6 +65,9 @@ src/JetPack.Wpf.Demo/bin/Debug/net8.0-windows/JetPack.Wpf.Demo.exe --snapshot <f
   `d:Demo.Open="True"` get their drop-down, menu, tool tip or validation call-out opened, and
   `GallerySnapshot` draws the popup where its placement would put it. A new control or variant gets a
   sample there and a picture under its heading in `docs/`.
+- `docs/screenshots/mica.png` is an on-screen capture (Mica cannot be rendered with
+  RenderTargetBitmap), approved by the user although its tint comes from their wallpaper. The
+  scripts do not make it; keep it unless the user asks for a new one.
 - The sample apps also take `--snapshot <folder>` (one PNG per page, named `admin-*` / `portal-*`);
   copy them to `docs/screenshots/samples` when the apps or the look change.
 - RenderTargetBitmap returns blank (fully transparent) images while the PC's screen is off or the
