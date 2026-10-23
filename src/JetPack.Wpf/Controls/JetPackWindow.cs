@@ -1,3 +1,4 @@
+using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -46,6 +47,7 @@ public class JetPackWindow : Window
     private Grid? dialogHost;
     private FrameworkElement? root;
     private Color? surfaceColor;
+    private bool frameExtended;
 
     static JetPackWindow()
     {
@@ -241,6 +243,7 @@ public class JetPackWindow : Window
     protected override void OnSourceInitialized(EventArgs e)
     {
         base.OnSourceInitialized(e);
+        HwndSource.FromHwnd(new WindowInteropHelper(this).Handle)?.AddHook(WndProc);
         ApplyCornerStyle();
         ApplyBackdrop();
     }
@@ -278,6 +281,15 @@ public class JetPackWindow : Window
         {
             chrome.GlassFrameThickness = active ? new Thickness(-1) : new Thickness(0);
         }
+
+        // Windows draws its own caption buttons wherever the frame reaches, on top of the
+        // template's. They need WS_SYSMENU, so leave it out while the frame is extended.
+        if (active != frameExtended)
+        {
+            frameExtended = active;
+            NativeMethods.SetStyleBits(hwnd, NativeMethods.WsSysMenu, !active);
+        }
+
         if (!active && surfaceColor is { } color && target != null)
         {
             target.BackgroundColor = color;
@@ -298,6 +310,35 @@ public class JetPackWindow : Window
             }
         }
         SetValue(IsMicaActivePropertyKey, active);
+    }
+
+    private IntPtr WndProc(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
+    {
+        // WPF puts WS_SYSMENU back when it rebuilds the style (ResizeMode, WindowStyle).
+        if (msg == NativeMethods.WmStyleChanging && frameExtended && wParam.ToInt32() == NativeMethods.GwlStyle)
+        {
+            var style = Marshal.PtrToStructure<NativeMethods.StyleStruct>(lParam);
+            if ((style.StyleNew & NativeMethods.WsSysMenu) != 0)
+            {
+                style.StyleNew &= ~NativeMethods.WsSysMenu;
+                Marshal.StructureToPtr(style, lParam, false);
+            }
+        }
+
+        // Without WS_SYSMENU, Windows ignores Alt+Space; open the system menu ourselves.
+        if (msg == NativeMethods.WmSysCommand && frameExtended
+            && (wParam.ToInt32() & 0xFFF0) == NativeMethods.ScKeyMenu && lParam.ToInt32() == ' ')
+        {
+            // ShowSystemMenu takes device-independent units; PointToScreen returns pixels.
+            var corner = PointToScreen(new Point(0, TitleBarHeight));
+            if (HwndSource.FromHwnd(hwnd)?.CompositionTarget is { } target)
+            {
+                corner = target.TransformFromDevice.Transform(corner);
+            }
+            SystemCommands.ShowSystemMenu(this, corner);
+            handled = true;
+        }
+        return IntPtr.Zero;
     }
 
     private void ApplyCornerStyle()

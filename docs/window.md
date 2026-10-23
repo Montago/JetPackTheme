@@ -176,6 +176,9 @@ you first turn it on.
 - Windows shows Mica only while the window is active; an inactive window gets a plain dark fill.
 - Mica is drawn by the compositor from a sampled wallpaper, not blurred live, so it costs next to
   nothing. The window does not use `AllowsTransparency`.
+- Mica extends the system frame over the whole window, and Windows would then draw its own caption
+  buttons next to the JetPack ones. The window therefore drops the `WS_SYSMENU` style while Mica is
+  on and opens the system menu itself on Alt+Space.
 - WPF renders text in grey scale instead of ClearType on a see-through window. Text inside clipped or
   effect areas stays grey scale after Mica is turned off again, until the window is reopened.
 
