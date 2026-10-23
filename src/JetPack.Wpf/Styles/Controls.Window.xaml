@@ -111,9 +111,12 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="c:JetPackWindow">
-                    <Border x:Name="PART_Root" Background="{DynamicResource JetPack.Brushes.Window.Ground}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
+                    <Border x:Name="PART_Root" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
                         <Grid>
-                            <Rectangle Fill="{TemplateBinding Background}" />
+                            <!-- Ground and texture; see-through by GroundOpacity while Mica is on -->
+                            <Grid x:Name="Ground" Background="{DynamicResource JetPack.Brushes.Window.Ground}">
+                                <Rectangle Fill="{TemplateBinding Background}" />
+                            </Grid>
                             <Rectangle x:Name="Vignette" Fill="{DynamicResource JetPack.Brushes.Window.Vignette}" IsHitTestVisible="False" />
                             <Grid>
                                 <Grid.RowDefinitions>
@@ -122,8 +125,8 @@
                                 </Grid.RowDefinitions>
 
                                 <!-- Title bar -->
-                                <Grid x:Name="TitleBar" Height="{TemplateBinding TitleBarHeight}" Background="{DynamicResource JetPack.Brushes.Window.Title.Dark}"
-                                      TextElement.Foreground="White">
+                                <Grid x:Name="TitleBar" Height="{TemplateBinding TitleBarHeight}" TextElement.Foreground="White">
+                                    <Border x:Name="TitleBackground" Background="{DynamicResource JetPack.Brushes.Window.Title.Dark}" />
                                     <Border x:Name="TitleHighlight" BorderBrush="#24FFFFFF" BorderThickness="0,1,0,0" />
                                     <DockPanel>
                                         <Image x:Name="Icon" DockPanel.Dock="Left" Width="16" Height="16" Margin="9,0,0,0" Source="{TemplateBinding Icon}"
@@ -172,13 +175,13 @@
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="TitleBarMode" Value="Light">
-                            <Setter TargetName="TitleBar" Property="Background" Value="{DynamicResource JetPack.Brushes.Static.Background}" />
+                            <Setter TargetName="TitleBackground" Property="Background" Value="{DynamicResource JetPack.Brushes.Static.Background}" />
                             <Setter TargetName="TitleBar" Property="TextElement.Foreground" Value="{DynamicResource JetPack.Brushes.Header.Foreground}" />
                             <Setter TargetName="TitleHighlight" Property="BorderBrush" Value="#B3FFFFFF" />
                             <Setter TargetName="Title" Property="Effect" Value="{DynamicResource JetPack.Effects.TextEmboss}" />
                         </Trigger>
                         <Trigger Property="TitleBarMode" Value="Texture">
-                            <Setter TargetName="TitleBar" Property="Background" Value="Transparent" />
+                            <Setter TargetName="TitleBackground" Property="Background" Value="Transparent" />
                             <Setter TargetName="TitleHighlight" Property="Visibility" Value="Collapsed" />
                             <Setter TargetName="Title" Property="Effect" Value="{DynamicResource JetPack.Effects.TextGlow}" />
                         </Trigger>
@@ -187,6 +190,10 @@
                         </Trigger>
                         <Trigger Property="Icon" Value="{x:Null}">
                             <Setter TargetName="Icon" Property="Visibility" Value="Collapsed" />
+                        </Trigger>
+                        <Trigger Property="IsMicaActive" Value="True">
+                            <Setter TargetName="Ground" Property="Opacity" Value="{Binding GroundOpacity, RelativeSource={RelativeSource TemplatedParent}}" />
+                            <Setter TargetName="TitleBackground" Property="Opacity" Value="{Binding GroundOpacity, RelativeSource={RelativeSource TemplatedParent}}" />
                         </Trigger>
                         <Trigger Property="ShowVignette" Value="False">
                             <Setter TargetName="Vignette" Property="Visibility" Value="Collapsed" />

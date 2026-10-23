@@ -4,9 +4,15 @@ namespace JetPack.Wpf.Controls;
 
 internal static class NativeMethods
 {
-    // DWMWINDOWATTRIBUTE values (Windows 11, build 22000+)
+    // DWMWINDOWATTRIBUTE values (Windows 11, build 22000+; the backdrop type needs 22621+)
+    public const int DwmwaUseImmersiveDarkMode = 20;
     public const int DwmwaWindowCornerPreference = 33;
     public const int DwmwaBorderColor = 34;
+    public const int DwmwaSystemBackdropType = 38;
+
+    // DWM_SYSTEMBACKDROP_TYPE values
+    public const int DwmsbtNone = 1;
+    public const int DwmsbtMainWindow = 2;
 
     // DWM_WINDOW_CORNER_PREFERENCE values
     public const int DwmwcpDoNotRound = 1;

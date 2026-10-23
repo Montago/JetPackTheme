@@ -41,6 +41,9 @@ the system menu keep working.
 | `TitleBarHeight` | `double` | 30 | Height of the title bar and of the draggable caption area. |
 | `ShowIcon` | `bool` | `true` | Shows `Icon` at the left of the title bar. |
 | `ShowVignette` | `bool` | `true` | The darkened edges of the original theme. |
+| `EnableMica` | `bool` | `false` | Lets the Windows 11 Mica backdrop show through the ground and the title bar. See [Mica backdrop](#mica-backdrop). |
+| `GroundOpacity` | `double` | 0.5 | How much the ground, texture and title bar cover Mica: 0 shows Mica alone, 1 hides it. Only used while Mica is on. |
+| `IsMicaActive` | `bool` (read-only) | | True while Windows draws Mica behind the window. |
 | `ShowMinButton` | `bool` | `true` | |
 | `ShowMaxRestoreButton` | `bool` | `true` | Also hidden when `ResizeMode` is `NoResize` or `CanMinimize`. |
 | `LeftWindowCommands` | `object` | `null` | Content after the icon. |
@@ -125,6 +128,24 @@ so its last item stays clear of the dots.
 
 When maximised, the window keeps its content inside the screen's work area (the resize border that
 `WindowChrome` hangs over the edge is compensated) and drops its border.
+
+### Mica backdrop
+
+`EnableMica="True"` asks Windows for the dark Mica backdrop, a soft tint taken from the desktop
+wallpaper, and lays the JetPack ground, texture and title bar over it at `GroundOpacity`. The demo has
+a switch and a slider for both in its settings flyout.
+
+```xml
+<jp:JetPackWindow ... EnableMica="True" GroundOpacity="0.4">
+```
+
+- Mica needs Windows 11 22H2 (build 22621) or later. Elsewhere `IsMicaActive` stays false and the
+  window looks as usual.
+- Windows shows Mica only while the window is active; an inactive window gets a plain dark fill.
+- Mica is drawn by the compositor from a sampled wallpaper, not blurred live, so it costs next to
+  nothing. The window does not use `AllowsTransparency`.
+- WPF renders text in grey scale instead of ClearType on a see-through window. Text inside clipped or
+  effect areas stays grey scale after Mica is turned off again, until the window is reopened.
 
 ## Flyouts
 

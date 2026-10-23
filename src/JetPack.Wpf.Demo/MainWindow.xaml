@@ -64,7 +64,16 @@
                         <RadioButton Content="Fade" GroupName="Transition" Checked="OnTransitionRadio" Tag="Fade" />
                     </StackPanel>
                     <jp:ToggleSwitch x:Name="FocusSwitch" Content="Visible focus indicator" IsChecked="True" Margin="0,0,0,10" />
-                    <jp:ToggleSwitch x:Name="VignetteSwitch" Content="Vignette in the corners" IsChecked="True" />
+                    <jp:ToggleSwitch x:Name="VignetteSwitch" Content="Vignette in the corners" IsChecked="True" Margin="0,0,0,10" />
+                    <jp:ToggleSwitch x:Name="MicaSwitch" Content="Mica backdrop (Windows 11)" />
+                    <TextBlock x:Name="MicaUnavailable" Style="{StaticResource Demo.State}" HorizontalAlignment="Left" Margin="0,4,0,0" Visibility="Collapsed"
+                               Text="Mica needs Windows 11 22H2 or later." />
+                    <TextBlock Style="{StaticResource Demo.State}" HorizontalAlignment="Left" Margin="0,12,0,6">
+                        <Run Text="Ground over Mica:" />
+                        <Run Text="{Binding Value, ElementName=GroundSlider, Mode=OneWay, StringFormat=P0}" />
+                    </TextBlock>
+                    <Slider x:Name="GroundSlider" Minimum="0" Maximum="1" Value="0.5" SmallChange="0.05" LargeChange="0.1"
+                            IsEnabled="{Binding IsChecked, ElementName=MicaSwitch}" />
                 </StackPanel>
             </jp:Flyout>
             <jp:Flyout x:Name="RecentFlyout" Position="Left" Header="Recent" Width="260">

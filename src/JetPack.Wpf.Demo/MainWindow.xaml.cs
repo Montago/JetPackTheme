@@ -20,6 +20,17 @@ public partial class MainWindow : JetPackWindow
         FocusSwitch.Unchecked += (_, _) => ThemeManager.ShowFocusVisuals = false;
         VignetteSwitch.Checked += (_, _) => ShowVignette = true;
         VignetteSwitch.Unchecked += (_, _) => ShowVignette = false;
+        MicaSwitch.Checked += (_, _) =>
+        {
+            EnableMica = true;
+            MicaUnavailable.Visibility = IsMicaActive ? Visibility.Collapsed : Visibility.Visible;
+        };
+        MicaSwitch.Unchecked += (_, _) =>
+        {
+            EnableMica = false;
+            MicaUnavailable.Visibility = Visibility.Collapsed;
+        };
+        GroundSlider.ValueChanged += (_, e) => GroundOpacity = e.NewValue;
         DependencyPropertyDescriptor.FromProperty(ColorPicker.SelectedColorProperty, typeof(ColorPicker))
             .AddValueChanged(CustomAccent, (_, _) => ThemeManager.ChangeAccent(CustomAccent.SelectedColor));
     }

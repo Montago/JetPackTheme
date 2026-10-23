@@ -45,6 +45,7 @@ public class JetPackWindow : Window
 
     private Grid? dialogHost;
     private FrameworkElement? root;
+    private Color? surfaceColor;
 
     static JetPackWindow()
     {
@@ -109,6 +110,41 @@ public class JetPackWindow : Window
     /// the template leaves its own border out.
     /// </summary>
     public bool HasSystemRoundedCorners => (bool)GetValue(HasSystemRoundedCornersProperty);
+
+    public static readonly DependencyProperty EnableMicaProperty = DependencyProperty.Register(
+        nameof(EnableMica), typeof(bool), typeof(JetPackWindow),
+        new PropertyMetadata(false, (d, _) => ((JetPackWindow)d).ApplyBackdrop()));
+
+    /// <summary>
+    /// Lets the Windows 11 Mica backdrop show through the JetPack ground (see
+    /// <see cref="GroundOpacity"/>). Needs Windows 11 22H2; elsewhere the window stays opaque.
+    /// </summary>
+    public bool EnableMica
+    {
+        get => (bool)GetValue(EnableMicaProperty);
+        set => SetValue(EnableMicaProperty, value);
+    }
+
+    public static readonly DependencyProperty GroundOpacityProperty = DependencyProperty.Register(
+        nameof(GroundOpacity), typeof(double), typeof(JetPackWindow), new PropertyMetadata(0.5));
+
+    /// <summary>
+    /// How much the ground, texture and title bar cover the Mica backdrop while
+    /// <see cref="IsMicaActive"/> is true: 0 shows Mica alone, 1 hides it.
+    /// </summary>
+    public double GroundOpacity
+    {
+        get => (double)GetValue(GroundOpacityProperty);
+        set => SetValue(GroundOpacityProperty, value);
+    }
+
+    private static readonly DependencyPropertyKey IsMicaActivePropertyKey = DependencyProperty.RegisterReadOnly(
+        nameof(IsMicaActive), typeof(bool), typeof(JetPackWindow), new PropertyMetadata(false));
+
+    public static readonly DependencyProperty IsMicaActiveProperty = IsMicaActivePropertyKey.DependencyProperty;
+
+    /// <summary>True while Windows draws Mica behind the window, so the template lets it through.</summary>
+    public bool IsMicaActive => (bool)GetValue(IsMicaActiveProperty);
 
     public static readonly DependencyProperty TitleBarHeightProperty = DependencyProperty.Register(
         nameof(TitleBarHeight), typeof(double), typeof(JetPackWindow), new PropertyMetadata(30d, OnTitleBarHeightChanged));
@@ -206,6 +242,62 @@ public class JetPackWindow : Window
     {
         base.OnSourceInitialized(e);
         ApplyCornerStyle();
+        ApplyBackdrop();
+    }
+
+    private void ApplyBackdrop()
+    {
+        var hwnd = new WindowInteropHelper(this).Handle;
+        if (hwnd == IntPtr.Zero)
+        {
+            return;
+        }
+
+        // Dark Mica suits the grey ground. The backdrop type fails before Windows 11 22H2.
+        var active = false;
+        if (EnableMica)
+        {
+            NativeMethods.SetDwmAttribute(hwnd, NativeMethods.DwmwaUseImmersiveDarkMode, 1);
+            active = NativeMethods.SetDwmAttribute(hwnd, NativeMethods.DwmwaSystemBackdropType, NativeMethods.DwmsbtMainWindow);
+        }
+        else if (IsMicaActive)
+        {
+            NativeMethods.SetDwmAttribute(hwnd, NativeMethods.DwmwaSystemBackdropType, NativeMethods.DwmsbtNone);
+            NativeMethods.SetDwmAttribute(hwnd, NativeMethods.DwmwaUseImmersiveDarkMode, 0);
+        }
+
+        // DWM only draws the backdrop where the frame reaches, so extend it over the whole window;
+        // WindowChrome then also makes the WPF surface transparent, which turns ClearType off.
+        // It leaves the surface transparent when the frame shrinks again, so restore it here.
+        var target = HwndSource.FromHwnd(hwnd)?.CompositionTarget;
+        if (active && !IsMicaActive)
+        {
+            surfaceColor = target?.BackgroundColor;
+        }
+        if (WindowChrome.GetWindowChrome(this) is { } chrome)
+        {
+            chrome.GlassFrameThickness = active ? new Thickness(-1) : new Thickness(0);
+        }
+        if (!active && surfaceColor is { } color && target != null)
+        {
+            target.BackgroundColor = color;
+            surfaceColor = null;
+        }
+
+        // Once the surface has been transparent WPF keeps rendering text in grey scale; the ground
+        // is opaque again, so tell it ClearType is safe.
+        if (root != null)
+        {
+            if (active)
+            {
+                root.ClearValue(RenderOptions.ClearTypeHintProperty);
+            }
+            else if (IsMicaActive)
+            {
+                RenderOptions.SetClearTypeHint(root, ClearTypeHint.Enabled);
+            }
+        }
+        SetValue(IsMicaActivePropertyKey, active);
     }
 
     private void ApplyCornerStyle()
