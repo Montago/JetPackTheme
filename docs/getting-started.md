@@ -22,7 +22,7 @@ or in the project file:
 
 ```xml
 <ItemGroup>
-  <PackageReference Include="JetPack.Wpf" Version="0.1.0" />
+  <PackageReference Include="JetPack.Wpf" Version="0.5.0" />
 </ItemGroup>
 ```
 
