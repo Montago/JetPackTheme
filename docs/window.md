@@ -160,10 +160,11 @@ a switch and a slider for both in its settings flyout.
 <jp:JetPackWindow ... EnableMica="True" GroundOpacity="0.75">
 ```
 
-![The demo window: the left half without Mica, the right half with Mica at GroundOpacity 0.5](screenshots/mica.png)
+![The demo window: the left half without Mica, the right half with Mica at GroundOpacity 0.75](screenshots/mica.png)
 
-*Left half without Mica, right half with Mica at `GroundOpacity="0.5"`. The tint comes from the
-desktop wallpaper, so it differs from one PC to the next; a colourful wallpaper shows more of it.*
+*Left half without Mica, right half with Mica at the recommended `GroundOpacity="0.75"`. The tint
+comes from the desktop wallpaper, so it differs from one PC to the next; a colourful wallpaper shows
+more of it.*
 
 A `GroundOpacity` of around 0.75 is recommended: the grey ground and texture stay in charge and
 Mica adds a faint tint. Lower values let more of Mica through, but the window turns darker and moves

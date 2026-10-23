@@ -215,31 +215,6 @@ tools/               generate_resource_keys.py (rebuilds docs/resource-keys.md)
 design/              the HTML draft the look was approved from
 ```
 
-## Releasing
-
-Releases are published to nuget.org by `.github/workflows/release.yml` when a version tag is pushed
-(`v1.2.3` publishes version 1.2.3):
-
-```bash
-git tag -a v1.2.3 -m "JetPack.Wpf 1.2.3"
-git push origin v1.2.3
-```
-
-The workflow packs `JetPack.Wpf` with the tag's version, pushes it to GitHub Packages (with the
-workflow's own token) and creates a GitHub release with the packages attached.
-
-nuget.org uses [Trusted Publishing](https://learn.microsoft.com/nuget/nuget-org/trusted-publishing),
-so no API key is stored. To turn it on:
-
-1. On nuget.org, open your user menu → **Trusted Publishing** and add a policy: repository owner
-   `Montago`, repository `JetPackTheme`, workflow file `release.yml`, no environment.
-2. In the GitHub repository, add the secret `NUGET_USER` with your nuget.org profile name (not the
-   e-mail address).
-
-Until `NUGET_USER` exists the nuget.org steps are skipped. The workflow can be re-run for an existing
-tag; packages that are already published are skipped and the release assets are replaced. Every push
-and pull request is built by `.github/workflows/ci.yml`, which also uploads the package as an artifact.
-
 ## License
 
 MIT License (see [LICENSE](LICENSE)). The look follows the JetPack theme in Microsoft's [Silverlight 4 Application Themes](https://www.microsoft.com/en-us/download/details.aspx?id=14590): colours and shadow values come from it, while all WPF styles and both background images (drawn by `tools/generate_backgrounds.py`) are made from scratch. See [NOTICE.md](NOTICE.md) for details.

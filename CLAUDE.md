@@ -92,7 +92,10 @@ src/JetPack.Wpf.Demo/bin/Debug/net8.0-windows/JetPack.Wpf.Demo.exe --snapshot <f
 - `.github/workflows/release.yml` publishes on a `v*.*.*` tag: always to GitHub Packages (workflow
   token, `--no-symbols` because that feed rejects snupkg), and to nuget.org with Trusted Publishing
   (`NuGet/login@v1`, OIDC, policy for `release.yml`) when the `NUGET_USER` secret exists. The version
-  comes from the tag. Never handle API keys or secrets yourself; the user sets them.
+  comes from the tag (`git tag -a v1.2.3 -m "JetPack.Wpf 1.2.3"`, then `git push origin v1.2.3`). It
+  can be re-run for an existing tag: published packages are skipped and the release assets replaced.
+  Never handle API keys or secrets yourself; the user sets them.
+- `.github/workflows/ci.yml` builds every push and pull request and uploads the package as an artifact.
 - `dotnet nuget push artifacts/*.nupkg` does not expand the glob on the Windows runner; loop in bash.
 - `gh api` here lacks `read:packages`; check packages on
   https://github.com/Montago/JetPackTheme/pkgs/nuget/JetPack.Wpf instead.
