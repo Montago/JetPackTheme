@@ -106,17 +106,16 @@ an item at the right end (the first one furthest right). With only one right-han
 
 ![ResizeGrip](screenshots/controls/resizegrip.png)
 
-`ResizeMode` works as on a normal `Window`:
-
 | `ResizeMode` | Resize by the edges | Caption buttons | Grip |
 | --- | --- | --- | --- |
 | `CanResize` (default) | yes | minimise, maximise | no |
-| `CanResizeWithGrip` | yes | minimise, maximise | yes |
+| `CanResizeWithGrip` | no, only by the grip | minimise, maximise | yes |
 | `CanMinimize` | no | minimise | no |
 | `NoResize` | no | none | no |
 
-As in WPF, `CanResizeWithGrip` does not limit resizing to the grip: the edges still work, and the grip
-is an extra, visible handle in the bottom-right corner. It is six embossed dots
+Unlike a normal WPF `Window`, where the edges keep working, `CanResizeWithGrip` makes the grip the only
+way to resize the window with the mouse; maximising and snapping still work. Use `CanResize` for
+resizable edges. The grip is six embossed dots
 (`JetPack.Styles.ResizeGrip`, also the implicit `ResizeGrip` style), drawn above the content and the
 flyouts, and hidden while the window is maximised. It sits inside the rounded corner when
 `CornerStyle="Rounded"`. A `StatusBar` in a window with the grip gets 16px more padding on the right,

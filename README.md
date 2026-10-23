@@ -54,7 +54,7 @@ public partial class MainWindow : JetPack.Wpf.Controls.JetPackWindow { ... }
 | `CornerStyle` | `Square` (default, as in the original theme) or `Rounded`. Rounded corners are drawn by the Windows 11 compositor; on Windows 10 the corners stay square. |
 | `ShowVignette`, `ShowIcon`, `ShowMinButton`, `ShowMaxRestoreButton` | `bool` |
 | `LeftWindowCommands`, `RightWindowCommands`, `Flyouts` | any content |
-| `ResizeMode` | `CanResizeWithGrip` adds a dotted grip in the bottom-right corner |
+| `ResizeMode` | `CanResizeWithGrip` adds a dotted grip in the bottom-right corner and resizes only by it; `CanResize` resizes by the edges |
 
 The window has no status bar of its own: dock a `StatusBar` at the bottom of the content, as below.
 
