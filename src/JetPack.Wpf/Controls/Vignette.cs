@@ -160,7 +160,7 @@ public class Vignette : FrameworkElement
 
                     // Black, premultiplied, so only alpha is set. Adding noise below one step
                     // before rounding down dithers the gradient instead of leaving bands.
-                    var a = Math.Floor(Math.Min(alpha, 1) * 255 + Noise(x0 + x, y0 + y));
+                    var a = Math.Floor(Math.Min(alpha, 1) * 255 + Dither.Noise(x0 + x, y0 + y));
                     pixels[(y * width + x) * 4 + 3] = (byte)Math.Clamp(a, 0, 255);
                 }
             }
@@ -176,16 +176,6 @@ public class Vignette : FrameworkElement
             var distance = Math.Min(i + 0.5, frame - i - 0.5);
             var t = 1 - distance / ReachPx;
             return t <= 0 ? 0 : Strength * Math.Pow(t, Curve);
-        }
-
-        /// <summary>Repeatable noise in [0, 1) from pixel coordinates.</summary>
-        private static double Noise(int x, int y)
-        {
-            var h = (uint)(x * 73856093) ^ (uint)(y * 19349663);
-            h ^= h >> 13;
-            h *= 0x5bd1e995;
-            h ^= h >> 15;
-            return (h & 0xFFFF) / 65536.0;
         }
     }
 }

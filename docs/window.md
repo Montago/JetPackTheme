@@ -205,6 +205,27 @@ private void OnSettings(object sender, RoutedEventArgs e) => SettingsFlyout.IsOp
 | `IsAutoCloseEnabled` | `bool` | `false` | Closes the flyout `AutoCloseInterval` after it opens, as in MahApps. Unlike MahApps, the timer stops while the mouse is over the flyout and starts again when it leaves. |
 | `AutoCloseInterval` | `long` | `5000` | Time in milliseconds before an auto-closing flyout closes. |
 
+The panel's faint grey gradient (`Background`) is drawn by a `DitheredFill` element: a
+`LinearGradientBrush` becomes a bitmap on whole device pixels with fine noise mixed in, because WPF
+draws gradients without dithering and twelve colour steps over 300px would show as bands. Any other
+brush you set as `Background` is drawn as it is. `DitheredFill` can be used on its own for other large,
+low-contrast gradients:
+
+```xml
+<jp:DitheredFill>
+    <jp:DitheredFill.Fill>
+        <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+            <GradientStop Color="#FF4F5054" Offset="0" />
+            <GradientStop Color="#FF5B5C61" Offset="1" />
+        </LinearGradientBrush>
+    </jp:DitheredFill.Fill>
+</jp:DitheredFill>
+```
+
+It follows the brush's stops, start and end points, mapping mode, spread method and opacity, but
+not its `Transform` or `RelativeTransform`. The bitmap is made again when the element is resized or
+`Fill` is set, not when a brush already in use is changed.
+
 ### Top and bottom
 
 `Top` and `Bottom` flyouts span the full width and take the height of their content (the default

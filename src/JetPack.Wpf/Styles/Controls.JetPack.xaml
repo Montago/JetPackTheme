@@ -576,10 +576,12 @@
             <Setter.Value>
                 <ControlTemplate TargetType="c:Flyout">
                     <Grid>
-                        <Border x:Name="Panel" Background="{TemplateBinding Background}" BorderBrush="#FF3B3C40" BorderThickness="1,0,0,0">
+                        <Border x:Name="Panel" BorderBrush="#FF3B3C40" BorderThickness="1,0,0,0">
                             <Border.Effect>
                                 <DropShadowEffect BlurRadius="10" ShadowDepth="0" Opacity="0.45" />
                             </Border.Effect>
+                            <!-- Dithered: the faint gradient would show bands as a plain brush -->
+                            <c:DitheredFill Fill="{TemplateBinding Background}" />
                         </Border>
                         <DockPanel Margin="{TemplateBinding Padding}">
                             <DockPanel DockPanel.Dock="Top" Margin="0,0,0,12">
