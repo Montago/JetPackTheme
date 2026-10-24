@@ -66,8 +66,8 @@
                     <jp:ToggleSwitch x:Name="FocusSwitch" Content="Visible focus indicator" IsChecked="True" Margin="0,0,0,10" />
                     <jp:ToggleSwitch x:Name="VignetteSwitch" Content="Vignette in the corners" IsChecked="True" Margin="0,0,0,10" />
                     <jp:ToggleSwitch x:Name="MicaSwitch" Content="Mica backdrop (Windows 11)" />
-                    <TextBlock x:Name="MicaUnavailable" Style="{StaticResource Demo.State}" HorizontalAlignment="Left" Margin="0,4,0,0" Visibility="Collapsed"
-                               Text="Mica needs Windows 11 22H2 or later." />
+                    <TextBlock x:Name="MicaUnavailable" Style="{StaticResource Demo.State}" HorizontalAlignment="Left" Margin="0,4,0,0" Visibility="Collapsed" TextWrapping="Wrap"
+                               Text="Mica needs Windows 11 22H2 or later with transparency effects on." />
                     <TextBlock Style="{StaticResource Demo.State}" HorizontalAlignment="Left" Margin="0,12,0,6">
                         <Run Text="Ground over Mica:" />
                         <Run Text="{Binding Value, ElementName=GroundSlider, Mode=OneWay, StringFormat=P0}" />

@@ -1,4 +1,6 @@
+using System.IO;
 using System.Runtime.InteropServices;
+using Microsoft.Win32;
 
 namespace JetPack.Wpf.Controls;
 
@@ -24,6 +26,7 @@ internal static class NativeMethods
     // Window style bits and messages for keeping the system caption buttons away
     public const int WmStyleChanging = 0x007C;
     public const int WmSysCommand = 0x0112;
+    public const int WmSettingChange = 0x001A;
     public const int ScKeyMenu = 0xF100;
     public const int GwlStyle = -16;
     public const int WsSysMenu = 0x00080000;
@@ -58,6 +61,23 @@ internal static class NativeMethods
         {
             SetWindowLong(hwnd, GwlStyle, updated);
             SetWindowPos(hwnd, IntPtr.Zero, 0, 0, 0, 0, SwpNoSize | SwpNoMove | SwpNoZOrder | SwpNoActivate | SwpFrameChanged);
+        }
+    }
+
+    /// <summary>
+    /// The "Transparency effects" switch in Settings &gt; Personalization &gt; Colors. Missing
+    /// means on, as on a fresh install.
+    /// </summary>
+    public static bool IsTransparencyEnabled()
+    {
+        try
+        {
+            using var key = Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Themes\Personalize");
+            return key?.GetValue("EnableTransparency") is not int value || value != 0;
+        }
+        catch (Exception ex) when (ex is System.Security.SecurityException or UnauthorizedAccessException or IOException)
+        {
+            return true;
         }
     }
 

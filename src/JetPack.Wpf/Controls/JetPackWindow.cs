@@ -48,6 +48,7 @@ public class JetPackWindow : Window
     private FrameworkElement? root;
     private Color? surfaceColor;
     private bool frameExtended;
+    private bool transparencyEnabled = true;
 
     static JetPackWindow()
     {
@@ -119,7 +120,8 @@ public class JetPackWindow : Window
 
     /// <summary>
     /// Lets the Windows 11 Mica backdrop show through the JetPack ground (see
-    /// <see cref="GroundOpacity"/>). Needs Windows 11 22H2; elsewhere the window stays opaque.
+    /// <see cref="GroundOpacity"/>). Needs Windows 11 22H2 with transparency effects on;
+    /// elsewhere the window stays opaque.
     /// </summary>
     public bool EnableMica
     {
@@ -256,9 +258,11 @@ public class JetPackWindow : Window
             return;
         }
 
-        // Dark Mica suits the grey ground. The backdrop type fails before Windows 11 22H2.
+        // Dark Mica suits the grey ground. The backdrop type fails before Windows 11 22H2. With
+        // transparency effects off Windows paints a plain fill instead, so keep the ground opaque.
         var active = false;
-        if (EnableMica)
+        transparencyEnabled = NativeMethods.IsTransparencyEnabled();
+        if (EnableMica && transparencyEnabled)
         {
             NativeMethods.SetDwmAttribute(hwnd, NativeMethods.DwmwaUseImmersiveDarkMode, 1);
             active = NativeMethods.SetDwmAttribute(hwnd, NativeMethods.DwmwaSystemBackdropType, NativeMethods.DwmsbtMainWindow);
@@ -337,6 +341,12 @@ public class JetPackWindow : Window
             }
             SystemCommands.ShowSystemMenu(this, corner);
             handled = true;
+        }
+
+        // Windows broadcasts a setting change when transparency effects are turned on or off.
+        if (msg == NativeMethods.WmSettingChange && EnableMica && NativeMethods.IsTransparencyEnabled() != transparencyEnabled)
+        {
+            Dispatcher.BeginInvoke(ApplyBackdrop);
         }
         return IntPtr.Zero;
     }

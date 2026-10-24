@@ -173,6 +173,9 @@ you first turn it on.
 
 - Mica needs Windows 11 22H2 (build 22621) or later. Elsewhere `IsMicaActive` stays false and the
   window looks as usual.
+- Mica also needs **Transparency effects** (Settings > Personalization > Colors). With them off,
+  Windows paints a plain fill instead, so `IsMicaActive` stays false and the ground stays opaque.
+  The window follows the switch while it is open.
 - Windows shows Mica only while the window is active; an inactive window gets a plain dark fill.
 - Mica is drawn by the compositor from a sampled wallpaper, not blurred live, so it costs next to
   nothing. The window does not use `AllowsTransparency`.

@@ -23,17 +23,23 @@ public partial class MainWindow : JetPackWindow
         MicaSwitch.Checked += (_, _) =>
         {
             EnableMica = true;
-            MicaUnavailable.Visibility = IsMicaActive ? Visibility.Collapsed : Visibility.Visible;
+            UpdateMicaUnavailable();
         };
         MicaSwitch.Unchecked += (_, _) =>
         {
             EnableMica = false;
-            MicaUnavailable.Visibility = Visibility.Collapsed;
+            UpdateMicaUnavailable();
         };
+        // Windows can turn Mica off while the window is open (transparency effects).
+        DependencyPropertyDescriptor.FromProperty(IsMicaActiveProperty, typeof(JetPackWindow))
+            .AddValueChanged(this, (_, _) => UpdateMicaUnavailable());
         GroundSlider.ValueChanged += (_, e) => GroundOpacity = e.NewValue;
         DependencyPropertyDescriptor.FromProperty(ColorPicker.SelectedColorProperty, typeof(ColorPicker))
             .AddValueChanged(CustomAccent, (_, _) => ThemeManager.ChangeAccent(CustomAccent.SelectedColor));
     }
+
+    private void UpdateMicaUnavailable() =>
+        MicaUnavailable.Visibility = EnableMica && !IsMicaActive ? Visibility.Visible : Visibility.Collapsed;
 
     public void OpenSettings() => SettingsFlyout.IsOpen = true;
 
