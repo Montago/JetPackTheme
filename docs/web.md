@@ -1,6 +1,8 @@
 ---
 title: JetPack for the web
-nav_order: 8
+nav_order: 3
+has_children: true
+has_toc: false
 ---
 
 # JetPack for the web

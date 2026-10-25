@@ -1,6 +1,7 @@
 ---
 title: Controls
-nav_order: 5
+parent: JetPack for WPF
+nav_order: 4
 has_children: true
 ---
 

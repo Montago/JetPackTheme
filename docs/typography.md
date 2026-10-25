@@ -1,6 +1,7 @@
 ---
 title: Typography
-nav_order: 4
+parent: JetPack for WPF
+nav_order: 3
 ---
 
 # Typography

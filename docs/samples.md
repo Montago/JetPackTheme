@@ -1,6 +1,7 @@
 ---
 title: Sample apps
-nav_order: 7
+parent: JetPack for WPF
+nav_order: 6
 ---
 
 # Sample apps

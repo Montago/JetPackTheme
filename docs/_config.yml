@@ -1,8 +1,8 @@
 # GitHub Pages site for the docs/ folder, using the Just the Docs theme.
 # https://just-the-docs.com/docs/configuration/
 
-title: JetPack for WPF
-description: The JetPack theme from Silverlight 4, rebuilt as a WPF controls library for .NET 8+.
+title: JetPack
+description: The JetPack theme from Silverlight 4, rebuilt for WPF and the web on .NET 8+.
 
 remote_theme: just-the-docs/just-the-docs@v0.12.0
 plugins:
@@ -26,4 +26,4 @@ gh_edit_source: docs
 gh_edit_view_mode: "edit"
 
 footer_content: >-
-  JetPack for WPF is MIT licensed. See <a href="https://github.com/Montago/JetPackTheme/blob/master/NOTICE.md">NOTICE</a>.
+  JetPack is MIT licensed, except the Material Design Icons (Apache 2.0). See <a href="https://github.com/Montago/JetPackTheme/blob/master/NOTICE.md">NOTICE</a>.

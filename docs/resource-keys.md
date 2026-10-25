@@ -1,6 +1,7 @@
 ---
 title: Resource keys
 parent: Reference
+grand_parent: JetPack for WPF
 nav_order: 1
 ---
 
