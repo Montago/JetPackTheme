@@ -1,0 +1,44 @@
+@{
+    ViewData["Title"] = "Dashboard";
+    var waiting = SampleData.Timesheet.Count(r => r.Status == "Submitted");
+    var hours = SampleData.Timesheet.Sum(r => r.Total);
+}
+
+<h1 class="mb-3.5">Dashboard</h1>
+
+<jp-info-bar severity="Warning" title="@($"{waiting} timesheets")" message="for week 42 are waiting for your approval." class="mb-4 w-fit max-w-[760px]">
+    <a class="jp-button" asp-controller="Timesheets" asp-action="Index" asp-route-status="Submitted">Review</a>
+</jp-info-bar>
+
+@* Key figures; each tile opens the page behind it *@
+<div class="flex flex-wrap gap-2.5 mb-5">
+    <jp-tile title="Active employees" count="@SampleData.Employees.Count(e => e.IsActive).ToString()" tile-style="Green" href="@Url.Action("Index", "Employees")" class="w-[150px]" />
+    <jp-tile title="Running projects" count="@SampleData.Projects.Count.ToString()" tile-style="Blue" href="@Url.Action("Index", "Projects")" class="w-[150px]" />
+    <jp-tile title="Hours this week" count="@hours.ToString("N0")" href="@Url.Action("Index", "Timesheets")" class="w-[150px]" />
+    <jp-tile title="Awaiting approval" count="@waiting.ToString()" tile-style="Orange" href="@Url.Action("Index", "Timesheets", new { status = "Submitted" })" class="w-[150px]" />
+</div>
+
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-5">
+    <jp-group-box header="Project budgets">
+        @foreach (var p in SampleData.Projects)
+        {
+            <div class="mt-1 mb-2.5">
+                <div class="flex justify-between gap-3">
+                    <a class="font-bold text-inherit no-underline hover:underline" asp-controller="Projects" asp-action="Index" asp-route-project="@Slug.Of(p.Name)">@p.Name</a>
+                    <span class="jp-text-block--caption">@p.UsedHours of @p.BudgetHours h</span>
+                </div>
+                <progress class="jp-progress-bar mt-1.5" max="100" value="@p.Progress.ToString("F1", System.Globalization.CultureInfo.InvariantCulture)">@p.Progress.ToString("F0")%</progress>
+            </div>
+        }
+    </jp-group-box>
+
+    <jp-group-box header="Recent activity">
+        @foreach (var a in SampleData.RecentActivity)
+        {
+            <div class="mt-0.5 mb-2.5">
+                <div>@a.Text</div>
+                <div class="jp-text-block--caption">@a.Time</div>
+            </div>
+        }
+    </jp-group-box>
+</div>

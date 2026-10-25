@@ -1,0 +1,94 @@
+@model TimesheetsPage
+@{
+    ViewData["Title"] = "Timesheets";
+    string Pill(string status) => status switch
+    {
+        "Submitted" => "jp-pill jp-pill--info",
+        "Approved" => "jp-pill jp-pill--success",
+        "Rejected" => "jp-pill jp-pill--warning",
+        _ => "jp-pill",
+    };
+    var all = SampleData.Timesheet;
+    var total = all.Sum(r => r.Total);
+    var approved = all.Where(r => r.Status == "Approved").Sum(r => r.Total);
+}
+
+<h1 class="mb-3.5">Timesheets</h1>
+
+<form method="get" class="flex flex-wrap items-center gap-2.5 mb-3" data-auto-submit>
+    <select class="jp-combo-box w-[190px]" name="week" aria-label="Week">
+        @foreach (var w in SampleData.Weeks)
+        {
+            <option selected="@(w == Model.Week)">@w</option>
+        }
+    </select>
+    <select class="jp-combo-box w-[130px]" name="status" aria-label="Status">
+        @foreach (var s in SampleData.Statuses)
+        {
+            <option selected="@(s == Model.Status)">@s</option>
+        }
+    </select>
+
+    <div class="ml-auto flex gap-2.5">
+        @* SplitButton: the main action plus a menu *@
+        <div class="jp-split-button">
+            <button type="button" class="jp-button jp-button--accent">Approve selected</button>
+            <button type="button" class="jp-button jp-button--accent" popovertarget="approve-menu" aria-label="More approval actions"><i class="jp-caret"></i></button>
+        </div>
+        <div class="jp-context-menu" popover id="approve-menu" data-jp-align="right">
+            <button type="button" class="jp-menu-item">Approve all submitted</button>
+            <button type="button" class="jp-menu-item">Reject selected…</button>
+            <hr class="jp-menu-separator" />
+            <button type="button" class="jp-menu-item">Send reminder to drafts</button>
+        </div>
+
+        @* DropDownButton *@
+        <button type="button" class="jp-button" popovertarget="export-menu">Export <i class="jp-caret"></i></button>
+        <div class="jp-context-menu" popover id="export-menu" data-jp-align="right">
+            <button type="button" class="jp-menu-item">Payroll file (.csv)</button>
+            <button type="button" class="jp-menu-item">Excel (.xlsx)</button>
+            <button type="button" class="jp-menu-item">PDF report</button>
+        </div>
+    </div>
+</form>
+
+<div class="jp-scroll-viewer">
+    <table class="jp-data-grid min-w-[760px]">
+        <thead>
+            <tr>
+                <th class="w-[150px]" aria-sort="ascending">Employee</th>
+                <th>Project</th>
+                <th class="w-[52px] text-right">Mon</th>
+                <th class="w-[52px] text-right">Tue</th>
+                <th class="w-[52px] text-right">Wed</th>
+                <th class="w-[52px] text-right">Thu</th>
+                <th class="w-[52px] text-right">Fri</th>
+                <th class="w-[60px] text-right">Total</th>
+                <th class="w-[110px]">Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var r in Model.Rows)
+            {
+                <tr>
+                    <td>@r.Employee</td>
+                    <td>@r.Project</td>
+                    <td class="jp-data-grid__number">@r.Monday.ToString("N1")</td>
+                    <td class="jp-data-grid__number">@r.Tuesday.ToString("N1")</td>
+                    <td class="jp-data-grid__number">@r.Wednesday.ToString("N1")</td>
+                    <td class="jp-data-grid__number">@r.Thursday.ToString("N1")</td>
+                    <td class="jp-data-grid__number">@r.Friday.ToString("N1")</td>
+                    <td class="jp-data-grid__number font-bold">@r.Total.ToString("N1")</td>
+                    <td><span class="@Pill(r.Status)">@r.Status</span></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+@* Week summary *@
+<div class="flex flex-wrap items-center gap-2.5 mt-3">
+    <span class="jp-text-block--caption">Approved this week</span>
+    <progress class="jp-progress-bar w-[200px]" max="@total.ToString(System.Globalization.CultureInfo.InvariantCulture)" value="@approved.ToString(System.Globalization.CultureInfo.InvariantCulture)"></progress>
+    <span class="jp-text-block--caption">@approved.ToString("N1") of @total.ToString("N1") hours · @all.Count(r => r.Status == "Submitted") timesheets submitted · @all.Count(r => r.Status == "Rejected") rejected</span>
+</div>

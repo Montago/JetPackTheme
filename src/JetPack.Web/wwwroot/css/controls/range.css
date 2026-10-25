@@ -1,0 +1,193 @@
+/* JetPack for the web · ProgressBar, Rating (Controls.Range.xaml) */
+@layer components {
+
+  /* --------------------------------------------------------- progress bar */
+  .jp-progress-bar {
+    appearance: none;
+    display: block;
+    box-sizing: border-box;
+    width: 100%;
+    height: 10px;
+    padding: 1px;
+    border: 0;
+    border-radius: var(--jp-radius);
+    background: var(--jp-track);
+    box-shadow: inset 0 0 0 1px rgb(80 80 80 / 0.31), inset 0 0 0 2px rgb(32 32 32 / 0.125), var(--jp-outer-highlight);
+    overflow: hidden;
+  }
+  .jp-progress-bar::-webkit-progress-bar { background: transparent; }
+  .jp-progress-bar::-webkit-progress-value {
+    border-radius: 1px;
+    background: linear-gradient(rgb(255 255 255 / 0.15) 50%, rgb(255 255 255 / 0) 50%), var(--jp-accent);
+  }
+  .jp-progress-bar::-moz-progress-bar {
+    border-radius: 1px;
+    background: linear-gradient(rgb(255 255 255 / 0.15) 50%, rgb(255 255 255 / 0) 50%), var(--jp-accent);
+  }
+
+  /* IsIndeterminate: <progress> without a value; light stripes run over the accent */
+  .jp-progress-bar:indeterminate {
+    background:
+      repeating-linear-gradient(-45deg, rgb(255 255 255 / 0.55) 0 5px, rgb(255 255 255 / 0.08) 5px 10px) content-box,
+      linear-gradient(rgb(255 255 255 / 0.15) 50%, rgb(255 255 255 / 0) 50%) content-box,
+      var(--jp-accent) content-box,
+      var(--jp-track);
+    background-size: 14.142px 100%, auto, auto, auto;
+    animation: jp-progress-stripes 0.9s linear infinite;
+  }
+  .jp-progress-bar:indeterminate::-webkit-progress-bar { background: transparent; }
+  .jp-progress-bar:indeterminate::-moz-progress-bar { background: transparent; }
+  @keyframes jp-progress-stripes {
+    to { background-position: 14.142px 0, 0 0, 0 0, 0 0; }
+  }
+
+  /* --------------------------------------------------------------- slider */
+  /*
+  <div class="jp-slider" role="slider" tabindex="0" aria-valuemin="0" aria-valuemax="10" aria-valuenow="4">
+    <div class="jp-slider__track"></div><div class="jp-slider__fill"></div><div class="jp-slider__thumb"></div>
+  </div>
+  jetpack.js keeps --jp-slider-at (0–100%) in step and handles mouse, touch and keys.
+  jp-slider--vertical is Orientation="Vertical"; data-jp-ticks="10" draws the tick marks.
+  */
+  .jp-slider, .jp-range-slider {
+    --jp-slider-at: 0%;
+    --jp-slider-from: 0%;
+    position: relative;
+    box-sizing: border-box;
+    width: 100%;
+    height: 18px;
+    touch-action: none;
+    cursor: pointer;
+    user-select: none;
+  }
+  /* room for the ticks under a horizontal slider; a vertical one gets it at the side (below) */
+  :is(.jp-slider, .jp-range-slider).has-ticks:not(.jp-slider--vertical) { height: 26px; }
+  .jp-slider__track {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 4px;
+    height: 8px;
+    box-sizing: border-box;
+    border: 1px solid var(--jp-track-border);
+    border-radius: var(--jp-radius);
+    background: var(--jp-track-gradient);
+    box-shadow: inset 1px 1px 0 var(--jp-control-dark-edge), inset 2px 2px 0 rgb(48 48 48 / 0.31), var(--jp-outer-highlight);
+  }
+  .jp-slider__fill {
+    position: absolute;
+    left: var(--jp-slider-from);
+    top: 4px;
+    width: calc(var(--jp-slider-at) - var(--jp-slider-from));
+    height: 8px;
+    box-sizing: border-box;
+    border: 1px solid #3A3A3E;
+    border-radius: var(--jp-radius);
+    background: var(--jp-slider-value);
+    box-shadow: inset 0 1px 0 #F1F1F1, inset 0 -1px 0 #969696;
+  }
+  .jp-slider__thumb {
+    position: absolute;
+    top: 0;
+    left: calc(var(--jp-slider-at) - 6px);
+    width: 12px;
+    height: 17px;
+    filter: drop-shadow(0 1px 1.5px rgb(0 0 0 / 0.5));
+  }
+  .jp-slider__thumb.is-lower { left: calc(var(--jp-slider-from) - 6px); }
+  .jp-slider__thumb::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: var(--jp-slider-thumb);
+    clip-path: polygon(0 12%, 8% 2%, 92% 2%, 100% 12%, 100% 66%, 50% 100%, 0 66%);
+  }
+  .jp-slider__thumb:hover::before, .jp-slider__thumb.is-dragging::before { background: linear-gradient(#FFFFFF, #B4B4B5); }
+  .jp-slider__ticks {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 19px;
+    height: 4px;
+    background: linear-gradient(to right, rgb(255 255 255 / 0.5) 1px, transparent 1px) 0 0 / calc((100% - 1px) / var(--jp-ticks, 10)) 100% repeat-x;
+  }
+  :is(.jp-slider, .jp-range-slider):focus-visible { outline: none; }
+  :is(.jp-slider, .jp-range-slider):focus-visible .jp-slider__thumb::before { box-shadow: inset 0 0 0 1px var(--jp-focus); }
+  :is(.jp-slider, .jp-range-slider)[aria-disabled="true"] { opacity: 0.55; cursor: default; pointer-events: none; }
+
+  /* Orientation="Vertical": value 0 at the bottom */
+  .jp-slider--vertical { width: 18px; height: 96px; }
+  .jp-slider--vertical.has-ticks { width: 26px; }
+  .jp-slider--vertical .jp-slider__track { left: 4px; right: auto; top: 0; bottom: 0; width: 8px; height: auto; background: var(--jp-track-gradient-vertical); }
+  .jp-slider--vertical .jp-slider__fill {
+    left: 4px;
+    top: auto;
+    bottom: 0;
+    width: 8px;
+    height: var(--jp-slider-at);
+    background: var(--jp-slider-value-vertical);
+    box-shadow: inset 1px 0 0 #F1F1F1, inset -1px 0 0 #969696;
+  }
+  .jp-slider--vertical .jp-slider__thumb { left: 0; top: auto; bottom: calc(var(--jp-slider-at) - 6px); width: 17px; height: 12px; }
+  .jp-slider--vertical .jp-slider__thumb::before {
+    background: var(--jp-slider-thumb-vertical);
+    clip-path: polygon(2% 8%, 12% 0, 66% 0, 100% 50%, 66% 100%, 12% 100%, 2% 92%);
+  }
+  .jp-slider--vertical .jp-slider__ticks {
+    left: 19px;
+    right: auto;
+    top: 0;
+    bottom: 0;
+    width: 4px;
+    height: auto;
+    background: linear-gradient(to bottom, rgb(255 255 255 / 0.5) 1px, transparent 1px) 0 0 / 100% calc((100% - 1px) / var(--jp-ticks, 10)) repeat-y;
+  }
+
+  /* The ticks span the travel of the thumb centre, so the track gets half a thumb on each side */
+  .jp-slider .jp-slider__ticks { left: 6px; right: 6px; }
+  .jp-slider--vertical .jp-slider__ticks { top: 6px; bottom: 6px; left: 19px; right: auto; }
+
+  /* -------------------------------------------------------- progress ring */
+  /* <span class="jp-progress-ring" role="progressbar" aria-label="Working"></span> */
+  .jp-progress-ring {
+    position: relative;
+    display: inline-block;
+    width: 34px;
+    height: 34px;
+  }
+  .jp-progress-ring::before, .jp-progress-ring::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    mask: radial-gradient(circle, transparent 11px, #000 12px);
+  }
+  .jp-progress-ring::before { background: var(--jp-track); box-shadow: inset 0 1px 2px rgb(0 0 0 / 0.6); }
+  .jp-progress-ring::after {
+    background: conic-gradient(from 0deg, var(--jp-accent-highlight), var(--jp-accent-solid) 28%, transparent 29%);
+    animation: jp-spin 0.9s linear infinite;
+  }
+  .jp-progress-ring[data-active="false"] { visibility: hidden; }
+  @keyframes jp-spin { to { transform: rotate(360deg); } }
+
+  /* --------------------------------------------------------------- rating */
+  /* Read-only: <span class="jp-rating" style="--value: 4" role="img" aria-label="4 of 5"></span> */
+  .jp-rating {
+    --value: 0;
+    --max: 5;
+    display: inline-block;
+    width: calc(var(--max) * 20px);
+    height: 18px;
+    background:
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 18'%3E%3Cpath d='M9 1.5l2.3 4.8 5.2.7-3.8 3.7.9 5.2L9 13.4l-4.6 2.5.9-5.2L1.5 7l5.2-.7z' fill='%2357575C' stroke='%23343537'/%3E%3C/svg%3E") 0 0 / 20px 18px repeat-x;
+    position: relative;
+  }
+  .jp-rating::after {
+    content: "";
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: calc(var(--value) * 20px);
+    background: var(--jp-accent-highlight);
+    mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 18'%3E%3Cpath d='M9 1.5l2.3 4.8 5.2.7-3.8 3.7.9 5.2L9 13.4l-4.6 2.5.9-5.2L1.5 7l5.2-.7z'/%3E%3C/svg%3E") 0 0 / 20px 18px repeat-x;
+  }
+}

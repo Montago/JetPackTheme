@@ -1,0 +1,274 @@
+/* JetPack for the web · DataGrid, TreeView, ScrollViewer (Controls.Lists.xaml, Controls.DataGrid.xaml) */
+@layer components {
+
+  /* -------------------------------------------------------------- data grid */
+  .jp-data-grid {
+    width: 100%;
+    border: 1px solid var(--jp-control-border);
+    border-radius: 3px 3px 0 0;
+    border-collapse: separate;
+    border-spacing: 0;
+    overflow: hidden;
+    background: var(--jp-data-grid-background);
+    color: var(--jp-control-foreground);
+    font-size: var(--jp-font-size-control);
+    box-shadow: var(--jp-shadow-light);
+  }
+  .jp-data-grid th {
+    position: sticky;
+    top: 0;
+    padding: 5px 8px;
+    background: var(--jp-data-grid-header);
+    border-left: 1px solid rgb(0 0 0 / 0.25);
+    box-shadow: inset 1px 0 0 var(--jp-data-grid-header-separator);
+    color: #fff;
+    font-weight: 400;
+    text-align: left;
+    white-space: nowrap;
+  }
+  .jp-data-grid th:first-child { border-left: 0; box-shadow: none; }
+  .jp-data-grid th[aria-sort]::after {
+    content: "";
+    display: inline-block;
+    margin-left: 6px;
+    vertical-align: middle;
+    border-left: 3.5px solid transparent;
+    border-right: 3.5px solid transparent;
+  }
+  .jp-data-grid th[aria-sort="ascending"]::after { border-bottom: 4px solid #fff; }
+  .jp-data-grid th[aria-sort="descending"]::after { border-top: 4px solid #fff; }
+  .jp-data-grid th > a { color: inherit; text-decoration: none; }
+  .jp-data-grid td {
+    padding: 4px 8px;
+    border-top: 1px solid var(--jp-data-grid-grid-lines);
+    border-left: 1px solid var(--jp-data-grid-grid-lines);
+    white-space: nowrap;
+  }
+  .jp-data-grid td:first-child { border-left: 0; }
+  .jp-data-grid tbody tr:nth-child(even) td { background: var(--jp-data-grid-alternating-row); }
+  .jp-data-grid tbody tr:hover td { background: var(--jp-selection-mouse-over); }
+  .jp-data-grid tbody tr[aria-selected="true"] td {
+    background: var(--jp-accent-selection);
+    color: #fff;
+    border-top-color: transparent;
+  }
+  .jp-data-grid tbody tr[data-href] { cursor: pointer; }
+  .jp-data-grid tfoot td { font-weight: 700; background: var(--jp-static-background); }
+  .jp-data-grid .jp-data-grid__number { text-align: right; font-variant-numeric: tabular-nums; }
+
+  /* The scrolling frame jp-data-grid draws round the table: the border and the bars belong to it */
+  .jp-data-grid-host {
+    overflow: auto;
+    border: 1px solid var(--jp-control-border);
+    border-radius: 3px 3px 0 0;
+    background: var(--jp-data-grid-background);
+    box-shadow: var(--jp-shadow-light);
+  }
+  .jp-data-grid-host > .jp-data-grid { border: 0; border-radius: 0; box-shadow: none; }
+  .jp-data-grid th { z-index: 1; }
+  .jp-data-grid[data-jp-selection] tbody tr { cursor: default; }
+
+  /* ------------------------------------------------------------- tree view */
+  /* Nested lists; each item is a link or a button: <ul class="jp-tree-view"><li><details open><summary>..</summary><ul>..</ul></details></li></ul> */
+  .jp-tree-view, .jp-tree-view ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .jp-tree-view {
+    box-sizing: border-box;
+    overflow: auto;
+    padding: 8px 6px;
+    border: 1px solid var(--jp-panel-border);
+    border-radius: 2.5px;
+    background: var(--jp-panel-background);
+    box-shadow: var(--jp-shadow-light);
+    color: #fff;
+    font-weight: 700;
+    font-size: var(--jp-font-size-control);
+  }
+  .jp-tree-view ul { padding-left: 17px; }
+  .jp-tree-view li { margin: 3px 0; }
+  .jp-tree-view summary { display: flex; align-items: center; gap: 6px; list-style: none; cursor: pointer; }
+  .jp-tree-view summary::-webkit-details-marker { display: none; }
+  /* the [+] / [-] box of the original theme */
+  .jp-tree-view summary::before {
+    content: "";
+    flex: none;
+    width: 9px;
+    height: 9px;
+    box-sizing: border-box;
+    border: 1px solid #333;
+    background:
+      linear-gradient(#000, #000) center / 5px 1px no-repeat,
+      linear-gradient(#000, #000) center / 1px 5px no-repeat,
+      #fff;
+  }
+  .jp-tree-view details[open] > summary::before {
+    background: linear-gradient(#000, #000) center / 5px 1px no-repeat, #fff;
+  }
+  .jp-tree-view__item {
+    display: inline-block;
+    padding: 2px 6px;
+    border-top: 1px solid transparent;
+    border-radius: 1px;
+    color: inherit;
+    text-decoration: none;
+    cursor: pointer;
+  }
+  .jp-tree-view li > .jp-tree-view__item { margin-left: 15px; }
+  .jp-tree-view__item:hover { background: rgb(255 255 255 / 0.1); }
+  .jp-tree-view__item[aria-current="page"], .jp-tree-view__item[aria-selected="true"] {
+    background: var(--jp-accent-selection);
+    border-top-color: var(--jp-accent-highlight);
+    box-shadow: var(--jp-shadow-light);
+  }
+
+  /* ------------------------------------------------------------- list box */
+  /*
+  <div class="jp-list-box" role="listbox" tabindex="0">
+    <div class="jp-list-box-item" role="option" aria-selected="true">Charles Hoyle</div> …
+  </div>
+  jetpack.js moves the selection with the mouse and the arrow keys. The same items fill the
+  drop-downs (.jp-popup).
+  */
+  .jp-list-box {
+    box-sizing: border-box;
+    min-height: 24px;
+    padding: 2px;
+    border: 1px solid var(--jp-control-border);
+    border-radius: 3px;
+    background: var(--jp-tb-corner, linear-gradient(transparent, transparent)), var(--jp-input-background);
+    box-shadow: var(--jp-inner-shadow), var(--jp-outer-highlight);
+    color: var(--jp-input-foreground);
+    font-size: var(--jp-font-size-control);
+    overflow: auto;
+  }
+  .jp-list-box:focus-visible { outline: 1px solid var(--jp-focus); outline-offset: 1px; }
+  .jp-list-box-item {
+    padding: 4px 6px;
+    line-height: 16px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    cursor: default;
+  }
+  .jp-list-box-item:hover { background: var(--jp-selection-mouse-over); }
+  .jp-list-box-item[aria-selected="true"], .jp-list-box-item.is-highlighted {
+    background: var(--jp-accent-selection);
+    color: #fff;
+  }
+  .jp-list-box-item[aria-disabled="true"] { color: var(--jp-menu-disabled); background: transparent; }
+  /* On the dark panels: the Recent list in a flyout */
+  .jp-list-box--dark {
+    border-color: var(--jp-dark-input-border);
+    background: var(--jp-dark-input-background);
+    color: #fff;
+  }
+  .jp-list-box--dark .jp-list-box-item:hover { background: rgb(255 255 255 / 0.08); }
+
+  /* ------------------------------------------------------------ list view */
+  /* ListView with a GridView: a list box with column headers: <div class="jp-list-view"><table>… */
+  .jp-list-view {
+    box-sizing: border-box;
+    border: 1px solid var(--jp-control-border);
+    border-radius: 3px;
+    background: var(--jp-input-background);
+    box-shadow: var(--jp-outer-highlight);
+    overflow: auto;
+    color: var(--jp-input-foreground);
+    font-size: var(--jp-font-size-control);
+  }
+  .jp-list-view table { border-collapse: separate; border-spacing: 0; width: max-content; min-width: 100%; table-layout: fixed; }
+  .jp-list-view th {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    padding: 5px 7px;
+    background: var(--jp-data-grid-header);
+    border-left: 1px solid rgb(0 0 0 / 0.25);
+    box-shadow: inset 1px 0 0 var(--jp-data-grid-header-separator);
+    color: #fff;
+    font-weight: 400;
+    text-align: left;
+    white-space: nowrap;
+  }
+  .jp-list-view th:first-child { border-left: 0; box-shadow: none; }
+  .jp-list-view td { padding: 4px 7px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; cursor: default; }
+  .jp-list-view tbody tr:hover td { background: var(--jp-selection-mouse-over); }
+  .jp-list-view tbody tr[aria-selected="true"] td { background: var(--jp-accent-selection); color: #fff; }
+
+  /* ------------------------------------------------------------ scrollbars */
+  /* JetPack.Styles.ScrollBar: the light track, a raised thumb and arrow buttons (Chromium).
+     Every JetPack element that scrolls gets them. */
+  :where(.jp-scroll-viewer, .jp-list-box, .jp-list-view, .jp-data-grid-host, .jp-popup, .jp-tree-view, textarea.jp-text-box) {
+    scrollbar-color: #C8C8C8 var(--jp-scroll-bar-track);
+  }
+  .jp-scroll-viewer { overflow: auto; }
+  @supports selector(::-webkit-scrollbar) {
+    :where(.jp-scroll-viewer, .jp-list-box, .jp-list-view, .jp-data-grid-host, .jp-popup, .jp-tree-view, textarea.jp-text-box) { scrollbar-color: auto; }
+  }
+  :where(.jp-scroll-viewer, .jp-list-box, .jp-list-view, .jp-data-grid-host, .jp-popup, .jp-tree-view, textarea.jp-text-box)::-webkit-scrollbar {
+    width: 16px;
+    height: 16px;
+    background: var(--jp-scroll-bar-track);
+  }
+  :where(.jp-scroll-viewer, .jp-list-box, .jp-list-view, .jp-data-grid-host, .jp-popup, .jp-tree-view, textarea.jp-text-box)::-webkit-scrollbar-corner { background: var(--jp-scroll-bar-track); }
+  :where(.jp-scroll-viewer, .jp-list-box, .jp-list-view, .jp-data-grid-host, .jp-popup, .jp-tree-view, textarea.jp-text-box)::-webkit-scrollbar-thumb {
+    min-height: 24px;
+    background: var(--jp-scroll-bar-thumb-vertical) padding-box;
+    border: 2px solid transparent;
+    border-radius: 4px;
+    box-shadow: inset 1px 1px 0 #fff, inset -1px -1px 0 rgb(0 0 0 / 0.25);
+  }
+  :where(.jp-scroll-viewer, .jp-list-box, .jp-list-view, .jp-data-grid-host, .jp-popup, .jp-tree-view, textarea.jp-text-box)::-webkit-scrollbar-thumb:horizontal {
+    background: var(--jp-scroll-bar-thumb) padding-box;
+  }
+  :where(.jp-scroll-viewer, .jp-list-box, .jp-list-view, .jp-data-grid-host, .jp-popup, .jp-tree-view, textarea.jp-text-box)::-webkit-scrollbar-button:single-button {
+    display: block;
+    width: 16px;
+    height: 14px;
+    background: var(--jp-scroll-bar-track) center / 7px 4px no-repeat;
+  }
+  :where(.jp-scroll-viewer, .jp-list-box, .jp-list-view, .jp-data-grid-host, .jp-popup, .jp-tree-view, textarea.jp-text-box)::-webkit-scrollbar-button:single-button:vertical:decrement {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 7 4'%3E%3Cpath d='M0 4h7L3.5 0z' fill='%23606060'/%3E%3C/svg%3E");
+  }
+  :where(.jp-scroll-viewer, .jp-list-box, .jp-list-view, .jp-data-grid-host, .jp-popup, .jp-tree-view, textarea.jp-text-box)::-webkit-scrollbar-button:single-button:vertical:increment {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 7 4'%3E%3Cpath d='M0 0h7L3.5 4z' fill='%23606060'/%3E%3C/svg%3E");
+  }
+  :where(.jp-scroll-viewer, .jp-list-box, .jp-list-view, .jp-data-grid-host, .jp-popup, .jp-tree-view, textarea.jp-text-box)::-webkit-scrollbar-button:single-button:horizontal:decrement {
+    width: 14px;
+    height: 16px;
+    background-size: 4px 7px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 4 7'%3E%3Cpath d='M4 0v7L0 3.5z' fill='%23606060'/%3E%3C/svg%3E");
+  }
+  :where(.jp-scroll-viewer, .jp-list-box, .jp-list-view, .jp-data-grid-host, .jp-popup, .jp-tree-view, textarea.jp-text-box)::-webkit-scrollbar-button:single-button:horizontal:increment {
+    width: 14px;
+    height: 16px;
+    background-size: 4px 7px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 4 7'%3E%3Cpath d='M0 0v7l4-3.5z' fill='%23606060'/%3E%3C/svg%3E");
+  }
+
+  /* JetPack.Styles.ScrollViewer.Thin: a slim accent thumb over the content that jetpack.js shows
+     while you scroll or point at it and hides 1.5 s later (ScrollViewerHelper.AutoHide) */
+  .jp-scroll-viewer--thin { scrollbar-width: thin; scrollbar-color: transparent transparent; }
+  .jp-scroll-viewer--thin.is-active { scrollbar-color: var(--jp-accent-solid) transparent; }
+  @supports selector(::-webkit-scrollbar) {
+    .jp-scroll-viewer--thin, .jp-scroll-viewer--thin.is-active { scrollbar-color: auto; scrollbar-width: auto; }
+  }
+  .jp-scroll-viewer--thin::-webkit-scrollbar { width: 12px; height: 12px; background: transparent; }
+  .jp-scroll-viewer--thin::-webkit-scrollbar-corner { background: transparent; }
+  .jp-scroll-viewer--thin::-webkit-scrollbar-button { display: none; }
+  .jp-scroll-viewer--thin::-webkit-scrollbar-thumb {
+    min-height: 32px;
+    border: 0 solid transparent;
+    border-width: 3px 3px 3px 4px;
+    border-radius: 6px;
+    background: transparent;
+    box-shadow: none;
+  }
+  .jp-scroll-viewer--thin::-webkit-scrollbar-thumb:horizontal { border-width: 4px 3px 3px 3px; background: transparent; }
+  .jp-scroll-viewer--thin.is-active::-webkit-scrollbar-thumb,
+  .jp-scroll-viewer--thin.is-active::-webkit-scrollbar-thumb:horizontal { background: var(--jp-accent-solid) padding-box; }
+  .jp-scroll-viewer--thin.is-active::-webkit-scrollbar-thumb:hover { background: var(--jp-accent-mouse-over) padding-box; }
+}

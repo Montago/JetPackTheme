@@ -140,6 +140,9 @@
                 <TabItem Header="Palette">
                     <v:PalettePage />
                 </TabItem>
+                <TabItem Header="Icons">
+                    <v:IconsPage />
+                </TabItem>
             </TabControl>
         </Grid>
     </DockPanel>

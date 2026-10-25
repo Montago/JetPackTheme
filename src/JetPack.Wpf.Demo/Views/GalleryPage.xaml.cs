@@ -10,9 +10,9 @@ public partial class GalleryPage : UserControl
     public GalleryPage()
     {
         InitializeComponent();
-        Grid.ItemsSource = SdkPage.Timesheets;
+        Grid.ItemsSource = DemoData.Timesheets;
         Grid.SelectedIndex = 1;
-        List.ItemsSource = SdkPage.Timesheets;
+        List.ItemsSource = DemoData.Timesheets;
 
         // Each grid gets its own array: grids on the same collection share its view, filters included.
         CarGrid.ItemsSource = CarData.Cars.Where(c => c.Make is "Volvo" or "Toyota" or "Kia").Take(60).ToArray();

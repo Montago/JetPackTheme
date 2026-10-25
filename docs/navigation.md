@@ -97,8 +97,7 @@ selected item gets the accent gradient. The ☰ button collapses the pane to ico
     </jp:HamburgerMenu.ContentTemplate>
     <jp:HamburgerMenuItem Content="Overview" Tag="{StaticResource OverviewPage}">
         <jp:HamburgerMenuItem.Icon>
-            <Path Data="{StaticResource IconHome}" Stretch="Uniform"
-                  Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=jp:HamburgerMenuItem}}" />
+            <jp:JetPackIcon Kind="Home" />
         </jp:HamburgerMenuItem.Icon>
     </jp:HamburgerMenuItem>
 </jp:HamburgerMenu>
@@ -112,7 +111,7 @@ selected item gets the accent gradient. The ☰ button collapses the pane to ico
 | `PaneWidth` | `double` | 170 | |
 | `CompactPaneWidth` | `double` | 40 | |
 
-`HamburgerMenuItem` adds `Icon` (any element, 16×16). With `ItemsSource`, items are wrapped in
+`HamburgerMenuItem` adds `Icon` (any element, 18×18; a `jp:JetPackIcon` there is drawn at 18×18, where its 24×24 grid scales by 3/4 and stays sharper than at 16). With `ItemsSource`, items are wrapped in
 `HamburgerMenuItem` containers automatically.
 
 ## Expander

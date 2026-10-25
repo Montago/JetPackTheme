@@ -79,6 +79,39 @@ Defaults set by the theme: `HeadersVisibility="Column"`, `GridLinesVisibility="A
 row headers are shown). With `SelectionUnit="Cell"` the selected cells get the accent instead of the
 row. Behaviour (sorting, editing, adding rows) is plain WPF.
 
+### Check boxes and edit fields in cells
+
+`DataGridCheckBoxColumn` shows plain WPF check boxes, not the JetPack ones, and the text box and
+combo box that `DataGridTextColumn` and `DataGridComboBoxColumn` open for editing are plain WPF as
+well. This is on purpose: a mark in a table only has to be recognisable, and the light standard
+check box sits well on the light rows. (The columns set `ElementStyle` and `EditingElementStyle`
+themselves, which shuts out the implicit JetPack styles.)
+
+For the JetPack check box in a column, give the column a style based on
+`JetPack.Styles.CheckBox.OnLight`, or use a template column, where the implicit style applies:
+
+```xml
+<!-- Centred and not focusable, like WPF's own cell check box -->
+<Style x:Key="GridCheckBox" TargetType="CheckBox" BasedOn="{StaticResource JetPack.Styles.CheckBox.OnLight}">
+    <Setter Property="HorizontalAlignment" Value="Center" />
+    <Setter Property="VerticalAlignment" Value="Center" />
+    <Setter Property="Focusable" Value="False" />
+</Style>
+
+<DataGridCheckBoxColumn Header="Active" Binding="{Binding IsActive}"
+                        ElementStyle="{StaticResource GridCheckBox}" EditingElementStyle="{StaticResource GridCheckBox}" />
+
+<DataGridTemplateColumn Header="Active">
+    <DataGridTemplateColumn.CellTemplate>
+        <DataTemplate>
+            <CheckBox IsChecked="{Binding IsActive, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Center" />
+        </DataTemplate>
+    </DataGridTemplateColumn.CellTemplate>
+</DataGridTemplateColumn>
+```
+
+The same holds for `JetPackGrid`, which is a `DataGrid`.
+
 ## JetPackGrid
 
 ![JetPackGrid with the search "volvo auto" marked in the cells](screenshots/controls/jetpackgrid.png)

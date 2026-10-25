@@ -47,6 +47,41 @@ Use these keyed `TextBlock` styles for text on the textured background:
 `Label` is styled implicitly (white, control font size) and supports access keys (`Content="_Name"`
 with `Target`).
 
+## Icons
+
+![JetPackIcon](screenshots/controls/jetpackicon.png)
+
+`jp:JetPackIcon` draws one of the JetPack icons in its `Foreground`, which it inherits like text: white
+on the texture and in the navigation, dark when you set `JetPack.Brushes.Control.Glyph.Dark` on a
+light button.
+
+```xml
+<jp:JetPackIcon Kind="ViewGrid" />
+<Button Style="{StaticResource JetPack.Styles.Button.Square}" ToolTip="Print">
+    <jp:JetPackIcon Kind="Printer" Foreground="{DynamicResource JetPack.Brushes.Control.Glyph.Dark}" />
+</Button>
+```
+
+| Property | Type | Default | Description |
+| --- | --- | --- | --- |
+| `Kind` | `JetPackIconKind` | `None` | Which icon. |
+| `Data` | `Geometry` (read-only) | | The icon's path in a 24×24 box, for a `Path` of your own; `JetPackIcon.GeometryOf(kind)` gives the same. |
+
+Width and height are 16 by default (18 inside a `HamburgerMenuItem`); the 24×24 grid of the icon is scaled into them, so every icon
+keeps its own padding and the set lines up.
+
+The *Icons* tab in the demo shows the whole set on the navigation pane, selected and on a light
+button, at 16, 18 or 24; clicking an icon copies its XAML.
+
+![The Icons tab in the demo](screenshots/icons.png)
+
+The icons are [Material Design Icons](https://pictogrammers.com/library/mdi/) (Apache License 2.0),
+and `Kind` uses the same names as MahApps' `PackIconMaterial` (`view-grid` → `ViewGrid`), so the
+MahApps IconBrowser shows what is available. The library ships the set listed in
+[`icons/icons.json`](https://github.com/Montago/JetPackTheme/blob/master/icons/icons.json); to add an
+icon, put its MDI name in that file and run `python tools/generate_icons.py --fetch`. The same set
+is generated for the web theme (`<jp-icon kind="ViewGrid" />`, see [JetPack for the web](web.md)).
+
 ## Text rendering
 
 `JetPackWindow` uses `TextOptions.TextFormattingMode="Display"`, which keeps small text sharp. Large

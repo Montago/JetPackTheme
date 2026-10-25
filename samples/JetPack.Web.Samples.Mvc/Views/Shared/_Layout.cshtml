@@ -1,0 +1,112 @@
+@{
+    var page = ViewContext.RouteData.Values["controller"]?.ToString();
+    // The same icons as the WPF admin sample
+    var pages = new (string Name, JetPackIconKind Icon)[]
+    {
+        ("Dashboard", JetPackIconKind.ViewGrid),
+        ("Employees", JetPackIconKind.AccountMultiple),
+        ("Timesheets", JetPackIconKind.ClockOutline),
+        ("Projects", JetPackIconKind.Briefcase),
+    };
+    var waiting = SampleData.Timesheet.Count(r => r.Status == "Submitted");
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>@ViewData["Title"] · Contoso Staffing</title>
+
+    @* JetPack first: its @layer statement places the JetPack layers between Tailwind's *@
+    <link rel="stylesheet" href="~/_content/JetPack.Web/css/jetpack.css" asp-append-version="true" />
+    <script src="~/_content/JetPack.Web/js/jetpack.js" asp-append-version="true"></script>
+
+    @* Tailwind for layout. The browser build keeps this sample free of a Node build step;
+       a real site would run the Tailwind CLI and import jetpack.tailwind.css instead. *@
+    <script src="https://cdn.jsdelivr.net/npm/@@tailwindcss/browser@@4.1.11"></script>
+    <style type="text/tailwindcss">
+        /* Same as _content/JetPack.Web/css/jetpack.tailwind.css (the browser build cannot import it) */
+        @@theme inline {
+            --color-jp-text: var(--jp-text);
+            --color-jp-soft: var(--jp-text-soft);
+            --color-jp-dim: var(--jp-text-dim);
+            --color-jp-header: var(--jp-header-foreground);
+            --color-jp-panel: var(--jp-panel-background);
+            --color-jp-panel-border: var(--jp-panel-border);
+            --color-jp-accent: var(--jp-accent-solid);
+            --color-jp-accent-highlight: var(--jp-accent-highlight);
+            --color-jp-link: var(--jp-accent-link);
+            --shadow-jp: var(--jp-shadow);
+            --shadow-jp-light: var(--jp-shadow-light);
+        }
+    </style>
+</head>
+<body class="jp-window">
+    <canvas class="jp-vignette" aria-hidden="true"></canvas>
+
+    <header class="jp-title-bar">
+        <span class="jp-title-bar__title">Contoso Staffing · Administration</span>
+        <div class="jp-window-commands">
+            <a asp-controller="Timesheets" asp-action="Index" title="Timesheets waiting for approval" class="pr-4">
+                <span class="jp-badged mt-1.5">
+                    <jp-icon kind="Bell" />
+                    <span class="jp-badged__badge">@waiting</span>
+                </span>
+                <span class="sr-only">@waiting timesheets waiting for approval</span>
+            </a>
+            <button type="button" data-jp-open="settings">Settings</button>
+        </div>
+    </header>
+
+    <div class="jp-window__body">
+        <nav class="jp-hamburger-menu" aria-label="Pages">
+            <button type="button" class="jp-hamburger-menu__toggle" data-jp-toggle-pane aria-expanded="true" aria-label="Show page names">
+                <jp-icon kind="Menu" />
+            </button>
+            @foreach (var (name, icon) in pages)
+            {
+                <a class="jp-hamburger-menu__item" asp-controller="@name" asp-action="Index" aria-current="@(page == name ? "page" : null)" title="@name">
+                    <jp-icon kind="@icon" />
+                    <span class="jp-hamburger-menu__label">@name</span>
+                </a>
+            }
+        </nav>
+
+        <main class="jp-window__content jp-scroll-viewer">
+            <div class="px-6 pt-4 pb-6">
+                @RenderBody()
+            </div>
+        </main>
+    </div>
+
+    <footer class="jp-status-bar">
+        <span>Ready</span>
+        <span>Signed in as Ida Kragh</span>
+        <span class="jp-status-bar__item--right">JetPack.Web · ASP.NET Core @Environment.Version</span>
+    </footer>
+
+    @* The Settings flyout of the WPF sample *@
+    <jp-flyout id="settings" header="Settings">
+        <p class="jp-text-block--caption mb-1.5">Accent</p>
+        <div class="flex gap-3.5 mb-4.5">
+            <label class="jp-radio-button"><input type="radio" name="accent" value="green" data-jp-accent checked /> Green</label>
+            <label class="jp-radio-button"><input type="radio" name="accent" value="orange" data-jp-accent /> Orange</label>
+            <label class="jp-radio-button"><input type="radio" name="accent" value="blue" data-jp-accent /> Blue</label>
+        </div>
+
+        <p class="jp-text-block--caption mb-2">Navigation</p>
+        <div class="flex flex-col items-start gap-2.5 mb-4.5">
+            <label class="jp-toggle-switch"><input type="checkbox" role="switch" data-jp-pane-switch checked /> Show page names</label>
+            <label class="jp-toggle-switch"><input type="checkbox" role="switch" data-jp-focus-visuals checked /> Visible keyboard focus</label>
+        </div>
+
+        <p class="jp-text-block--caption mb-1.5">Signed in as</p>
+        <p class="font-bold text-[13px]">Ida Kragh</p>
+        <p class="jp-text-block--caption mt-0.5 mb-3">Controller · Finance</p>
+        <button type="button" class="jp-button">Sign out</button>
+    </jp-flyout>
+
+    @await RenderSectionAsync("Dialogs", required: false)
+    <script src="~/js/site.js" asp-append-version="true"></script>
+</body>
+</html>

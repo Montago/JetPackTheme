@@ -1,0 +1,123 @@
+/* JetPack for the web · CheckBox, RadioButton, ToggleSwitch (Controls.Toggles.xaml) */
+@layer components {
+
+  /* --------------------------------------------- check box / radio button */
+  /* <label class="jp-check-box"><input type="checkbox"> Text</label> */
+  .jp-check-box, .jp-radio-button, .jp-toggle-switch {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    color: var(--jp-text);
+    font-size: var(--jp-font-size-control);
+    cursor: pointer;
+    user-select: none;
+  }
+  .jp-check-box > input, .jp-radio-button > input {
+    appearance: none;
+    position: relative;
+    flex: none;
+    width: 14px;
+    height: 14px;
+    margin: 0;
+    border: 1px solid var(--jp-check-box-border);
+    background: var(--jp-check-box-background);
+    box-shadow: inset 1px 1px 0 var(--jp-check-box-inner-shadow), var(--jp-outer-highlight);
+    cursor: inherit;
+  }
+  .jp-radio-button > input {
+    border-radius: 50%;
+    background: var(--jp-radio-button-background);
+    box-shadow: inset 0 0 3px rgb(0 0 0 / 0.25), 1px 1px 0 rgb(255 255 255 / 0.45);
+  }
+  .jp-check-box:hover > input, .jp-radio-button:hover > input {
+    box-shadow: inset 0 0 0 1px var(--jp-accent-solid), var(--jp-outer-highlight);
+  }
+  .jp-check-box > input::after {
+    content: "";
+    position: absolute;
+    inset: 1px;
+    background: var(--jp-accent-highlight);
+    opacity: 0;
+    mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0.3 0.8 7 6.6'%3E%3Cpath d='M0.5625,5.0625 L1.5,3.9375 L2.9575791,4.9549685 L5.75,1.125 L6.9375,2 L3.186887,7.0000076 z'/%3E%3C/svg%3E") center / contain no-repeat;
+  }
+  .jp-check-box > input:checked::after { opacity: 1; }
+  .jp-check-box > input:indeterminate::after { opacity: 1; mask: none; inset: 4px 2px; }
+  .jp-radio-button > input::after {
+    content: "";
+    position: absolute;
+    inset: 2px;
+    border-radius: 50%;
+    background: var(--jp-accent-highlight);
+    opacity: 0;
+  }
+  .jp-radio-button > input:checked::after { opacity: 1; }
+  .jp-check-box > input:focus-visible, .jp-radio-button > input:focus-visible {
+    outline: 1px solid var(--jp-focus);
+    outline-offset: 2px;
+  }
+  .jp-check-box:has(> input:disabled), .jp-radio-button:has(> input:disabled), .jp-toggle-switch:has(> input:disabled) {
+    color: var(--jp-text-disabled);
+    cursor: default;
+  }
+  .jp-check-box > input:disabled, .jp-radio-button > input:disabled {
+    background: var(--jp-toggle-disabled);
+    border-color: var(--jp-toggle-disabled-border);
+    box-shadow: none;
+  }
+  .jp-check-box > input:disabled::after, .jp-radio-button > input:disabled::after { background: var(--jp-toggle-disabled-glyph); }
+  /* IsChecked="{x:Null}" on a RadioButton: a ring instead of the dot (jetpack.js sets the class) */
+  .jp-radio-button > input.is-indeterminate::after {
+    opacity: 1;
+    background: transparent;
+    border: 1px solid var(--jp-accent-highlight);
+    inset: 1.5px;
+  }
+  /* Invalid: a red frame round the box and its text, with the corner of the text boxes */
+  .jp-check-box[aria-invalid="true"], .jp-radio-button[aria-invalid="true"] {
+    margin: -1px -2px;
+    padding: 0 2px;
+    border: 1px solid var(--jp-error);
+    border-radius: 1px;
+    background: linear-gradient(225deg, var(--jp-error) 5px, transparent 5px);
+  }
+  .jp-check-box[aria-invalid="true"] > input, .jp-radio-button[aria-invalid="true"] > input { box-shadow: inset 0 0 0 1px var(--jp-error); }
+  /* On light surfaces (data grid, menus): JetPack.Styles.CheckBox.OnLight */
+  .jp-check-box--on-light { color: var(--jp-control-foreground); }
+
+  /* -------------------------------------------------------- toggle switch */
+  /* <label class="jp-toggle-switch"><input type="checkbox" role="switch"> Text</label> */
+  .jp-toggle-switch > input {
+    appearance: none;
+    position: relative;
+    flex: none;
+    width: 44px;
+    height: 18px;
+    margin: 0;
+    border: 1px solid rgb(52 53 55 / 0.9);
+    border-radius: 2.5px;
+    background: var(--jp-track-gradient);
+    box-shadow: inset 1px 1px 0 var(--jp-control-dark-edge), inset 2px 2px 0 rgb(48 48 48 / 0.31), var(--jp-outer-highlight);
+    cursor: inherit;
+    transition: background 0.15s;
+  }
+  .jp-toggle-switch > input::after {
+    content: "";
+    position: absolute;
+    top: 1px;
+    left: 1px;
+    width: 20px;
+    height: 14px;
+    border-radius: var(--jp-radius);
+    background: var(--jp-control-background);
+    box-shadow: 0 1px 2px rgb(0 0 0 / 0.55), var(--jp-highlight);
+    transition: left 0.15s;
+  }
+  .jp-toggle-switch:hover > input::after { background: var(--jp-control-background-mouse-over); }
+  .jp-toggle-switch > input:checked {
+    background: var(--jp-accent-selection);
+    box-shadow: inset 0 1px 0 rgb(0 0 0 / 0.25), var(--jp-outer-highlight);
+  }
+  .jp-toggle-switch > input:checked::after { left: 21px; }
+  .jp-toggle-switch > input:focus-visible { outline: 1px solid var(--jp-focus); outline-offset: 2px; }
+  .jp-toggle-switch > input:disabled { opacity: 0.5; }
+}

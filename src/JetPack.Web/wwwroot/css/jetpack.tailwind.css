@@ -1,0 +1,35 @@
+/*
+JetPack values as Tailwind v4 theme variables, so utilities such as text-jp-soft, bg-jp-panel,
+border-jp-panel-border, shadow-jp or font-jp follow the JetPack tokens (and the accent).
+
+With the Tailwind CLI, import JetPack first; its @layer statement puts the JetPack layers in the
+right place between Tailwind's:
+    @import "<path>/jetpack.css";
+    @import "tailwindcss";
+    @import "<path>/jetpack.tailwind.css";
+The browser build of Tailwind cannot import files; copy the @theme block into a
+<style type="text/tailwindcss"> element instead (as samples/JetPack.Web.Samples.Mvc does).
+*/
+@theme inline {
+  --color-jp-text: var(--jp-text);
+  --color-jp-soft: var(--jp-text-soft);
+  --color-jp-dim: var(--jp-text-dim);
+  --color-jp-header: var(--jp-header-foreground);
+  --color-jp-control: var(--jp-control-foreground);
+  --color-jp-ground: var(--jp-window-ground);
+  --color-jp-panel: var(--jp-panel-background);
+  --color-jp-panel-border: var(--jp-panel-border);
+  --color-jp-strip: var(--jp-strip-background);
+  --color-jp-accent: var(--jp-accent-solid);
+  --color-jp-accent-highlight: var(--jp-accent-highlight);
+  --color-jp-link: var(--jp-accent-link);
+  --color-jp-info: var(--jp-info);
+  --color-jp-success: var(--jp-success);
+  --color-jp-warning: var(--jp-warning);
+  --color-jp-error: var(--jp-error);
+  --font-jp: var(--jp-font-family);
+  --font-jp-mono: var(--jp-font-family-mono);
+  --shadow-jp: var(--jp-shadow);
+  --shadow-jp-light: var(--jp-shadow-light);
+  --radius-jp: var(--jp-radius);
+}

@@ -1,0 +1,77 @@
+@* SdkPage.xaml *@
+@{
+    var today = DateTime.Today;
+}
+<jp-scroll-viewer thin="true" class="demo-page">
+    <p class="demo-intro">The Silverlight SDK controls, all of which exist in WPF: TabControl, Calendar, DatePicker, TreeView, DataGrid and GridSplitter. The dark panels use DarkBackground #707176 and DarkBorder #58585D.</p>
+
+    <div class="demo-row">
+        <demo-column header="TabControl" tag="JetPack.Styles.TabControl">
+            <jp-tab-control class="w-[320px] h-[140px]">
+                <jp-tab-item header="Available"><p class="m-0">14 consultants are available from week 44. Filter by skill or location to narrow the list.</p></jp-tab-item>
+                <jp-tab-item header="Assigned"><p class="m-0">9 consultants are assigned to projects running until December.</p></jp-tab-item>
+                <jp-tab-item header="Suggestions"><p class="m-0">3 suggestions are waiting for the customer to reply.</p></jp-tab-item>
+                <jp-tab-item header="Archive" is-enabled="false" />
+            </jp-tab-control>
+        </demo-column>
+
+        <demo-column header="Calendar" tag="JetPack.Styles.Calendar">
+            <jp-calendar display-date="today" selected-date="today.AddDays(4)" />
+        </demo-column>
+
+        <demo-column header="DatePicker · AutoSuggestBox" tag="JetPack.Styles.DatePicker">
+            <div class="flex flex-col gap-2.5 w-[170px]">
+                <jp-date-picker selected-date="today" />
+                <jp-date-picker />
+                <jp-date-picker selected-date="today.AddYears(-3)" validation-error="The date is before the contract starts." />
+                <jp-separator class="!my-0" />
+                <jp-auto-suggest-box items="DemoData.SuggestCompanies" watermark="Search companies…" />
+                <span class="demo-state">Type e.g. 'fa' or 'so'</span>
+            </div>
+        </demo-column>
+    </div>
+
+    <div class="demo-row">
+        <demo-column header="TreeView" tag="JetPack.Styles.TreeView">
+            <jp-tree-view class="w-[210px] h-[190px]">
+                <jp-tree-view-item header="Contoso" is-expanded="true">
+                    <jp-tree-view-item header="August 2026" />
+                    <jp-tree-view-item header="September 2026" is-selected="true" />
+                    <jp-tree-view-item header="October 2026" />
+                </jp-tree-view-item>
+                <jp-tree-view-item header="Southridge"><jp-tree-view-item header="July 2026" /></jp-tree-view-item>
+                <jp-tree-view-item header="Microsoft"><jp-tree-view-item header="June 2026" /></jp-tree-view-item>
+                <jp-tree-view-item header="Fabrikam"><jp-tree-view-item header="May 2026" /></jp-tree-view-item>
+                <jp-tree-view-item header="Soar Airlines"><jp-tree-view-item header="April 2026" /></jp-tree-view-item>
+            </jp-tree-view>
+        </demo-column>
+
+        <demo-column header="DataGrid" tag="JetPack.Styles.DataGrid">
+            <jp-data-grid items="DemoData.Timesheets" selected-index="1" height="190" class="w-[520px]">
+                <jp-data-grid-text-column header="Employee" binding="Employee" sort-direction="Ascending" />
+                <jp-data-grid-text-column header="Department" binding="Department" width="110" />
+                <jp-data-grid-text-column header="Hours" binding="Hours" string-format="N1" width="60" horizontal-alignment="Right" />
+                <jp-data-grid-text-column header="Week" binding="Week" width="50" />
+                <jp-data-grid-text-column header="Status" binding="Status" width="90" />
+            </jp-data-grid>
+        </demo-column>
+    </div>
+
+    <div class="demo-row">
+        <demo-column header="ListView · GridView" tag="JetPack.Styles.ListView">
+            <jp-list-view items="DemoData.Timesheets" selected-index="2" height="150" class="w-[360px]">
+                <jp-grid-view-column header="Employee" display-member-binding="Employee" width="150" />
+                <jp-grid-view-column header="Department" display-member-binding="Department" width="110" />
+                <jp-grid-view-column header="Hours" display-member-binding="Hours" width="70" />
+            </jp-list-view>
+        </demo-column>
+
+        <demo-column header="GridSplitter" tag="JetPack.Styles.GridSplitter">
+            <div class="flex w-[320px] h-[110px]">
+                <div class="flex-[1_1_0] min-w-[60px] p-2 bg-jp-panel" style="background: var(--jp-panel-background)">Navigation</div>
+                <jp-grid-splitter />
+                <div class="flex-[2_1_0] min-w-[60px] p-2" style="background: var(--jp-panel-background)">Content</div>
+            </div>
+        </demo-column>
+    </div>
+</jp-scroll-viewer>

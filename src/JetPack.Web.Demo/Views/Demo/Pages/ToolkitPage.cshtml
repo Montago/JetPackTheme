@@ -1,0 +1,98 @@
+@* ToolkitPage.xaml *@
+@{
+    // ToolkitPage.DrawChart: grouped columns, 0–200 hours mapped onto 125 px
+    int[][] data = [[120, 80, 60], [150, 95, 70], [135, 110, 55], [170, 120, 80]];
+    string[] quarters = ["Q1", "Q2", "Q3", "Q4"];
+    const double bottom = 135, scale = 125.0 / 200, left = 30;
+}
+<jp-scroll-viewer thin="true" class="demo-page">
+    <p class="demo-intro">The Silverlight Toolkit controls. Expander, ContextMenu and Menu exist in WPF; NumericUpDown, TimePicker, Rating, BusyIndicator and Accordion come with JetPack.Wpf, and here with JetPack.Web.</p>
+
+    <div class="demo-row">
+        <demo-column header="Expander" tag="JetPack.Styles.Expander">
+            <div class="flex flex-col gap-2 w-[210px]">
+                <jp-expander header="Billing address" is-expanded="true"><p class="m-0">120 Pine Street<br>Seattle, WA 98101</p></jp-expander>
+                <jp-expander header="Shipping address"><p class="m-0">Same as billing</p></jp-expander>
+            </div>
+        </demo-column>
+
+        <demo-column header="Accordion" tag="jp:Accordion">
+            <jp-accordion class="w-[210px]">
+                <jp-expander header="Need Placement" is-expanded="true"><p class="m-0">5 consultants without an assignment in week 44.</p></jp-expander>
+                <jp-expander header="Renewal Pending"><p class="m-0">2 contracts expire on 31 December.</p></jp-expander>
+                <jp-expander header="Archive"><p class="m-0">148 completed placements.</p></jp-expander>
+            </jp-accordion>
+        </demo-column>
+
+        <demo-column header="NumericUpDown · TimePicker" tag="jp:NumericUpDown · jp:TimePicker">
+            <div class="flex flex-col gap-2.5 w-[150px]">
+                <jp-numeric-up-down value="37.5" interval="0.5" minimum="0" maximum="60" string-format="N1" />
+                <jp-numeric-up-down value="8" minimum="0" dark="true" />
+                <jp-numeric-up-down watermark="Number of hours" minimum="0" />
+                <jp-separator class="!my-0" />
+                <jp-time-picker selected-time="new TimeSpan(8, 30, 0)" />
+                <jp-time-picker minute-step="30" watermark="Meeting time" />
+            </div>
+        </demo-column>
+
+        <demo-column header="Rating · BusyIndicator" tag="jp:Rating · jp:BusyIndicator">
+            <div class="flex flex-col items-center gap-3.5 w-[220px]">
+                <jp-rating value="4" />
+                <jp-busy-indicator id="Busy" is-busy="true" busy-content="Loading orders…" class="self-stretch h-[128px]">
+                    <div class="h-full p-2.5 rounded-[2.5px]" style="background: var(--jp-panel-background)">
+                        <p class="m-0 text-[11px]">Customer: Fabrikam<br>Contact: Ida Kragh<br>Orders: 14<br>Latest: 10/12/2026</p>
+                        <jp-button class="mt-2">Open orders</jp-button>
+                    </div>
+                </jp-busy-indicator>
+                <jp-toggle-switch id="BusySwitch" is-checked="true">IsBusy</jp-toggle-switch>
+            </div>
+        </demo-column>
+    </div>
+
+    <div class="demo-row">
+        <demo-column header="ContextMenu" tag="JetPack.Styles.ContextMenu">
+            <div class="grid place-items-center w-[200px] h-[80px] rounded-[2.5px]" data-jp-context-menu="ContextMenuSample"
+                 style="background: var(--jp-panel-background); border: 1px solid var(--jp-panel-border)">Right-click here</div>
+            <jp-context-menu id="ContextMenuSample">
+                <jp-menu-item header="Cut" input-gesture-text="Ctrl+X" />
+                <jp-menu-item header="Copy" input-gesture-text="Ctrl+C" />
+                <jp-menu-item header="Paste" input-gesture-text="Ctrl+V" is-enabled="false" />
+                <jp-separator />
+                <jp-menu-item header="Show grid lines" is-checkable="true" is-checked="true" />
+                <jp-menu-item header="Export">
+                    <jp-menu-item header="Excel (.xlsx)" />
+                    <jp-menu-item header="PDF" />
+                </jp-menu-item>
+            </jp-context-menu>
+        </demo-column>
+
+        <demo-column header="Chart palette" tag="JetPack.Brushes.Chart.1–6">
+            <div class="w-[340px] px-2.5 py-2 bg-white rounded-[2.5px]" style="box-shadow: var(--jp-effect-light-control-shadow)">
+                <p class="m-0 mb-1.5 text-center font-bold text-[#303030]">Hours per quarter</p>
+                <div class="demo-chart">
+                    @foreach (var v in new[] { 0, 50, 100, 150, 200 })
+                    {
+                        var y = bottom - v * scale;
+                        <span class="demo-chart__line@(v == 0 ? " demo-chart__line--axis" : "")" style="left:@(left)px; top:@(y)px"></span>
+                        <span class="demo-chart__value" style="top:@(y - 6)px">@v</span>
+                    }
+                    @for (var q = 0; q < data.Length; q++)
+                    {
+                        var x0 = left + q * 65 + 11;
+                        for (var s = 0; s < 3; s++)
+                        {
+                            var h = data[q][s] * scale;
+                            <span class="demo-chart__bar" style="left:@(x0 + s * 15)px; top:@(bottom - h)px; height:@(h)px; background: var(--jp-chart-@(s + 1))" jp-tool-tip="@quarters[q]: @data[q][s] hours"></span>
+                        }
+                        <span class="demo-chart__quarter" style="left:@(x0 + 15)px; top:@(bottom + 4)px">@quarters[q]</span>
+                    }
+                </div>
+                <div class="flex justify-center items-center mt-1.5 text-[11px] text-[#303030]">
+                    <span class="w-2.5 h-2.5 mr-1" style="background: var(--jp-chart-1)"></span><span class="mr-3">Projects</span>
+                    <span class="w-2.5 h-2.5 mr-1" style="background: var(--jp-chart-2)"></span><span class="mr-3">Support</span>
+                    <span class="w-2.5 h-2.5 mr-1" style="background: var(--jp-chart-3)"></span><span>Internal</span>
+                </div>
+            </div>
+        </demo-column>
+    </div>
+</jp-scroll-viewer>

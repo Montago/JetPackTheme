@@ -50,6 +50,7 @@ DEMO_PAGES = {
     '05-jetpackgrid.png': 'jetpackgrid.png',
     '06-window.png': 'window.png',
     '07-palette.png': 'palette.png',
+    '08-icons.png': 'icons.png',
     '20-core-orange.png': 'core-orange.png',
     '22-window-light.png': 'window-light.png',
     '23-navigation-bar.png': 'navigation-bar.png',
@@ -178,6 +179,30 @@ def regenerate_nav_headings(report):
         report.error('generate_nav_headings.py failed:\n' + result.stdout + result.stderr)
 
 
+def web_pictures(scratch, report):
+    """The web demo and the web sample, through tools/web_snapshots.py (headless Edge)."""
+    step('Rendering the web demo and sample (headless Edge)')
+    result = subprocess.run([sys.executable, os.path.join(ROOT, 'tools', 'web_snapshots.py'), '--scratch', os.path.join(scratch, 'web')],
+                            capture_output=True, text=True)
+    print(result.stdout.rstrip())
+    if result.returncode != 0:
+        report.error('web_snapshots.py failed:\n' + result.stdout + result.stderr)
+
+
+def regenerate_icons(report):
+    step('Regenerating the icon set from icons/icons.json')
+    result = subprocess.run([sys.executable, os.path.join(ROOT, 'tools', 'generate_icons.py')], capture_output=True, text=True)
+    if result.returncode != 0:
+        report.error('generate_icons.py failed:\n' + result.stdout + result.stderr)
+
+
+def regenerate_web_tokens(report):
+    step('Regenerating src/JetPack.Web/wwwroot/css/jetpack.tokens.css')
+    result = subprocess.run([sys.executable, os.path.join(ROOT, 'tools', 'generate_web_tokens.py')], capture_output=True, text=True)
+    if result.returncode != 0:
+        report.error('generate_web_tokens.py failed:\n' + result.stdout + result.stderr)
+
+
 def check_static_resources(report):
     """StaticResource and BasedOn across the Controls.*.xaml files fail at runtime (each is loaded on its own)."""
     step('Checking {StaticResource} order in Styles/')
@@ -255,8 +280,11 @@ def main():
     if not args.check:
         folders = build_and_render(args.scratch, report)
         copy_pictures(folders, report)
+        web_pictures(args.scratch, report)
     regenerate_resource_keys(report)
     regenerate_nav_headings(report)
+    regenerate_web_tokens(report)
+    regenerate_icons(report)
     check_static_resources(report)
     check_doc_images(report)
     check_controls_documented(report)
