@@ -3,7 +3,7 @@
   <!--
   JetPack for ASP.NET Core: the web theme as a Razor class library. The CSS, JavaScript and texture
   in wwwroot are served at _content/JetPack.Web/..., and TagHelpers/ adds <jp-*> elements for the
-  controls that need more markup than a class. Not published as a package yet.
+  controls that need more markup than a class.
   -->
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
@@ -11,12 +11,47 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <RootNamespace>JetPack.Web</RootNamespace>
     <AddRazorSupportForMvc>true</AddRazorSupportForMvc>
-    <IsPackable>false</IsPackable>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <NoWarn>$(NoWarn);CS1591</NoWarn>
+  </PropertyGroup>
+
+  <!-- NuGet package. The release workflow overrides Version from the git tag (web-v1.2.3 -> 1.2.3). -->
+  <PropertyGroup>
+    <PackageId>JetPack.Web</PackageId>
     <Version>0.1.0</Version>
+    <Authors>Martin Kirk</Authors>
+    <Copyright>Copyright (c) 2026 Martin Kirk</Copyright>
+    <Description>The JetPack theme of JetPack.Wpf for ASP.NET Core: CSS for every control, a dependency-free script for drop-downs, calendars, menus, tabs, flyouts and dialogs, tag helpers named after the WPF controls, and Material Design Icons.</Description>
+    <PackageTags>aspnetcore;css;theme;jetpack;taghelpers;razor;tailwind;admin</PackageTags>
+    <PackageProjectUrl>https://montago.github.io/JetPackTheme/web.html</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/Montago/JetPackTheme</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageReleaseNotes>https://github.com/Montago/JetPackTheme/releases</PackageReleaseNotes>
+    <PackageIcon>icon.png</PackageIcon>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageLicenseExpression>MIT AND Apache-2.0</PackageLicenseExpression>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(GITHUB_ACTIONS)' == 'true'">
+    <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
   </PropertyGroup>
 
   <ItemGroup>
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\JetPack.Wpf\icon.png" Pack="true" PackagePath="\" Link="icon.png" />
+    <None Include="PACKAGE.md" Pack="true" PackagePath="\README.md" />
+    <None Include="..\..\LICENSE" Pack="true" PackagePath="\" />
+    <None Include="..\..\NOTICE.md" Pack="true" PackagePath="\" />
+    <!-- The icons are Material Design Icons (Apache License 2.0) -->
+    <None Include="..\..\icons\LICENSE" Pack="true" PackagePath="\icons\" />
+    <None Include="..\..\icons\LICENSE-2.0.txt" Pack="true" PackagePath="\icons\" />
   </ItemGroup>
 
 </Project>

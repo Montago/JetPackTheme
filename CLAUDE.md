@@ -37,8 +37,10 @@ src/JetPack.Wpf/            library (net8.0-windows)
   Helpers/                  ControlHelper / TextBoxHelper attached properties, converters
   Theming/                  ThemeManager, AccentGenerator
 src/JetPack.Wpf.Demo/       demo app; pages in Views/
-src/JetPack.Web/            web theme (Razor class library, net8.0): wwwroot/css/jetpack.css imports
-                            jetpack.tokens.css (generated) and css/controls/*.css (one per Controls.*.xaml);
+src/JetPack.Web/            web theme (Razor class library, net8.0; NuGet package JetPack.Web):
+                            wwwroot/css/jetpack.src.css imports jetpack.tokens.css (generated) and
+                            css/controls/*.css (one per Controls.*.xaml); jetpack.css is that bundled
+                            into one file by tools/bundle_web_css.py (sites link it; never edit it);
                             js/jetpack.js (all behaviour, no dependencies); img/texture.png and icons.svg
                             (generated); TagHelpers/ (<jp-*> for every demo control, WPF property names)
 src/JetPack.Web.Demo/       the WPF demo as a web page: Views/Demo/Pages/<UserControl>.cshtml per tab,
@@ -58,6 +60,8 @@ tools/generate_icons.py     icons.json -> JetPackIconKind.g.cs (WPF and web) and
                             --fetch downloads SVGs that are missing (pinned @mdi/svg version)
 tools/generate_web_tokens.py    writes JetPack.Web's jetpack.tokens.css from Styles/*.xaml and copies
                                 the texture; run it after changing brushes, fonts, effects or accents
+tools/bundle_web_css.py     bundles jetpack.src.css and its imports into JetPack.Web's jetpack.css; run it
+                            after editing the web CSS or the tokens (CI fails when it is out of date)
 tools/update_docs.py        rebuilds all screenshots + resource keys and runs the docs checks
 .claude/skills/update-docs/ the /update-docs skill: runs the script, reviews pictures, fixes the text
 design/jetpack-preview.src.html   approved HTML/CSS draft (texture as __TEX__ placeholder)
@@ -110,16 +114,22 @@ src/JetPack.Wpf.Demo/bin/Debug/net8.0-windows/JetPack.Wpf.Demo.exe --snapshot <f
 
 ## NuGet package and releases
 
-- Package metadata lives in `src/JetPack.Wpf/JetPack.Wpf.csproj`; `PACKAGE.md` becomes the package
-  README on nuget.org (absolute image URLs only), `icon.png` the package icon. License: MIT expression.
+- Two packages, each with its own version: `JetPack.Wpf` and `JetPack.Web`. Package metadata lives
+  in each `.csproj`; the project's `PACKAGE.md` becomes the package README on nuget.org (absolute
+  image URLs only), `src/JetPack.Wpf/icon.png` the icon of both. License: `MIT AND Apache-2.0`.
 - Before tagging a release, run `/update-docs` so screenshots and docs match the code.
 - `.github/workflows/release.yml` publishes on a `v*.*.*` tag: always to GitHub Packages (workflow
   token, `--no-symbols` because that feed rejects snupkg), and to nuget.org with Trusted Publishing
-  (`NuGet/login@v1`, OIDC, policy for `release.yml`) when the `NUGET_USER` secret exists. The version
-  comes from the tag (`git tag -a v1.2.3 -m "JetPack.Wpf 1.2.3"`, then `git push origin v1.2.3`). It
-  can be re-run for an existing tag: published packages are skipped and the release assets replaced.
+  (`NuGet/login@v1`, OIDC, policy for `release.yml`) when the `NUGET_USER` secret exists. The tag
+  picks the package and its version: `v1.2.3` is JetPack.Wpf (`git tag -a v1.2.3 -m "JetPack.Wpf 1.2.3"`,
+  then `git push origin v1.2.3`), `web-v1.2.3` is JetPack.Web (not marked as the latest GitHub
+  release). It can be re-run for an existing tag: published packages are skipped and the release
+  assets replaced.
   Never handle API keys or secrets yourself; the user sets them.
-- `.github/workflows/ci.yml` builds every push and pull request and uploads the package as an artifact.
+- `.github/workflows/ci.yml` builds every push and pull request, checks that `jetpack.css` matches
+  its sources, and uploads both packages as an artifact.
+- A package's static web assets (`_content/...`) return 404 when a plain `dotnet build` output
+  runs as Production; test a consumer app with `dotnet publish` (or as Development).
 - `dotnet nuget push artifacts/*.nupkg` does not expand the glob on the Windows runner; loop in bash.
 - `gh api` here lacks `read:packages`; check packages on
   https://github.com/Montago/JetPackTheme/pkgs/nuget/JetPack.Wpf instead.

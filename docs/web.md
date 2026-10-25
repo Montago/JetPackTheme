@@ -8,15 +8,15 @@ nav_order: 8
 ![The Core tab of the web demo](screenshots/web/core.png)
 
 `src/JetPack.Web` is the JetPack look in HTML and CSS, for admin portals and other business sites.
-It is a Razor class library, so an ASP.NET Core app gets the files by referencing the project, and
-it has a tag helper for every control of the WPF demo, named after the control
+It is a Razor class library, published as the [JetPack.Web](https://www.nuget.org/packages/JetPack.Web)
+package, and it has a tag helper for every control of the WPF demo, named after the control
 (`<jp-combo-box>`, `<jp-tab-control>`, `<jp-date-picker>` …). The CSS and JavaScript do not depend
 on .NET: any site can link them and write the markup itself.
 
 | Part | File | Contents |
 | --- | --- | --- |
 | Tokens | `wwwroot/css/jetpack.tokens.css` | The colours, gradients, fonts and shadows of `JetPack.Wpf` as CSS custom properties, generated from `Styles/*.xaml` |
-| Components | `wwwroot/css/jetpack.css` and `css/controls/*.css` | The controls as CSS classes, one file per control group as `Controls.*.xaml`, in cascade layers |
+| Components | `wwwroot/css/jetpack.css` | The controls as CSS classes in cascade layers, in one file. It is bundled from `jetpack.src.css` and `css/controls/*.css` (one file per control group, as `Controls.*.xaml`) |
 | Behaviour | `wwwroot/js/jetpack.js` | Drop-downs, calendar, sliders, menus, tabs, flyouts, dialogs, tool tips, validation call-outs, accents and the vignette; no dependencies |
 | Tag helpers | `TagHelpers/*.cs` | `<jp-*>` elements with the WPF property names |
 | Icons | `wwwroot/img/icons.svg` | The JetPackIcon set as an SVG sprite |
@@ -55,10 +55,10 @@ Settings, belong to the desktop window; they are shown disabled. Dates are shown
 
 ## Getting started
 
-Reference the library and add its tag helpers in `_ViewImports.cshtml`:
+Install the package and add its tag helpers in `_ViewImports.cshtml`:
 
-```xml
-<ProjectReference Include="..\..\src\JetPack.Web\JetPack.Web.csproj" />
+```bash
+dotnet add package JetPack.Web
 ```
 
 ```cshtml
@@ -70,9 +70,12 @@ In the layout, load JetPack before Tailwind. The first `@layer` statement in `je
 order of the layers, so Tailwind's utilities still win over the JetPack classes:
 
 ```html
-<link rel="stylesheet" href="~/_content/JetPack.Web/css/jetpack.css" />
-<script src="~/_content/JetPack.Web/js/jetpack.js"></script>
+<link rel="stylesheet" href="~/_content/JetPack.Web/css/jetpack.css" asp-append-version="true" />
+<script src="~/_content/JetPack.Web/js/jetpack.js" asp-append-version="true"></script>
 ```
+
+`asp-append-version` adds a hash of the file to the address, so browsers fetch the new file after
+you update the package.
 
 `jetpack.js` belongs in `<head>` without `defer`: it sets the stored accent before the page is
 drawn. With the Tailwind CLI, also import `jetpack.tailwind.css`, which maps the tokens to theme
@@ -174,11 +177,13 @@ top of `jetpack.js`. Value controls raise `jp-change` with the new value in `eve
 
 ## Values from JetPack.Wpf
 
-`jetpack.tokens.css` and `img/texture.png` are generated; do not edit them. After changing
-`Brushes.xaml`, `Fonts.xaml`, `Effects.xaml` or an accent, run:
+`jetpack.tokens.css`, `img/texture.png` and `jetpack.css` are generated; do not edit them. After changing
+`Brushes.xaml`, `Fonts.xaml`, `Effects.xaml` or an accent, run both scripts below. After changing
+`jetpack.src.css` or `css/controls/*.css`, run only the second:
 
 ```bash
 python tools/generate_web_tokens.py
+python tools/bundle_web_css.py
 ```
 
 `python tools/update_docs.py --check` reports when the generated files are out of date. The
@@ -205,9 +210,6 @@ dotnet run --project samples/JetPack.Web.Samples.Mvc
 
 ## Limitations
 
-- Not published as a package yet.
 - JetPackGrid has no web version; use a grid library for large, filterable tables.
 - Scroll bars get the JetPack look only in Chromium browsers (Edge, Chrome); Firefox gets colours only.
-- The imported files under `css/controls/` carry no version in their address, so after an update a
-  browser may keep an old one until it revalidates its cache.
 - `jetpack.tailwind.css` has not been tried with the Tailwind CLI yet; the demo and the sample use the browser build.

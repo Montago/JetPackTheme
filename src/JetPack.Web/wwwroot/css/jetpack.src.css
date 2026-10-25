@@ -1,0 +1,88 @@
+/*
+JetPack for the web: the JetPack look as CSS classes, with the values of JetPack.Wpf
+(jetpack.tokens.css is generated from its Styles/ by tools/generate_web_tokens.py).
+Sites link jetpack.css, which tools/bundle_web_css.py writes from this file and the files it imports.
+
+Class names follow the WPF controls and style keys:
+    control      ComboBox                          -> .jp-combo-box
+    style key    JetPack.Styles.Button.Accent      -> .jp-button.jp-button--accent
+    part         the title of a Tile               -> .jp-tile__title
+
+Everything sits in cascade layers, so utility classes (Tailwind or your own) override it.
+Load this file before Tailwind: the first @layer statement fixes the order of the layers.
+*/
+@layer theme, base, jetpack-base, components, utilities;
+
+@import url("jetpack.tokens.css");
+@import url("controls/text.css");
+@import url("controls/buttons.css");
+@import url("controls/toggles.css");
+@import url("controls/range.css");
+@import url("controls/containers.css");
+@import url("controls/lists.css");
+@import url("controls/calendar.css");
+@import url("controls/menu.css");
+@import url("controls/window.css");
+@import url("controls/jetpack-controls.css");
+
+/* Values that are not in the WPF dictionaries; unlayered so they beat the accent blocks */
+:root {
+  --jp-shadow: 0 1px 3px rgb(0 0 0 / 0.55);
+  --jp-shadow-light: 0 1px 4px rgb(85 82 79 / 0.5);
+  --jp-highlight: inset 1px 1px 0 rgb(255 255 255 / 0.5);
+  --jp-inner-shadow: inset 1px 1px 0 rgb(80 80 80 / 0.31), inset 2px 2px 0 rgb(32 32 32 / 0.125);
+  --jp-outer-highlight: 1px 1px 0 rgb(255 255 255 / 0.25);
+  --jp-emboss: 0 1px 1px rgb(255 255 255 / 0.5);
+  --jp-glow: 0 0 5px rgb(0 0 0 / 0.25);
+  --jp-radius: 2px;
+}
+/* ThemeManager.ShowFocusVisuals = false */
+:root[data-focus="off"] {
+  --jp-focus: transparent;
+}
+
+/* ------------------------------------------------------------------ base */
+@layer jetpack-base {
+  html {
+    color-scheme: light;
+    background: var(--jp-window-ground);
+  }
+  body {
+    margin: 0;
+    min-height: 100vh;
+    background: var(--jp-window-ground) var(--jp-window-background) repeat;
+    color: var(--jp-text);
+    font: var(--jp-font-size-default) / 1.4 var(--jp-font-family);
+  }
+  ::selection {
+    background: var(--jp-accent-solid);
+    color: #fff;
+  }
+  :focus-visible {
+    outline: 1px solid var(--jp-focus);
+    outline-offset: 1px;
+  }
+  button, input, select, textarea {
+    font: inherit;
+    font-size: var(--jp-font-size-control);
+  }
+  h1, h2, h3, h4, h5, h6 {
+    margin: 0;
+    font-family: var(--jp-font-family-heading);
+    font-weight: 700;
+    line-height: 1.15;
+    text-shadow: 0 0 5px rgb(0 0 0 / 0.18);
+  }
+  h1 { font-size: var(--jp-font-size-heading1); }
+  h2 { font-size: var(--jp-font-size-heading2); color: var(--jp-text-dim); }
+  h3 { font-size: var(--jp-font-size-heading3); }
+  h4 { font-size: var(--jp-font-size-heading4); }
+  h5 { font-size: var(--jp-font-size-heading5); }
+  h6 { font-size: var(--jp-font-size-heading6); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  @layer components {
+    .jp-flyout, .jp-toggle-switch > input, .jp-toggle-switch > input::after, .jp-expander > summary::before, .jp-hamburger-menu { transition: none; }
+  }
+}

@@ -1,20 +1,22 @@
-# Publishes JetPack.Wpf when a version tag is pushed:
-#   git tag v0.1.0
-#   git push origin v0.1.0
+# Publishes a package when a version tag is pushed; each package has its own version:
+#   v1.2.3      JetPack.Wpf      git tag -a v1.2.3 -m "JetPack.Wpf 1.2.3"; git push origin v1.2.3
+#   web-v1.2.3  JetPack.Web      git tag -a web-v1.2.3 -m "JetPack.Web 1.2.3"; git push origin web-v1.2.3
 #
 # - GitHub Packages (https://github.com/Montago/JetPackTheme/packages): always, using the workflow token.
 # - nuget.org: with Trusted Publishing (no API key stored anywhere). Runs only when the repository
 #   secret NUGET_USER holds the nuget.org profile name, and needs a Trusted Publishing policy on
-#   nuget.org: owner Montago, repository JetPackTheme, workflow file release.yml.
+#   nuget.org: owner Montago, repository JetPackTheme, workflow file release.yml. The first release of a
+#   package (JetPack.Web 0.1.0) needs a policy whose scope allows new packages.
 #   https://learn.microsoft.com/nuget/nuget-org/trusted-publishing
 # - A GitHub release with the .nupkg and .snupkg attached (assets are replaced if the release exists,
-#   so the workflow can be re-run for the same tag).
+#   so the workflow can be re-run for the same tag). JetPack.Web releases are not marked as the latest
+#   release, so the repository page keeps showing JetPack.Wpf.
 
 name: Release
 
 on:
   push:
-    tags: ['v*.*.*']
+    tags: ['v*.*.*', 'web-v*.*.*']
 
 permissions:
   contents: write
@@ -33,13 +35,17 @@ jobs:
         with:
           dotnet-version: 8.0.x
 
-      - name: Version from tag
+      - name: Package and version from tag
         id: version
         shell: bash
-        run: echo "value=${GITHUB_REF_NAME#v}" >> "$GITHUB_OUTPUT"
+        run: |
+          case "$GITHUB_REF_NAME" in
+            web-v*) echo "package=JetPack.Web" >> "$GITHUB_OUTPUT"; echo "value=${GITHUB_REF_NAME#web-v}" >> "$GITHUB_OUTPUT"; echo "latest=false" >> "$GITHUB_OUTPUT" ;;
+            *)      echo "package=JetPack.Wpf" >> "$GITHUB_OUTPUT"; echo "value=${GITHUB_REF_NAME#v}" >> "$GITHUB_OUTPUT"; echo "latest=true" >> "$GITHUB_OUTPUT" ;;
+          esac
 
       - name: Pack
-        run: dotnet pack src/JetPack.Wpf/JetPack.Wpf.csproj -c Release -o artifacts -p:Version=${{ steps.version.outputs.value }}
+        run: dotnet pack src/${{ steps.version.outputs.package }}/${{ steps.version.outputs.package }}.csproj -c Release -o artifacts -p:Version=${{ steps.version.outputs.value }}
 
       - name: Push to GitHub Packages
         shell: bash
@@ -73,5 +79,5 @@ jobs:
           if gh release view "$GITHUB_REF_NAME" > /dev/null 2>&1; then
             gh release upload "$GITHUB_REF_NAME" artifacts/* --clobber
           else
-            gh release create "$GITHUB_REF_NAME" artifacts/* --title "JetPack.Wpf ${{ steps.version.outputs.value }}" --generate-notes
+            gh release create "$GITHUB_REF_NAME" artifacts/* --title "${{ steps.version.outputs.package }} ${{ steps.version.outputs.value }}" --generate-notes --latest=${{ steps.version.outputs.latest }}
           fi
