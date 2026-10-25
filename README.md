@@ -178,7 +178,7 @@ Resource keys follow the MahApps scheme with a `JetPack.` prefix: `JetPack.Brush
 | --- | --- |
 | Standard WPF (implicit styles) | Button, RepeatButton, ToggleButton, Hyperlink, TextBox, PasswordBox, RichTextBox, Label, CheckBox, RadioButton, ComboBox, ListBox, ListView/GridView, TreeView, ScrollBar, ScrollViewer, ProgressBar, Slider, ToolTip, GroupBox, Expander, TabControl, Calendar, DatePicker, DataGrid, GridSplitter, Separator, Menu, ContextMenu, ToolBar, StatusBar, ResizeGrip, validation errors |
 | Named variants | `Button.Accent/Green/Orange/Blue/Square/Flat/Link`, `TextBox.Dark`, `TextBox.MultiLine(.Dark)`, `PasswordBox.Dark`, `TabControl.Navigation` (the full-width light link bar with the notch), `TabControl.Strip` (the dark tab strip), `Expander.Accordion`, `TextBlock.Heading1–6` |
-| Own controls (`jp:`) | JetPackWindow, JetPackDialog, ToggleSwitch, NumericUpDown, SplitButton, DropDownButton, ProgressRing, Badged, Tile, Flyout, HamburgerMenu, InfoBar, RangeSlider, Rating, TimePicker, ColorPicker, AutoSuggestBox, SearchComboBox, JetPackGrid, BusyIndicator, Accordion, Vignette, DitheredFill |
+| Own controls (`jp:`) | JetPackWindow, JetPackDialog, ToggleSwitch, NumericUpDown, SplitButton, DropDownButton, ProgressRing, Badged, Tile, Flyout, HamburgerMenu, InfoBar, RangeSlider, Rating, TimePicker, ColorPicker, AutoSuggestBox, SearchComboBox, JetPackGrid, BusyIndicator, Accordion, JetPackIcon, Vignette, DitheredFill |
 | Helpers | `TextBoxHelper.Watermark`, `TextBoxHelper.ClearTextButton`, `TabControlHelper.SelectionAnimation`, `TabControlHelper.ContentTransition`, `ControlHelper.CornerRadius` and others |
 
 ## Demo
@@ -195,6 +195,15 @@ dotnet run --project samples/JetPack.Wpf.Samples.Admin
 dotnet run --project samples/JetPack.Wpf.Samples.Portal
 ```
 
+`src/JetPack.Web` is a proof of concept of the same look for web sites (CSS classes named after the
+controls, tokens generated from the WPF brushes, Razor tag helpers); `samples/JetPack.Web.Samples.Mvc`
+is the admin sample as an ASP.NET Core MVC site (see
+[JetPack for the web](https://montago.github.io/JetPackTheme/web.html)):
+
+```bash
+dotnet run --project samples/JetPack.Web.Samples.Mvc
+```
+
 The demo's `--snapshot <folder>` renders every page to PNG and exits, plus one picture per control in `<folder>/controls`
 (from `Views/GalleryPage.xaml`). The images in `docs/screenshots` were made that way.
 
@@ -209,15 +218,18 @@ src/JetPack.Wpf/
   Helpers/           attached properties and converters
   Theming/           ThemeManager and AccentGenerator
 src/JetPack.Wpf.Demo/
-samples/             Admin (HamburgerMenu) and Portal (navigation bar) sample apps
+src/JetPack.Web/     the web theme (CSS, JavaScript, tag helpers), proof of concept
+samples/             Admin (HamburgerMenu) and Portal (navigation bar) sample apps, and the
+                     admin sample as an ASP.NET Core MVC site
 docs/                documentation and screenshots
-tools/               generate_resource_keys.py (rebuilds docs/resource-keys.md)
+tools/               generate_resource_keys.py (rebuilds docs/resource-keys.md),
+                     generate_web_tokens.py (the web theme's CSS variables from Styles/)
 design/              the HTML draft the look was approved from
 ```
 
 ## License
 
-MIT License (see [LICENSE](LICENSE)). The look follows the JetPack theme in Microsoft's [Silverlight 4 Application Themes](https://www.microsoft.com/en-us/download/details.aspx?id=14590): colours and shadow values come from it, while all WPF styles and both background images (drawn by `tools/generate_backgrounds.py`) are made from scratch. See [NOTICE.md](NOTICE.md) for details.
+MIT License (see [LICENSE](LICENSE)), except the icons, which are [Material Design Icons](https://pictogrammers.com/library/mdi/) under the Apache License 2.0 (see `icons/`). The look follows the JetPack theme in Microsoft's [Silverlight 4 Application Themes](https://www.microsoft.com/en-us/download/details.aspx?id=14590): colours and shadow values come from it, while all WPF styles and both background images (drawn by `tools/generate_backgrounds.py`) are made from scratch. See [NOTICE.md](NOTICE.md) for details.
 
 ## Known limitations
 

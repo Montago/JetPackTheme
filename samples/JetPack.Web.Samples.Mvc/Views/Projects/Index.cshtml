@@ -1,0 +1,82 @@
+@model ProjectsPage
+@{
+    ViewData["Title"] = "Projects";
+}
+
+<h1 class="mb-3.5">Projects</h1>
+
+<div class="grid grid-cols-1 md:grid-cols-[230px_minmax(0,1fr)] gap-6 items-start">
+    @* TreeView: customers with their projects *@
+    <ul class="jp-tree-view">
+        @foreach (var c in SampleData.Customers)
+        {
+            <li>
+                <details open>
+                    <summary>
+                        <a class="jp-tree-view__item" asp-route-customer="@Slug.Of(c.Name)" aria-current="@(Model.Customer == c ? "page" : null)">@c.Name</a>
+                    </summary>
+                    <ul>
+                        @foreach (var p in c.Projects)
+                        {
+                            <li><a class="jp-tree-view__item" asp-route-project="@Slug.Of(p.Name)" aria-current="@(Model.Project == p ? "page" : null)">@p.Name</a></li>
+                        }
+                    </ul>
+                </details>
+            </li>
+        }
+    </ul>
+
+    <div>
+        @if (Model.Customer is { } customer)
+        {
+            <h2>@customer.Name</h2>
+            <p class="jp-text-block--caption mt-0.5 mb-3.5">@customer.City · @customer.Projects.Count projects</p>
+            <table class="jp-data-grid max-w-[460px]">
+                <thead><tr><th>Project</th><th>Manager</th><th>Deadline</th></tr></thead>
+                <tbody>
+                    @foreach (var p in customer.Projects)
+                    {
+                        <tr data-href="@Url.Action("Index", new { project = Slug.Of(p.Name) })">
+                            <td>@p.Name</td>
+                            <td>@p.Manager</td>
+                            <td>@p.Deadline.ToShortDateString()</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+        else if (Model.Project is { } project)
+        {
+            <h2>@project.Name</h2>
+            <p class="jp-text-block--caption mt-0.5 mb-3.5">@project.Customer · managed by @project.Manager</p>
+
+            <div class="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_220px] gap-5 items-start">
+                <jp-group-box header="Budget">
+                    <div class="flex justify-between">
+                        <b>Hours used</b>
+                        <span class="jp-text-block--caption">@project.UsedHours of @project.BudgetHours hours</span>
+                    </div>
+                    <progress class="jp-progress-bar h-3.5 mt-1.5 mb-3.5" max="100" value="@project.Progress.ToString("F1", System.Globalization.CultureInfo.InvariantCulture)"></progress>
+                    <div class="grid grid-cols-[110px_1fr] auto-rows-[26px] items-center">
+                        <span class="jp-text-block--caption">Deadline</span>
+                        <span>@project.Deadline.ToLongDateString()</span>
+                        <span class="jp-text-block--caption">Satisfaction</span>
+                        <span class="jp-rating" style="--value: @project.Satisfaction" role="img" aria-label="@project.Satisfaction of 5"></span>
+                    </div>
+                </jp-group-box>
+
+                <jp-group-box header="Team">
+                    @foreach (var member in project.Team)
+                    {
+                        <div class="mt-0.5 mb-1">@member</div>
+                    }
+                </jp-group-box>
+            </div>
+
+            <details class="jp-expander mt-4" open>
+                <summary>Notes</summary>
+                <div class="jp-expander__content">@project.Notes</div>
+            </details>
+        }
+    </div>
+</div>

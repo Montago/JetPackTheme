@@ -16,8 +16,7 @@
         <StackPanel Orientation="Horizontal">
             <Button ToolTip="Timesheets waiting for approval" Command="NavigationCommands.GoToPage" CommandParameter="Timesheets" Padding="10,0,16,0">
                 <jp:Badged Badge="4" Margin="0,6,0,0">
-                    <Path Width="15" Height="15" Stretch="Uniform" Data="{StaticResource Icon.Bell}"
-                          Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}" />
+                    <jp:JetPackIcon Kind="Bell" />
                 </jp:Badged>
             </Button>
             <Button Content="Settings" Click="OnSettingsClick" />
@@ -59,7 +58,7 @@
                           Content="{Binding SelectedItem.Tag, RelativeSource={RelativeSource Self}}">
             <jp:HamburgerMenuItem Content="Dashboard">
                 <jp:HamburgerMenuItem.Icon>
-                    <Path Style="{StaticResource Navigation.Icon}" Data="{StaticResource Icon.Dashboard}" />
+                    <jp:JetPackIcon Kind="ViewGrid" />
                 </jp:HamburgerMenuItem.Icon>
                 <jp:HamburgerMenuItem.Tag>
                     <v:DashboardView />
@@ -67,7 +66,7 @@
             </jp:HamburgerMenuItem>
             <jp:HamburgerMenuItem Content="Employees">
                 <jp:HamburgerMenuItem.Icon>
-                    <Path Style="{StaticResource Navigation.Icon}" Data="{StaticResource Icon.Employees}" />
+                    <jp:JetPackIcon Kind="AccountMultiple" />
                 </jp:HamburgerMenuItem.Icon>
                 <jp:HamburgerMenuItem.Tag>
                     <v:EmployeesView x:Name="EmployeesView" />
@@ -75,7 +74,7 @@
             </jp:HamburgerMenuItem>
             <jp:HamburgerMenuItem Content="Timesheets">
                 <jp:HamburgerMenuItem.Icon>
-                    <Path Style="{StaticResource Navigation.Icon}" Data="{StaticResource Icon.Timesheets}" />
+                    <jp:JetPackIcon Kind="ClockOutline" />
                 </jp:HamburgerMenuItem.Icon>
                 <jp:HamburgerMenuItem.Tag>
                     <v:TimesheetsView />
@@ -83,7 +82,7 @@
             </jp:HamburgerMenuItem>
             <jp:HamburgerMenuItem Content="Projects">
                 <jp:HamburgerMenuItem.Icon>
-                    <Path Style="{StaticResource Navigation.Icon}" Data="{StaticResource Icon.Projects}" />
+                    <jp:JetPackIcon Kind="Briefcase" />
                 </jp:HamburgerMenuItem.Icon>
                 <jp:HamburgerMenuItem.Tag>
                     <v:ProjectsView />

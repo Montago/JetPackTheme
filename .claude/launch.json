@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "web-sample",
+      "runtimeExecutable": "dotnet",
+      "runtimeArgs": ["run", "--project", "samples/JetPack.Web.Samples.Mvc", "--urls", "http://localhost:5180"],
+      "port": 5180
+    }
+  ]
+}

@@ -1,0 +1,22 @@
+<UserControl x:Class="JetPack.Wpf.Demo.Views.IconsPage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:jp="urn:jetpack-wpf">
+    <ScrollViewer Style="{StaticResource JetPack.Styles.ScrollViewer.Thin}" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Padding="0,22,12,0">
+        <StackPanel>
+            <TextBlock Style="{StaticResource Demo.Intro}"
+                       Text="The icons of jp:JetPackIcon: Material Design Icons by Pictogrammers (Apache License 2.0), with the names MahApps' IconBrowser uses. Each one is shown on the navigation pane, selected and on a light button. Click an icon to copy its XAML; add more in icons/icons.json." />
+
+            <DockPanel Margin="0,0,0,16" LastChildFill="False">
+                <TextBox x:Name="Search" Width="220" jp:TextBoxHelper.Watermark="Search icons…" jp:TextBoxHelper.ClearTextButton="True" TextChanged="OnSearchChanged" />
+                <TextBlock Style="{StaticResource Demo.State}" Text="Size" Margin="20,0,10,0" VerticalAlignment="Center" />
+                <RadioButton Content="16" GroupName="IconSize" Tag="16" Margin="0,0,14,0" VerticalAlignment="Center" Checked="OnSizeChecked" />
+                <RadioButton Content="18" GroupName="IconSize" Tag="18" Margin="0,0,14,0" VerticalAlignment="Center" Checked="OnSizeChecked" IsChecked="True" />
+                <RadioButton Content="24" GroupName="IconSize" Tag="24" VerticalAlignment="Center" Checked="OnSizeChecked" />
+                <TextBlock x:Name="Copied" DockPanel.Dock="Right" Style="{StaticResource Demo.State}" VerticalAlignment="Center" />
+            </DockPanel>
+
+            <WrapPanel x:Name="Icons" />
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

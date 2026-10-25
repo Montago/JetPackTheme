@@ -90,4 +90,4 @@ Source, demo app and issues: https://github.com/Montago/JetPackTheme
 
 ## License
 
-MIT. See `NOTICE.md` in the package for where the look comes from.
+MIT, except the icons (`JetPackIcon`), which are Material Design Icons under the Apache License 2.0 (`icons/` in the package). See `NOTICE.md` in the package for where the look comes from.
