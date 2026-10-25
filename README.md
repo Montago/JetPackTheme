@@ -196,7 +196,8 @@ dotnet run --project samples/JetPack.Wpf.Samples.Portal
 ```
 
 `src/JetPack.Web` is the same look for web sites: CSS classes named after the controls, tokens
-generated from the WPF brushes, and a Razor tag helper per control with the WPF property names.
+generated from the WPF brushes, and a Razor tag helper per control with the WPF property names. It is
+the [JetPack.Web](https://www.nuget.org/packages/JetPack.Web) package (`dotnet add package JetPack.Web`).
 `src/JetPack.Web.Demo` is the WPF demo as a web page, and `samples/JetPack.Web.Samples.Mvc` the admin
 sample as an ASP.NET Core MVC site (see [JetPack for the web](https://montago.github.io/JetPackTheme/web.html)):
 
@@ -225,7 +226,8 @@ samples/             Admin (HamburgerMenu) and Portal (navigation bar) sample ap
                      admin sample as an ASP.NET Core MVC site
 docs/                documentation and screenshots
 tools/               generate_resource_keys.py (rebuilds docs/resource-keys.md),
-                     generate_web_tokens.py (the web theme's CSS variables from Styles/)
+                     generate_web_tokens.py (the web theme's CSS variables from Styles/),
+                     bundle_web_css.py (the web theme's one jetpack.css)
 design/              the HTML draft the look was approved from
 ```
 

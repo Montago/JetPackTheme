@@ -19,9 +19,15 @@ jobs:
         run: dotnet build JetPack.Wpf.sln -c Release
 
       - name: Pack
-        run: dotnet pack src/JetPack.Wpf/JetPack.Wpf.csproj -c Release --no-build -o artifacts
+        shell: bash
+        run: |
+          dotnet pack src/JetPack.Wpf/JetPack.Wpf.csproj -c Release --no-build -o artifacts
+          dotnet pack src/JetPack.Web/JetPack.Web.csproj -c Release --no-build -o artifacts
+
+      - name: jetpack.css matches its sources
+        run: python tools/bundle_web_css.py --check
 
       - uses: actions/upload-artifact@v4
         with:
-          name: nuget-package
+          name: nuget-packages
           path: artifacts/*

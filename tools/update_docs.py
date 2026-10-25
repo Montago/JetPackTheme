@@ -203,6 +203,13 @@ def regenerate_web_tokens(report):
         report.error('generate_web_tokens.py failed:\n' + result.stdout + result.stderr)
 
 
+def bundle_web_css(report):
+    step('Bundling src/JetPack.Web/wwwroot/css/jetpack.css')
+    result = subprocess.run([sys.executable, os.path.join(ROOT, 'tools', 'bundle_web_css.py')], capture_output=True, text=True)
+    if result.returncode != 0:
+        report.error('bundle_web_css.py failed:\n' + result.stdout + result.stderr)
+
+
 def check_static_resources(report):
     """StaticResource and BasedOn across the Controls.*.xaml files fail at runtime (each is loaded on its own)."""
     step('Checking {StaticResource} order in Styles/')
@@ -284,6 +291,7 @@ def main():
     regenerate_resource_keys(report)
     regenerate_nav_headings(report)
     regenerate_web_tokens(report)
+    bundle_web_css(report)
     regenerate_icons(report)
     check_static_resources(report)
     check_doc_images(report)
