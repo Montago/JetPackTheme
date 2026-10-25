@@ -176,6 +176,9 @@ src/JetPack.Wpf.Demo/bin/Debug/net8.0-windows/JetPack.Wpf.Demo.exe --snapshot <f
 
 ## Known limitations / ideas
 
+- Cells of `DataGrid`/`JetPackGrid` keep WPF's own check box (`DataGridCheckBoxColumn`) and edit
+  fields (`DataGridTextColumn`, `DataGridComboBoxColumn`): chosen by the user, not a gap. Do not add
+  JetPack element or editing styles for these columns; `docs/lists.md` shows how an app opts in.
 - TabControl supports top tabs only; DatePicker watermark text comes from WPF and is English.
 - Popups (combo drop-downs, menus, tooltips, DatePicker) are checked in the gallery snapshots, but
   not yet driven interactively with the mouse.
