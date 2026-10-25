@@ -1,0 +1,16 @@
+@* The TabControl of MainWindow.xaml: one tab per page, each a partial named after the WPF UserControl *@
+<jp-tab-control id="Pages" tab-control-style="Strip" use-hash="true" class="demo-pages">
+    <jp-tab-control-tag>
+        <div class="demo-brand">
+            <span class="demo-brand__name">Jetpack</span>
+            <span class="demo-state">for the web · ASP.NET Core</span>
+        </div>
+    </jp-tab-control-tag>
+    <jp-tab-item header="Core" name="core"><partial name="Pages/CorePage" /></jp-tab-item>
+    <jp-tab-item header="SDK" name="sdk"><partial name="Pages/SdkPage" /></jp-tab-item>
+    <jp-tab-item header="Toolkit" name="toolkit"><partial name="Pages/ToolkitPage" /></jp-tab-item>
+    <jp-tab-item header="Extras" name="extras"><partial name="Pages/ExtrasPage" /></jp-tab-item>
+    <jp-tab-item header="Window" name="window"><partial name="Pages/WindowPage" /></jp-tab-item>
+    <jp-tab-item header="Palette" name="palette"><partial name="Pages/PalettePage" /></jp-tab-item>
+    <jp-tab-item header="Icons" name="icons"><partial name="Pages/IconsPage" /></jp-tab-item>
+</jp-tab-control>

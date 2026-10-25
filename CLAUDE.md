@@ -37,9 +37,12 @@ src/JetPack.Wpf/            library (net8.0-windows)
   Helpers/                  ControlHelper / TextBoxHelper attached properties, converters
   Theming/                  ThemeManager, AccentGenerator
 src/JetPack.Wpf.Demo/       demo app; pages in Views/
-src/JetPack.Web/            web theme, proof of concept (Razor class library, net8.0): wwwroot/css/
-                            jetpack.css (classes named after the WPF controls, in @layer), jetpack.tokens.css
-                            and img/texture.png (generated), js/jetpack.js, TagHelpers/ (<jp-*>)
+src/JetPack.Web/            web theme (Razor class library, net8.0): wwwroot/css/jetpack.css imports
+                            jetpack.tokens.css (generated) and css/controls/*.css (one per Controls.*.xaml);
+                            js/jetpack.js (all behaviour, no dependencies); img/texture.png and icons.svg
+                            (generated); TagHelpers/ (<jp-*> for every demo control, WPF property names)
+src/JetPack.Web.Demo/       the WPF demo as a web page: Views/Demo/Pages/<UserControl>.cshtml per tab,
+                            wwwroot/js/demo.js as code-behind; links src/JetPack.Wpf.Demo/DemoData.cs
 samples/                    sample apps: JetPack.Wpf.Samples.Admin (HamburgerMenu) and .Portal
                             (navigation bar); presentation only, fixed data in SampleData.cs, one
                             UserControl per page in Views/, Shared/WindowSnapshot.cs for --snapshot;
@@ -182,9 +185,16 @@ src/JetPack.Wpf.Demo/bin/Debug/net8.0-windows/JetPack.Wpf.Demo.exe --snapshot <f
 - TabControl supports top tabs only; DatePicker watermark text comes from WPF and is English.
 - Popups (combo drop-downs, menus, tooltips, DatePicker) are checked in the gallery snapshots, but
   not yet driven interactively with the mouse.
-- `src/JetPack.Web` covers only what the MVC admin sample needs (see `docs/web.md`, Limitations).
-  Web class names follow the WPF names (`ComboBox` -> `.jp-combo-box`, `JetPack.Styles.Button.Accent`
-  -> `.jp-button--accent`); keep that rule when adding controls. Load `jetpack.css` before Tailwind.
-- Pictures of the web sample (`docs/screenshots/samples/web-*.png`) come from headless Edge
-  (`msedge --headless=new --screenshot --window-size=1280,800 --virtual-time-budget=4000` with a
-  scratch `--user-data-dir`) against `dotnet run --project samples/JetPack.Web.Samples.Mvc`.
+- The web demo mirrors the WPF demo tab for tab (JetPackGrid left out on purpose); when a WPF
+  demo page changes, change its `.cshtml` twin. Web class names follow the WPF names (`ComboBox` ->
+  `.jp-combo-box`, `JetPack.Styles.Button.Accent` -> `.jp-button--accent`) and tag helper attributes
+  the WPF properties (`IsEnabled` -> `is-enabled`); keep that rule when adding controls. Load
+  `jetpack.css` before Tailwind.
+- Web CSS pitfalls: selectors for TabControl.Strip/Navigation must use child combinators (pages sit
+  inside a strip TabControl); a relative `url()` in a CSS variable resolves against the file that
+  uses it, hence `@property --jp-window-background { syntax: "<url>" }` in the tokens; submenus are
+  popovers nested in their parent menu (opening an unrelated popover closes the others).
+- Pictures of the web demo (`docs/screenshots/web/*.png`) and the web sample
+  (`docs/screenshots/samples/web-*.png`) come from `python tools/web_snapshots.py`: it builds both
+  sites to a scratch folder, runs them, and takes 1280 × 900 pictures with headless Edge;
+  `update_docs.py` runs it too. Compare them with the WPF pictures of the same tab after a change.

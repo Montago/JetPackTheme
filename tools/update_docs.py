@@ -179,6 +179,16 @@ def regenerate_nav_headings(report):
         report.error('generate_nav_headings.py failed:\n' + result.stdout + result.stderr)
 
 
+def web_pictures(scratch, report):
+    """The web demo and the web sample, through tools/web_snapshots.py (headless Edge)."""
+    step('Rendering the web demo and sample (headless Edge)')
+    result = subprocess.run([sys.executable, os.path.join(ROOT, 'tools', 'web_snapshots.py'), '--scratch', os.path.join(scratch, 'web')],
+                            capture_output=True, text=True)
+    print(result.stdout.rstrip())
+    if result.returncode != 0:
+        report.error('web_snapshots.py failed:\n' + result.stdout + result.stderr)
+
+
 def regenerate_icons(report):
     step('Regenerating the icon set from icons/icons.json')
     result = subprocess.run([sys.executable, os.path.join(ROOT, 'tools', 'generate_icons.py')], capture_output=True, text=True)
@@ -270,6 +280,7 @@ def main():
     if not args.check:
         folders = build_and_render(args.scratch, report)
         copy_pictures(folders, report)
+        web_pictures(args.scratch, report)
     regenerate_resource_keys(report)
     regenerate_nav_headings(report)
     regenerate_web_tokens(report)

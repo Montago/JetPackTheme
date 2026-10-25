@@ -1,0 +1,145 @@
+/* The demo's own styles, as in the resources of the WPF demo's App.xaml (Demo.Column, Demo.Intro, Demo.State) */
+@layer components {
+  /* PagesHost Margin="24,16,24,0"; each page is a thin ScrollViewer with Padding="0,22,12,0" */
+  .demo-pages-host {
+    flex: 1;
+    display: flex;
+    min-width: 0;
+    min-height: 0;
+    padding: 16px 24px 0;
+  }
+  .demo-pages { flex: 1; min-width: 0; }
+  .demo-page {
+    height: 100%;
+    box-sizing: border-box;
+    padding: 22px 12px 0 0;
+  }
+  /* Settings → Page navigation → Full-width bar: the bar runs edge to edge under the title bar */
+  .demo-pages-host.is-bar { padding: 0; }
+  .demo-pages-host.is-bar .demo-page { padding: 22px 36px 0 24px; }
+
+  .demo-brand { display: flex; flex-direction: column; align-items: flex-end; margin-top: 4px; }
+  .demo-brand__name { font-size: 38px; line-height: 1.1; text-shadow: var(--jp-effect-text-glow); }
+  .jp-tab-control--navigation .demo-brand { flex-direction: row; align-items: center; gap: 8px; margin: 0 16px 0 0; }
+  .jp-tab-control--navigation .demo-brand__name { font-size: 22px; color: var(--jp-navigation-inactive); text-shadow: var(--jp-effect-text-emboss); }
+  .jp-tab-control--navigation .demo-brand .demo-state { color: var(--jp-navigation-inactive); text-shadow: var(--jp-effect-text-emboss); }
+
+  .demo-intro {
+    max-width: 720px;
+    margin: 0 0 26px;
+    color: var(--jp-text-soft);
+    font-size: 13px;
+  }
+  .demo-state { color: var(--jp-text-soft); font-size: 11px; text-align: center; }
+  .demo-state--left { text-align: left; }
+
+  /* WrapPanel of Demo.Columns */
+  .demo-row { display: flex; flex-wrap: wrap; align-items: flex-start; }
+  .demo-column {
+    position: relative;
+    min-width: 200px;
+    margin: 0 0 28px;
+    padding: 0 20px;
+    box-sizing: border-box;
+  }
+  /* the etched rule at the left: a dark line and a light one */
+  .demo-column::before {
+    content: "";
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: 2px;
+    background: linear-gradient(to right, rgb(0 0 0 / 0.16) 1px, rgb(255 255 255 / 0.10) 1px);
+  }
+  .demo-column__header {
+    margin: 0;
+    font-size: var(--jp-font-size-heading5);
+    text-align: center;
+    text-shadow: var(--jp-effect-text-glow);
+  }
+  .demo-column__tag {
+    display: block;
+    margin: 1px 0 12px;
+    color: var(--jp-text-dim);
+    font-family: var(--jp-font-family-mono);
+    font-size: 10.5px;
+    text-align: center;
+  }
+  .demo-column__content { display: flex; flex-direction: column; align-items: center; }
+}
+
+@layer components {
+  /* The ScrollViewer samples: a box of 130 × 110 with faint stripes to scroll */
+  .demo-scroll-sample {
+    width: 130px;
+    height: 110px;
+    box-sizing: border-box;
+    border: 1px solid rgb(64 64 64 / 0.5);
+    border-radius: 2.5px;
+    background: #C9CACC;
+  }
+  .demo-scroll-sample__content {
+    width: 300px;
+    height: 260px;
+    background: repeating-linear-gradient(rgb(255 255 255 / 0.06) 0 12px, transparent 12px 24px);
+  }
+}
+
+@layer components {
+  /* ToolkitPage.DrawChart on a canvas of 300 × 160 */
+  .demo-chart { position: relative; width: 300px; height: 160px; margin: 0 auto; }
+  .demo-chart > * { position: absolute; }
+  .demo-chart__line { right: 10px; height: 1px; background: rgb(0 0 0 / 0.1); }
+  .demo-chart__line--axis { background: #808080; }
+  .demo-chart__value { left: 0; width: 24px; color: #606060; font-size: 9px; text-align: right; }
+  .demo-chart__bar { width: 13px; border-radius: 1px; }
+  .demo-chart__quarter { color: #606060; font-size: 10px; }
+}
+
+@layer components {
+  /* The pages of the HamburgerMenu sample (its ContentTemplate) */
+  .demo-ham-page { padding: 10px 14px; }
+  .demo-ham-page > h5 { margin: 0; font-size: var(--jp-font-size-heading5); }
+  .demo-ham-page > p { margin: 4px 0 0; color: var(--jp-text-soft); font-size: 11px; }
+}
+
+@layer components {
+  /* The photo in the Companies sample and the etched divider between the form and the notes */
+  .demo-photo {
+    display: grid;
+    place-items: center;
+    flex: none;
+    width: 92px;
+    height: 118px;
+    box-sizing: border-box;
+    border: 3px solid #fff;
+    background: linear-gradient(to bottom right, #9AA0A8, #5C6168);
+    box-shadow: var(--jp-effect-light-control-shadow);
+    font-size: 30px;
+    font-weight: 700;
+  }
+  .demo-divider { background: linear-gradient(to right, rgb(0 0 0 / 0.16) 1px, rgb(255 255 255 / 0.10) 1px); }
+}
+
+@layer components {
+  /* PalettePage: a chip and the key */
+  .demo-swatch { width: 200px; margin: 0 12px 12px 0; border-radius: 2px; background: rgb(0 0 0 / 0.12); overflow: hidden; }
+  .demo-swatch__chip { height: 44px; box-shadow: inset 0 -1px 0 rgb(0 0 0 / 0.2); }
+  .demo-swatch__meta { display: flex; flex-direction: column; padding: 6px 8px 8px; min-width: 0; }
+  .demo-swatch__meta b { font-size: 12px; }
+  .demo-swatch__meta code { color: var(--jp-text-soft); font-family: var(--jp-font-family-mono); font-size: 10.5px; overflow-wrap: anywhere; }
+
+  /* IconsPage: one card per icon */
+  .demo-icon-card {
+    width: 170px;
+    margin: 0 10px 10px 0;
+    padding: 10px 8px 8px;
+    box-sizing: border-box;
+    border-radius: 2px;
+    background: rgb(0 0 0 / 0.12);
+    cursor: pointer;
+  }
+  .demo-icon-card[hidden] { display: none; }
+  .demo-icon-card__swatch { display: grid; place-items: center; width: 42px; height: 36px; margin-right: 4px; }
+  .demo-icon-card__name { display: block; margin-top: 8px; color: var(--jp-text-soft); font-family: var(--jp-font-family-mono); font-size: 11px; text-align: center; }
+  .demo-icon-card .jp-icon { width: var(--demo-icon-size, 18px); height: var(--demo-icon-size, 18px); }
+}

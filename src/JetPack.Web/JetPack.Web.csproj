@@ -3,7 +3,7 @@
   <!--
   JetPack for ASP.NET Core: the web theme as a Razor class library. The CSS, JavaScript and texture
   in wwwroot are served at _content/JetPack.Web/..., and TagHelpers/ adds <jp-*> elements for the
-  controls that need more markup than a class. Proof of concept; not published as a package yet.
+  controls that need more markup than a class. Not published as a package yet.
   -->
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
@@ -12,6 +12,7 @@
     <RootNamespace>JetPack.Web</RootNamespace>
     <AddRazorSupportForMvc>true</AddRazorSupportForMvc>
     <IsPackable>false</IsPackable>
+    <Version>0.1.0</Version>
   </PropertyGroup>
 
   <ItemGroup>

@@ -86,12 +86,7 @@
     </footer>
 
     @* The Settings flyout of the WPF sample *@
-    <dialog class="jp-flyout" id="settings" aria-labelledby="settings-title">
-        <header class="jp-flyout__header">
-            <button type="button" class="jp-flyout__close" data-jp-close aria-label="Close"></button>
-            <span id="settings-title">Settings</span>
-        </header>
-
+    <jp-flyout id="settings" header="Settings">
         <p class="jp-text-block--caption mb-1.5">Accent</p>
         <div class="flex gap-3.5 mb-4.5">
             <label class="jp-radio-button"><input type="radio" name="accent" value="green" data-jp-accent checked /> Green</label>
@@ -109,7 +104,7 @@
         <p class="font-bold text-[13px]">Ida Kragh</p>
         <p class="jp-text-block--caption mt-0.5 mb-3">Controller · Finance</p>
         <button type="button" class="jp-button">Sign out</button>
-    </dialog>
+    </jp-flyout>
 
     @await RenderSectionAsync("Dialogs", required: false)
     <script src="~/js/site.js" asp-append-version="true"></script>

@@ -17,6 +17,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JetPack.Web", "src\JetPack.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JetPack.Web.Samples.Mvc", "samples\JetPack.Web.Samples.Mvc\JetPack.Web.Samples.Mvc.csproj", "{330A8038-2CA5-48AC-A211-870DE31C6002}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JetPack.Web.Demo", "src\JetPack.Web.Demo\JetPack.Web.Demo.csproj", "{AA7E5DCB-24CB-4837-9D0B-44A69B9A4313}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -99,6 +101,18 @@ Global
 		{330A8038-2CA5-48AC-A211-870DE31C6002}.Release|x64.Build.0 = Release|Any CPU
 		{330A8038-2CA5-48AC-A211-870DE31C6002}.Release|x86.ActiveCfg = Release|Any CPU
 		{330A8038-2CA5-48AC-A211-870DE31C6002}.Release|x86.Build.0 = Release|Any CPU
+		{AA7E5DCB-24CB-4837-9D0B-44A69B9A4313}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AA7E5DCB-24CB-4837-9D0B-44A69B9A4313}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AA7E5DCB-24CB-4837-9D0B-44A69B9A4313}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{AA7E5DCB-24CB-4837-9D0B-44A69B9A4313}.Debug|x64.Build.0 = Debug|Any CPU
+		{AA7E5DCB-24CB-4837-9D0B-44A69B9A4313}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{AA7E5DCB-24CB-4837-9D0B-44A69B9A4313}.Debug|x86.Build.0 = Debug|Any CPU
+		{AA7E5DCB-24CB-4837-9D0B-44A69B9A4313}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AA7E5DCB-24CB-4837-9D0B-44A69B9A4313}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AA7E5DCB-24CB-4837-9D0B-44A69B9A4313}.Release|x64.ActiveCfg = Release|Any CPU
+		{AA7E5DCB-24CB-4837-9D0B-44A69B9A4313}.Release|x64.Build.0 = Release|Any CPU
+		{AA7E5DCB-24CB-4837-9D0B-44A69B9A4313}.Release|x86.ActiveCfg = Release|Any CPU
+		{AA7E5DCB-24CB-4837-9D0B-44A69B9A4313}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

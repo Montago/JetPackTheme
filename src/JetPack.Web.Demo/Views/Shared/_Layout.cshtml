@@ -1,0 +1,101 @@
+@* MainWindow.xaml: the JetPackWindow with the accent buttons, the flyouts and the status bar *@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>JetPack for the web · demo</title>
+    <link rel="stylesheet" href="~/_content/JetPack.Web/css/jetpack.css" asp-append-version="true" />
+    <script src="~/_content/JetPack.Web/js/jetpack.js" asp-append-version="true"></script>
+    <link rel="stylesheet" href="~/css/demo.css" asp-append-version="true" />
+    @* Tailwind for the layout of the pages, as the StackPanels and Grids in the XAML *@
+    <script src="https://cdn.jsdelivr.net/npm/@@tailwindcss/browser@@4.1.11"></script>
+</head>
+<body class="jp-window">
+    <canvas class="jp-vignette" aria-hidden="true"></canvas>
+
+    <header class="jp-title-bar">
+        <span class="jp-title-bar__title">JetPack for the web · demo</span>
+        <div class="jp-window-commands">
+            <button type="button" data-jp-accent-button="green" jp-tool-tip="Green accent"><span class="jp-window-commands__swatch" style="background: var(--jp-button-green-normal)"></span></button>
+            <button type="button" data-jp-accent-button="orange" jp-tool-tip="Orange accent"><span class="jp-window-commands__swatch" style="background: var(--jp-button-orange-normal)"></span></button>
+            <button type="button" data-jp-accent-button="blue" jp-tool-tip="Blue accent"><span class="jp-window-commands__swatch" style="background: var(--jp-button-blue-normal)"></span></button>
+            <button type="button" data-jp-open="SettingsFlyout">Settings</button>
+        </div>
+    </header>
+
+    <div class="jp-window__body">
+        <main class="demo-pages-host">
+            @RenderBody()
+        </main>
+    </div>
+
+    <jp-status-bar>
+        <jp-status-bar-item>Ready</jp-status-bar-item>
+        <jp-status-bar-item>Page: <span id="PageName">Core</span></jp-status-bar-item>
+        <jp-status-bar-item horizontal-alignment="Right">JetPack.Web @typeof(JetPack.Web.TagHelpers.JetPackTagHelper).Assembly.GetName().Version?.ToString(3)</jp-status-bar-item>
+    </jp-status-bar>
+
+    <jp-flyout id="SettingsFlyout" header="Settings" width="300">
+        <div class="flex flex-col">
+            <span class="demo-state demo-state--left mb-1.5">Accent</span>
+            <div class="flex gap-3.5 mb-4">
+                <label class="jp-radio-button"><input type="radio" name="Accent" value="green" data-jp-accent checked> Green</label>
+                <label class="jp-radio-button"><input type="radio" name="Accent" value="orange" data-jp-accent> Orange</label>
+                <label class="jp-radio-button"><input type="radio" name="Accent" value="blue" data-jp-accent> Blue</label>
+            </div>
+            <span class="demo-state demo-state--left mb-1.5">Custom accent colour (generated)</span>
+            <jp-color-picker id="CustomAccent" class="w-[160px] mb-4" />
+            <span class="demo-state demo-state--left mb-1.5">Control font size</span>
+            <div class="flex gap-3.5 mb-4">
+                <jp-radio-button group-name="Size" content="12 px (WPF)" value="12" is-checked="true" />
+                <jp-radio-button group-name="Size" content="11 px (original)" value="11" />
+            </div>
+            <span class="demo-state demo-state--left mb-1.5">Page navigation</span>
+            <div class="flex gap-3.5 mb-4">
+                <jp-radio-button group-name="Navigation" content="Tab strip" value="Strip" is-checked="true" />
+                <jp-radio-button group-name="Navigation" content="Full-width bar" value="Bar" />
+            </div>
+            <span class="demo-state demo-state--left mb-1.5">Notch animation</span>
+            <div class="flex gap-3.5 mb-4">
+                <jp-radio-button group-name="Notch" content="Slide" value="slide" is-checked="true" />
+                <jp-radio-button group-name="Notch" content="Drop" value="drop" />
+                <jp-radio-button group-name="Notch" content="None" value="none" />
+            </div>
+            <span class="demo-state demo-state--left mb-1.5">Page transition</span>
+            <div class="flex gap-3.5 mb-4">
+                <jp-radio-button group-name="Transition" content="None" value="none" is-checked="true" />
+                <jp-radio-button group-name="Transition" content="Fade" value="fade" />
+            </div>
+            <label class="jp-toggle-switch mb-2.5"><input type="checkbox" role="switch" data-jp-focus-visuals checked> Visible focus indicator</label>
+            <jp-toggle-switch id="VignetteSwitch" is-checked="true" class="mb-2.5">Vignette in the corners</jp-toggle-switch>
+            <jp-toggle-switch is-enabled="false" tool-tip="Mica is a Windows 11 window backdrop; the WPF demo has it">Mica backdrop (Windows 11)</jp-toggle-switch>
+            <span class="demo-state demo-state--left mt-3 mb-1.5">Ground over Mica: 50%</span>
+            <jp-slider value="0.5" minimum="0" maximum="1" small-change="0.05" is-enabled="false" label="Ground over Mica" />
+        </div>
+    </jp-flyout>
+
+    <jp-flyout id="RecentFlyout" header="Recent" position="Left" width="260">
+        <jp-list-box selected-index="0">
+            <jp-list-box-item content="Contoso Corporation" />
+            <jp-list-box-item content="Fabrikam, Inc." />
+            <jp-list-box-item content="Northwind Traders" />
+            <jp-list-box-item content="Adventure Works" />
+        </jp-list-box>
+    </jp-flyout>
+
+    <jp-flyout id="UpdateFlyout" header="Update available" position="Top">
+        <div class="flex items-center gap-2">
+            <p class="m-0 flex-1">Version 2.4 is ready to install. The update is applied when the program restarts.</p>
+            <jp-button data-jp-close>Later</jp-button>
+            <jp-button button-style="Accent" data-jp-close>Restart</jp-button>
+        </div>
+    </jp-flyout>
+
+    <jp-flyout id="SavedFlyout" header="Saved" position="Bottom" is-auto-close-enabled="true" auto-close-interval="4000">
+        <p class="m-0">Contoso Corporation has been saved. The time before this message closes starts again when the mouse leaves it.</p>
+    </jp-flyout>
+
+    <script src="~/js/demo.js" asp-append-version="true"></script>
+</body>
+</html>

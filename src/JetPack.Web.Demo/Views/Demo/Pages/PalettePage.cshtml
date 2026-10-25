@@ -1,0 +1,37 @@
+@* PalettePage.xaml: the same brushes, as the CSS variables of jetpack.tokens.css *@
+@{
+    string Var(string key) => "--jp-" + string.Join("-", key.Split('.').Select(Html2.Kebab));
+    var groups = new (string Title, string[] Keys)[]
+    {
+        ("Accent", ["Accent.Selection", "Accent", "Accent.MouseOver", "Accent.Pressed", "Accent.Highlight", "Accent.Solid", "Accent.Link", "Accent.Button.Normal"]),
+        ("Neutrals and states", ["Control.Background", "Control.Background.MouseOver", "Control.Background.Pressed", "Static.Background", "Input.Background",
+            "Control.Border", "Control.Foreground", "Track", "Panel.Background", "Panel.Border", "DataGrid.Header", "Disabled", "Error", "ScrollBar.Track", "Window.Background"]),
+        ("Buttons and chart", ["Button.Green.Normal", "Button.Orange.Normal", "Button.Blue.Normal", "Chart.1", "Chart.2", "Chart.3", "Chart.4", "Chart.5", "Chart.6"]),
+    };
+}
+<jp-scroll-viewer thin="true" class="demo-page">
+    <p class="demo-intro">The values the library exposes, generated from the WPF dictionaries: JetPack.Brushes.Accent.Selection is var(--jp-accent-selection). The accent colours change with the picker in the title bar.</p>
+    @foreach (var (title, keys) in groups)
+    {
+        <jp-text-block text-block-style="Heading5" text="@title" class="mb-2.5" />
+        <div class="flex flex-wrap mb-6">
+            @foreach (var key in keys)
+            {
+                var name = Var(key);
+                <div class="demo-swatch">
+                    <div class="demo-swatch__chip" style="background: @(key == "Window.Background" ? $"var({name}) var(--jp-window-ground)" : $"var({name})")"></div>
+                    <div class="demo-swatch__meta">
+                        <b>@key</b>
+                        <code>var(@name)</code>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</jp-scroll-viewer>
+@functions {
+    private static class Html2
+    {
+        public static string Kebab(string s) => System.Text.RegularExpressions.Regex.Replace(s, "(?<=[a-z0-9])(?=[A-Z])", "-").ToLowerInvariant();
+    }
+}

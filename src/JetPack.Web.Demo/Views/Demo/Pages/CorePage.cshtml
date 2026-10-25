@@ -1,0 +1,170 @@
+@* CorePage.xaml *@
+<jp-scroll-viewer thin="true" class="demo-page">
+    <p class="demo-intro">The basic controls, laid out like the original theme browser. Colours, gradients and shadows are taken directly from CoreStyles.xaml and Brushes.xaml.</p>
+
+    <div class="demo-row">
+        <demo-column header="Button" tag="JetPack.Styles.Button">
+            <div class="flex flex-col gap-2.5 w-[124px]">
+                <jp-button>Normal</jp-button>
+                <jp-button is-enabled="false">Disabled</jp-button>
+                <jp-toggle-button>Toggle</jp-toggle-button>
+                <jp-toggle-button is-checked="true">Toggle Checked</jp-toggle-button>
+                <jp-repeat-button id="Repeat">Repeat (0)</jp-repeat-button>
+                <jp-button button-style="Accent">Accent</jp-button>
+                <jp-button button-style="Green">Green</jp-button>
+                <jp-button button-style="Orange">Orange</jp-button>
+                <jp-button button-style="Blue">Blue</jp-button>
+            </div>
+        </demo-column>
+
+        <demo-column header="TextBox · PasswordBox" tag="JetPack.Styles.TextBox(.Dark)">
+            <div class="grid grid-cols-2 gap-x-3 w-[270px]">
+                <div class="flex flex-col gap-2.5">
+                    <jp-text-box text="Normal" />
+                    <jp-text-box text="Read Only" is-read-only="true" />
+                    <jp-text-box text="Disabled" is-enabled="false" />
+                    <jp-text-box text="abc-123" validation-error="The value must be a number." />
+                    <jp-password-box password="hemmelig" />
+                    <jp-text-box watermark="Search customers…" />
+                    <span class="demo-state">Light (default)</span>
+                </div>
+                <div class="flex flex-col gap-2.5">
+                    <jp-text-box text-box-style="Dark" text="Normal" />
+                    <jp-text-box text-box-style="Dark" text="Read Only" is-read-only="true" />
+                    <jp-text-box text-box-style="Dark" text="Disabled" is-enabled="false" />
+                    <jp-text-box text-box-style="Dark" text="abc-123" validation-error="The value must be a number." />
+                    <jp-password-box text-box-style="Dark" password="hemmelig" />
+                    <jp-text-box text-box-style="Dark" watermark="Search customers…" />
+                    <span class="demo-state">Dark</span>
+                </div>
+            </div>
+        </demo-column>
+
+        <demo-column header="TextBlock" tag="TextBlock · Hyperlink · ToolTip">
+            <div class="flex flex-col items-center gap-3 w-[190px]">
+                <p class="m-0 text-[11px] text-center">Time entry for October closes Friday at 4 pm. Timesheets not approved by then move to November.</p>
+                <jp-separator class="self-stretch" />
+                <jp-hyperlink>Open timesheet</jp-hyperlink>
+                <jp-hyperlink is-enabled="false">Link disabled</jp-hyperlink>
+                <jp-button button-style="Link">Link button</jp-button>
+                <jp-separator class="self-stretch" />
+                <jp-button tool-tip="Saves changes and sends them for approval">Hover here</jp-button>
+            </div>
+        </demo-column>
+
+        <demo-column header="CheckBox · RadioButton" tag="JetPack.Styles.CheckBox">
+            <div class="flex flex-col gap-2.5 self-start">
+                <jp-check-box content="Normal" />
+                <jp-check-box content="Checked" is-checked="true" />
+                <jp-check-box content="Indeterminate" is-checked="null" />
+                <jp-check-box content="Disabled" is-checked="true" is-enabled="false" />
+                <jp-check-box content="Invalid" validation-error="You must accept the terms." />
+                <jp-separator class="!my-0" />
+                <jp-radio-button content="Normal" group-name="r1" />
+                <jp-radio-button content="Checked" group-name="r1" is-checked="true" />
+                <jp-radio-button content="Indeterminate" group-name="r2" is-checked="null" />
+                <jp-radio-button content="Disabled" group-name="r3" is-checked="true" is-enabled="false" />
+                <jp-radio-button content="Invalid" group-name="r4" validation-error="Choose an option." />
+            </div>
+        </demo-column>
+    </div>
+
+    <div class="demo-row">
+        <demo-column header="ComboBox" tag="JetPack.Styles.ComboBox">
+            <div class="flex flex-col gap-2.5 w-[150px]">
+                <jp-combo-box selected-index="1">
+                    <jp-combo-box-item content="Seattle" />
+                    <jp-combo-box-item content="Portland" />
+                    <jp-combo-box-item content="Denver" />
+                    <jp-combo-box-item content="Boston" />
+                    <jp-combo-box-item content="Chicago" />
+                </jp-combo-box>
+                <jp-combo-box selected-index="0" is-enabled="false">
+                    <jp-combo-box-item content="Portland" />
+                </jp-combo-box>
+                <jp-combo-box is-editable="true" text="Denver">
+                    <jp-combo-box-item content="Seattle" />
+                    <jp-combo-box-item content="Portland" />
+                    <jp-combo-box-item content="Denver" />
+                </jp-combo-box>
+                <jp-combo-box watermark="Choose week">
+                    <jp-combo-box-item content="Week 42" />
+                    <jp-combo-box-item content="Week 43" />
+                    <jp-combo-box-item content="Week 44" />
+                </jp-combo-box>
+            </div>
+        </demo-column>
+
+        <demo-column header="ListBox" tag="JetPack.Styles.ListBox">
+            <div class="flex flex-col gap-2.5 w-[150px]">
+                <jp-list-box selected-index="1" class="h-[100px]">
+                    <jp-list-box-item content="Lindsey Ballard" />
+                    <jp-list-box-item content="Charles Hoyle" />
+                    <jp-list-box-item content="Daniel Tiedemann" />
+                    <jp-list-box-item content="David Ritter" />
+                    <jp-list-box-item content="Vivian Smail" />
+                    <jp-list-box-item content="Ida Kragh" />
+                    <jp-list-box-item content="Mads Lund" />
+                </jp-list-box>
+                <span class="demo-state">Invalid</span>
+                <jp-list-box class="h-[36px]" validation-error="Choose at least one employee." />
+            </div>
+        </demo-column>
+
+        <demo-column header="ScrollViewer" tag="JetPack.Styles.ScrollBar">
+            <jp-scroll-viewer horizontal-scroll-bar-visibility="Visible" vertical-scroll-bar-visibility="Visible" class="demo-scroll-sample">
+                <div class="demo-scroll-sample__content"></div>
+            </jp-scroll-viewer>
+        </demo-column>
+
+        <demo-column header="ScrollViewer · Thin" tag="JetPack.Styles.ScrollViewer.Thin">
+            <jp-scroll-viewer thin="true" horizontal-scroll-bar-visibility="Visible" vertical-scroll-bar-visibility="Visible" class="demo-scroll-sample">
+                <div class="demo-scroll-sample__content"></div>
+            </jp-scroll-viewer>
+            <span class="demo-state">Hides after 1.5 s</span>
+        </demo-column>
+
+        <demo-column header="ProgressBar" tag="JetPack.Styles.ProgressBar">
+            <div class="flex flex-col gap-4 w-[150px]">
+                <jp-progress-bar value="75" />
+                <jp-progress-bar value="45" />
+                <jp-progress-bar is-indeterminate="true" />
+                <jp-progress-bar is-indeterminate="true" class="!h-[14px]" />
+            </div>
+        </demo-column>
+
+        <demo-column header="Slider" tag="JetPack.Styles.Slider">
+            <div class="flex flex-col gap-3 w-[150px]">
+                <jp-slider value="4" maximum="10" label="Slider" />
+                <jp-slider value="6" maximum="10" tick-placement="BottomRight" tick-frequency="1" is-snap-to-tick-enabled="true" label="Slider with ticks" />
+                <div class="flex justify-center gap-5">
+                    <jp-slider orientation="Vertical" value="3" maximum="10" label="Vertical slider" />
+                    <jp-slider orientation="Vertical" value="4" maximum="6" tick-placement="BottomRight" tick-frequency="1" is-snap-to-tick-enabled="true" label="Vertical slider with ticks" />
+                    <jp-slider orientation="Vertical" value="5" maximum="10" is-enabled="false" label="Disabled slider" />
+                </div>
+            </div>
+        </demo-column>
+    </div>
+
+    <div class="demo-row">
+        <demo-column header="Typography" tag="JetPack.Styles.TextBlock.Heading1–6">
+            <div class="flex flex-col w-[440px]">
+                <jp-text-block text-block-style="Heading1" text="Companies" />
+                <jp-text-block text-block-style="Heading2" text="Company Details" />
+                <jp-text-block text-block-style="Heading3" text="Heading 3 · 21 px" />
+                <jp-text-block text-block-style="Heading4" text="Heading 4 · 18 px" />
+                <jp-text-block text-block-style="Heading5" text="Heading 5 · 15 px" />
+                <jp-text-block text-block-style="Heading6" text="HEADING 6 · 11 PX" />
+            </div>
+        </demo-column>
+
+        <demo-column header="Label · GroupBox" tag="JetPack.Styles.GroupBox">
+            <jp-group-box header="Contact" class="w-[260px]">
+                <jp-label content="Name" target="ContactName" />
+                <jp-text-box id="ContactName" text="Heather Andrade" class="mb-1.5" />
+                <jp-label content="Phone" target="ContactPhone" />
+                <jp-text-box id="ContactPhone" text="(555) 555-1234" />
+            </jp-group-box>
+        </demo-column>
+    </div>
+</jp-scroll-viewer>

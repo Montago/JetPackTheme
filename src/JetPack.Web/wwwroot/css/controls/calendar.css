@@ -1,0 +1,91 @@
+/* JetPack for the web · Calendar, DatePicker drop-down (Controls.Calendar.xaml) */
+@layer components {
+
+  /* -------------------------------------------------------------- calendar */
+  /* <div class="jp-calendar" data-selected-date="2026-10-27"></div>: jetpack.js draws the month,
+     year and decade views. */
+  .jp-calendar {
+    box-sizing: border-box;
+    width: 174px;
+    border-radius: var(--jp-radius);
+    background: #fff;
+    box-shadow: var(--jp-shadow-light);
+    color: #333;
+    font-size: 11px;
+    overflow: hidden;
+    user-select: none;
+  }
+  .jp-calendar__header {
+    display: flex;
+    align-items: center;
+    height: 26px;
+    padding: 0 3px;
+    background: var(--jp-static-background);
+    box-shadow: inset 0 -1px 0 rgb(0 0 0 / 0.12);
+  }
+  .jp-calendar__header > button {
+    height: 20px;
+    padding: 0;
+    border: 0;
+    border-radius: var(--jp-radius);
+    background: transparent;
+    color: var(--jp-header-foreground);
+    font: inherit;
+    cursor: pointer;
+  }
+  .jp-calendar__header > button:hover { background: rgb(0 0 0 / 0.1); }
+  .jp-calendar__title {
+    flex: 1;
+    font-size: var(--jp-font-size-control) !important;
+    font-weight: 700 !important;
+    text-shadow: var(--jp-emboss);
+  }
+  .jp-calendar__previous, .jp-calendar__next { position: relative; width: 20px; }
+  .jp-calendar__previous::after, .jp-calendar__next::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    margin: auto;
+    width: 4px;
+    height: 7px;
+    background: var(--jp-control-glyph-dark);
+    clip-path: polygon(100% 0, 0 50%, 100% 100%);
+  }
+  .jp-calendar__next::after { clip-path: polygon(0 0, 100% 50%, 0 100%); }
+  .jp-calendar__grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 1px;
+    padding: 4px 5px 6px;
+    text-align: center;
+    font-variant-numeric: tabular-nums;
+  }
+  .jp-calendar__grid[data-mode="year"], .jp-calendar__grid[data-mode="decade"] {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 6px 2px;
+    padding: 8px 6px 10px;
+  }
+  .jp-calendar__day-name { padding: 3px 0 2px; color: #8A8A8A; font-size: 9.5px; }
+  .jp-calendar__cell {
+    height: 21px;
+    padding: 0;
+    border: 0;
+    border-radius: 1px;
+    background: transparent;
+    color: #333;
+    font: inherit;
+    font-size: 11px;
+    cursor: pointer;
+  }
+  .jp-calendar__grid:is([data-mode="year"], [data-mode="decade"]) .jp-calendar__cell { height: 30px; font-size: var(--jp-font-size-control); }
+  .jp-calendar__cell:hover { background: rgb(0 0 0 / 0.125); }
+  .jp-calendar__cell.is-other-month { color: #ADADAD; }
+  .jp-calendar__cell.is-today { background: #AAAAAA; color: #fff; }
+  .jp-calendar__cell.is-selected {
+    background: var(--jp-accent-selection);
+    color: #fff;
+    box-shadow: var(--jp-shadow-light);
+  }
+  .jp-calendar__cell:focus-visible { outline: 1px solid var(--jp-focus-border); outline-offset: -1px; }
+  .jp-popup--calendar .jp-calendar { border-radius: 0 0 var(--jp-radius) var(--jp-radius); box-shadow: var(--jp-effect-popup-shadow); }
+}

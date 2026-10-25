@@ -1,0 +1,288 @@
+/* JetPack for the web · GroupBox, Expander, TabControl (Controls.Containers.xaml) */
+@layer components {
+
+  /* ------------------------------------------------------------ group box */
+  .jp-group-box {
+    border: 1px solid var(--jp-panel-border);
+    border-radius: 2.5px;
+    overflow: hidden;
+    box-shadow: var(--jp-shadow-light);
+    background: var(--jp-panel-background);
+  }
+  .jp-group-box__header {
+    margin: 0;
+    padding: 5px 8px 6px;
+    background: var(--jp-data-grid-header);
+    color: #fff;
+    font-size: var(--jp-font-size-control);
+    font-weight: 700;
+    box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.12);
+    text-shadow: none;
+  }
+  .jp-group-box__content { padding: 8px 10px 10px; }
+
+  /* -------------------------------------------------------------- expander */
+  /* <details class="jp-expander"><summary>Header</summary><div class="jp-expander__content">..</div></details> */
+  .jp-expander > summary {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    height: 25px;
+    padding: 0 9px;
+    border-radius: var(--jp-radius);
+    background: var(--jp-control-background);
+    color: var(--jp-header-foreground);
+    font-weight: 700;
+    font-size: var(--jp-font-size-control);
+    text-shadow: var(--jp-emboss);
+    box-shadow: var(--jp-shadow), var(--jp-highlight);
+    list-style: none;
+    cursor: pointer;
+  }
+  .jp-expander > summary::-webkit-details-marker { display: none; }
+  .jp-expander > summary:hover { background: var(--jp-control-background-mouse-over); }
+  .jp-expander > summary:active { background: var(--jp-control-background-pressed); }
+  .jp-expander > summary::before {
+    content: "";
+    border-top: 4px solid transparent;
+    border-bottom: 4px solid transparent;
+    border-left: 5px solid var(--jp-control-glyph-dark);
+    transition: transform 0.15s;
+  }
+  .jp-expander[open] > summary::before { transform: rotate(90deg); }
+  .jp-expander__content {
+    margin-top: 2px;
+    padding: 8px 10px;
+    border-radius: 0 0 var(--jp-radius) var(--jp-radius);
+    background: var(--jp-panel-background);
+    box-shadow: var(--jp-shadow-light);
+  }
+
+  /* ----------------------------------------------------------- tab control */
+  /* wrap-reverse: as the WPF TabPanel, the first row (with the selected tab) stays next to the content */
+  .jp-tab-control__strip { display: flex; gap: 3px; flex-wrap: wrap-reverse; position: relative; z-index: 1; margin-bottom: -1px; }
+  .jp-tab-item {
+    min-height: 28px;
+    margin-top: 2px;
+    padding: 4px 16px;
+    border: 0;
+    border-radius: 2.5px 2.5px 0 0;
+    background: var(--jp-navigation-inactive);
+    color: var(--jp-tab-inactive-foreground);
+    box-shadow: inset 0 -1px 0 rgb(0 0 0 / 0.25);
+    text-decoration: none;
+    cursor: pointer;
+  }
+  .jp-tab-item:hover { background: #626368; }
+  .jp-tab-item[aria-selected="true"] {
+    margin-top: 0;
+    padding-bottom: 6px;
+    border: 1px solid var(--jp-panel-border);
+    border-bottom: 0;
+    background: var(--jp-panel-background);
+    color: #fff;
+    box-shadow: none;
+  }
+  .jp-tab-control__content {
+    padding: 8px;
+    border: 1px solid var(--jp-panel-border);
+    border-radius: 0 2.5px 2.5px 2.5px;
+    background: var(--jp-panel-background);
+    box-shadow: var(--jp-shadow-light);
+  }
+  .jp-tab-control__content[hidden] { display: none; }
+  .jp-tab-item:disabled { color: rgb(255 255 255 / 0.4); cursor: default; }
+  .jp-tab-item:disabled:hover { background: var(--jp-navigation-inactive); }
+  .jp-tab-item:focus-visible { outline: 1px solid var(--jp-focus); outline-offset: -2px; }
+  .jp-tab-control__notch, .jp-tab-control__tag { display: none; }
+
+  /*
+  JetPack.Styles.TabControl.Strip and .Navigation: a bar of 38px with the accent on the selected
+  tab and the notch under it, which jetpack.js places and animates (TabControlHelper):
+  <div class="jp-tab-control jp-tab-control--strip" data-selection-animation="slide|drop|none" data-content-transition="none|fade">
+    <div class="jp-tab-control__header">
+      <div class="jp-tab-control__strip" role="tablist"> <button class="jp-tab-item" role="tab">Core</button> … <span class="jp-tab-control__notch"></span> </div>
+      <div class="jp-tab-control__tag">Tag: branding at the right</div>
+    </div>
+    <div class="jp-tab-control__content" role="tabpanel">…</div> …
+  </div>
+  */
+  :is(.jp-tab-control--strip, .jp-tab-control--navigation) {
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+  }
+  :is(.jp-tab-control--strip, .jp-tab-control--navigation) > .jp-tab-control__header {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex: none;
+    /* as tall as the bar with its notch, or the Tag when that is taller (the WPF header row) */
+    min-height: 47px;
+  }
+  :is(.jp-tab-control--strip, .jp-tab-control--navigation) > .jp-tab-control__header > .jp-tab-control__strip {
+    position: relative;
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 0;
+    height: 38px;
+    margin: 0;
+  }
+  :is(.jp-tab-control--strip, .jp-tab-control--navigation) > .jp-tab-control__header > .jp-tab-control__strip > .jp-tab-item {
+    height: 38px;
+    min-height: 0;
+    margin: 0;
+    padding: 0 18px;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+    color: #fff;
+    font-size: var(--jp-font-size-navigation);
+    font-weight: 700;
+    white-space: nowrap;
+    text-shadow: var(--jp-effect-text-glow);
+  }
+  :is(.jp-tab-control--strip, .jp-tab-control--navigation) > .jp-tab-control__header > .jp-tab-control__strip > .jp-tab-item:hover:not(:disabled, [aria-selected="true"]) { background: rgb(255 255 255 / 0.08); }
+  :is(.jp-tab-control--strip, .jp-tab-control--navigation) > .jp-tab-control__header > .jp-tab-control__strip > .jp-tab-item[aria-selected="true"] {
+    padding-bottom: 0;
+    border: 0;
+    background: var(--jp-accent-selection);
+    color: #fff;
+    text-shadow: var(--jp-effect-accent-text-shadow);
+  }
+  :is(.jp-tab-control--strip, .jp-tab-control--navigation) > .jp-tab-control__header > .jp-tab-control__strip > .jp-tab-item:disabled { opacity: 0.4; color: inherit; background: transparent; }
+  :is(.jp-tab-control--strip, .jp-tab-control--navigation) > .jp-tab-control__header > .jp-tab-control__strip > .jp-tab-control__notch {
+    display: block;
+    position: absolute;
+    top: 38px;
+    left: 0;
+    width: 15px;
+    height: 9px;
+    background: var(--jp-accent-solid);
+    clip-path: polygon(0 0, 100% 0, 50% 100%);
+    filter: drop-shadow(0 1px 1px rgb(0 0 0 / 0.4));
+    pointer-events: none;
+    visibility: hidden;
+  }
+  :is(.jp-tab-control--strip, .jp-tab-control--navigation)[data-selection-animation="slide"] > .jp-tab-control__header > .jp-tab-control__strip > .jp-tab-control__notch.is-placed { transition: left 0.2s ease-out; }
+  :is(.jp-tab-control--strip, .jp-tab-control--navigation)[data-selection-animation="drop"] > .jp-tab-control__header > .jp-tab-control__strip > .jp-tab-control__notch.is-placed { transition: transform 0.16s ease-out; }
+  .jp-tab-control__notch.is-raised { transform: translateY(-9px); }
+  :is(.jp-tab-control--strip, .jp-tab-control--navigation) > .jp-tab-control__content {
+    flex: 1;
+    min-height: 0;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: none;
+    box-shadow: none;
+  }
+  :is(.jp-tab-control--strip, .jp-tab-control--navigation) > .jp-tab-control__header > .jp-tab-control__tag { display: block; }
+  /* TabControlHelper.ContentTransition="Fade" */
+  .jp-tab-control[data-content-transition="fade"] > .jp-tab-control__content:not([hidden]) { animation: jp-fade-in 0.2s ease-out; }
+  @keyframes jp-fade-in { from { opacity: 0; } }
+
+  /* Strip: the dark bar only as wide as its tabs, the Tag at the right of the row */
+  .jp-tab-control--strip > .jp-tab-control__header > .jp-tab-control__strip {
+    background: var(--jp-strip-background);
+    box-shadow: var(--jp-effect-control-shadow);
+  }
+
+  /* Navigation: the full-width light bar; dark-grey links with the embossed text */
+  .jp-tab-control--navigation > .jp-tab-control__header::before {
+    content: "";
+    position: absolute;
+    inset: 0 0 auto;
+    height: 38px;
+    background: var(--jp-static-background);
+    box-shadow: var(--jp-effect-control-shadow);
+  }
+  .jp-tab-control--navigation > .jp-tab-control__header > .jp-tab-control__strip > .jp-tab-item {
+    padding: 0 20px;
+    color: var(--jp-navigation-inactive);
+    text-shadow: var(--jp-effect-text-emboss);
+  }
+  .jp-tab-control--navigation > .jp-tab-control__header > .jp-tab-control__strip > .jp-tab-item:hover:not(:disabled, [aria-selected="true"]) { background: var(--jp-static-background-mouse-over); }
+  .jp-tab-control--navigation > .jp-tab-control__header > .jp-tab-control__tag {
+    position: relative;
+    display: flex;
+    align-items: center;
+    height: 38px;
+    color: var(--jp-navigation-inactive);
+  }
+
+  /* --------------------------------------------------------------- accordion */
+  /* jp:Accordion: Expanders sharing one frame; one open at a time (details name="…") */
+  .jp-accordion {
+    border: 1px solid var(--jp-panel-border);
+    border-radius: var(--jp-radius);
+    overflow: hidden;
+    box-shadow: var(--jp-shadow-light);
+    background: var(--jp-panel-background);
+  }
+  .jp-accordion > .jp-expander > summary {
+    border-radius: 0;
+    box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.6), inset 0 -1px 0 rgb(0 0 0 / 0.22);
+  }
+  .jp-accordion > .jp-expander > .jp-expander__content {
+    margin: 0;
+    border-radius: 0;
+    box-shadow: none;
+  }
+
+  /* ---------------------------------------------------------- busy indicator */
+  /* jp:BusyIndicator: <div class="jp-busy-indicator" data-busy="true"><div class="jp-busy-indicator__content">…</div><div class="jp-busy-indicator__card">Loading…<progress class="jp-progress-bar"></progress></div></div> */
+  .jp-busy-indicator { position: relative; display: grid; }
+  .jp-busy-indicator > * { grid-area: 1 / 1; }
+  .jp-busy-indicator__card { display: none; }
+  .jp-busy-indicator[data-busy="true"] > .jp-busy-indicator__content {
+    filter: blur(1px);
+    pointer-events: none;
+    user-select: none;
+  }
+  .jp-busy-indicator[data-busy="true"]::after {
+    content: "";
+    grid-area: 1 / 1;
+    background: rgb(255 255 255 / 0.35);
+  }
+  .jp-busy-indicator[data-busy="true"] > .jp-busy-indicator__card {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    align-self: center;
+    justify-self: center;
+    padding: 10px 14px;
+    border-radius: var(--jp-radius);
+    background: var(--jp-static-background);
+    box-shadow: var(--jp-shadow-light);
+    color: var(--jp-header-foreground);
+    font-size: var(--jp-font-size-small);
+    text-align: center;
+    text-shadow: 0 1px 0 rgb(255 255 255 / 0.5);
+  }
+  .jp-busy-indicator__card > .jp-progress-bar { width: 120px; }
+
+  /* ----------------------------------------------------------- grid splitter */
+  /* Between two panes in a flex row; jetpack.js drags the pane before it */
+  .jp-grid-splitter {
+    display: grid;
+    place-items: center;
+    flex: none;
+    width: 6px;
+    background: var(--jp-static-background);
+    cursor: col-resize;
+    touch-action: none;
+  }
+  .jp-grid-splitter::before {
+    content: "";
+    width: 2px;
+    height: 18px;
+    background:
+      repeating-linear-gradient(#555555 0 1px, transparent 1px 2px) left / 1px 100% no-repeat,
+      repeating-linear-gradient(#FFFFFF 0 1px, transparent 1px 2px) right / 1px 100% no-repeat;
+  }
+  .jp-grid-splitter:focus-visible { outline: 1px solid var(--jp-focus); }
+}

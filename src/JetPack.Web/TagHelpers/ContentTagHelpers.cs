@@ -137,9 +137,3 @@ public class GroupBoxTagHelper : TagHelper
         output.Content.AppendHtml(content).AppendHtml("</div>");
     }
 }
-
-/// <summary>Shared encoder for <see cref="TagHelperOutputExtensions.AddClass"/>.</summary>
-internal static class Html
-{
-    public static readonly System.Text.Encodings.Web.HtmlEncoder Encoder = System.Text.Encodings.Web.HtmlEncoder.Default;
-}

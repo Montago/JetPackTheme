@@ -1,0 +1,355 @@
+/* JetPack for the web · Text and input: TextBlock styles, Label, Hyperlink, Separator, TextBox, NumericUpDown, ComboBox (Controls.Text.xaml) */
+@layer components {
+
+  /* ---------------------------------------------------------------- text */
+  .jp-text-block--heading1, .jp-text-block--heading2, .jp-text-block--heading3,
+  .jp-text-block--heading4, .jp-text-block--heading5, .jp-text-block--heading6 {
+    margin: 0;
+    font-family: var(--jp-font-family-heading);
+    font-weight: 700;
+    line-height: 1.15;
+    text-shadow: 0 0 5px rgb(0 0 0 / 0.18);
+  }
+  .jp-text-block--heading1 { font-size: var(--jp-font-size-heading1); }
+  .jp-text-block--heading2 { font-size: var(--jp-font-size-heading2); color: var(--jp-text-dim); }
+  .jp-text-block--heading3 { font-size: var(--jp-font-size-heading3); }
+  .jp-text-block--heading4 { font-size: var(--jp-font-size-heading4); }
+  .jp-text-block--heading5 { font-size: var(--jp-font-size-heading5); }
+  .jp-text-block--heading6 { font-size: var(--jp-font-size-heading6); }
+  .jp-text-block--content { font-size: var(--jp-font-size-content); }
+  .jp-text-block--caption {
+    font-size: var(--jp-font-size-small);
+    color: var(--jp-text-soft);
+  }
+  .jp-label {
+    display: block;
+    padding: 0 0 3px;
+    color: var(--jp-text);
+    font-size: var(--jp-font-size-control);
+  }
+  .jp-hyperlink {
+    color: var(--jp-accent-link);
+    text-decoration: none;
+    cursor: pointer;
+  }
+  .jp-hyperlink:hover { text-decoration: underline; }
+  .jp-separator {
+    height: 2px;
+    border: 0;
+    border-top: 1px solid rgb(0 0 0 / 0.18);
+    border-bottom: 1px solid rgb(255 255 255 / 0.14);
+    margin: 6px 0;
+  }
+
+  /* ------------------------------------------------------------ text box */
+  /* The surface is a variable so the read-only, dark and invalid looks can be layered */
+  .jp-text-box {
+    --jp-tb-surface: var(--jp-input-background);
+    display: block;
+    box-sizing: border-box;
+    width: 100%;
+    min-height: 26px;
+    padding: 3px 6px;
+    border: 1px solid var(--jp-control-border);
+    border-radius: 2.5px;
+    background: var(--jp-tb-corner, linear-gradient(transparent, transparent)), var(--jp-tb-surface);
+    color: var(--jp-input-foreground);
+    box-shadow: var(--jp-inner-shadow), var(--jp-outer-highlight);
+    font-size: var(--jp-font-size-control);
+    line-height: 18px;
+  }
+  textarea.jp-text-box {
+    min-height: 60px;
+    resize: vertical;
+    line-height: 1.4;
+  }
+  .jp-text-box::placeholder { color: var(--jp-input-watermark); opacity: 1; }
+  .jp-text-box:read-only:not(select) { --jp-tb-surface: #D3D3D4; }
+  .jp-text-box:disabled {
+    --jp-tb-surface: #C4C5C8;
+    color: rgb(64 64 64 / 0.45);
+    border-color: rgb(104 104 104 / 0.55);
+  }
+  .jp-text-box:focus {
+    outline: none;
+    border-color: var(--jp-focus-border);
+    box-shadow: var(--jp-inner-shadow), 0 0 0 1px var(--jp-focus);
+  }
+  :root[data-focus="off"] .jp-text-box:focus {
+    border-color: var(--jp-control-border);
+    box-shadow: var(--jp-inner-shadow), var(--jp-outer-highlight);
+  }
+  .jp-text-box--dark {
+    --jp-tb-surface: var(--jp-dark-input-background);
+    border-color: var(--jp-dark-input-border);
+    color: var(--jp-dark-input-foreground);
+    box-shadow: inset 1px 1px 0 var(--jp-control-dark-edge), inset 2px 2px 0 rgb(48 48 48 / 0.31), var(--jp-outer-highlight);
+  }
+  .jp-text-box--dark::placeholder { color: var(--jp-dark-input-watermark); }
+  .jp-text-box--dark:read-only:not(select) { --jp-tb-surface: linear-gradient(var(--jp-dark-input-read-only), var(--jp-dark-input-read-only)), var(--jp-dark-input-background); }
+  .jp-text-box--dark:disabled {
+    --jp-tb-surface: linear-gradient(var(--jp-dark-input-disabled), var(--jp-dark-input-disabled)), var(--jp-dark-input-background);
+    color: rgb(255 255 255 / 0.4);
+    border-color: var(--jp-dark-input-border);
+  }
+  /* Date and time inputs: the picker button in the JetPack glyph colour */
+  .jp-text-box::-webkit-calendar-picker-indicator {
+    opacity: 0.6;
+    cursor: pointer;
+  }
+  /* Validation: aria-invalid, or the class ASP.NET Core puts on an invalid field. The red
+     corner is the original theme's ValidationErrorElement. */
+  .jp-text-box:is([aria-invalid="true"], .input-validation-error),
+  .jp-list-box[aria-invalid="true"] {
+    --jp-tb-corner: linear-gradient(225deg, var(--jp-error) 5.5px, transparent 5.5px);
+    border-color: var(--jp-error);
+  }
+  /* The red call-out under a field; empty ones (ASP.NET's field-validation-valid) take no space */
+  .jp-validation-message:empty, .jp-validation-message.field-validation-valid { display: none; }
+  .jp-validation-message {
+    position: relative;
+    display: inline-block;
+    margin-top: 6px;
+    padding: 4px 8px;
+    border-radius: var(--jp-radius);
+    background: var(--jp-error-tip);
+    color: #fff;
+    font-size: var(--jp-font-size-small);
+    box-shadow: 1px 1px 0 rgb(42 46 49 / 0.21), 2px 2px 0 rgb(42 46 49 / 0.15), 3px 3px 0 rgb(42 46 49 / 0.08);
+  }
+  .jp-validation-message::before {
+    content: "";
+    position: absolute;
+    left: 8px;
+    top: -5px;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-bottom: 5px solid var(--jp-error-tip);
+  }
+  .jp-validation-summary {
+    background: var(--jp-data-grid-background);
+    border: 1px solid var(--jp-control-border);
+    border-radius: 2.5px;
+    color: var(--jp-control-foreground);
+    overflow: hidden;
+    box-shadow: var(--jp-shadow-light);
+    font-size: var(--jp-font-size-small);
+  }
+  .jp-validation-summary.validation-summary-valid { display: none; }
+  .jp-validation-summary::before {
+    content: attr(data-jp-header);
+    display: block;
+    padding: 4px 8px;
+    background: var(--jp-error-header);
+    color: #fff;
+    font-weight: 700;
+  }
+  .jp-validation-summary ul { margin: 0; padding: 6px 8px 8px 24px; }
+
+  /* TextBoxHelper.ClearTextButton: <div class="jp-text-box-host"><input class="jp-text-box" type="search"><button class="jp-text-box-host__clear" data-jp-clear>×</button></div> */
+  .jp-text-box-host { position: relative; }
+  .jp-text-box-host > .jp-text-box { padding-right: 24px; }
+  .jp-text-box-host > .jp-text-box::-webkit-search-cancel-button { display: none; }
+  .jp-text-box-host__clear {
+    position: absolute;
+    top: 50%;
+    right: 5px;
+    width: 14px;
+    height: 14px;
+    margin-top: -7px;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: #808080;
+    font-size: 14px;
+    line-height: 14px;
+    cursor: pointer;
+  }
+  .jp-text-box-host__clear:hover { color: var(--jp-error); }
+  .jp-text-box-host > .jp-text-box:placeholder-shown + .jp-text-box-host__clear { display: none; }
+
+  /* ------------------------------------------------------- numeric up/down */
+  .jp-numeric-up-down { position: relative; }
+  .jp-numeric-up-down > .jp-text-box {
+    padding-right: 22px;
+    appearance: textfield;
+    -moz-appearance: textfield;
+  }
+  .jp-numeric-up-down > .jp-text-box::-webkit-inner-spin-button,
+  .jp-numeric-up-down > .jp-text-box::-webkit-outer-spin-button { appearance: none; margin: 0; }
+  .jp-numeric-up-down__spin {
+    position: absolute;
+    top: 3px;
+    right: 3px;
+    bottom: 3px;
+    width: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+  }
+  .jp-numeric-up-down__spin > button {
+    flex: 1;
+    display: grid;
+    place-items: center;
+    padding: 0;
+    border: 0;
+    border-radius: 1.5px;
+    background: var(--jp-control-background);
+    box-shadow: 0 1px 1px rgb(0 0 0 / 0.35), var(--jp-highlight);
+    cursor: pointer;
+  }
+  .jp-numeric-up-down__spin > button:hover { background: var(--jp-control-background-mouse-over); }
+  .jp-numeric-up-down__spin > button:active { background: var(--jp-control-background-pressed); }
+  .jp-numeric-up-down__spin > button::after {
+    content: "";
+    border-left: 3.5px solid transparent;
+    border-right: 3.5px solid transparent;
+  }
+  .jp-numeric-up-down__spin > button:first-child::after { border-bottom: 4px solid var(--jp-control-glyph); }
+  .jp-numeric-up-down__spin > button:last-child::after { border-top: 4px solid var(--jp-control-glyph); }
+
+  /* ------------------------------------------------------------ combo box */
+  /*
+  Drop-down list: <select class="jp-combo-box">. jetpack.js opens a JetPack list instead of the
+  browser's; without script the select still works. jp-combo-box--editable is IsEditable="True":
+  <div class="jp-combo-box jp-combo-box--editable"><input class="jp-text-box" list="…"><button class="jp-text-box-button jp-text-box-button--drop-down"></button><datalist id="…">…</datalist></div>
+  */
+  select.jp-combo-box {
+    appearance: none;
+    box-sizing: border-box;
+    width: 100%;
+    min-height: 24px;
+    padding: 3px 32px 3px 10px;
+    border: 0;
+    border-radius: var(--jp-radius);
+    color: var(--jp-control-foreground);
+    /* caret, the etched divider, the surface */
+    background:
+      linear-gradient(45deg, transparent 50%, var(--jp-combo-glyph, var(--jp-control-glyph)) 50%) right 13px top 50% / 4px 4px no-repeat,
+      linear-gradient(-45deg, transparent 50%, var(--jp-combo-glyph, var(--jp-control-glyph)) 50%) right 9px top 50% / 4px 4px no-repeat,
+      linear-gradient(rgb(0 0 0 / 0), rgb(0 0 0 / 0.19) 30%, rgb(0 0 0 / 0.19) 70%, rgb(0 0 0 / 0)) right 26px top 50% / 1px 70% no-repeat,
+      linear-gradient(rgb(255 255 255 / 0), rgb(255 255 255 / 0.8) 30%, rgb(255 255 255 / 0.8) 70%, rgb(255 255 255 / 0)) right 25px top 50% / 1px 70% no-repeat,
+      var(--jp-combo-surface, var(--jp-control-background));
+    box-shadow: var(--jp-shadow), var(--jp-highlight);
+    text-shadow: var(--jp-emboss);
+    font-size: var(--jp-font-size-control);
+    line-height: 18px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    cursor: pointer;
+  }
+  select.jp-combo-box:hover { --jp-combo-surface: var(--jp-control-background-mouse-over); }
+  select.jp-combo-box[aria-expanded="true"] { --jp-combo-surface: var(--jp-control-background-pressed); }
+  select.jp-combo-box:disabled {
+    --jp-combo-surface: var(--jp-disabled);
+    --jp-combo-glyph: rgb(96 96 96 / 0.6);
+    box-shadow: inset -1px -1px 0 rgb(0 0 0 / 0.4);
+    color: var(--jp-control-foreground-disabled);
+    text-shadow: none;
+    cursor: default;
+  }
+  /* TextBoxHelper.Watermark: shown while nothing is chosen */
+  select.jp-combo-box.is-watermark { color: var(--jp-input-watermark); text-shadow: none; }
+  select.jp-combo-box:focus-visible { outline: 1px solid var(--jp-focus); outline-offset: 1px; }
+  select.jp-combo-box option {
+    background: #fff;
+    color: var(--jp-input-foreground);
+    text-shadow: none;
+  }
+
+  .jp-combo-box--editable,
+  .jp-date-picker,
+  .jp-time-picker,
+  .jp-search-combo-box {
+    position: relative;
+    display: block;
+  }
+  :is(.jp-combo-box--editable, .jp-date-picker, .jp-time-picker, .jp-search-combo-box) > .jp-text-box { padding-right: 26px; }
+  :is(.jp-combo-box--editable, .jp-search-combo-box) > .jp-text-box::-webkit-calendar-picker-indicator { display: none !important; }
+
+  /* The small raised button inside a text box: drop-down arrow, calendar, clock */
+  .jp-text-box-button {
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    bottom: 2px;
+    width: 20px;
+    padding: 0;
+    border: 0;
+    border-radius: 1.5px;
+    background: var(--jp-control-background);
+    box-shadow: 0 1px 1px rgb(0 0 0 / 0.35), var(--jp-highlight);
+    cursor: pointer;
+  }
+  .jp-text-box-button:hover { background: var(--jp-control-background-mouse-over); }
+  .jp-text-box-button:active, .jp-text-box-button[aria-expanded="true"] { background: var(--jp-control-background-pressed); }
+  .jp-text-box-button::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    margin: auto;
+    background: var(--jp-control-glyph-dark);
+  }
+  .jp-text-box-button--drop-down::after {
+    width: 8px;
+    height: 4px;
+    clip-path: polygon(0 0, 100% 0, 50% 100%);
+    background: var(--jp-control-glyph);
+  }
+  .jp-text-box-button--calendar::after {
+    width: 11px;
+    height: 10px;
+    mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 11 10'%3E%3Cpath fill-rule='evenodd' d='M0 0h11v10H0zM1 3v6h9V3zM2 4h3v2H2zm4 0h3v2H6z'/%3E%3C/svg%3E") center / contain no-repeat;
+  }
+  .jp-text-box-button--clock::after {
+    width: 11px;
+    height: 11px;
+    mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 11 11'%3E%3Cpath fill-rule='evenodd' d='M5.5 0a5.5 5.5 0 1 1 0 11a5.5 5.5 0 1 1 0-11zm0 1.2a4.3 4.3 0 1 0 0 8.6a4.3 4.3 0 1 0 0-8.6zM5 2.5h1v3.1l1.9 1.2-.5.8L5 6.1z'/%3E%3C/svg%3E") center / contain no-repeat;
+  }
+  .jp-text-box:disabled ~ .jp-text-box-button { pointer-events: none; opacity: 0.55; }
+
+  /* ---------------------------------------------------------------- popup */
+  /* Drop-down of ComboBox, DatePicker, TimePicker, AutoSuggestBox, SearchComboBox, ColorPicker
+     (JetPack.Styles.ListBox.Popup): white, rounded at the bottom, placed by jetpack.js */
+  .jp-popup {
+    position: fixed;
+    inset: auto;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0 0 4px;
+    border: 0;
+    border-radius: 0 0 4px 4px;
+    background: #fff;
+    box-shadow: var(--jp-effect-popup-shadow), 0 0 0 1px rgb(0 0 0 / 0.08);
+    color: var(--jp-input-foreground);
+    font-size: var(--jp-font-size-control);
+    overflow: auto;
+    overscroll-behavior: contain;
+  }
+  .jp-popup.jp-popup--calendar, .jp-popup.jp-popup--palette { padding: 0; background: transparent; box-shadow: none; overflow: visible; }
+
+  /* --------------------------------------------------------- validation tip */
+  /* The red call-out jetpack.js shows beside an invalid control (Validation.ErrorTemplate) */
+  .jp-validation-tip {
+    position: fixed;
+    z-index: 1000;
+    max-width: 260px;
+    padding: 4px 8px;
+    border-radius: var(--jp-radius);
+    background: var(--jp-error-tip);
+    color: #fff;
+    font-size: var(--jp-font-size-small);
+    line-height: 1.35;
+    box-shadow: 1px 1px 0 rgb(42 46 49 / 0.21), 2px 2px 0 rgb(42 46 49 / 0.15), 3px 3px 0 rgb(42 46 49 / 0.08);
+    pointer-events: none;
+  }
+  .jp-validation-tip::before {
+    content: "";
+    position: absolute;
+    left: -5px;
+    top: 7px;
+    border-top: 5px solid transparent;
+    border-bottom: 5px solid transparent;
+    border-right: 5px solid var(--jp-error-tip);
+  }
+}

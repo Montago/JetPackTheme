@@ -1,0 +1,116 @@
+@* WindowPage.xaml *@
+@{
+    var today = DateTime.Today;
+}
+<jp-scroll-viewer thin="true" class="demo-page">
+    <p class="demo-intro">JetPackWindow replaces MetroWindow: texture and vignette, its own title bar with window commands, a flyout layer and an overlay for dialogs; on the web the page is the window. Below is the 'Companies' screen from the navigation template, built with the controls from the other tabs.</p>
+
+    <div class="flex flex-wrap items-center gap-2 mb-2.5">
+        <span class="demo-state">Title bar:</span>
+        <jp-radio-button group-name="TitleBar" content="Dark" value="dark" is-checked="true" class="mr-1.5" />
+        <jp-radio-button group-name="TitleBar" content="Light" value="light" class="mr-1.5" />
+        <jp-radio-button group-name="TitleBar" content="Texture all the way" value="texture" class="mr-6" />
+        <span class="demo-state">Corners:</span>
+        <jp-radio-button group-name="Corners" content="Square" is-checked="true" is-enabled="false" class="mr-1.5" tool-tip="The browser draws the window frame" />
+        <jp-radio-button group-name="Corners" content="Rounded" is-enabled="false" class="mr-[18px]" tool-tip="The browser draws the window frame" />
+        <jp-check-box content="Resize grip" is-enabled="false" class="mr-6" tool-tip="The browser draws the window frame" />
+        <jp-button id="ShowDialog">Show dialog</jp-button>
+        <jp-button id="ShowDelete" button-style="Orange">Confirm delete</jp-button>
+    </div>
+
+    <div class="flex flex-wrap items-center gap-2 mb-[22px]">
+        <span class="demo-state">Flyouts:</span>
+        <jp-button data-jp-open="SettingsFlyout">Right · settings</jp-button>
+        <jp-button data-jp-open="RecentFlyout">Left · recent</jp-button>
+        <jp-button data-jp-open="UpdateFlyout">Top · update</jp-button>
+        <jp-button id="ShowSaved">Bottom · notification</jp-button>
+        <span class="demo-state ml-2">Notification closes after</span>
+        <jp-numeric-up-down id="NotificationSeconds" value="4" minimum="0" maximum="60" class="w-[64px]" />
+        <span class="demo-state">s (0 = stays open)</span>
+    </div>
+
+    @* "Companies" sample from the Silverlight navigation template *@
+    <div class="flex flex-col mb-6 rounded-[3px] overflow-hidden" style="border: 1px solid #3B3C40; background: var(--jp-window-ground) var(--jp-window-background)">
+        <jp-tab-control tab-control-style="Navigation" class="flex-1">
+            <jp-tab-item header="Companies">
+                <div class="px-6 pt-3 pb-[22px]">
+                    <jp-text-block text-block-style="Heading1" text="Companies" class="mb-4" />
+                    <div class="grid grid-cols-[200px_minmax(0,1fr)] gap-5">
+                        <jp-accordion class="self-stretch">
+                            <jp-expander header="Need Placement" is-expanded="true">
+                                <jp-tree-view class="!p-0 !border-0 !shadow-none !bg-transparent">
+                                    <jp-tree-view-item header="Contoso" is-expanded="true">
+                                        <jp-tree-view-item header="August 2026" />
+                                        <jp-tree-view-item header="September 2026" is-selected="true" />
+                                        <jp-tree-view-item header="October 2026" />
+                                    </jp-tree-view-item>
+                                    <jp-tree-view-item header="Southridge"><jp-tree-view-item header="July 2026" /></jp-tree-view-item>
+                                    <jp-tree-view-item header="Microsoft"><jp-tree-view-item header="June 2026" /></jp-tree-view-item>
+                                    <jp-tree-view-item header="Fabrikam"><jp-tree-view-item header="May 2026" /></jp-tree-view-item>
+                                    <jp-tree-view-item header="Soar Airlines"><jp-tree-view-item header="April 2026" /></jp-tree-view-item>
+                                </jp-tree-view>
+                            </jp-expander>
+                            <jp-expander header="Renewal Pending"><p class="m-0">2 contracts expire on 31 December.</p></jp-expander>
+                            <jp-expander header="Archive"><p class="m-0">148 completed placements.</p></jp-expander>
+                        </jp-accordion>
+
+                        <jp-tab-control>
+                            <jp-tab-item header="Available">
+                                <div class="grid grid-cols-[200px_minmax(0,1fr)] gap-3">
+                                    <jp-list-box selected-index="2" class="h-[170px] self-end">
+                                        <jp-list-box-item content="Lindsey N. Ballard" />
+                                        <jp-list-box-item content="Charles K. Hoyle" />
+                                        <jp-list-box-item content="Daniel S. Tiedemann" />
+                                        <jp-list-box-item content="David J. Ritter" />
+                                        <jp-list-box-item content="Vivian J. Smail" />
+                                    </jp-list-box>
+                                    <div>
+                                        <p class="m-0 mb-2">Daniel is a back-end developer with 9 years of experience in .NET and SQL Server. Available full time from week 44.</p>
+                                        <div class="flex items-start gap-2">
+                                            <jp-calendar display-date="today" selected-date="today.AddDays(4)" />
+                                            <div class="demo-photo">DT</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </jp-tab-item>
+                            <jp-tab-item header="Assigned"><p class="m-0">9 consultants are assigned to projects.</p></jp-tab-item>
+                            <jp-tab-item header="Suggestions"><p class="m-0">3 suggestions are awaiting a reply.</p></jp-tab-item>
+                        </jp-tab-control>
+                    </div>
+
+                    <div class="grid grid-cols-[minmax(0,1fr)_2px_240px] mt-[22px]">
+                        <div class="ml-[220px] mr-5 max-w-[320px]">
+                            <jp-text-block text-block-style="Heading2" text="Company Details" class="mb-2" />
+                            <jp-label content="Name" />
+                            <jp-text-box text="Contoso Corporation" class="!w-[300px]" />
+                            <jp-label content="HR Contact" class="mt-1.5" />
+                            <jp-text-box text="Heather A. Andrade" class="!w-[300px]" />
+                            <jp-label content="Phone" class="mt-1.5" />
+                            <jp-text-box text="(555) 555-1234" class="!w-[300px]" />
+                            <div class="flex items-center gap-2 mt-4 w-[300px]">
+                                <jp-button>Send Message</jp-button>
+                                <jp-button button-style="Accent">Update</jp-button>
+                                <jp-check-box content="Keep Active" class="ml-auto" />
+                            </div>
+                        </div>
+                        <div class="demo-divider"></div>
+                        <div class="ml-5">
+                            <jp-text-block text-block-style="Heading2" text="Notes" class="mb-2.5" />
+                            <jp-text-box text-box-style="MultiLineDark" class="!h-[170px]" text="The contract has been extended to 30 June 2027. The customer wants an extra developer from January, ideally with WPF and MVVM experience. Next status meeting is Thursday in week 44 at 10 am." />
+                        </div>
+                    </div>
+                </div>
+            </jp-tab-item>
+            <jp-tab-item header="Orders" />
+            <jp-tab-item header="Employees" />
+            <jp-tab-item header="Timesheets" />
+            <jp-tab-item header="Payroll" />
+            <jp-tab-item header="Billing" />
+        </jp-tab-control>
+        <jp-status-bar>
+            <jp-status-bar-item>Ready</jp-status-bar-item>
+            <jp-status-bar-item>5 available · 9 assigned</jp-status-bar-item>
+            <jp-status-bar-item horizontal-alignment="Right">Last synced 09:42</jp-status-bar-item>
+        </jp-status-bar>
+    </div>
+</jp-scroll-viewer>

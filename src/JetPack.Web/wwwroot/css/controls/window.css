@@ -1,0 +1,307 @@
+/* JetPack for the web · Window, title bar, HamburgerMenu, StatusBar, Flyout, JetPackDialog (Controls.Window.xaml) */
+@layer components {
+
+  /* ---------------------------------------------------------------- window */
+  /*
+  The application frame of JetPackWindow:
+  <body class="jp-window">
+    <canvas class="jp-vignette"></canvas>
+    <header class="jp-title-bar">..</header>
+    <div class="jp-window__body"> <nav class="jp-hamburger-menu">..</nav> <main class="jp-window__content">..</main> </div>
+    <footer class="jp-status-bar">..</footer>
+  </body>
+  */
+  .jp-window {
+    --jp-title-bar-height: 30px;
+    position: relative;
+    display: grid;
+    grid-template-rows: auto minmax(0, 1fr) auto;
+    height: 100vh;
+    height: 100dvh;
+    overflow: hidden;
+  }
+  .jp-window > :not(.jp-vignette, dialog, .jp-flyout) { position: relative; }
+  .jp-window__body { display: flex; min-height: 0; }
+  .jp-window__content {
+    flex: 1;
+    min-width: 0;
+    overflow: auto;
+  }
+
+  /* Dark edges of the window, drawn by jetpack.js (dithered, like Controls/Vignette.cs) */
+  .jp-vignette {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+  }
+
+  .jp-title-bar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    height: 30px;
+    padding-left: 10px;
+    background: var(--jp-window-title-dark);
+    box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.14), 0 1px 0 rgb(0 0 0 / 0.3);
+    color: #fff;
+    font-size: var(--jp-font-size-default);
+  }
+  .jp-title-bar__icon {
+    flex: none;
+    width: 16px;
+    height: 16px;
+    border-radius: var(--jp-radius);
+    background: var(--jp-accent-button-normal);
+    box-shadow: inset 0.5px 1px 0 var(--jp-accent-button-highlight);
+  }
+  .jp-title-bar__title {
+    min-width: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  /* LeftWindowCommands / RightWindowCommands */
+  .jp-window-commands { display: flex; align-items: stretch; height: 100%; }
+  .jp-title-bar > .jp-window-commands:last-child { margin-left: auto; }
+  .jp-window-commands > :is(button, a) {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 0 12px;
+    border: 0;
+    background: transparent;
+    color: inherit;
+    font-size: var(--jp-font-size-control);
+    text-decoration: none;
+    cursor: pointer;
+  }
+  .jp-window-commands > :is(button, a):hover { background: rgb(255 255 255 / 0.12); }
+  /* The accent swatches of the demo's title bar */
+  .jp-window-commands__swatch {
+    width: 14px;
+    height: 12px;
+    border-radius: 1.5px;
+    box-shadow: var(--jp-shadow);
+  }
+
+  /* TitleBarMode: Dark (default), Light, or Texture all the way (no bar of its own) */
+  .jp-window[data-title-bar="light"] .jp-title-bar {
+    background: var(--jp-static-background);
+    box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.7), 0 1px 0 rgb(0 0 0 / 0.25);
+    color: var(--jp-header-foreground);
+    text-shadow: var(--jp-emboss);
+  }
+  .jp-window[data-title-bar="light"] .jp-window-commands > :is(button, a):hover { background: rgb(0 0 0 / 0.08); }
+  /* Texture: the ground and the vignette run under the title; the title gets the soft glow of TextGlow */
+  .jp-window[data-title-bar="texture"] .jp-title-bar { background: transparent; box-shadow: none; text-shadow: var(--jp-effect-text-glow); }
+
+  /* Dialogs dim the window below the title bar, as JetPackWindow's overlay does */
+  .jp-window .jp-dialog::backdrop { top: var(--jp-title-bar-height, 30px); }
+
+  /* -------------------------------------------------------- hamburger menu */
+  .jp-hamburger-menu {
+    --pane-width: 190px;
+    flex: none;
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    width: var(--pane-width);
+    padding: 0 0 6px;
+    background: var(--jp-navigation-inactive);
+    box-shadow: 1px 0 0 rgb(0 0 0 / 0.25);
+    overflow: hidden auto;
+    transition: width 0.15s ease-out;
+  }
+  .jp-hamburger-menu.is-collapsed { width: 40px; }
+  .jp-hamburger-menu__toggle, .jp-hamburger-menu__item {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    flex: none;
+    height: 34px;
+    padding: 0 11px;
+    border: 0;
+    background: transparent;
+    color: rgb(255 255 255 / 0.88);
+    font-size: var(--jp-font-size-control);
+    text-align: left;
+    text-decoration: none;
+    white-space: nowrap;
+    cursor: pointer;
+  }
+  .jp-hamburger-menu__toggle { height: 32px; }
+  /* 18px: MDI's 24 grid scales by 3/4, as in the WPF HamburgerMenuItem */
+  .jp-hamburger-menu .jp-icon { width: 18px; height: 18px; }
+  .jp-hamburger-menu__toggle:hover, .jp-hamburger-menu__item:hover { background: rgb(255 255 255 / 0.08); }
+  .jp-hamburger-menu__item[aria-current="page"] {
+    background: var(--jp-accent-selection);
+    color: #fff;
+    box-shadow: inset 0 1px 0 var(--jp-accent-highlight);
+    text-shadow: var(--jp-effect-accent-text-shadow);
+  }
+  .jp-hamburger-menu.is-collapsed .jp-hamburger-menu__label { opacity: 0; }
+
+  /* A HamburgerMenu with its own content, as the control in the demo: the items switch panels */
+  .jp-hamburger-menu-host { display: flex; min-height: 0; overflow: hidden; }
+  .jp-hamburger-menu-host > .jp-hamburger-menu { padding-bottom: 6px; }
+  .jp-hamburger-menu__content { flex: 1; min-width: 0; background: var(--jp-window-ground) var(--jp-window-background); }
+  .jp-hamburger-menu__content > [hidden] { display: none; }
+  .jp-hamburger-menu__item[aria-selected="true"] {
+    background: var(--jp-accent-selection);
+    color: #fff;
+    box-shadow: inset 0 1px 0 var(--jp-accent-highlight);
+    text-shadow: var(--jp-effect-accent-text-shadow);
+  }
+
+  /* ------------------------------------------------------------ status bar */
+  .jp-status-bar {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    padding: 4px 10px;
+    border-top: 1px solid #47474B;
+    background: var(--jp-navigation-inactive);
+    box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.1);
+    color: rgb(255 255 255 / 0.88);
+    font-size: var(--jp-font-size-small);
+  }
+  .jp-status-bar__item--right { margin-left: auto; }
+  .jp-status-bar > * { display: flex; align-items: center; gap: 8px; }
+
+  /* -------------------------------------------------------------- flyout */
+  /*
+  jp:Flyout: a panel that slides in from an edge of the nearest .jp-flyout-host (the window, or
+  any box with that class) and lies over the content:
+  <aside class="jp-flyout" id="settings" data-position="right|left|top|bottom">
+    <header class="jp-flyout__header"><button class="jp-flyout__close" data-jp-close></button><span>Settings</span></header>
+    …content…
+  </aside>
+  data-jp-open="settings" on a button opens it; data-jp-auto-close="4000" closes it after that many
+  ms, starting again when the mouse leaves it (IsAutoCloseEnabled, AutoCloseInterval).
+  */
+  .jp-flyout-host { position: relative; overflow: hidden; }
+  .jp-flyout {
+    position: absolute;
+    z-index: 20;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    box-sizing: border-box;
+    width: min(300px, 100%);
+    padding: 12px 14px;
+    border: 0 solid var(--jp-window-border);
+    border-left-width: 1px;
+    background: linear-gradient(90deg, #4F5054, #5B5C61);
+    box-shadow: 0 0 10px rgb(0 0 0 / 0.45);
+    color: var(--jp-text);
+    font-size: var(--jp-font-size-control);
+    overflow: auto;
+    visibility: hidden;
+    transform: translateX(calc(100% + 12px));
+    transition: transform 0.22s ease-out, visibility 0s linear 0.22s;
+  }
+  .jp-flyout.is-open {
+    visibility: visible;
+    transform: none;
+    transition: transform 0.22s ease-out;
+  }
+  .jp-flyout[data-position="left"] {
+    left: 0;
+    right: auto;
+    border-left-width: 0;
+    border-right-width: 1px;
+    transform: translateX(calc(-100% - 12px));
+  }
+  .jp-flyout:is([data-position="top"], [data-position="bottom"]) {
+    left: 0;
+    right: 0;
+    width: auto;
+    border-left-width: 0;
+  }
+  .jp-flyout[data-position="top"] { bottom: auto; border-bottom-width: 1px; transform: translateY(calc(-100% - 12px)); }
+  .jp-flyout[data-position="bottom"] { top: auto; border-top-width: 1px; transform: translateY(calc(100% + 12px)); }
+  .jp-flyout:is([data-position="left"], [data-position="top"], [data-position="bottom"]).is-open { transform: none; }
+  /* In a window the flyouts start below the title bar, as in JetPackWindow */
+  .jp-window > .jp-flyout:not([data-position="bottom"]) { top: var(--jp-title-bar-height, 30px); }
+
+  .jp-flyout__header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px;
+    font-size: var(--jp-font-size-heading5);
+    font-weight: 700;
+  }
+  /* JetPack.Styles.Flyout.Close: the round button with the arrow pointing to the edge it closes to */
+  .jp-flyout__close {
+    flex: none;
+    position: relative;
+    width: 22px;
+    height: 22px;
+    padding: 0;
+    border: 1.2px solid rgb(255 255 255 / 0.7);
+    border-radius: 50%;
+    background: transparent;
+    cursor: pointer;
+  }
+  .jp-flyout__close::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    margin: auto;
+    width: 5px;
+    height: 8px;
+    translate: 1px 0;
+    background: #fff;
+    clip-path: polygon(0 0, 100% 50%, 0 100%);
+  }
+  .jp-flyout__close:hover { background: rgb(255 255 255 / 0.15); border-color: #fff; }
+  .jp-flyout__close:active { background: rgb(0 0 0 / 0.3); }
+  .jp-flyout[data-position="left"] .jp-flyout__close { transform: scaleX(-1); }
+  .jp-flyout[data-position="top"] .jp-flyout__close { transform: rotate(-90deg); }
+  .jp-flyout[data-position="bottom"] .jp-flyout__close { transform: rotate(90deg); }
+
+  /* -------------------------------------------------------------- dialog */
+  /* JetPackDialog: <dialog class="jp-dialog"><header class="jp-dialog__header">..</header><div class="jp-dialog__content">..</div></dialog> */
+  .jp-dialog {
+    box-sizing: border-box;
+    width: min(400px, calc(100vw - 32px));
+    /* centred; resets such as Tailwind's preflight set margin to 0 */
+    margin: auto;
+    padding: 0;
+    border: 0;
+    border-radius: var(--jp-radius);
+    overflow: hidden;
+    background: var(--jp-dialog-background);
+    box-shadow: var(--jp-shadow-light), var(--jp-effect-dialog-shadow);
+    color: var(--jp-header-foreground);
+    font-size: var(--jp-font-size-control);
+  }
+  .jp-dialog::backdrop { background: var(--jp-dialog-overlay); }
+  .jp-dialog__header {
+    display: flex;
+    align-items: center;
+    height: 28px;
+    padding: 0 4px 0 10px;
+    background: var(--jp-static-background);
+    font-weight: 700;
+    text-shadow: var(--jp-emboss);
+  }
+  .jp-dialog__header > button {
+    margin-left: auto;
+    width: 22px;
+    height: 20px;
+    border: 0;
+    border-radius: var(--jp-radius);
+    background: transparent;
+    color: #505050;
+    font-size: 14px;
+    cursor: pointer;
+  }
+  .jp-dialog__header > button:hover { background: var(--jp-close-mouse-over); color: #fff; }
+  .jp-dialog__content { padding: 14px 14px 12px; }
+  .jp-dialog__buttons { display: flex; justify-content: flex-end; gap: 8px; margin-top: 14px; }
+}

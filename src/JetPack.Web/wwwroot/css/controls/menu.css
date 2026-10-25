@@ -1,0 +1,197 @@
+/* JetPack for the web · Menu, ContextMenu, MenuItem, ToolBar, ToolTip (Controls.Menu.xaml) */
+@layer components {
+
+  /* ------------------------------------------------------------------ menu */
+  /*
+  A menu panel (ContextMenu, a submenu, the drop-down of a Menu, SplitButton or DropDownButton):
+  <div class="jp-context-menu" popover id="…">
+    <button class="jp-menu-item"><span class="jp-menu-item__header">Cut</span><span class="jp-menu-item__gesture">Ctrl+X</span></button>
+    <hr class="jp-menu-separator">
+    <button class="jp-menu-item" role="menuitemcheckbox" aria-checked="true">Show grid lines</button>
+    <button class="jp-menu-item" aria-haspopup="menu" popovertarget="sub">Export</button>  (a submenu)
+  </div>
+  jetpack.js places it, opens submenus on hover and moves the highlight with the arrow keys.
+  */
+  .jp-context-menu {
+    box-sizing: border-box;
+    min-width: 160px;
+    margin: 0;
+    padding: 4px 0;
+    border: 1px solid var(--jp-panel-border);
+    border-radius: 0;
+    background: var(--jp-menu-background);
+    box-shadow: var(--jp-effect-popup-shadow);
+    color: var(--jp-control-foreground);
+    font-size: var(--jp-font-size-control);
+  }
+  .jp-context-menu[popover] {
+    position: fixed;
+    inset: auto;
+    overflow: visible;
+  }
+  .jp-menu-item {
+    position: relative;
+    display: grid;
+    grid-template-columns: 22px 1fr auto 16px;
+    align-items: center;
+    box-sizing: border-box;
+    width: 100%;
+    padding: 4px 6px 4px 4px;
+    border: 0;
+    background: transparent;
+    color: inherit;
+    font: inherit;
+    text-align: left;
+    text-decoration: none;
+    white-space: nowrap;
+    cursor: default;
+  }
+  .jp-menu-item > .jp-icon { grid-column: 1; justify-self: center; }
+  .jp-menu-item__header { grid-column: 2; margin: 0 12px 0 4px; }
+  .jp-menu-item__gesture { grid-column: 3; margin-left: 12px; color: #707070; }
+  /* a plain label without the header span */
+  .jp-menu-item:not(:has(.jp-menu-item__header)) { padding-left: 30px; display: flex; }
+  .jp-menu-item:is(:hover, :focus-visible, .is-highlighted):not(:disabled) {
+    outline: none;
+    background: var(--jp-accent-selection);
+    color: #fff;
+  }
+  .jp-menu-item:is(:hover, :focus-visible, .is-highlighted):not(:disabled) .jp-menu-item__gesture { color: #fff; }
+  .jp-menu-item:disabled { color: var(--jp-menu-disabled); }
+  /* IsCheckable + IsChecked: the check mark of the check box in the icon column */
+  .jp-menu-item[aria-checked="true"]::before {
+    content: "";
+    position: absolute;
+    left: 11px;
+    top: 50%;
+    width: 9px;
+    height: 8px;
+    margin-top: -4px;
+    background: currentColor;
+    mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0.5 1.1 6.5 5.9'%3E%3Cpath d='M0.5625,5.0625 L1.5,3.9375 L2.9575791,4.9549685 L5.75,1.125 L6.9375,2 L3.186887,7.0000076 z'/%3E%3C/svg%3E") center / contain no-repeat;
+  }
+  /* SubmenuHeader: the arrow at the right */
+  .jp-menu-item[aria-haspopup="menu"]::after {
+    content: "";
+    grid-column: 4;
+    justify-self: end;
+    width: 4px;
+    height: 7px;
+    background: currentColor;
+    clip-path: polygon(0 0, 100% 50%, 0 100%);
+  }
+  .jp-menu-separator {
+    height: 0;
+    margin: 4px 6px 4px 30px;
+    border: 0;
+    border-top: 1px solid rgb(0 0 0 / 0.16);
+    border-bottom: 1px solid #fff;
+  }
+
+  /* Menu: the light bar with the top-level headers; the open one gets the accent */
+  .jp-menu {
+    display: flex;
+    padding: 0 2px;
+    border-radius: 1px;
+    background: var(--jp-static-background);
+    box-shadow: var(--jp-effect-control-shadow);
+    color: var(--jp-header-foreground);
+    font-size: var(--jp-font-size-control);
+  }
+  .jp-menu > .jp-menu-item {
+    display: block;
+    width: auto;
+    padding: 5px 10px;
+    text-shadow: var(--jp-effect-text-emboss);
+  }
+  .jp-menu > .jp-menu-item::after { display: none; }
+  .jp-menu > .jp-menu-item:is(:hover, .is-open, :focus-visible) { text-shadow: none; }
+
+  /* ----------------------------------------------------------------- toolbar */
+  /*
+  <div class="jp-tool-bar-tray"><div class="jp-tool-bar" role="toolbar">
+    <span class="jp-tool-bar__thumb"></span>
+    <button class="jp-button jp-button--tool-bar">…</button> <span class="jp-tool-bar__separator"></span> …
+  </div></div>
+  */
+  .jp-tool-bar-tray { display: flex; flex-wrap: wrap; gap: 4px; }
+  .jp-tool-bar {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    padding: 3px 4px 3px 2px;
+    border-radius: var(--jp-radius);
+    background: var(--jp-static-background);
+    box-shadow: var(--jp-effect-light-control-shadow);
+    color: var(--jp-header-foreground);
+    font-size: var(--jp-font-size-control);
+  }
+  .jp-tool-bar__thumb {
+    flex: none;
+    align-self: stretch;
+    width: 4px;
+    margin: 0 2px;
+    /* the dotted grip of ToolBar.Thumb: a dark dot over a white one, every 4px */
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4'%3E%3Crect x='1' y='1' width='2' height='2' fill='%23fff'/%3E%3Crect width='2' height='2' fill='%23777'/%3E%3C/svg%3E") 0 3px / 4px 4px repeat-y;
+    cursor: move;
+  }
+  .jp-tool-bar__separator {
+    flex: none;
+    align-self: stretch;
+    width: 1px;
+    margin: 2px 4px;
+    background: rgb(0 0 0 / 0.2);
+    box-shadow: 1px 0 0 #fff;
+  }
+  /* Buttons in a ToolBar (ToolBar.ButtonStyleKey): flat until the mouse is over them */
+  .jp-tool-bar > :is(.jp-button, button:not([class])) {
+    min-width: 24px;
+    min-height: 22px;
+    padding: 2px 4px;
+    border: 1px solid transparent;
+    border-radius: var(--jp-radius);
+    background: transparent;
+    box-shadow: none;
+    color: var(--jp-control-glyph-dark);
+    text-shadow: none;
+  }
+  .jp-tool-bar > :is(.jp-button, button:not([class])):hover { background: var(--jp-control-background-mouse-over); border-color: rgb(0 0 0 / 0.2); box-shadow: var(--jp-highlight); }
+  .jp-tool-bar > .jp-button[aria-pressed="true"], .jp-tool-bar > .jp-button:active {
+    background: var(--jp-control-background-pressed);
+    border-color: rgb(0 0 0 / 0.3);
+    box-shadow: inset 1px 1px 0 rgb(0 0 0 / 0.15);
+  }
+  .jp-tool-bar > select.jp-combo-box { width: auto; margin: 0 4px; }
+  .jp-tool-bar > .jp-check-box { margin: 0 4px; color: var(--jp-control-foreground); }
+
+  /* ---------------------------------------------------------------- tooltip */
+  /*
+  ToolTip: any element with data-jp-tool-tip="…" (the jp-tool-tip attribute in Razor) gets the
+  green call-out under the pointer after a short wait. .jp-tool-tip-host / .jp-tool-tip shows a
+  tip with CSS only.
+  */
+  .jp-tool-tip {
+    z-index: 1000;
+    max-width: 320px;
+    padding: 4px 8px 5px;
+    border-radius: 3px;
+    background: linear-gradient(rgb(255 255 255 / 0.3), rgb(0 0 0 / 0.3)), var(--jp-accent-button-normal);
+    box-shadow: inset 1px 1px 0 var(--jp-accent-button-highlight), 0 1px 2px rgb(0 0 0 / 0.24);
+    color: #fff;
+    font-size: var(--jp-font-size-small);
+    text-shadow: var(--jp-glow);
+    pointer-events: none;
+  }
+  .jp-tool-tip.is-floating { position: fixed; }
+  .jp-tool-tip-host { position: relative; display: inline-block; }
+  .jp-tool-tip-host > .jp-tool-tip {
+    position: absolute;
+    left: 50%;
+    bottom: calc(100% + 8px);
+    white-space: nowrap;
+    transform: translateX(-50%);
+    opacity: 0;
+    transition: opacity 0.12s;
+  }
+  .jp-tool-tip-host:hover > .jp-tool-tip, .jp-tool-tip-host:focus-within > .jp-tool-tip { opacity: 1; }
+}

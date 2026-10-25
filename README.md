@@ -195,12 +195,13 @@ dotnet run --project samples/JetPack.Wpf.Samples.Admin
 dotnet run --project samples/JetPack.Wpf.Samples.Portal
 ```
 
-`src/JetPack.Web` is a proof of concept of the same look for web sites (CSS classes named after the
-controls, tokens generated from the WPF brushes, Razor tag helpers); `samples/JetPack.Web.Samples.Mvc`
-is the admin sample as an ASP.NET Core MVC site (see
-[JetPack for the web](https://montago.github.io/JetPackTheme/web.html)):
+`src/JetPack.Web` is the same look for web sites: CSS classes named after the controls, tokens
+generated from the WPF brushes, and a Razor tag helper per control with the WPF property names.
+`src/JetPack.Web.Demo` is the WPF demo as a web page, and `samples/JetPack.Web.Samples.Mvc` the admin
+sample as an ASP.NET Core MVC site (see [JetPack for the web](https://montago.github.io/JetPackTheme/web.html)):
 
 ```bash
+dotnet run --project src/JetPack.Web.Demo
 dotnet run --project samples/JetPack.Web.Samples.Mvc
 ```
 
@@ -218,7 +219,8 @@ src/JetPack.Wpf/
   Helpers/           attached properties and converters
   Theming/           ThemeManager and AccentGenerator
 src/JetPack.Wpf.Demo/
-src/JetPack.Web/     the web theme (CSS, JavaScript, tag helpers), proof of concept
+src/JetPack.Web/     the web theme (CSS, JavaScript, tag helpers)
+src/JetPack.Web.Demo/  the WPF demo as a web page
 samples/             Admin (HamburgerMenu) and Portal (navigation bar) sample apps, and the
                      admin sample as an ASP.NET Core MVC site
 docs/                documentation and screenshots

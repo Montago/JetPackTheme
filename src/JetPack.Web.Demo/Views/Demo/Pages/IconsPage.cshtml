@@ -1,0 +1,27 @@
+@* IconsPage.xaml *@
+<jp-scroll-viewer thin="true" class="demo-page">
+    <p class="demo-intro">The icons of jp-icon (jp:JetPackIcon in WPF): Material Design Icons by Pictogrammers (Apache License 2.0), with the names MahApps' IconBrowser uses. Each one is shown on the navigation pane, selected and on a light button. Click an icon to copy its markup; add more in icons/icons.json.</p>
+
+    <div class="flex flex-wrap items-center mb-4">
+        <jp-text-box id="IconSearch" watermark="Search icons…" clear-text-button="true" class="w-[220px]" />
+        <span class="demo-state ml-5 mr-2.5">Size</span>
+        <jp-radio-button group-name="IconSize" content="16" value="16" class="mr-3.5" />
+        <jp-radio-button group-name="IconSize" content="18" value="18" is-checked="true" class="mr-3.5" />
+        <jp-radio-button group-name="IconSize" content="24" value="24" />
+        <span class="demo-state ml-auto" id="IconCopied"></span>
+    </div>
+
+    <div class="flex flex-wrap" id="IconCards">
+        @foreach (var kind in Enum.GetValues<JetPackIconKind>().Where(k => k != JetPackIconKind.None))
+        {
+            <div class="demo-icon-card" data-kind="@kind" jp-tool-tip="@($"<jp-icon kind=\"{kind}\" />")">
+                <div class="flex justify-center">
+                    <span class="demo-icon-card__swatch" style="background: var(--jp-navigation-inactive); color: var(--jp-tab-inactive-foreground)"><jp-icon kind="@kind" /></span>
+                    <span class="demo-icon-card__swatch" style="background: var(--jp-accent-selection); color: #fff"><jp-icon kind="@kind" /></span>
+                    <jp-button button-style="Square" class="ml-2 self-center" tabindex="-1"><jp-icon kind="@kind" style="color: var(--jp-control-glyph-dark)" /></jp-button>
+                </div>
+                <span class="demo-icon-card__name">@kind</span>
+            </div>
+        }
+    </div>
+</jp-scroll-viewer>

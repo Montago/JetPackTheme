@@ -1,0 +1,196 @@
+/* JetPack for the web · JetPack's own controls: JetPackIcon, InfoBar, Tile, Badged, pills (Controls.JetPack.xaml) */
+@layer components {
+
+  /* ---------------------------------------------------------------- icon */
+  /* JetPackIcon: <svg class="jp-icon"><use href="…/img/icons.svg#bell"></use></svg>, or <jp-icon kind="Bell" /> */
+  .jp-icon {
+    display: inline-block;
+    flex: none;
+    width: 16px;
+    height: 16px;
+    fill: currentColor;
+    vertical-align: -3px;
+  }
+
+  /* --------------------------------------------------------------- info bar */
+  .jp-info-bar {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    padding: 6px 8px;
+    border-radius: var(--jp-radius);
+    background: var(--jp-static-background);
+    box-shadow: var(--jp-shadow-light);
+    color: var(--jp-header-foreground);
+    font-size: var(--jp-font-size-control);
+    text-shadow: 0 1px 0 rgb(255 255 255 / 0.4);
+  }
+  .jp-info-bar[hidden] { display: none; }
+  .jp-info-bar__icon {
+    flex: none;
+    width: 18px;
+    height: 18px;
+    display: grid;
+    place-items: center;
+    border-radius: var(--jp-radius);
+    background: var(--jp-button-blue-normal);
+    color: #fff;
+    font-weight: 700;
+    font-size: 12px;
+    text-shadow: 0 -1px 0 rgb(0 0 0 / 0.3);
+  }
+  .jp-info-bar--success .jp-info-bar__icon { background: var(--jp-button-green-normal); }
+  .jp-info-bar--warning .jp-info-bar__icon { background: var(--jp-button-orange-normal); }
+  .jp-info-bar--error .jp-info-bar__icon { background: var(--jp-error-header); }
+  .jp-info-bar__title { font-weight: 700; }
+  .jp-info-bar__actions { margin-left: auto; display: flex; gap: 8px; align-items: center; }
+  .jp-info-bar__close {
+    margin-left: auto;
+    padding: 0 2px;
+    border: 0;
+    background: transparent;
+    color: #606060;
+    font-size: 15px;
+    line-height: 1;
+    cursor: pointer;
+  }
+  .jp-info-bar__actions + .jp-info-bar__close { margin-left: 0; }
+  .jp-info-bar__close:hover { color: #202020; }
+
+  /* ----------------------------------------------------------------- tile */
+  .jp-tile {
+    position: relative;
+    box-sizing: border-box;
+    display: grid;
+    grid-template: "count" auto "content" 1fr "title" auto / minmax(0, 1fr);
+    min-height: 84px;
+    padding: 8px;
+    border: 0;
+    border-radius: var(--jp-radius);
+    background: var(--jp-control-background);
+    color: var(--jp-header-foreground);
+    text-align: left;
+    text-decoration: none;
+    text-shadow: 0 1px 0 rgb(255 255 255 / 0.5);
+    box-shadow: var(--jp-shadow), var(--jp-highlight);
+    cursor: pointer;
+  }
+  .jp-tile:hover { background: var(--jp-control-background-mouse-over); }
+  .jp-tile:active { background: var(--jp-control-background-pressed); }
+  .jp-tile__title { grid-area: title; font-size: 12px; font-weight: 700; }
+  .jp-tile__count { grid-area: count; justify-self: end; font-size: 24px; font-weight: 700; line-height: 1; }
+  .jp-tile--accent { --jp-b-normal: var(--jp-accent-button-normal); --jp-b-over: var(--jp-accent-button-mouse-over); --jp-b-pressed: var(--jp-accent-button-pressed); --jp-b-highlight: var(--jp-accent-button-highlight); }
+  .jp-tile--green { --jp-b-normal: var(--jp-button-green-normal); --jp-b-over: var(--jp-button-green-mouse-over); --jp-b-pressed: var(--jp-button-green-pressed); --jp-b-highlight: var(--jp-button-green-highlight); }
+  .jp-tile--orange { --jp-b-normal: var(--jp-button-orange-normal); --jp-b-over: var(--jp-button-orange-mouse-over); --jp-b-pressed: var(--jp-button-orange-pressed); --jp-b-highlight: var(--jp-button-orange-highlight); }
+  .jp-tile--blue { --jp-b-normal: var(--jp-button-blue-normal); --jp-b-over: var(--jp-button-blue-mouse-over); --jp-b-pressed: var(--jp-button-blue-pressed); --jp-b-highlight: var(--jp-button-blue-highlight); }
+  :is(.jp-tile--accent, .jp-tile--green, .jp-tile--orange, .jp-tile--blue) {
+    background: var(--jp-b-normal);
+    color: #fff;
+    text-shadow: 0 -1px 1px rgb(0 0 0 / 0.25);
+    box-shadow: var(--jp-shadow), inset 0.5px 1px 0 var(--jp-b-highlight);
+  }
+  :is(.jp-tile--accent, .jp-tile--green, .jp-tile--orange, .jp-tile--blue):hover { background: var(--jp-b-over); }
+  :is(.jp-tile--accent, .jp-tile--green, .jp-tile--orange, .jp-tile--blue):active { background: var(--jp-b-pressed); }
+
+  /* ---------------------------------------------------------------- badged */
+  .jp-badged { position: relative; display: inline-block; }
+  .jp-badged__badge {
+    position: absolute;
+    top: -8px;
+    right: -10px;
+    box-sizing: border-box;
+    min-width: 16px;
+    height: 15px;
+    padding: 0 4px;
+    border-radius: var(--jp-radius);
+    background: var(--jp-button-orange-normal);
+    box-shadow: var(--jp-shadow), inset 0.5px 1px 0 var(--jp-button-orange-highlight);
+    color: #fff;
+    font-size: 10px;
+    font-weight: 700;
+    line-height: 15px;
+    text-align: center;
+    text-shadow: var(--jp-effect-button-orange-text-shadow);
+  }
+
+  /* ------------------------------------------------- status dot and pill */
+  .jp-pill {
+    display: inline-block;
+    padding: 0 6px;
+    border-radius: var(--jp-radius);
+    background: var(--jp-static-background);
+    color: var(--jp-header-foreground);
+    font-size: 10.5px;
+    line-height: 16px;
+  }
+  .jp-pill--success, .jp-pill--warning, .jp-pill--info, .jp-pill--error { color: #fff; text-shadow: 0 -1px 0 rgb(0 0 0 / 0.25); }
+  .jp-pill--success { background: var(--jp-button-green-normal); }
+  .jp-pill--warning { background: var(--jp-button-orange-normal); }
+  .jp-pill--info { background: var(--jp-button-blue-normal); }
+  .jp-pill--error { background: var(--jp-error-header); }
+
+  /* ---------------------------------------------------------- color picker */
+  /* <button class="jp-color-picker" data-selected-color="#75A20A"><span class="jp-color-picker__swatch"></span><span class="jp-color-picker__text"></span></button> */
+  .jp-color-picker {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    box-sizing: border-box;
+    width: 100%;
+    min-height: 24px;
+    padding: 3px 32px 3px 6px;
+    border: 0;
+    border-radius: var(--jp-radius);
+    background:
+      linear-gradient(rgb(0 0 0 / 0), rgb(0 0 0 / 0.19) 30%, rgb(0 0 0 / 0.19) 70%, rgb(0 0 0 / 0)) right 26px top 50% / 1px 70% no-repeat,
+      linear-gradient(rgb(255 255 255 / 0), rgb(255 255 255 / 0.8) 30%, rgb(255 255 255 / 0.8) 70%, rgb(255 255 255 / 0)) right 25px top 50% / 1px 70% no-repeat,
+      var(--jp-cp-surface, var(--jp-control-background));
+    box-shadow: var(--jp-shadow), var(--jp-highlight);
+    color: var(--jp-control-foreground);
+    font-size: var(--jp-font-size-control);
+    text-shadow: var(--jp-emboss);
+    cursor: pointer;
+  }
+  .jp-color-picker:hover { --jp-cp-surface: var(--jp-control-background-mouse-over); }
+  .jp-color-picker[aria-expanded="true"] { --jp-cp-surface: var(--jp-control-background-pressed); }
+  .jp-color-picker::after {
+    content: "";
+    position: absolute;
+    right: 9px;
+    top: 50%;
+    width: 8px;
+    height: 4px;
+    margin-top: -2px;
+    background: var(--jp-control-glyph);
+    clip-path: polygon(0 0, 100% 0, 50% 100%);
+  }
+  .jp-color-picker__swatch {
+    flex: none;
+    width: 12px;
+    height: 12px;
+    border: 1px solid rgb(0 0 0 / 0.35);
+  }
+  .jp-color-picker__palette {
+    display: grid;
+    grid-template-columns: repeat(8, 16px);
+    gap: 3px;
+    padding: 6px;
+    border-radius: 0 0 4px 4px;
+    background: #fff;
+    box-shadow: var(--jp-effect-popup-shadow);
+  }
+  .jp-color-picker__palette > button {
+    width: 16px;
+    height: 16px;
+    padding: 0;
+    border: 1px solid rgb(0 0 0 / 0.25);
+    cursor: pointer;
+  }
+  .jp-color-picker__palette > button:hover { outline: 1px solid var(--jp-accent-solid); outline-offset: 1px; }
+  .jp-color-picker__palette > button[aria-selected="true"] { outline: 2px solid var(--jp-accent-solid); outline-offset: 1px; }
+
+  /* Rating as an input (data-jp-input): the stars follow the mouse */
+  .jp-rating[data-jp-input] { cursor: pointer; }
+  .jp-rating[data-jp-input]:focus-visible { outline: 1px solid var(--jp-focus); outline-offset: 2px; }
+}
