@@ -20,7 +20,8 @@
     height: 100dvh;
     overflow: hidden;
   }
-  .jp-window > :not(.jp-vignette, dialog, .jp-flyout) { position: relative; }
+  /* Only the window's own rows: tool tips, call-outs and popups added to the body stay fixed */
+  .jp-window > :is(.jp-title-bar, .jp-window__body, .jp-status-bar, main) { position: relative; }
   .jp-window__body { display: flex; min-height: 0; }
   .jp-window__content {
     flex: 1;

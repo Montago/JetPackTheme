@@ -1196,6 +1196,8 @@ also raise "jp-change" with the new value in event.detail.
   }
 
   /* ================================================================ tooltip */
+  const pointer = { x: 0, y: 0 };
+  document.addEventListener('pointermove', e => { pointer.x = e.clientX; pointer.y = e.clientY; }, { passive: true });
   let tipTimer = 0;
   let tipEl = null;
   function hideToolTip() {
@@ -1499,8 +1501,8 @@ also raise "jp-change" with the new value in event.detail.
     const tip = closestIn(event, '[data-jp-tool-tip]');
     if (tip && !tip.contains(event.relatedTarget)) {
       clearTimeout(tipTimer);
-      const { clientX, clientY } = event;
-      tipTimer = setTimeout(() => showToolTip(tip, clientX, clientY), 500);
+      /* shown where the pointer is after the wait, as a WPF ToolTip */
+      tipTimer = setTimeout(() => showToolTip(tip, pointer.x, pointer.y), 500);
     }
     const invalid = closestIn(event, '[data-jp-error]');
     if (invalid && !invalid.contains(event.relatedTarget)) showError(invalid);
