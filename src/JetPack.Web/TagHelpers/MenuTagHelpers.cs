@@ -1,4 +1,6 @@
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.TagHelpers;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.AspNetCore.Razor.TagHelpers;
 
 namespace JetPack.Web.TagHelpers;
@@ -27,6 +29,9 @@ public class MenuItemTagHelper : JetPackTagHelper
     public JetPackIconKind Icon { get; set; }
 
     public string? Href { get; set; }
+
+    [ViewContext, HtmlAttributeNotBound]
+    public ViewContext ViewContext { get; set; } = null!;
 
     public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
     {
@@ -63,7 +68,7 @@ public class MenuItemTagHelper : JetPackTagHelper
 
         output.Attributes.SetAttribute("role", IsCheckable ? "menuitemcheckbox" : "menuitem");
         if (IsCheckable) output.Attributes.SetAttribute("aria-checked", IsChecked ? "true" : "false");
-        var icon = Icon == JetPackIconKind.None ? "" : $"<svg class=\"jp-icon\" aria-hidden=\"true\"><use href=\"/_content/JetPack.Web/img/icons.svg#{JetPackIconIds.Get(Icon)}\"></use></svg>";
+        var icon = Html.Icon(ViewContext, Icon);
         var gesture = InputGestureText is null ? "" : $"<span class=\"jp-menu-item__gesture\">{Html.Text(InputGestureText)}</span>";
         output.Content.SetHtmlContent(icon + $"<span class=\"jp-menu-item__header\">{text}</span>" + gesture);
         if (hasMenu)
