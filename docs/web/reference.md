@@ -56,7 +56,7 @@ details and the HTML each one writes. The tag helpers marked * also take `is-ena
 | `jp-context-menu` | `ContextMenu` | `id`; children: `jp-menu-item` | [Navigation](navigation.md#contextmenu) |
 | `jp-tool-bar-tray`, `jp-tool-bar` | `ToolBarTray`, `ToolBar` | | [Navigation](navigation.md#toolbar) |
 | `jp-status-bar` | `StatusBar` | children: `jp-status-bar-item` (`content`, `horizontal-alignment`) | [Navigation](navigation.md#statusbar) |
-| `jp-grid-splitter` * | `GridSplitter` | | [Navigation](navigation.md#gridsplitter-and-separator) |
+| `jp-grid-splitter` * | `GridSplitter` | `resize-direction` | [Navigation](navigation.md#gridsplitter-and-separator) |
 | `jp-separator` | `Separator` | | [Navigation](navigation.md#gridsplitter-and-separator) |
 | `jp-tool-tip` (on any element) | `ToolTip` | the text | [Navigation](navigation.md#tooltip) |
 | `jp-flyout` * | `jp:Flyout` | `id`, `header`, `position`, `width`, `is-open`, `is-closable`, `is-auto-close-enabled`, `auto-close-interval`, `padding` | [Window](window.md#flyouts) |

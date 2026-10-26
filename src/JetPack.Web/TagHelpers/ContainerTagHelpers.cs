@@ -211,17 +211,24 @@ public class BadgedTagHelper : JetPackTagHelper
     }
 }
 
-/// <summary><c>&lt;jp-grid-splitter /&gt;</c> between two panes of a flex row: drag it to resize the pane before it.</summary>
+/// <summary>
+/// <c>&lt;jp-grid-splitter /&gt;</c> between two panes of a flex row (or of a flex column with
+/// <c>resize-direction="Rows"</c>): drag it to resize the pane before it.
+/// </summary>
 [HtmlTargetElement("jp-grid-splitter", TagStructure = TagStructure.WithoutEndTag)]
 public class GridSplitterTagHelper : JetPackTagHelper
 {
+    /// <summary><c>Columns</c> (default) or <c>Rows</c>.</summary>
+    public string ResizeDirection { get; set; } = "Columns";
+
     public override void Process(TagHelperContext context, TagHelperOutput output)
     {
+        var rows = ResizeDirection.Equals("Rows", StringComparison.OrdinalIgnoreCase);
         output.TagName = "div";
         output.TagMode = TagMode.StartTagAndEndTag;
-        AddClasses(output, "jp-grid-splitter");
+        AddClasses(output, "jp-grid-splitter", rows ? "jp-grid-splitter--rows" : null);
         output.Attributes.SetAttribute("role", "separator");
-        output.Attributes.SetAttribute("aria-orientation", "vertical");
+        output.Attributes.SetAttribute("aria-orientation", rows ? "horizontal" : "vertical");
         ApplyCommon(output);
     }
 }

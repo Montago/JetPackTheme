@@ -70,7 +70,11 @@
             <div class="flex w-[320px] h-[110px]">
                 <div class="flex-[1_1_0] min-w-[60px] p-2 bg-jp-panel" style="background: var(--jp-panel-background)">Navigation</div>
                 <jp-grid-splitter />
-                <div class="flex-[2_1_0] min-w-[60px] p-2" style="background: var(--jp-panel-background)">Content</div>
+                <div class="flex-[2_1_0] min-w-[60px] flex flex-col">
+                    <div class="flex-[1_1_0] min-h-[30px] p-2" style="background: var(--jp-panel-background)">Content</div>
+                    <jp-grid-splitter resize-direction="Rows" />
+                    <div class="flex-[1_1_0] min-h-[30px] p-2" style="background: var(--jp-panel-background)">Details</div>
+                </div>
             </div>
         </demo-column>
     </div>
