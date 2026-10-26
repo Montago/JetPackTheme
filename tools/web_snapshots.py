@@ -35,7 +35,7 @@ EDGE = [r'C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe', r'C:\Pr
 
 SITES = [
     ('src/JetPack.Web.Demo', 'JetPack.Web.Demo', 5291,
-     [(f'#{tab}', os.path.join('web', tab + '.png')) for tab in ('core', 'sdk', 'toolkit', 'extras', 'window', 'palette', 'icons')]),
+     [(f'?snapshot#{tab}', os.path.join('web', tab + '.png')) for tab in ('core', 'sdk', 'toolkit', 'extras', 'window', 'palette', 'icons')]),
     ('samples/JetPack.Web.Samples.Mvc', 'JetPack.Web.Samples.Mvc', 5292,
      [(path, os.path.join('samples', 'web-' + name + '.png')) for name, path in
       (('dashboard', ''), ('employees', 'Employees'), ('timesheets', 'Timesheets'), ('projects', 'Projects'))]),
@@ -84,9 +84,13 @@ def same_pixels(a, b):
     x, y = Image.open(a).convert('RGBA'), Image.open(b).convert('RGBA')
     if x.size != y.size:
         return False
-    d = ImageChops.difference(x, y)
-    # getbbox() of an RGBA image only looks at alpha, so check the colours as well
-    return d.convert('RGB').getbbox() is None and d.getchannel('A').getbbox() is None
+    # Edge's rasteriser differs between runs by one level, or in a few anti-aliased corner pixels
+    # when four instances run at once; neither is a change of the look
+    over = [c.point(lambda v: 255 if v > 1 else 0) for c in ImageChops.difference(x, y).split()]
+    mask = over[0]
+    for c in over[1:]:
+        mask = ImageChops.lighter(mask, c)
+    return mask.histogram()[255] <= 8
 
 
 def copy_if_changed(raw, target, added, changed):
@@ -142,21 +146,10 @@ def main():
             for path, target in pages:
                 raw = os.path.join(args.scratch, 'shots', target)
                 os.makedirs(os.path.dirname(raw), exist_ok=True)
-                profile = os.path.join(args.scratch, 'edge-profile')
-                shutil.rmtree(profile, ignore_errors=True)
-                subprocess.run([browser, '--headless=new', '--disable-gpu', '--force-device-scale-factor=1', '--user-data-dir=' + profile,
-                                '--window-size=1280,900', '--virtual-time-budget=5000', '--screenshot=' + raw, base + path],
-                               capture_output=True, timeout=120)
-                dest = os.path.join(SHOTS, target)
-                os.makedirs(os.path.dirname(dest), exist_ok=True)
-                rel = os.path.relpath(dest, ROOT).replace('\\', '/')
-                if not os.path.exists(dest):
-                    added.append(rel)
-                elif same_pixels(raw, dest):
-                    continue
-                else:
-                    changed.append(rel)
-                shutil.copyfile(raw, dest)
+                edge_shot(browser, os.path.join(args.scratch, 'edge-profile'), base + path, raw)
+                copy_if_changed(raw, target, added, changed)
+            if name == 'JetPack.Web.Demo':
+                gallery(browser, base, args.scratch, added, changed)
         finally:
             server.terminate()
             server.wait(timeout=30)

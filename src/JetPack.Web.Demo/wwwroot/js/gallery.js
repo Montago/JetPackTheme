@@ -39,7 +39,7 @@
       el.querySelector('[popovertarget]').click();
     } else if (el.matches('[data-jp-context-menu]')) {
       const r = el.getBoundingClientRect();
-      el.dispatchEvent(new MouseEvent('contextmenu', { bubbles: true, cancelable: true, clientX: Math.round(r.left + 60), clientY: Math.round(r.top + 30) }));
+      el.dispatchEvent(new MouseEvent('contextmenu', { bubbles: true, cancelable: true, clientX: Math.round(r.left + 130), clientY: Math.round(r.top + 40) }));
     } else if (el.matches('.jp-scroll-viewer--thin')) {
       el.classList.add('is-active');
     } else if (el.matches('[data-jp-error]')) {

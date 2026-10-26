@@ -106,6 +106,7 @@
   }
   .jp-menu > .jp-menu-item::after { display: none; }
   .jp-menu > .jp-menu-item:is(:hover, .is-open, :focus-visible) { text-shadow: none; }
+  .jp-menu > .jp-menu-item.is-open { background: var(--jp-accent-selection); color: #fff; }
 
   /* ----------------------------------------------------------------- toolbar */
   /*

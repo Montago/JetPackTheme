@@ -87,10 +87,10 @@ tools/web_snapshots.py can cut the picture out to docs/screenshots/web/controls/
 
     <div class="gallery-sample" data-shot="tile">
         <div class="flex gap-2">
-            <jp-tile title="Available" count="14" tile-style="Green" />
-            <jp-tile title="Suggestions" count="3" tile-style="Orange" />
-            <jp-tile title="Assigned" count="9" tile-style="Blue" />
-            <jp-tile title="Archive" count="148" />
+            <jp-tile title="Available" class="w-[110px]" count="14" tile-style="Green" />
+            <jp-tile title="Suggestions" class="w-[110px]" count="3" tile-style="Orange" />
+            <jp-tile title="Assigned" class="w-[110px]" count="9" tile-style="Blue" />
+            <jp-tile title="Archive" class="w-[110px]" count="148" />
         </div>
     </div>
 
@@ -227,7 +227,7 @@ tools/web_snapshots.py can cut the picture out to docs/screenshots/web/controls/
 
     <div class="gallery-sample" data-shot="timepicker">
         <div class="flex items-start gap-3">
-            <jp-time-picker class="w-[150px]" data-demo-open />
+            <jp-time-picker selected-time="@(new TimeSpan(8, 30, 0))" class="w-[150px]" data-demo-open />
             <jp-time-picker minute-step="30" watermark="Meeting time" class="w-[150px]" />
         </div>
     </div>

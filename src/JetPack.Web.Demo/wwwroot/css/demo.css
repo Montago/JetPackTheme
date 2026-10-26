@@ -142,4 +142,10 @@
   .demo-icon-card__swatch { display: grid; place-items: center; width: 42px; height: 36px; margin-right: 4px; }
   .demo-icon-card__name { display: block; margin-top: 8px; color: var(--jp-text-soft); font-family: var(--jp-font-family-mono); font-size: 11px; text-align: center; }
   .demo-icon-card .jp-icon { width: var(--demo-icon-size, 18px); height: var(--demo-icon-size, 18px); }
+
+  /* ?snapshot: endless animations stand still (see _Layout.cshtml) */
+  html[data-snapshot] *, html[data-snapshot] *::before, html[data-snapshot] *::after {
+    animation-play-state: paused !important;
+    transition: none !important;
+  }
 }

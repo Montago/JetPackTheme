@@ -160,7 +160,8 @@
     position: absolute;
     inset: 0;
     border-radius: 50%;
-    mask: radial-gradient(circle, transparent 11px, #000 12px);
+    /* the ring is a third of the radius thick at any size (11px of 17 at the default 34px) */
+    mask: radial-gradient(circle closest-side, transparent 65%, #000 calc(65% + 1px));
   }
   .jp-progress-ring::before { background: var(--jp-track); box-shadow: inset 0 1px 2px rgb(0 0 0 / 0.6); }
   .jp-progress-ring::after {
