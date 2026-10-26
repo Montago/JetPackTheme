@@ -13,7 +13,8 @@ Steps:
   3. Copies the pictures to docs/screenshots, docs/screenshots/controls and docs/screenshots/samples.
   4. Regenerates docs/resource-keys.md and docs/_data/nav_headings.yml (the headings in the docs menu).
   5. Checks that every {StaticResource} in Styles/ is defined earlier in the same file, that every
-     image the docs reference exists, and that every gallery picture is used by a docs page.
+     image the docs reference exists, that every gallery picture (WPF and web) is used by a docs
+     page, and that every control and web tag helper is mentioned (docs/*.md and docs/web/*.md).
 
 Prints a report and exits with 1 when a step or a check fails. Needs only the Python standard library
 and the .NET SDK.
@@ -233,45 +234,74 @@ def check_static_resources(report):
     print(f'  {count} references checked')
 
 
+def doc_pages():
+    """The docs pages: docs/*.md (home and WPF) and docs/web/*.md (the web theme)."""
+    return sorted(glob.glob(os.path.join(DOCS, '*.md')) + glob.glob(os.path.join(DOCS, 'web', '*.md')))
+
+
 def check_doc_images(report):
     step('Checking images in docs/')
     referenced = set()
-    for page in glob.glob(os.path.join(DOCS, '*.md')):
+    for page in doc_pages():
+        name = os.path.relpath(page, DOCS).replace(os.sep, '/')
         text = open(page, encoding='utf-8').read()
-        for m in re.finditer(r'!\[[^\]]*\]\((screenshots/[^)\s]+)\)', text):
-            referenced.add(m.group(1))
-            if not os.path.exists(os.path.join(DOCS, m.group(1))):
-                report.error(f'{os.path.basename(page)} shows {m.group(1)}, which does not exist')
-    for root_md in ('README.md', os.path.join('src', 'JetPack.Wpf', 'PACKAGE.md')):
+        # screenshots/... from docs/, ../screenshots/... from docs/web/
+        for m in re.finditer(r'!\[[^\]]*\]\(((?:\.\./)*screenshots/[^)\s]+)\)', text):
+            target = os.path.normpath(os.path.join(os.path.dirname(page), m.group(1)))
+            rel = os.path.relpath(target, DOCS).replace(os.sep, '/')
+            referenced.add(rel)
+            if not os.path.exists(target):
+                report.error(f'{name} shows {m.group(1)}, which does not exist')
+    for root_md in ('README.md', os.path.join('src', 'JetPack.Wpf', 'PACKAGE.md'), os.path.join('src', 'JetPack.Web', 'PACKAGE.md')):
         path = os.path.join(ROOT, root_md)
         if os.path.exists(path):
             referenced.update(m.group(1) for m in re.finditer(r'(screenshots/[\w/.-]+\.png)', open(path, encoding='utf-8').read()))
 
-    for picture in sorted(glob.glob(os.path.join(SHOTS, 'controls', '*.png')) + glob.glob(os.path.join(SHOTS, 'samples', '*.png'))):
-        name = os.path.relpath(picture, DOCS).replace('\\', '/')
+    pictures = (glob.glob(os.path.join(SHOTS, 'controls', '*.png')) + glob.glob(os.path.join(SHOTS, 'samples', '*.png'))
+                + glob.glob(os.path.join(SHOTS, 'web', '*.png')) + glob.glob(os.path.join(SHOTS, 'web', 'controls', '*.png')))
+    for picture in sorted(pictures):
+        name = os.path.relpath(picture, DOCS).replace(os.sep, '/')
         if name not in referenced:
             report.warn(f'{name} is not shown on any docs page')
 
-    gallery = open(os.path.join(ROOT, 'src', 'JetPack.Wpf.Demo', 'Views', 'GalleryPage.xaml'), encoding='utf-8').read()
-    tags = set(re.findall(r'Style="\{StaticResource Demo\.Sample\}" Tag="([^"]+)"', gallery))
-    for picture in glob.glob(os.path.join(SHOTS, 'controls', '*.png')):
-        tag = os.path.splitext(os.path.basename(picture))[0]
-        if tag not in tags:
-            report.warn(f'screenshots/controls/{tag}.png has no sample in GalleryPage.xaml any more')
-    print(f'  {len(referenced)} references, {len(tags)} gallery samples')
+    # Every gallery picture still has its sample: GalleryPage.xaml (WPF) and Gallery.cshtml (web)
+    galleries = [
+        ('controls', os.path.join('src', 'JetPack.Wpf.Demo', 'Views', 'GalleryPage.xaml'),
+         r'Style="\{StaticResource Demo\.Sample\}" Tag="([^"]+)"'),
+        ('web/controls', os.path.join('src', 'JetPack.Web.Demo', 'Views', 'Demo', 'Gallery.cshtml'),
+         r'class="gallery-sample" data-shot="([^"]+)"'),
+    ]
+    samples = 0
+    for folder, source, pattern in galleries:
+        tags = set(re.findall(pattern, open(os.path.join(ROOT, source), encoding='utf-8').read()))
+        samples += len(tags)
+        for picture in glob.glob(os.path.join(SHOTS, folder, '*.png')):
+            tag = os.path.splitext(os.path.basename(picture))[0]
+            if tag not in tags:
+                report.warn(f'screenshots/{folder}/{tag}.png has no sample in {os.path.basename(source)} any more')
+    print(f'  {len(referenced)} references, {samples} gallery samples')
 
 
 def check_controls_documented(report):
-    """Every public control class should be mentioned on a docs page."""
+    """Every public control class should be mentioned on a docs page, and every web tag helper on a
+    page of docs/web/."""
     step('Checking that every control is documented')
-    pages = '\n'.join(open(p, encoding='utf-8').read() for p in glob.glob(os.path.join(DOCS, '*.md')))
+    pages = '\n'.join(open(p, encoding='utf-8').read() for p in doc_pages())
     classes = []
     for path in glob.glob(os.path.join(ROOT, 'src', 'JetPack.Wpf', 'Controls', '*.cs')):
         classes += re.findall(r'^public (?:sealed |abstract )?class (\w+)\s*:\s*(?:\w+)', open(path, encoding='utf-8').read(), re.M)
     for name in sorted(set(classes)):
         if f'`{name}`' not in pages and f'jp:{name}' not in pages:
             report.warn(f'control {name} is not mentioned in docs/')
-    print(f'  {len(set(classes))} controls')
+
+    web_pages = '\n'.join(open(p, encoding='utf-8').read() for p in glob.glob(os.path.join(DOCS, 'web', '*.md')))
+    tags = []
+    for path in glob.glob(os.path.join(ROOT, 'src', 'JetPack.Web', 'TagHelpers', '*.cs')):
+        tags += re.findall(r'\[HtmlTargetElement\("(jp-[\w-]+)"', open(path, encoding='utf-8').read())
+    for tag in sorted(set(tags)):
+        if f'`{tag}`' not in web_pages and f'<{tag}' not in web_pages:
+            report.warn(f'tag helper {tag} is not mentioned in docs/web/')
+    print(f'  {len(set(classes))} controls, {len(set(tags))} tag helpers')
 
 
 # ---------------------------------------------------------------- main

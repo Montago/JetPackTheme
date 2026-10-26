@@ -81,7 +81,7 @@ and `Kind` uses the same names as MahApps' `PackIconMaterial` (`view-grid` → `
 MahApps IconBrowser shows what is available. The library ships the set listed in
 [`icons/icons.json`](https://github.com/Montago/JetPackTheme/blob/master/icons/icons.json); to add an
 icon, put its MDI name in that file and run `python tools/generate_icons.py --fetch`. The same set
-is generated for the web theme (`<jp-icon kind="ViewGrid" />`, see [JetPack for the web](web.md)).
+is generated for the web theme (`<jp-icon kind="ViewGrid" />`, see [icons on the web](web/typography.md#icons)).
 
 ## Text rendering
 
