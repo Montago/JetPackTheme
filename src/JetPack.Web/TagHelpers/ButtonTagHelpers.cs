@@ -124,6 +124,7 @@ public class SplitButtonTagHelper : JetPackTagHelper
 
     public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
     {
+        context.Items[typeof(MenuScope)] = new MenuScope();
         var menu = (await output.GetChildContentAsync()).GetContent();
         var menuId = (Id ?? Html.NewId("jp-menu")) + "-menu";
         var style = ButtonStyle == ButtonStyle.Default ? "" : " jp-button--" + ButtonStyle.ToString().ToLowerInvariant();

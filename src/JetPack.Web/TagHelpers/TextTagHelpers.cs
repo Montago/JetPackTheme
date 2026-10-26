@@ -67,12 +67,23 @@ public class LabelTagHelper : JetPackTagHelper
     }
 }
 
-/// <summary><c>&lt;jp-separator /&gt;</c>: the etched line; inside a menu the menu separator.</summary>
+/// <summary>
+/// <c>&lt;jp-separator /&gt;</c>: the etched line; inside a menu the menu separator, inside a tool bar
+/// the vertical one.
+/// </summary>
 [HtmlTargetElement("jp-separator", TagStructure = TagStructure.WithoutEndTag)]
 public class SeparatorTagHelper : TagHelper
 {
     public override void Process(TagHelperContext context, TagHelperOutput output)
     {
+        if (!context.Items.ContainsKey(typeof(MenuScope)) && context.Items.ContainsKey(typeof(ToolBarTagHelper)))
+        {
+            output.TagName = "span";
+            output.TagMode = TagMode.StartTagAndEndTag;
+            output.AddClass("jp-tool-bar__separator", Html.Encoder);
+            output.Attributes.SetAttribute("role", "separator");
+            return;
+        }
         output.TagName = "hr";
         output.TagMode = TagMode.SelfClosing;
         output.AddClass(context.Items.ContainsKey(typeof(MenuScope)) ? "jp-menu-separator" : "jp-separator", Html.Encoder);
