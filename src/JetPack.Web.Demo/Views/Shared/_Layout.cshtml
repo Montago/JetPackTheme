@@ -1,7 +1,8 @@
 @* MainWindow.xaml: the JetPackWindow with the accent buttons, the flyouts and the status bar *@
 <!DOCTYPE html>
-@* ?snapshot (tools/web_snapshots.py): endless animations stand still, so pictures only change with the look *@
-<html lang="en" data-snapshot="@(Context.Request.Query.ContainsKey("snapshot") ? "" : null)">
+@* ?snapshot (tools/web_snapshots.py): endless animations stand still, so pictures only change with the look.
+   Razor writes a data-* attribute even when its value is null, so the whole attribute is the expression. *@
+<html lang="en" @(Context.Request.Query.ContainsKey("snapshot") ? "data-snapshot" : null)>
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
