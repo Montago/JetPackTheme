@@ -221,8 +221,24 @@ Use `DockPanel.Dock="Right"` on items for more than one at the right end. In a w
 
 ![GridSplitter and Separator](screenshots/controls/gridsplitter-separator.png)
 
-`GridSplitter` is a light grey bar with a dotted grip. `Separator` is a two-tone line (dark over light)
-that reads as an engraved rule on the texture.
+`GridSplitter` is a light grey bar with a dotted grip that runs along the bar: upright between columns,
+lying down between rows. The grip follows the direction the splitter resizes, worked out as WPF does
+(`ResizeDirection`, else the alignments, else the longer side), so a row splitter needs nothing extra:
+
+```xml
+<Grid>
+    <Grid.RowDefinitions>
+        <RowDefinition />
+        <RowDefinition Height="6" />
+        <RowDefinition />
+    </Grid.RowDefinitions>
+    <Border />
+    <GridSplitter Grid.Row="1" HorizontalAlignment="Stretch" ResizeBehavior="PreviousAndNext" />
+    <Border Grid.Row="2" />
+</Grid>
+```
+
+`Separator` is a two-tone line (dark over light) that reads as an engraved rule on the texture.
 
 ## ToolTip
 

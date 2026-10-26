@@ -360,22 +360,34 @@ pressed toggle buttons look pressed in, and a `jp-separator` is the vertical sep
 ![GridSplitter and Separator](../screenshots/web/controls/gridsplitter-separator.png)
 
 `jp-grid-splitter` goes between two panes of a flex row: dragging it (or the Left and Right keys,
-10 px a step) resizes the pane before it, within both panes' `min-width`. `jp-separator` is the etched
-horizontal line; in a menu it is the menu separator, and in a tool bar the vertical one.
+10 px a step) resizes the pane before it, within both panes' `min-width`. Between two panes of a flex
+column, give it `resize-direction="Rows"` (class `jp-grid-splitter--rows`): the bar lies down, the grip
+turns with it, and it resizes heights with the Up and Down keys, within `min-height`. `jetpack.js` also
+treats a splitter in a flex column as a row splitter without the attribute. `jp-separator` is the
+etched horizontal line; in a menu it is the menu separator, and in a tool bar the vertical one.
 
 ```cshtml
 <div class="flex h-40">
     <div class="flex-1 min-w-24">Navigation</div>
     <jp-grid-splitter />
-    <div class="flex-[2] min-w-24">Content</div>
+    <div class="flex-[2] min-w-24 flex flex-col">
+        <div class="flex-1 min-h-8">Content</div>
+        <jp-grid-splitter resize-direction="Rows" />
+        <div class="flex-1 min-h-8">Details</div>
+    </div>
 </div>
 <jp-separator />
 ```
 
 ```html
 <div class="jp-grid-splitter" role="separator" aria-orientation="vertical"></div>
+<div class="jp-grid-splitter jp-grid-splitter--rows" role="separator" aria-orientation="horizontal"></div>
 <hr class="jp-separator" />
 ```
+
+| `jp-grid-splitter` attribute | Description |
+| --- | --- |
+| `resize-direction` | `Columns` (default) or `Rows` |
 
 ## ToolTip
 

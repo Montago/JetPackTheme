@@ -1131,30 +1131,40 @@ also raise "jp-change" with the new value in event.detail.
   }
 
   /* =========================================================== grid splitter */
+  /* Resizes the pane before the splitter: its width in a flex row, its height when the splitter
+     has jp-grid-splitter--rows (or sits in a flex column) */
   function setUpGridSplitter(splitter) {
     const pane = splitter.previousElementSibling;
     if (!pane) return;
-    let start = 0, startWidth = 0;
+    const rows = splitter.classList.contains('jp-grid-splitter--rows') ||
+      getComputedStyle(splitter.parentElement).flexDirection.startsWith('column');
+    if (rows) {
+      splitter.classList.add('jp-grid-splitter--rows');
+      splitter.setAttribute('aria-orientation', 'horizontal');
+    }
+    const size = el => rows ? el.getBoundingClientRect().height : el.getBoundingClientRect().width;
+    const minSize = el => parseFloat(rows ? getComputedStyle(el).minHeight : getComputedStyle(el).minWidth) || 0;
+    const position = e => rows ? e.clientY : e.clientX;
+    let start = 0, startSize = 0;
     splitter.tabIndex = 0;
     splitter.addEventListener('pointerdown', e => {
-      start = e.clientX;
-      startWidth = pane.getBoundingClientRect().width;
+      start = position(e);
+      startSize = size(pane);
       splitter.setPointerCapture(e.pointerId);
       e.preventDefault();
     });
     splitter.addEventListener('pointermove', e => {
       if (!splitter.hasPointerCapture(e.pointerId)) return;
-      const min = parseFloat(getComputedStyle(pane).minWidth) || 0;
-      const total = splitter.parentElement.getBoundingClientRect().width;
+      const total = size(splitter.parentElement);
       const next = splitter.nextElementSibling;
-      const nextMin = next ? parseFloat(getComputedStyle(next).minWidth) || 0 : 0;
-      pane.style.flex = `0 0 ${clamp(startWidth + e.clientX - start, min, total - splitter.offsetWidth - nextMin)}px`;
+      const nextMin = next ? minSize(next) : 0;
+      pane.style.flex = `0 0 ${clamp(startSize + position(e) - start, minSize(pane), total - size(splitter) - nextMin)}px`;
     });
     splitter.addEventListener('pointerup', e => splitter.releasePointerCapture(e.pointerId));
     splitter.addEventListener('keydown', e => {
-      const d = { ArrowLeft: -10, ArrowRight: 10 }[e.key];
+      const d = (rows ? { ArrowUp: -10, ArrowDown: 10 } : { ArrowLeft: -10, ArrowRight: 10 })[e.key];
       if (d) {
-        pane.style.flex = `0 0 ${pane.getBoundingClientRect().width + d}px`;
+        pane.style.flex = `0 0 ${size(pane) + d}px`;
         e.preventDefault();
       }
     });

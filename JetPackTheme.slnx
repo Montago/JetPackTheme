@@ -1,0 +1,22 @@
+<Solution>
+  <Configurations>
+    <Platform Name="Any CPU" />
+    <Platform Name="x64" />
+    <Platform Name="x86" />
+  </Configurations>
+  <Folder Name="/Web/">
+    <Project Path="src/JetPack.Web.Demo/JetPack.Web.Demo.csproj" />
+    <Project Path="src/JetPack.Web/JetPack.Web.csproj" />
+  </Folder>
+  <Folder Name="/Web/Samples/">
+    <Project Path="samples/JetPack.Web.Samples.Mvc/JetPack.Web.Samples.Mvc.csproj" />
+  </Folder>
+  <Folder Name="/WPF/">
+    <Project Path="src/JetPack.Wpf.Demo/JetPack.Wpf.Demo.csproj" />
+    <Project Path="src/JetPack.Wpf/JetPack.Wpf.csproj" />
+  </Folder>
+  <Folder Name="/WPF/Samples/">
+    <Project Path="samples/JetPack.Wpf.Samples.Admin/JetPack.Wpf.Samples.Admin.csproj" />
+    <Project Path="samples/JetPack.Wpf.Samples.Portal/JetPack.Wpf.Samples.Portal.csproj" />
+  </Folder>
+</Solution>

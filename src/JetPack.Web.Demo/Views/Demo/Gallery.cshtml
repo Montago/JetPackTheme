@@ -481,7 +481,11 @@ tools/web_snapshots.py can cut the picture out to docs/screenshots/web/controls/
             <div class="flex h-[90px]">
                 <div class="flex-[1_1_0] min-w-[60px] p-2" style="background: var(--jp-panel-background)">Navigation</div>
                 <jp-grid-splitter />
-                <div class="flex-[2_1_0] min-w-[60px] p-2" style="background: var(--jp-panel-background)">Content</div>
+                <div class="flex-[2_1_0] min-w-[60px] flex flex-col">
+                    <div class="flex-[1_1_0] p-2" style="background: var(--jp-panel-background)">Content</div>
+                    <jp-grid-splitter resize-direction="Rows" />
+                    <div class="flex-[1_1_0] p-2" style="background: var(--jp-panel-background)">Details</div>
+                </div>
             </div>
             <jp-separator class="!my-0" />
         </div>

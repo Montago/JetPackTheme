@@ -81,7 +81,7 @@ Resource keys follow MahApps with a `JetPack.` prefix (`JetPack.Brushes.Accent`,
 ## Build and verify
 
 ```bash
-dotnet build JetPack.Wpf.sln
+dotnet build JetPackTheme.slnx
 src/JetPack.Wpf.Demo/bin/Debug/net8.0-windows/JetPack.Wpf.Demo.exe --snapshot <folder>
 ```
 

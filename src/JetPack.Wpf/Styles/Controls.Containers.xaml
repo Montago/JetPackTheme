@@ -379,6 +379,9 @@
     </Style>
 
     <!-- ===================== GridSplitter ===================== -->
+    <h:GridSplitterDirectionConverter x:Key="JetPack.Converters.GridSplitterDirection" />
+    <!-- The grip runs along the splitter: two dotted lines across a column splitter, turned a quarter
+         for a row splitter (dark line on top, as in Separator) -->
     <Style x:Key="JetPack.Styles.GridSplitter" TargetType="GridSplitter">
         <Setter Property="Background" Value="{DynamicResource JetPack.Brushes.Static.Background}" />
         <Setter Property="FocusVisualStyle" Value="{DynamicResource JetPack.Styles.FocusVisual}" />
@@ -386,11 +389,29 @@
             <Setter.Value>
                 <ControlTemplate TargetType="GridSplitter">
                     <Border Background="{TemplateBinding Background}" BorderBrush="#33000000" BorderThickness="{TemplateBinding BorderThickness}">
-                        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Orientation="Horizontal">
+                        <StackPanel x:Name="Grip" HorizontalAlignment="Center" VerticalAlignment="Center" Orientation="Horizontal">
                             <Rectangle Width="1" Height="18" Stroke="#FF555555" StrokeDashArray="1 1" StrokeThickness="1" />
                             <Rectangle Width="1" Height="18" Stroke="White" StrokeDashArray="1 1" StrokeThickness="1" />
                         </StackPanel>
                     </Border>
+                    <ControlTemplate.Triggers>
+                        <DataTrigger Value="{x:Static GridResizeDirection.Rows}">
+                            <DataTrigger.Binding>
+                                <MultiBinding Converter="{StaticResource JetPack.Converters.GridSplitterDirection}">
+                                    <Binding Path="ResizeDirection" RelativeSource="{RelativeSource Self}" />
+                                    <Binding Path="HorizontalAlignment" RelativeSource="{RelativeSource Self}" />
+                                    <Binding Path="VerticalAlignment" RelativeSource="{RelativeSource Self}" />
+                                    <Binding Path="ActualWidth" RelativeSource="{RelativeSource Self}" />
+                                    <Binding Path="ActualHeight" RelativeSource="{RelativeSource Self}" />
+                                </MultiBinding>
+                            </DataTrigger.Binding>
+                            <Setter TargetName="Grip" Property="LayoutTransform">
+                                <Setter.Value>
+                                    <RotateTransform Angle="90" />
+                                </Setter.Value>
+                            </Setter>
+                        </DataTrigger>
+                    </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
