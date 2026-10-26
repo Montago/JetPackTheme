@@ -37,9 +37,8 @@ public class IconTagHelper : TagHelper
         }
         output.Attributes.SetAttribute("focusable", "false");
 
-        var sprite = ViewContext.HttpContext.Request.PathBase + "/_content/JetPack.Web/img/icons.svg";
         var use = new TagBuilder("use");
-        use.MergeAttribute("href", sprite + "#" + JetPackIconIds.Get(Kind));
+        use.MergeAttribute("href", Html.IconHref(ViewContext, Kind));
         output.Content.SetHtmlContent(use);
     }
 }

@@ -1,4 +1,6 @@
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.TagHelpers;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.AspNetCore.Razor.TagHelpers;
 
 namespace JetPack.Web.TagHelpers;
@@ -130,6 +132,9 @@ public class HamburgerMenuTagHelper : JetPackTagHelper
 
     public double? PaneWidth { get; set; }
 
+    [ViewContext, HtmlAttributeNotBound]
+    public ViewContext ViewContext { get; set; } = null!;
+
     public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
     {
         var items = ChildList<HamburgerMenuItemTagHelper>.Start(context);
@@ -139,7 +144,7 @@ public class HamburgerMenuTagHelper : JetPackTagHelper
         var selected = items.Items.FindIndex(i => i.IsSelected);
         if (selected < 0) selected = SelectedIndex;
 
-        string Icon(JetPackIconKind k) => k == JetPackIconKind.None ? "" : $"<svg class=\"jp-icon\" aria-hidden=\"true\"><use href=\"/_content/JetPack.Web/img/icons.svg#{JetPackIconIds.Get(k)}\"></use></svg>";
+        string Icon(JetPackIconKind k) => Html.Icon(ViewContext, k);
         var nav = $"<nav class=\"jp-hamburger-menu{(IsPaneOpen ? "" : " is-collapsed")}\"{(PaneWidth is { } w ? $" style=\"--pane-width:{Html.Num(w)}px\"" : "")} aria-label=\"Pages\">" +
             "<button type=\"button\" class=\"jp-hamburger-menu__toggle\" data-jp-toggle-pane aria-expanded=\"true\" aria-label=\"Show page names\">" + Icon(JetPackIconKind.Menu) + "</button>" +
             string.Concat(items.Items.Select((item, i) =>

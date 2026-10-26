@@ -1,5 +1,6 @@
 using System.Globalization;
 using System.Text.Encodings.Web;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.TagHelpers;
 using Microsoft.AspNetCore.Razor.TagHelpers;
 
@@ -96,6 +97,18 @@ internal static class Html
 
     /// <summary>A unique id for the parts of a control that need one (tab panels, popups).</summary>
     public static string NewId(string prefix) => prefix + "-" + Guid.NewGuid().ToString("N")[..8];
+
+    /// <summary>
+    /// The address of an icon in the sprite, below the site's path base (app.UsePathBase), so the
+    /// icons also load when the site runs under a sub-path.
+    /// </summary>
+    public static string IconHref(ViewContext view, JetPackIconKind kind) =>
+        view.HttpContext.Request.PathBase + "/_content/JetPack.Web/img/icons.svg#" + JetPackIconIds.Get(kind);
+
+    /// <summary>A decorative icon (hidden from screen readers) as markup; empty for None.</summary>
+    public static string Icon(ViewContext view, JetPackIconKind kind) => kind == JetPackIconKind.None
+        ? ""
+        : $"<svg class=\"jp-icon\" aria-hidden=\"true\"><use href=\"{Attr(IconHref(view, kind))}\"></use></svg>";
 }
 
 /// <summary>

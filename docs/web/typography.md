@@ -96,6 +96,11 @@ An icon takes the text colour (`currentColor`) and is 16×16 by default, 18×18 
 | `kind` | the icon, a `JetPackIconKind` (the same names as in WPF: `ViewGrid`, `AccountMultiple` …) |
 | `label` | text for screen readers; without it the icon is hidden from them (`aria-hidden`) |
 
+The tag helpers (`jp-icon`, and the `icon` of `jp-menu-item` and `jp-hamburger-menu-item`) put the
+request's path base in front of the sprite's address, so the icons also load when the site runs under
+a sub-path (`app.UsePathBase("/hr")` gives `/hr/_content/JetPack.Web/img/icons.svg#bell`). Write that
+prefix yourself in plain HTML.
+
 In the sprite the icons have their MDI names in kebab case (`ViewGrid` → `#view-grid`). Size an icon
 with `width` and `height` (or Tailwind's `size-6`); colour it with `color`. On light buttons use
 `var(--jp-control-glyph-dark)`, as in WPF.
