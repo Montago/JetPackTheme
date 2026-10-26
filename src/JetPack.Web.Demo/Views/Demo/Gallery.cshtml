@@ -1,0 +1,642 @@
+@*
+GalleryPage.xaml for the web: one sample per control for the documentation, with the same names as
+the WPF gallery. /Demo/Gallery shows them all; /Demo/Gallery?shot=<name> shows one on a magenta page,
+opens what is marked data-demo-open, and draws the texture just behind it (popups included), so
+tools/web_snapshots.py can cut the picture out to docs/screenshots/web/controls/<name>.png.
+*@
+@{
+    Layout = null;
+    string? shot = Context.Request.Query["shot"];
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>JetPack for the web · gallery</title>
+    <link rel="stylesheet" href="~/_content/JetPack.Web/css/jetpack.css" asp-append-version="true" />
+    <script src="~/_content/JetPack.Web/js/jetpack.js" asp-append-version="true"></script>
+    <link rel="stylesheet" href="~/css/demo.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/gallery.css" asp-append-version="true" />
+    <script src="https://cdn.jsdelivr.net/npm/@@tailwindcss/browser@@4.1.11"></script>
+</head>
+<body class="gallery" data-shot="@shot">
+<div id="GalleryBackdrop" class="gallery-backdrop" aria-hidden="true"></div>
+<main class="gallery-samples">
+
+    @* ------------------------------------------------------------ Buttons *@
+    <div class="gallery-sample" data-shot="button">
+        <div class="flex flex-col gap-2.5">
+            <div class="flex gap-2.5">
+                <jp-button>Normal</jp-button>
+                <jp-button is-enabled="false">Disabled</jp-button>
+                <jp-button button-style="Accent">Accent</jp-button>
+                <jp-button button-style="Green">Green</jp-button>
+                <jp-button button-style="Orange">Orange</jp-button>
+                <jp-button button-style="Blue">Blue</jp-button>
+            </div>
+            <div class="flex items-center gap-2.5">
+                <jp-button button-style="Square"><jp-icon kind="Bell" style="color: var(--jp-control-glyph-dark)" /></jp-button>
+                <jp-button button-style="Flat">Flat</jp-button>
+                <jp-button button-style="Link">Link button</jp-button>
+            </div>
+        </div>
+    </div>
+
+    <div class="gallery-sample" data-shot="toggle-button">
+        <div class="flex gap-2.5">
+            <jp-toggle-button>Toggle</jp-toggle-button>
+            <jp-toggle-button is-checked="true">Toggle checked</jp-toggle-button>
+            <jp-repeat-button>Repeat</jp-repeat-button>
+        </div>
+    </div>
+
+    <div class="gallery-sample" data-shot="hyperlink">
+        <div class="flex gap-6">
+            <jp-hyperlink>Open timesheet</jp-hyperlink>
+            <jp-hyperlink is-enabled="false">Link disabled</jp-hyperlink>
+        </div>
+    </div>
+
+    <div class="gallery-sample" data-shot="split-button">
+        <div class="flex items-start gap-3">
+            <jp-split-button content="Save" data-demo-open>
+                <jp-menu-item header="Save as draft" />
+                <jp-menu-item header="Save and send for approval" />
+                <jp-separator />
+                <jp-menu-item header="Save as template" />
+            </jp-split-button>
+            <jp-split-button content="Send" button-style="Accent" class="ml-[150px]">
+                <jp-menu-item header="Save as draft" />
+            </jp-split-button>
+        </div>
+    </div>
+
+    <div class="gallery-sample" data-shot="drop-down-button">
+        <div class="flex items-start gap-3">
+            <jp-drop-down-button content="Export" data-demo-open>
+                <jp-menu-item header="Excel (.xlsx)" />
+                <jp-menu-item header="CSV" />
+                <jp-menu-item header="PDF" />
+            </jp-drop-down-button>
+            <jp-drop-down-button content="Share" button-style="Accent" class="ml-[60px]">
+                <jp-menu-item header="Email" />
+            </jp-drop-down-button>
+        </div>
+    </div>
+
+    <div class="gallery-sample" data-shot="tile">
+        <div class="flex gap-2">
+            <jp-tile title="Available" count="14" tile-style="Green" />
+            <jp-tile title="Suggestions" count="3" tile-style="Orange" />
+            <jp-tile title="Assigned" count="9" tile-style="Blue" />
+            <jp-tile title="Archive" count="148" />
+        </div>
+    </div>
+
+    <div class="gallery-sample" data-shot="badged">
+        <div class="flex gap-6 mt-1.5 mr-1.5">
+            <jp-badged badge="12"><jp-button>Inbox</jp-button></jp-badged>
+            <jp-badged badge="3"><jp-button button-style="Square"><jp-icon kind="Bell" style="color: var(--jp-control-glyph-dark)" /></jp-button></jp-badged>
+        </div>
+    </div>
+
+    <div class="gallery-sample" data-shot="jetpackicon">
+        <div class="flex flex-col gap-3">
+            <div class="flex gap-3">
+                <jp-icon kind="ViewGrid" />
+                <jp-icon kind="AccountMultiple" />
+                <jp-icon kind="ClockOutline" />
+                <jp-icon kind="Briefcase" />
+                <jp-icon kind="Bell" />
+                <jp-icon kind="Cog" />
+                <jp-icon kind="Magnify" />
+                <jp-icon kind="Information" style="color: var(--jp-accent-highlight)" />
+                <jp-icon kind="Alert" style="color: var(--jp-warning)" />
+            </div>
+            <div class="flex gap-2">
+                <jp-button><jp-icon kind="ContentSave" class="mr-1.5" style="color: var(--jp-control-glyph-dark)" />Save</jp-button>
+                <jp-button button-style="Accent"><jp-icon kind="Plus" class="mr-1.5" />New employee</jp-button>
+                <jp-button button-style="Square" tool-tip="Print"><jp-icon kind="Printer" style="color: var(--jp-control-glyph-dark)" /></jp-button>
+            </div>
+        </div>
+    </div>
+
+    @* ----------------------------------------------------- Text and input *@
+    <div class="gallery-sample" data-shot="textbox">
+        <div class="grid grid-cols-2 gap-x-3 w-[300px]">
+            <div class="flex flex-col gap-2.5">
+                <span class="demo-state">Light (default)</span>
+                <jp-text-box text="Normal" />
+                <jp-text-box text="Read only" is-read-only="true" />
+                <jp-text-box text="Disabled" is-enabled="false" />
+                <jp-password-box password="secret" />
+            </div>
+            <div class="flex flex-col gap-2.5">
+                <span class="demo-state">Dark</span>
+                <jp-text-box text-box-style="Dark" text="Normal" />
+                <jp-text-box text-box-style="Dark" text="Read only" is-read-only="true" />
+                <jp-text-box text-box-style="Dark" text="Disabled" is-enabled="false" />
+                <jp-password-box text-box-style="Dark" password="secret" />
+            </div>
+        </div>
+    </div>
+
+    <div class="gallery-sample" data-shot="textbox-multiline">
+        <div class="flex gap-3">
+            <jp-text-box text-box-style="MultiLine" style="width: 200px; height: 90px" text="Customer asked for the October invoice to be split per project. Hours for internal meetings are not billable." />
+            <jp-text-box text-box-style="MultiLineDark" style="width: 200px; height: 90px" text="Customer asked for the October invoice to be split per project. Hours for internal meetings are not billable." />
+        </div>
+    </div>
+
+    <div class="gallery-sample" data-shot="textbox-helpers">
+        <div class="flex flex-col gap-2.5 w-[220px]">
+            <jp-text-box text="Fabrikam, Inc." clear-text-button="true" />
+            <jp-text-box watermark="Search orders…" clear-text-button="true" />
+            <jp-password-box watermark="Password" />
+            <jp-text-box text-box-style="Dark" watermark="Tax ID" />
+        </div>
+    </div>
+
+    <div class="gallery-sample" data-shot="label">
+        <div class="flex flex-col w-[200px]">
+            <jp-label content="Name" target="LabelName" />
+            <jp-text-box id="LabelName" text="Heather Andrade" class="mb-1.5" />
+            <jp-label content="Phone" target="LabelPhone" />
+            <jp-text-box id="LabelPhone" text="(555) 555-1234" />
+        </div>
+    </div>
+
+    <div class="gallery-sample" data-shot="validation">
+        <div class="flex flex-col gap-2.5 w-[160px]">
+            <jp-text-box text="abc-123" validation-error="The value must be a number." data-demo-open />
+            <jp-text-box text-box-style="Dark" text="abc-123" validation-error="The value must be a number." />
+            <jp-check-box content="I accept the terms" validation-error="You must accept the terms." />
+        </div>
+    </div>
+
+    <div class="gallery-sample" data-shot="combobox">
+        <div class="flex items-start gap-3">
+            <jp-combo-box selected-index="1" class="!w-[150px]" data-demo-open>
+                <jp-combo-box-item content="Seattle" />
+                <jp-combo-box-item content="Portland" />
+                <jp-combo-box-item content="Denver" />
+                <jp-combo-box-item content="Boston" />
+                <jp-combo-box-item content="Chicago" />
+            </jp-combo-box>
+            <div class="flex flex-col gap-2.5 w-[150px]">
+                <jp-combo-box is-editable="true" text="Denver">
+                    <jp-combo-box-item content="Seattle" />
+                    <jp-combo-box-item content="Denver" />
+                </jp-combo-box>
+                <jp-combo-box watermark="Choose week">
+                    <jp-combo-box-item content="Week 42" />
+                </jp-combo-box>
+                <jp-combo-box selected-index="0" is-enabled="false">
+                    <jp-combo-box-item content="Disabled" />
+                </jp-combo-box>
+            </div>
+        </div>
+    </div>
+
+    <div class="gallery-sample" data-shot="numericupdown">
+        <div class="flex flex-col gap-2.5 w-[150px]">
+            <jp-numeric-up-down value="37.5" interval="0.5" minimum="0" maximum="60" string-format="N1" />
+            <jp-numeric-up-down value="8" minimum="0" dark="true" />
+            <jp-numeric-up-down watermark="Number of hours" minimum="0" />
+        </div>
+    </div>
+
+    <div class="gallery-sample" data-shot="autosuggestbox">
+        <jp-auto-suggest-box items="DemoData.SuggestCompanies" watermark="Search companies…" class="w-[200px]" data-demo-open="fa" />
+    </div>
+
+    <div class="gallery-sample" data-shot="searchcombobox">
+        <div class="flex items-start gap-3">
+            <jp-search-combo-box items="DemoData.Companies" display-member-path="Name" selected-value-path="Id" watermark="Search companies…" class="w-[220px]" data-demo-open />
+            <jp-search-combo-box items="DemoData.CarBrands" selected-item="@("Volvo")" class="w-[160px]" />
+        </div>
+    </div>
+
+    <div class="gallery-sample" data-shot="datepicker">
+        <div class="flex items-start gap-3">
+            <jp-date-picker class="w-[170px]" data-demo-open />
+            <jp-date-picker class="w-[170px]" />
+        </div>
+    </div>
+
+    <div class="gallery-sample" data-shot="timepicker">
+        <div class="flex items-start gap-3">
+            <jp-time-picker class="w-[150px]" data-demo-open />
+            <jp-time-picker minute-step="30" watermark="Meeting time" class="w-[150px]" />
+        </div>
+    </div>
+
+    <div class="gallery-sample" data-shot="colorpicker">
+        <jp-color-picker class="w-[160px]" data-demo-open />
+    </div>
+
+    @* ---------------------------------------------------------- Selection *@
+    <div class="gallery-sample" data-shot="checkbox-radiobutton">
+        <div class="flex items-start gap-7">
+            <div class="flex flex-col gap-2.5">
+                <jp-check-box content="Normal" />
+                <jp-check-box content="Checked" is-checked="true" />
+                <jp-check-box content="Indeterminate" is-checked="null" />
+                <jp-check-box content="Disabled" is-checked="true" is-enabled="false" />
+            </div>
+            <div class="flex flex-col gap-2.5">
+                <jp-radio-button content="Normal" group-name="g1" />
+                <jp-radio-button content="Checked" group-name="g1" is-checked="true" />
+                <jp-radio-button content="Indeterminate" group-name="g2" is-checked="null" />
+                <jp-radio-button content="Disabled" group-name="g3" is-checked="true" is-enabled="false" />
+            </div>
+            <div class="flex flex-col gap-2.5 p-2.5 rounded-[2.5px]" style="background: var(--jp-menu-background)">
+                <jp-check-box content="Show grid lines" is-checked="true" on-light="true" />
+                <jp-radio-button content="Portrait" group-name="g4" is-checked="true" on-light="true" />
+                <jp-radio-button content="Landscape" group-name="g4" on-light="true" />
+                <span class="text-[11px]" style="color: #505050">OnLight variants</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="gallery-sample" data-shot="toggleswitch">
+        <div class="flex flex-col gap-3">
+            <jp-toggle-switch is-checked="true">Notifications</jp-toggle-switch>
+            <jp-toggle-switch>Dark mode</jp-toggle-switch>
+            <jp-toggle-switch is-checked="true" is-enabled="false">Locked by policy</jp-toggle-switch>
+        </div>
+    </div>
+
+    <div class="gallery-sample" data-shot="slider">
+        <div class="flex items-center gap-6">
+            <div class="flex flex-col gap-3.5 w-[170px]">
+                <jp-slider value="4" maximum="10" label="Slider" />
+                <jp-slider value="6" maximum="10" tick-placement="BottomRight" tick-frequency="1" is-snap-to-tick-enabled="true" label="Slider with ticks" />
+                <jp-slider value="3" maximum="10" is-enabled="false" label="Disabled slider" />
+            </div>
+            <jp-slider orientation="Vertical" value="3" maximum="10" style="height: 96px" label="Vertical slider" />
+            <jp-slider orientation="Vertical" value="7" maximum="10" tick-placement="BottomRight" tick-frequency="1" style="height: 96px" label="Vertical slider with ticks" />
+        </div>
+    </div>
+
+    <div class="gallery-sample" data-shot="rangeslider">
+        <jp-range-slider minimum="0" maximum="10000" lower-value="2500" upper-value="7000" small-change="100" class="w-[200px]" label="Price" />
+    </div>
+
+    <div class="gallery-sample" data-shot="rating">
+        <div class="flex items-center gap-6">
+            <jp-rating value="4" />
+            <jp-rating value="2" maximum="10" />
+        </div>
+    </div>
+
+    @* ----------------------------------------------------- Lists and data *@
+    <div class="gallery-sample" data-shot="listbox">
+        <jp-list-box selected-index="1" class="w-[170px] h-[130px]">
+            <jp-list-box-item content="Lindsey Ballard" />
+            <jp-list-box-item content="Charles Hoyle" />
+            <jp-list-box-item content="Daniel Tiedemann" />
+            <jp-list-box-item content="David Ritter" />
+            <jp-list-box-item content="Vivian Smail" />
+            <jp-list-box-item content="Ida Kragh" />
+            <jp-list-box-item content="Mads Lund" />
+        </jp-list-box>
+    </div>
+
+    <div class="gallery-sample" data-shot="listview">
+        <jp-list-view items="DemoData.Timesheets" selected-index="2" height="150" class="w-[360px]">
+            <jp-grid-view-column header="Employee" display-member-binding="Employee" width="150" />
+            <jp-grid-view-column header="Department" display-member-binding="Department" width="110" />
+            <jp-grid-view-column header="Hours" display-member-binding="Hours" width="70" />
+        </jp-list-view>
+    </div>
+
+    <div class="gallery-sample" data-shot="treeview">
+        <jp-tree-view class="w-[210px] h-[170px]">
+            <jp-tree-view-item header="Contoso" is-expanded="true">
+                <jp-tree-view-item header="August 2026" />
+                <jp-tree-view-item header="September 2026" is-selected="true" />
+                <jp-tree-view-item header="October 2026" />
+            </jp-tree-view-item>
+            <jp-tree-view-item header="Southridge"><jp-tree-view-item header="July 2026" /></jp-tree-view-item>
+            <jp-tree-view-item header="Fabrikam"><jp-tree-view-item header="May 2026" /></jp-tree-view-item>
+            <jp-tree-view-item header="Soar Airlines"><jp-tree-view-item header="April 2026" /></jp-tree-view-item>
+        </jp-tree-view>
+    </div>
+
+    <div class="gallery-sample" data-shot="datagrid">
+        <jp-data-grid items="DemoData.Timesheets" selected-index="1" height="190" class="w-[520px]">
+            <jp-data-grid-text-column header="Employee" binding="Employee" sort-direction="Ascending" />
+            <jp-data-grid-text-column header="Department" binding="Department" width="110" />
+            <jp-data-grid-text-column header="Hours" binding="Hours" string-format="N1" width="60" horizontal-alignment="Right" />
+            <jp-data-grid-text-column header="Week" binding="Week" width="50" />
+            <jp-data-grid-text-column header="Status" binding="Status" width="90" />
+        </jp-data-grid>
+    </div>
+
+    <div class="gallery-sample" data-shot="calendar">
+        <jp-calendar />
+    </div>
+
+    <div class="gallery-sample" data-shot="scrollviewer">
+        <jp-scroll-viewer horizontal-scroll-bar-visibility="Visible" vertical-scroll-bar-visibility="Visible" class="demo-scroll-sample !w-[200px] !h-[120px]">
+            <div class="demo-scroll-sample__content !w-[400px] !h-[300px]"></div>
+        </jp-scroll-viewer>
+    </div>
+
+    <div class="gallery-sample" data-shot="scrollviewer-thin">
+        <jp-scroll-viewer thin="true" horizontal-scroll-bar-visibility="Visible" vertical-scroll-bar-visibility="Visible" class="demo-scroll-sample !w-[200px] !h-[120px]" data-demo-open>
+            <div class="demo-scroll-sample__content !w-[400px] !h-[300px]"></div>
+        </jp-scroll-viewer>
+    </div>
+
+    @* ------------------------------------------------ Navigation and layout *@
+    <div class="gallery-sample" data-shot="tabcontrol">
+        <jp-tab-control class="w-[340px] h-[130px]">
+            <jp-tab-item header="Available"><p class="m-0">14 consultants are available from week 44. Filter by skill or location to narrow the list.</p></jp-tab-item>
+            <jp-tab-item header="Assigned" />
+            <jp-tab-item header="Suggestions" />
+            <jp-tab-item header="Archive" is-enabled="false" />
+        </jp-tab-control>
+    </div>
+
+    <div class="gallery-sample" data-shot="tabcontrol-navigation">
+        <div class="w-[560px] h-[110px] overflow-hidden flex" style="border: 1px solid #3B3C40">
+            <jp-tab-control tab-control-style="Navigation" class="flex-1">
+                <jp-tab-control-tag><b class="mr-4 text-[15px]">My app</b></jp-tab-control-tag>
+                <jp-tab-item header="Companies"><h2 class="mx-4 my-3.5">Companies</h2></jp-tab-item>
+                <jp-tab-item header="Orders" />
+                <jp-tab-item header="About" />
+            </jp-tab-control>
+        </div>
+    </div>
+
+    <div class="gallery-sample" data-shot="tabcontrol-strip">
+        <jp-tab-control tab-control-style="Strip" class="w-[560px] h-[90px]">
+            <jp-tab-control-tag><span class="text-[24px]">My app</span></jp-tab-control-tag>
+            <jp-tab-item header="Core"><span class="demo-state demo-state--left block mt-3">Page content</span></jp-tab-item>
+            <jp-tab-item header="SDK" />
+            <jp-tab-item header="Toolkit" />
+        </jp-tab-control>
+    </div>
+
+    <div class="gallery-sample" data-shot="hamburgermenu">
+        <div class="w-[440px] h-[200px] rounded-[3px] overflow-hidden flex" style="border: 1px solid #3D3E42">
+            <jp-hamburger-menu selected-index="0" class="flex-1">
+                <jp-hamburger-menu-item content="Overview" icon="Home"><div class="demo-ham-page"><h5>Overview</h5><p>14 consultants available, 9 assigned and 3 suggestions waiting for a reply.</p></div></jp-hamburger-menu-item>
+                <jp-hamburger-menu-item content="Orders" icon="FormatListBulleted"><div class="demo-ham-page"><h5>Orders</h5></div></jp-hamburger-menu-item>
+                <jp-hamburger-menu-item content="Employees" icon="AccountMultiple"><div class="demo-ham-page"><h5>Employees</h5></div></jp-hamburger-menu-item>
+                <jp-hamburger-menu-item content="Settings" icon="Cog"><div class="demo-ham-page"><h5>Settings</h5></div></jp-hamburger-menu-item>
+            </jp-hamburger-menu>
+        </div>
+    </div>
+
+    <div class="gallery-sample" data-shot="expander">
+        <div class="flex flex-col gap-2 w-[210px]">
+            <jp-expander header="Billing address" is-expanded="true"><p class="m-0">120 Pine Street<br>Seattle, WA 98101</p></jp-expander>
+            <jp-expander header="Shipping address"><p class="m-0">Same as billing</p></jp-expander>
+        </div>
+    </div>
+
+    <div class="gallery-sample" data-shot="accordion">
+        <jp-accordion class="w-[210px] h-[170px]">
+            <jp-expander header="Need Placement" is-expanded="true"><p class="m-0">5 consultants without an assignment in week 44.</p></jp-expander>
+            <jp-expander header="Renewal Pending"><p class="m-0">2 contracts expire on 31 December.</p></jp-expander>
+            <jp-expander header="Archive"><p class="m-0">148 completed placements.</p></jp-expander>
+        </jp-accordion>
+    </div>
+
+    <div class="gallery-sample" data-shot="groupbox">
+        <jp-group-box header="Contact" class="w-[240px]">
+            <jp-label content="Name" target="GroupName" />
+            <jp-text-box id="GroupName" text="Heather Andrade" class="mb-1.5" />
+            <jp-label content="Phone" target="GroupPhone" />
+            <jp-text-box id="GroupPhone" text="(555) 555-1234" />
+        </jp-group-box>
+    </div>
+
+    <div class="gallery-sample" data-shot="menu">
+        <jp-menu class="w-[420px]" data-demo-open>
+            <jp-menu-item header="_File">
+                <jp-menu-item header="_New customer" input-gesture-text="Ctrl+N" />
+                <jp-menu-item header="_Open…" input-gesture-text="Ctrl+O" />
+                <jp-separator />
+                <jp-menu-item header="Status bar" is-checkable="true" is-checked="true" />
+                <jp-menu-item header="Recent">
+                    <jp-menu-item header="Contoso Corporation" />
+                </jp-menu-item>
+                <jp-separator />
+                <jp-menu-item header="E_xit" />
+            </jp-menu-item>
+            <jp-menu-item header="_Edit" />
+            <jp-menu-item header="_View" />
+            <jp-menu-item header="_Help" />
+        </jp-menu>
+    </div>
+
+    <div class="gallery-sample" data-shot="contextmenu">
+        <div class="grid place-items-center w-[200px] h-[70px] rounded-[2.5px]" data-jp-context-menu="GalleryContextMenu" data-demo-open
+             style="background: var(--jp-panel-background); border: 1px solid var(--jp-panel-border)">Right-click here</div>
+        <jp-context-menu id="GalleryContextMenu">
+            <jp-menu-item header="Cut" input-gesture-text="Ctrl+X" />
+            <jp-menu-item header="Copy" input-gesture-text="Ctrl+C" />
+            <jp-menu-item header="Paste" input-gesture-text="Ctrl+V" is-enabled="false" />
+            <jp-separator />
+            <jp-menu-item header="Show grid lines" is-checkable="true" is-checked="true" />
+            <jp-menu-item header="Export">
+                <jp-menu-item header="PDF" />
+            </jp-menu-item>
+        </jp-context-menu>
+    </div>
+
+    <div class="gallery-sample" data-shot="toolbar">
+        <jp-tool-bar-tray>
+            <jp-tool-bar>
+                <jp-button><jp-icon kind="FilePlus" /></jp-button>
+                <jp-button><jp-icon kind="ContentSave" /></jp-button>
+                <jp-separator />
+                <jp-toggle-button is-checked="true"><b>B</b></jp-toggle-button>
+                <jp-toggle-button><i style="font-family: Georgia">I</i></jp-toggle-button>
+                <jp-toggle-button><u>U</u></jp-toggle-button>
+                <jp-separator />
+                <jp-combo-box selected-index="0" class="!w-[110px]">
+                    <jp-combo-box-item content="Trebuchet MS" />
+                </jp-combo-box>
+                <jp-check-box content="Spelling" is-checked="true" on-light="true" />
+            </jp-tool-bar>
+        </jp-tool-bar-tray>
+    </div>
+
+    <div class="gallery-sample" data-shot="statusbar">
+        <jp-status-bar class="w-[560px]">
+            <jp-status-bar-item>Ready</jp-status-bar-item>
+            <jp-status-bar-item>5 available · 9 assigned</jp-status-bar-item>
+            <jp-status-bar-item horizontal-alignment="Right">Syncing <jp-progress-bar is-indeterminate="true" class="!w-[80px] !h-[8px]" /></jp-status-bar-item>
+        </jp-status-bar>
+    </div>
+
+    <div class="gallery-sample" data-shot="gridsplitter-separator">
+        <div class="flex flex-col gap-3.5 w-[320px]">
+            <div class="flex h-[90px]">
+                <div class="flex-[1_1_0] min-w-[60px] p-2" style="background: var(--jp-panel-background)">Navigation</div>
+                <jp-grid-splitter />
+                <div class="flex-[2_1_0] min-w-[60px] p-2" style="background: var(--jp-panel-background)">Content</div>
+            </div>
+            <jp-separator class="!my-0" />
+        </div>
+    </div>
+
+    <div class="gallery-sample" data-shot="tooltip">
+        <jp-button tool-tip="Saves changes and sends them for approval" data-demo-open>Save</jp-button>
+    </div>
+
+    @* ------------------------------------------------- Progress and status *@
+    <div class="gallery-sample" data-shot="progressbar">
+        <div class="flex flex-col gap-4 w-[200px]">
+            <jp-progress-bar value="75" />
+            <jp-progress-bar value="30" class="!h-[14px]" />
+            <jp-progress-bar is-indeterminate="true" />
+        </div>
+    </div>
+
+    <div class="gallery-sample" data-shot="progressring">
+        <div class="flex items-center gap-5">
+            <jp-progress-ring />
+            <jp-progress-ring class="!w-[24px] !h-[24px]" />
+        </div>
+    </div>
+
+    <div class="gallery-sample" data-shot="busyindicator">
+        <jp-busy-indicator is-busy="true" busy-content="Loading orders…" class="w-[240px] h-[128px]">
+            <div class="h-full p-2.5 rounded-[2.5px] box-border" style="background: var(--jp-panel-background)">
+                <p class="m-0 text-[11px]">Customer: Fabrikam<br>Contact: Ida Kragh<br>Orders: 14<br>Latest: 10/12/2026</p>
+                <jp-button class="mt-2">Open orders</jp-button>
+            </div>
+        </jp-busy-indicator>
+    </div>
+
+    <div class="gallery-sample" data-shot="infobar">
+        <div class="flex flex-col gap-2 w-[380px]">
+            <jp-info-bar severity="Info" message="Version 2.4 is ready to install." />
+            <jp-info-bar severity="Success" title="Sent." message="The timesheet has been sent for approval." />
+            <jp-info-bar severity="Warning" message="3 hours are not assigned to projects." />
+            <jp-info-bar severity="Error" title="Error:" message="The connection to the payroll system failed." is-closable="false">
+                <jp-button class="!min-h-[20px] !py-px !px-2.5">Try again</jp-button>
+            </jp-info-bar>
+        </div>
+    </div>
+
+    @* ------------------------------------------------------------- Window *@
+    <div class="gallery-sample" data-shot="flyout">
+        <div class="jp-flyout-host gallery-ground w-[340px] h-[200px]">
+            <span class="demo-state demo-state--left block m-3">Page content</span>
+            <jp-flyout id="GalleryFilters" header="Filters" width="200" is-open="true" padding="10px 12px">
+                <div class="flex flex-col items-start gap-2.5">
+                    <jp-check-box content="Active only" is-checked="true" />
+                    <jp-check-box content="Show archived" />
+                    <jp-combo-box selected-index="0" class="self-stretch">
+                        <jp-combo-box-item content="All departments" />
+                    </jp-combo-box>
+                    <jp-button button-style="Accent">Apply</jp-button>
+                </div>
+            </jp-flyout>
+        </div>
+    </div>
+
+    <div class="gallery-sample" data-shot="flyout-top">
+        <div class="jp-flyout-host gallery-ground w-[380px] h-[140px] flex items-end">
+            <span class="demo-state demo-state--left block m-3">Page content</span>
+            <jp-flyout id="GalleryUpdate" header="Update available" position="Top" is-open="true" padding="8px 12px">
+                <div class="flex items-center gap-2">
+                    <p class="m-0 flex-1">Version 2.4 is ready to install.</p>
+                    <jp-button button-style="Accent">Restart</jp-button>
+                </div>
+            </jp-flyout>
+        </div>
+    </div>
+
+    <div class="gallery-sample" data-shot="flyout-bottom">
+        <div class="jp-flyout-host gallery-ground w-[380px] h-[140px]">
+            <span class="demo-state demo-state--left block m-3">Page content</span>
+            <jp-flyout id="GallerySaved" header="Saved" position="Bottom" is-open="true" padding="8px 12px">
+                <p class="m-0">The timesheet has been sent for approval.</p>
+            </jp-flyout>
+        </div>
+    </div>
+
+    <div class="gallery-sample" data-shot="window">
+        <div class="jp-window gallery-window">
+            <header class="jp-title-bar">
+                <span class="jp-title-bar__icon"></span>
+                <span class="jp-title-bar__title">Consultant planning</span>
+                <div class="jp-window-commands">
+                    <button type="button">Settings</button>
+                </div>
+            </header>
+            <div class="jp-window__body">
+                <main class="jp-window__content p-4">
+                    <h1>Companies</h1>
+                    <p class="mt-2 mb-0" style="color: var(--jp-text-soft)">14 companies, 3 with open orders.</p>
+                </main>
+            </div>
+            <jp-status-bar>
+                <jp-status-bar-item>Ready</jp-status-bar-item>
+                <jp-status-bar-item horizontal-alignment="Right">Last synced 09:42</jp-status-bar-item>
+            </jp-status-bar>
+        </div>
+    </div>
+
+    <div class="gallery-sample" data-shot="window-light">
+        <div class="jp-window gallery-window" data-title-bar="light">
+            <header class="jp-title-bar">
+                <span class="jp-title-bar__icon"></span>
+                <span class="jp-title-bar__title">Consultant planning</span>
+                <div class="jp-window-commands">
+                    <button type="button">Settings</button>
+                </div>
+            </header>
+            <div class="jp-window__body">
+                <main class="jp-window__content p-4">
+                    <h1>Companies</h1>
+                    <p class="mt-2 mb-0" style="color: var(--jp-text-soft)">14 companies, 3 with open orders.</p>
+                </main>
+            </div>
+            <jp-status-bar>
+                <jp-status-bar-item>Ready</jp-status-bar-item>
+            </jp-status-bar>
+        </div>
+    </div>
+
+    <div class="gallery-sample" data-shot="dialog">
+        <div class="gallery-ground w-[440px] h-[200px] grid place-items-center" style="box-shadow: inset 0 0 0 999px var(--jp-dialog-overlay)">
+            <dialog class="jp-dialog gallery-dialog" open>
+                <header class="jp-dialog__header"><span>Delete company?</span><button type="button" aria-label="Close">×</button></header>
+                <div class="jp-dialog__content">
+                    <p class="m-0">Fabrikam, Inc. and its 14 orders will be deleted.</p>
+                    <div class="jp-dialog__buttons">
+                        <button type="button" class="jp-button" style="min-width: 80px">Cancel</button>
+                        <button type="button" class="jp-button jp-button--orange" style="min-width: 80px">Delete</button>
+                    </div>
+                </div>
+            </dialog>
+        </div>
+    </div>
+
+    @* --------------------------------------------------------- Typography *@
+    <div class="gallery-sample" data-shot="typography">
+        <div class="flex flex-col w-[440px]">
+            <jp-text-block text-block-style="Heading1" text="Companies" />
+            <jp-text-block text-block-style="Heading2" text="Company Details" />
+            <jp-text-block text-block-style="Heading3" text="Heading 3 · 21 px" />
+            <jp-text-block text-block-style="Heading4" text="Heading 4 · 18 px" />
+            <jp-text-block text-block-style="Heading5" text="Heading 5 · 15 px" />
+            <jp-text-block text-block-style="Heading6" text="HEADING 6 · 11 PX" />
+            <jp-text-block text-block-style="Content" class="mt-2" text="Content · 13 px body text that wraps across the width of its container." />
+            <jp-text-block text-block-style="Caption" class="mt-1" text="Caption · 11 px, 80% white" />
+        </div>
+    </div>
+</main>
+<script src="~/js/gallery.js" asp-append-version="true"></script>
+</body>
+</html>
