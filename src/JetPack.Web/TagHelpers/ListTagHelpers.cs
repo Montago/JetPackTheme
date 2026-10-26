@@ -237,9 +237,9 @@ public class DataGridTagHelper : JetPackTagHelper
         var selection = SelectionMode == "None" ? "" : " data-jp-selection=\"single\"";
         var head = string.Concat(columns.Items.Select(c =>
         {
+            // Headers stay left-aligned over right-aligned numbers, as in a WPF DataGrid
             var sort = c.SortDirection is null ? "" : $" aria-sort=\"{c.SortDirection.ToLowerInvariant()}\"";
-            var align = c.Align.Length > 0 ? " style=\"text-align:right\"" : "";
-            return $"<th{c.WidthStyle}{sort}{align}>{Html.Text(c.Header)}</th>";
+            return $"<th{c.WidthStyle}{sort}>{Html.Text(c.Header)}</th>";
         }));
         var rows = string.Concat(Items.Cast<object?>().Select((item, i) =>
             $"<tr aria-selected=\"{(i == SelectedIndex ? "true" : "false")}\">" +

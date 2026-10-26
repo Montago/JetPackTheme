@@ -33,6 +33,7 @@
     cursor: pointer;
   }
   .jp-hyperlink:hover { text-decoration: underline; }
+  .jp-hyperlink[aria-disabled="true"] { color: var(--jp-text-disabled); text-decoration: none; cursor: default; }
   .jp-separator {
     height: 2px;
     border: 0;

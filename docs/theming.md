@@ -1,6 +1,7 @@
 ---
 title: Theme and accent
-nav_order: 3
+parent: JetPack for WPF
+nav_order: 2
 ---
 
 # Theme and accent

@@ -1,6 +1,7 @@
 ---
 title: Progress and status
 parent: Controls
+grand_parent: JetPack for WPF
 nav_order: 7
 ---
 

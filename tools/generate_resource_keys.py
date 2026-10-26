@@ -67,7 +67,7 @@ def style_keys():
     return out
 
 
-doc = ["---", "title: Resource keys", "parent: Reference", "nav_order: 1", "---", "", "# Resource keys",
+doc = ["---", "title: Resource keys", "parent: Reference", "grand_parent: JetPack for WPF", "nav_order: 1", "---", "", "# Resource keys",
        "",
        "Every brush, colour, font size and effect the theme defines, generated from the XAML in",
        "`src/JetPack.Wpf/Styles`. Reference them with `{DynamicResource ...}` so they follow accent changes.",

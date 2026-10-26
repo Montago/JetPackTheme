@@ -1,6 +1,7 @@
 ---
 title: Lists and data
 parent: Controls
+grand_parent: JetPack for WPF
 nav_order: 5
 ---
 

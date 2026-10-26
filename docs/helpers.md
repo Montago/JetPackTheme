@@ -1,6 +1,7 @@
 ---
 title: Helpers and custom templates
 parent: Reference
+grand_parent: JetPack for WPF
 nav_order: 2
 ---
 

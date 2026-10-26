@@ -1,6 +1,7 @@
 ---
 title: Reference
-nav_order: 6
+parent: JetPack for WPF
+nav_order: 5
 has_children: true
 ---
 

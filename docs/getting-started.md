@@ -1,6 +1,7 @@
 ---
 title: Getting started
-nav_order: 2
+parent: JetPack for WPF
+nav_order: 1
 ---
 
 # Getting started
@@ -126,5 +127,5 @@ with light surfaces (buttons, text boxes, lists, menus) set their own dark text.
 ## Next steps
 
 - Pick an accent and decide on focus visuals: [Theme and accent](theming.md).
-- Browse the controls: start from the [documentation index](README.md).
+- Browse the controls: start from [JetPack for WPF](wpf.md).
 - Run the demo to see every control: `dotnet run --project src/JetPack.Wpf.Demo`.

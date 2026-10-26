@@ -1,0 +1,45 @@
+/* Views/Demo/Gallery.cshtml: the samples for the documentation pictures (Demo.Sample in App.xaml) */
+@layer components {
+  .gallery-samples { display: flex; flex-wrap: wrap; align-items: flex-start; padding: 16px; }
+  /* Demo.Sample: 16 px around the control */
+  .gallery-sample { padding: 16px; }
+  .gallery-ground {
+    position: relative;
+    box-sizing: border-box;
+    overflow: hidden;
+    border: 1px solid #3D3E42;
+    border-radius: 3px;
+    background: var(--jp-window-ground) var(--jp-window-background);
+  }
+  .gallery-window {
+    width: 460px;
+    height: 200px;
+    border: 1px solid #3D3E42;
+    background: var(--jp-window-ground) var(--jp-window-background);
+  }
+  .gallery-dialog { position: static; width: 340px; }
+  .gallery-backdrop { display: none; }
+
+  /* ?shot=<name>: one sample on magenta, the texture only behind it and its popups */
+  body.gallery[data-shot]:not([data-shot=""]) { background: #FF00FF; min-height: 100vh; }
+  body.gallery[data-shot]:not([data-shot=""]) .gallery-samples { display: block; padding: 0; }
+  body.gallery[data-shot]:not([data-shot=""]) .gallery-sample { display: none; }
+  body.gallery[data-shot]:not([data-shot=""]) .gallery-sample.is-shot {
+    display: inline-block;
+    position: absolute;
+    left: 120px;
+    top: 80px;
+  }
+  body.gallery[data-shot]:not([data-shot=""]) .gallery-backdrop {
+    display: block;
+    position: absolute;
+    background: var(--jp-window-ground) var(--jp-window-background) fixed;
+  }
+  /* Endless animations stand still, so a picture only changes when the look does */
+  body.gallery[data-shot]:not([data-shot=""]) *,
+  body.gallery[data-shot]:not([data-shot=""]) *::before,
+  body.gallery[data-shot]:not([data-shot=""]) *::after {
+    animation-play-state: paused !important;
+    transition: none !important;
+  }
+}

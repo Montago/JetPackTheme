@@ -142,7 +142,7 @@ public class ToolBarTagHelper : TagHelper
         output.TagMode = TagMode.StartTagAndEndTag;
         output.AddClass("jp-tool-bar", Html.Encoder);
         output.Attributes.SetAttribute("role", "toolbar");
-        output.Content.SetHtmlContent("<span class=\"jp-tool-bar__thumb\" aria-hidden=\"true\"></span>" +
-            content.Replace("<hr class=\"jp-separator\">", "<span class=\"jp-tool-bar__separator\" role=\"separator\"></span>"));
+        // a jp-separator in here writes the vertical tool bar separator itself
+        output.Content.SetHtmlContent("<span class=\"jp-tool-bar__thumb\" aria-hidden=\"true\"></span>" + content);
     }
 }
