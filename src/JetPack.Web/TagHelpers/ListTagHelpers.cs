@@ -165,8 +165,17 @@ public abstract class GridColumnTagHelper : TagHelper
     /// <summary>Right for numbers.</summary>
     public string? HorizontalAlignment { get; set; }
 
-    /// <summary>Ascending or Descending: the sort arrow in the header.</summary>
+    /// <summary>Ascending or Descending: the sort arrow in the header (the order the rows come in).</summary>
     public string? SortDirection { get; set; }
+
+    /// <summary>The property to sort by when it is not the binding.</summary>
+    public string? SortMemberPath { get; set; }
+
+    /// <summary>False keeps a click on the header from sorting the rows.</summary>
+    public bool CanUserSort { get; set; } = true;
+
+    /// <summary>False keeps the column at its width.</summary>
+    public bool CanUserResize { get; set; } = true;
 
     public override void Process(TagHelperContext context, TagHelperOutput output)
     {
@@ -174,13 +183,37 @@ public abstract class GridColumnTagHelper : TagHelper
         output.SuppressOutput();
     }
 
+    private static object? Value(object? item, string? path) =>
+        item is null || path is null ? null : item.GetType().GetProperty(path)?.GetValue(item);
+
     internal string Cell(object? item)
     {
-        if (item is null || Binding is null) return "";
-        var value = item.GetType().GetProperty(Binding)?.GetValue(item);
+        var value = Value(item, Binding);
         return value is IFormattable f && StringFormat is not null
             ? f.ToString(StringFormat, CultureInfo.CurrentCulture)
             : Convert.ToString(value, CultureInfo.CurrentCulture) ?? "";
+    }
+
+    /// <summary>
+    /// data-sort-value for values whose text does not sort right in every culture: numbers as
+    /// invariant numbers, dates as ISO 8601, enums by their value, as WPF compares them.
+    /// </summary>
+    internal string SortAttribute(object? item)
+    {
+        var inv = CultureInfo.InvariantCulture;
+        var key = Value(item, SortMemberPath ?? Binding) switch
+        {
+            DateTime d => d.ToString("s", inv),
+            DateTimeOffset d => d.UtcDateTime.ToString("s", inv),
+            DateOnly d => d.ToString("yyyy-MM-dd", inv),
+            TimeOnly t => t.ToString("HH:mm:ss.fffffff", inv),
+            TimeSpan t => t.Ticks.ToString(inv),
+            Enum e => Convert.ToDecimal(e, inv).ToString(inv),
+            IConvertible c and (byte or sbyte or short or ushort or int or uint or long or ulong or float or double or decimal) => c.ToString(inv),
+            string s when SortMemberPath is not null => s,
+            _ => null,
+        };
+        return key is null ? "" : $" data-sort-value=\"{Html.Attr(key)}\"";
     }
 
     internal string WidthStyle => Width is null || Width == "*" ? "" : $" style=\"width:{Html.Attr(Width)}px\"";
@@ -218,6 +251,12 @@ public class DataGridTagHelper : JetPackTagHelper
     /// <summary>Single (default) or None.</summary>
     public string SelectionMode { get; set; } = "Single";
 
+    /// <summary>False: the headers do not sort the rows (sort on the server, show it with sort-direction).</summary>
+    public bool CanUserSortColumns { get; set; } = true;
+
+    /// <summary>False: the columns cannot be resized.</summary>
+    public bool CanUserResizeColumns { get; set; } = true;
+
     protected virtual string HostClass => "jp-data-grid-host";
 
     protected virtual string TableClass => "jp-data-grid";
@@ -234,17 +273,21 @@ public class DataGridTagHelper : JetPackTagHelper
             output.Attributes.SetAttribute("style", $"height:{Html.Num(h)}px;" + (output.Attributes["style"]?.Value ?? ""));
         }
         ApplyCommon(output);
-        var selection = SelectionMode == "None" ? "" : " data-jp-selection=\"single\"";
+        var options = (SelectionMode == "None" ? "" : " data-jp-selection=\"single\"") +
+            (CanUserSortColumns ? "" : " data-jp-sort=\"false\"") +
+            (CanUserResizeColumns ? "" : " data-jp-resize=\"false\"");
         var head = string.Concat(columns.Items.Select(c =>
         {
             // Headers stay left-aligned over right-aligned numbers, as in a WPF DataGrid
-            var sort = c.SortDirection is null ? "" : $" aria-sort=\"{c.SortDirection.ToLowerInvariant()}\"";
-            return $"<th{c.WidthStyle}{sort}>{Html.Text(c.Header)}</th>";
+            var attributes = (c.SortDirection is null ? "" : $" aria-sort=\"{c.SortDirection.ToLowerInvariant()}\"") +
+                (c.CanUserSort ? "" : " data-jp-sort=\"false\"") +
+                (c.CanUserResize ? "" : " data-jp-resize=\"false\"");
+            return $"<th{c.WidthStyle}{attributes}>{Html.Text(c.Header)}</th>";
         }));
         var rows = string.Concat(Items.Cast<object?>().Select((item, i) =>
             $"<tr aria-selected=\"{(i == SelectedIndex ? "true" : "false")}\">" +
-            string.Concat(columns.Items.Select(c => $"<td{c.Align}>{Html.Text(c.Cell(item))}</td>")) + "</tr>"));
-        output.Content.SetHtmlContent($"<table class=\"{TableClass}\"{selection}><thead><tr>{head}</tr></thead><tbody>{rows}</tbody></table>");
+            string.Concat(columns.Items.Select(c => $"<td{c.Align}{c.SortAttribute(item)}>{Html.Text(c.Cell(item))}</td>")) + "</tr>"));
+        output.Content.SetHtmlContent($"<table class=\"{TableClass}\"{options}><thead><tr>{head}</tr></thead><tbody>{rows}</tbody></table>");
     }
 }
 

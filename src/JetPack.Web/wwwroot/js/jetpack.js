@@ -21,10 +21,13 @@ sets up controls added later.
                     .jp-rating[data-jp-input], .jp-calendar, .jp-date-picker, .jp-time-picker,
                     .jp-auto-suggest-box, .jp-search-combo-box, .jp-color-picker, .jp-grid-splitter,
                     .jp-scroll-viewer--thin, .jp-menu, canvas.jp-vignette
+  DataGrid          table.jp-data-grid: header click sorts (Shift adds a column), header edge resizes;
+                    data-jp-sort="false", data-jp-resize="false", data-sort-value on a cell
   tr[data-href]     a data grid row that opens a page when clicked
 
 Controls raise the usual input and change events; value controls (slider, pickers, combo boxes)
-also raise "jp-change" with the new value in event.detail.
+also raise "jp-change" with the new value in event.detail. A data grid raises "jp-sorting"
+(cancelable, before it sorts) and "jp-sorted".
 */
 (function () {
   'use strict';
@@ -538,6 +541,144 @@ also raise "jp-change" with the new value in event.detail.
       /* only the box folds; a click on the header text selects without folding */
       const summary = e.target.closest('summary');
       if (summary && e.target.closest('.jp-tree-view__item')) e.preventDefault();
+    });
+  }
+
+  /* ============================================================= data grid */
+  /* DataGrid: a click on a column header sorts the rows, a second click turns the order round and
+     Shift+click sorts by one more column, as CanUserSortColumns does in WPF. Dragging a header's
+     right edge resizes the column (CanUserResizeColumns) and a double-click there fits it to its
+     content. data-jp-sort="false" / data-jp-resize="false" on the table or a <th> turn either off;
+     a header with a link sorts on the server. Cells sort by data-sort-value, else by their text. */
+  const MIN_COLUMN_WIDTH = 20;
+  const collator = new Intl.Collator(undefined, { numeric: true, sensitivity: 'base' });
+
+  function compareCells(a, b) {
+    if (a === b) return 0;
+    if (a === '' || b === '') return a === '' ? -1 : 1;
+    const x = Number(a), y = Number(b);
+    return Number.isFinite(x) && Number.isFinite(y) ? x - y : collator.compare(a, b);
+  }
+
+  /* the width a cell needs for its content, padding and border; headers keep room for the arrow */
+  function contentWidth(cell) {
+    const range = document.createRange();
+    const grip = cell.lastElementChild?.classList.contains('jp-data-grid__resizer') ? 1 : 0;
+    range.setStart(cell, 0);
+    range.setEnd(cell, cell.childNodes.length - grip);
+    const s = getComputedStyle(cell);
+    const frame = ['paddingLeft', 'paddingRight', 'borderLeftWidth', 'borderRightWidth'].reduce((sum, p) => sum + parseFloat(s[p]), 0);
+    return Math.ceil(range.getBoundingClientRect().width + frame + (cell.tagName === 'TH' ? 13 : 0));
+  }
+
+  /* style.width for a border-box width in pixels, whatever box-sizing the page uses */
+  function setCellWidth(cell, px) {
+    const s = getComputedStyle(cell);
+    const frame = s.boxSizing === 'border-box' ? 0
+      : ['paddingLeft', 'paddingRight', 'borderLeftWidth', 'borderRightWidth'].reduce((sum, p) => sum + parseFloat(s[p]), 0);
+    cell.style.width = Math.max(0, px - frame) + 'px';
+  }
+
+  function setUpDataGrid(table) {
+    const headers = [...(table.tHead?.rows[0]?.cells ?? [])];
+    if (headers.length === 0) return;
+    const allowed = (th, key) => table.dataset[key] !== 'false' && th.dataset[key] !== 'false';
+
+    /* sorting; the columns the server marked with aria-sort are the order the rows came in */
+    let sorts = headers.flatMap((th, i) => {
+      const dir = th.getAttribute('aria-sort');
+      return dir === 'ascending' || dir === 'descending' ? [{ i, dir }] : [];
+    });
+    const sortBy = (index, add) => {
+      const current = sorts.find(s => s.i === index);
+      const dir = current?.dir === 'ascending' ? 'descending' : 'ascending';
+      const sorting = new CustomEvent('jp-sorting', { bubbles: true, cancelable: true, detail: { column: index, header: headers[index], direction: dir } });
+      if (!table.dispatchEvent(sorting)) return;
+      if (!add) sorts = [];
+      if (current && add) current.dir = dir; else sorts.push({ i: index, dir });
+      headers.forEach((th, i) => {
+        const s = sorts.find(s => s.i === i);
+        if (s) th.setAttribute('aria-sort', s.dir); else th.removeAttribute('aria-sort');
+      });
+      for (const body of table.tBodies) {
+        const rows = [...body.rows];
+        const keys = new Map(rows.map(row => [row, sorts.map(s => {
+          const cell = row.cells[s.i];
+          return cell ? (cell.dataset.sortValue ?? cell.textContent).trim() : '';
+        })]));
+        rows.sort((a, b) => {
+          const ka = keys.get(a), kb = keys.get(b);
+          for (let k = 0; k < sorts.length; k++) {
+            const c = compareCells(ka[k], kb[k]);
+            if (c) return sorts[k].dir === 'descending' ? -c : c;
+          }
+          return 0;
+        });
+        body.append(...rows);
+      }
+      fire(table, 'jp-sorted', sorts.map(s => ({ column: s.i, header: headers[s.i], direction: s.dir })));
+    };
+    headers.forEach(th => {
+      if (!allowed(th, 'jpSort') || th.querySelector('a, button, input, select')) return;
+      th.classList.add('is-sortable');
+      th.tabIndex = 0;
+    });
+    table.tHead.addEventListener('click', e => {
+      const th = e.target.closest('th.is-sortable');
+      if (th && !e.target.closest('.jp-data-grid__resizer')) sortBy(headers.indexOf(th), e.shiftKey);
+    });
+    table.tHead.addEventListener('keydown', e => {
+      const th = e.target.closest('th.is-sortable');
+      if (!th || (e.key !== 'Enter' && e.key !== ' ')) return;
+      sortBy(headers.indexOf(th), e.shiftKey);
+      e.preventDefault();
+    });
+
+    /* resizing: the first drag fixes every column at its width (table-layout: fixed), so only the
+       dragged column changes and the ones to its right move along. An empty header after the last
+       column takes the room that is left, like the filler header of a WPF DataGrid. */
+    let frozen = false;
+    const freeze = () => {
+      const widths = headers.map(th => th.offsetWidth);
+      headers.forEach((th, i) => setCellWidth(th, widths[i]));
+      const filler = document.createElement('th');
+      filler.className = 'jp-data-grid__filler';
+      filler.setAttribute('aria-hidden', 'true');
+      headers[headers.length - 1].after(filler);
+      table.style.tableLayout = 'fixed';
+      table.classList.add('is-resized');
+      frozen = true;
+    };
+    const resize = (i, px) => {
+      if (!frozen) freeze();
+      setCellWidth(headers[i], Math.max(MIN_COLUMN_WIDTH, Math.round(px)));
+    };
+    headers.forEach((th, i) => {
+      if (!allowed(th, 'jpResize')) return;
+      const grip = document.createElement('span');
+      grip.className = 'jp-data-grid__resizer';
+      grip.setAttribute('aria-hidden', 'true');
+      th.appendChild(grip);
+      grip.addEventListener('pointerdown', e => {
+        if (e.button !== 0) return;
+        e.preventDefault();
+        const startX = e.clientX, start = th.offsetWidth;
+        const move = ev => resize(i, start + ev.clientX - startX);
+        const end = () => {
+          grip.removeEventListener('pointermove', move);
+          grip.removeEventListener('lostpointercapture', end);
+          table.classList.remove('is-resizing');
+        };
+        grip.setPointerCapture(e.pointerId);
+        grip.addEventListener('pointermove', move);
+        grip.addEventListener('lostpointercapture', end);
+        table.classList.add('is-resizing');
+      });
+      grip.addEventListener('dblclick', () => {
+        const cells = [th, ...[...table.tBodies, table.tFoot].filter(Boolean)
+          .flatMap(part => [...part.rows].map(row => row.cells[i]).filter(c => c && c.colSpan === 1))];
+        resize(i, Math.max(...cells.map(contentWidth)));
+      });
     });
   }
 
@@ -1600,6 +1741,7 @@ also raise "jp-change" with the new value in event.detail.
     ['.jp-list-box', el => setUpSelection(el, '.jp-list-box-item')],
     ['.jp-list-view', el => setUpSelection(el, 'tbody > tr')],
     ['.jp-data-grid[data-jp-selection]', el => setUpSelection(el, 'tbody > tr')],
+    ['table.jp-data-grid', setUpDataGrid],
     ['.jp-tree-view', setUpTreeView],
     ['.jp-scroll-viewer--thin', setUpThinScroll],
     ['.jp-slider, .jp-range-slider', setUpSlider],

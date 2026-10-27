@@ -45,8 +45,8 @@
                         <td><a class="text-inherit no-underline" href="@Model.Link(e)">@e.Name</a></td>
                         <td>@e.Title</td>
                         <td>@e.Department</td>
-                        <td>@e.StartDate.ToShortDateString()</td>
-                        <td class="text-center">
+                        <td data-sort-value="@e.StartDate.ToString("yyyy-MM-dd")">@e.StartDate.ToShortDateString()</td>
+                        <td class="text-center" data-sort-value="@(e.IsActive ? 1 : 0)">
                             <span class="jp-check-box jp-check-box--on-light" inert><input type="checkbox" checked="@e.IsActive" aria-label="Active" /></span>
                         </td>
                     </tr>

@@ -118,7 +118,9 @@ is a `<details>`, so it folds without script; a click on the text selects the it
 ![DataGrid](../screenshots/web/controls/datagrid.png)
 
 `jp-data-grid` is a read-only grid with the dark JetPack header, alternating rows and the accent
-selection, filled from `items`. With a height the rows scroll under a sticky header.
+selection, filled from `items`. With a height the rows scroll under a sticky header. As in WPF, a
+click on a column header sorts the rows and the columns can be resized; see
+[Sorting and resizing](#sorting-and-resizing).
 
 ```cshtml
 <jp-data-grid items="Model.Timesheets" selected-index="1" height="190">
@@ -139,7 +141,7 @@ selection, filled from `items`. With a height the rows scroll under a sticky hea
             <th style="width:50px">Week</th>
         </tr></thead>
         <tbody>
-            <tr aria-selected="false"><td>Charles Hoyle</td><td>Consulting</td><td class="jp-data-grid__number">37.5</td><td>43</td></tr>
+            <tr aria-selected="false"><td>Charles Hoyle</td><td>Consulting</td><td class="jp-data-grid__number" data-sort-value="37.5">37.5</td><td data-sort-value="43">43</td></tr>
             …
         </tbody>
     </table>
@@ -152,6 +154,8 @@ selection, filled from `items`. With a height the rows scroll under a sticky hea
 | `selected-index` | -1 | the selected row |
 | `height` | | height in pixels; the rows scroll under the header |
 | `selection-mode` | `Single` | `Single` or `None` |
+| `can-user-sort-columns` | `true` | `false`: a header click does not sort (`data-jp-sort="false"`) |
+| `can-user-resize-columns` | `true` | `false`: the columns keep their widths (`data-jp-resize="false"`) |
 
 | Column attribute | Description |
 | --- | --- |
@@ -160,12 +164,45 @@ selection, filled from `items`. With a height the rows scroll under a sticky hea
 | `width` | a pixel width; `*` or nothing for the rest |
 | `string-format` | a .NET format, such as `N1` or `d`, in the request's culture |
 | `horizontal-alignment` | `Right` for numbers |
-| `sort-direction` | `Ascending` or `Descending`: the sort arrow in the header |
+| `sort-direction` | `Ascending` or `Descending`: the sort arrow in the header; the rows are already in that order |
+| `sort-member-path` | the property to sort by, when it is not `binding` |
+| `can-user-sort` | `false`: this header does not sort |
+| `can-user-resize` | `false`: this column keeps its width |
 
-The grid does not sort or edit; sort on the server and show the direction with `sort-direction`.
-For rows that open a page, write the table yourself (or in a loop) and give each `<tr>` a
-`data-href`: a click opens the address, Ctrl+click opens it in a new tab, and links or buttons in the
-row still work on their own.
+### Sorting and resizing
+
+`jetpack.js` gives every `table.jp-data-grid` the column behaviour of a WPF `DataGrid`, also tables
+you write yourself:
+
+- A click on a header sorts the rows ascending, the next click descending; the arrow shows the
+  order (`aria-sort`). Shift+click sorts by one more column. Enter and Space sort the focused
+  header. The selected row stays selected, and the `tfoot` stays where it is.
+- Text sorts in the browser's language with numbers in it in number order (`Item 9` before
+  `Item 10`), and plain numbers as numbers. A cell with `data-sort-value` sorts by that value
+  instead: `jp-data-grid` writes it for numbers, dates (ISO 8601) and enums, so formatted values
+  sort right in every culture. Give it to formatted cells in tables you write yourself.
+- Drag the right edge of a header to resize its column; a double-click there fits the column to
+  its content. The first drag fixes every column at its width; after that only the dragged column
+  changes (down to 20px) and the columns to its right move along. An empty header after the last
+  column fills the room that is left, and when the columns need more room than there is, the grid
+  scrolls sideways. Cut-off text ends in an ellipsis.
+- `data-jp-sort="false"` and `data-jp-resize="false"` on the table, or on one `<th>`, turn either off.
+  A header that holds a link is left to the link, for grids that sort on the server.
+
+Before it sorts, the table raises `jp-sorting` (cancelable) with `{ column, header, direction }` in
+`event.detail`; call `preventDefault()` to sort somewhere else, such as on the server. After it,
+`jp-sorted` gives the sort columns as a list of the same objects.
+
+```js
+grid.addEventListener('jp-sorting', e => {
+    e.preventDefault();
+    location.search = `?sort=${e.detail.column}&dir=${e.detail.direction}`;
+});
+```
+
+The grid does not edit. For rows that open a page, write the table yourself (or in a loop) and
+give each `<tr>` a `data-href`: a click opens the address, Ctrl+click opens it in a new tab, and
+links or buttons in the row still work on their own.
 
 ```cshtml
 <div class="jp-data-grid-host">

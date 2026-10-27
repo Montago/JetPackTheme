@@ -43,7 +43,7 @@ details and the HTML each one writes. The tag helpers marked * also take `is-ena
 | `jp-list-box` * | `ListBox` | `selected-index`, `name`, `dark`; children: `jp-list-box-item` (`content`, `value`, `is-enabled`) | [Lists and data](lists.md#listbox) |
 | `jp-list-view` * | `ListView` + `GridView` | as `jp-data-grid`; children: `jp-grid-view-column` (`display-member-binding` …) | [Lists and data](lists.md#listview-with-gridview) |
 | `jp-tree-view` * | `TreeView` | `name`; children: `jp-tree-view-item` (`header`, `is-expanded`, `is-selected`, `value`) | [Lists and data](lists.md#treeview) |
-| `jp-data-grid` * | `DataGrid` | `items`, `selected-index`, `height`, `selection-mode`; children: `jp-data-grid-text-column` (`header`, `binding`, `width`, `string-format`, `horizontal-alignment`, `sort-direction`) | [Lists and data](lists.md#datagrid) |
+| `jp-data-grid` * | `DataGrid` | `items`, `selected-index`, `height`, `selection-mode`, `can-user-sort-columns`, `can-user-resize-columns`; children: `jp-data-grid-text-column` (`header`, `binding`, `width`, `string-format`, `horizontal-alignment`, `sort-direction`, `sort-member-path`, `can-user-sort`, `can-user-resize`) | [Lists and data](lists.md#datagrid) |
 | `jp-calendar` * | `Calendar` | `selected-date`, `display-date` | [Lists and data](lists.md#calendar) |
 | `jp-scroll-viewer` * | `ScrollViewer` | `horizontal-scroll-bar-visibility`, `vertical-scroll-bar-visibility`, `thin` | [Lists and data](lists.md#scrollviewer-and-scrollbar) |
 | `jp-tab-control` * | `TabControl` | `tab-control-style`, `selected-index`, `selection-animation`, `content-transition`, `use-hash`, `id`; children: `jp-tab-item` (`header`, `name`, `is-selected`, `is-enabled`), `jp-tab-control-tag` | [Navigation](navigation.md#tabcontrol) |
@@ -116,6 +116,8 @@ write them in your own markup:
 | `data-jp-toggle` | a button | `ToggleButton`: flips `aria-pressed` |
 | `data-jp-palette="#… #…"` | `.jp-color-picker` | the colours of the palette |
 | `data-href="url"` | a `<tr>` | the row opens that page when clicked |
+| `data-jp-sort="false"`, `data-jp-resize="false"` | `table.jp-data-grid` or a `<th>` | the headers do not sort, the columns do not resize |
+| `data-sort-value="…"` | a cell of `.jp-data-grid` | the value the column sorts by |
 | `data-jp-hash="true"` | `.jp-tab-control` | keeps the selected tab in the address |
 | `data-busy="true"` | `.jp-busy-indicator` | busy |
 | `data-title-bar="light"` / `"texture"` | `.jp-window` | the title bar mode |
@@ -172,6 +174,8 @@ Other events:
 | `jp-open`, `jp-close` | `.jp-flyout` | the flyout opens or closes |
 | `jp-close` | `.jp-info-bar` | the bar is closed |
 | `jp-accent-changed` | `document` | the accent changes; `event.detail` is the accent |
+| `jp-sorting` | `table.jp-data-grid` | before a header click sorts; cancelable; `{ column, header, direction }` |
+| `jp-sorted` | `table.jp-data-grid` | after it sorted; a list of `{ column, header, direction }` |
 
 ```js
 document.addEventListener('jp-change', e => {

@@ -68,6 +68,26 @@
   .jp-data-grid th { z-index: 1; }
   .jp-data-grid[data-jp-selection] tbody tr { cursor: default; }
 
+  /* Sorting and resizing (jetpack.js): the WPF header's #14FFFFFF hover layer and its 8px grippers */
+  .jp-data-grid th:is(.is-sortable, :has(> a)):hover {
+    background: linear-gradient(rgb(255 255 255 / 0.08), rgb(255 255 255 / 0.08)), var(--jp-data-grid-header);
+  }
+  .jp-data-grid th.is-sortable { cursor: pointer; }
+  .jp-data-grid th.is-sortable:focus-visible { outline: 1px solid var(--jp-focus); outline-offset: -2px; }
+  .jp-data-grid__resizer {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 8px;
+    cursor: col-resize;
+    touch-action: none;
+  }
+  .jp-data-grid.is-resized :is(th, td) { overflow: hidden; text-overflow: ellipsis; }
+  .jp-data-grid th.jp-data-grid__filler { padding: 0; }
+  .jp-data-grid.is-resizing { cursor: col-resize; user-select: none; }
+  .jp-data-grid.is-resizing th { cursor: col-resize; }
+
   /* ------------------------------------------------------------- tree view */
   /* Nested lists; each item is a link or a button: <ul class="jp-tree-view"><li><details open><summary>..</summary><ul>..</ul></details></li></ul> */
   .jp-tree-view, .jp-tree-view ul {

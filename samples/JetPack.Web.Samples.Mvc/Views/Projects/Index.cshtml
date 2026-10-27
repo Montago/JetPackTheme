@@ -39,7 +39,7 @@
                         <tr data-href="@Url.Action("Index", new { project = Slug.Of(p.Name) })">
                             <td>@p.Name</td>
                             <td>@p.Manager</td>
-                            <td>@p.Deadline.ToShortDateString()</td>
+                            <td data-sort-value="@p.Deadline.ToString("yyyy-MM-dd")">@p.Deadline.ToShortDateString()</td>
                         </tr>
                     }
                 </tbody>
