@@ -88,7 +88,7 @@ public sealed class GridFilterOption : INotifyPropertyChanged
 /// cells, a value filter in every column header, three-state sorting and grouping. Rows and columns
 /// are virtualized. Columns are defined by hand (<see cref="JetPackGridColumn"/> or any DataGrid column).
 /// </summary>
-public class JetPackGrid : DataGrid
+public partial class JetPackGrid : DataGrid
 {
     /// <summary>Clears the filter of the column (or header) in the parameter; without one, clears the search and every filter.</summary>
     public static readonly RoutedUICommand ClearFilterCommand = new("Clear", nameof(ClearFilterCommand), typeof(JetPackGrid));
@@ -100,9 +100,6 @@ public class JetPackGrid : DataGrid
     public static readonly RoutedUICommand PreviousPageCommand = new("Previous page", nameof(PreviousPageCommand), typeof(JetPackGrid));
     public static readonly RoutedUICommand NextPageCommand = new("Next page", nameof(NextPageCommand), typeof(JetPackGrid));
     public static readonly RoutedUICommand LastPageCommand = new("Last page", nameof(LastPageCommand), typeof(JetPackGrid));
-
-    /// <summary>Key of the <see cref="System.Windows.Controls.GroupStyle"/> used when <see cref="GroupMemberPath"/> is set and no GroupStyle is given.</summary>
-    public const string GroupStyleKey = "JetPack.GroupStyles.JetPackGrid";
 
     private readonly DispatcherTimer timer;
     private object? lastSelected;
@@ -118,6 +115,8 @@ public class JetPackGrid : DataGrid
     {
         DefaultStyleKeyProperty.OverrideMetadata(typeof(JetPackGrid), new FrameworkPropertyMetadata(typeof(JetPackGrid)));
         AutoGenerateColumnsProperty.OverrideMetadata(typeof(JetPackGrid), new FrameworkPropertyMetadata(false));
+        // While grouped, the DataGrid gets the grid's flat list of headers and rows (JetPackGrid.Groups.cs).
+        ItemsSourceProperty.OverrideMetadata(typeof(JetPackGrid), new FrameworkPropertyMetadata(null, CoerceItemsSource));
         CommandManager.RegisterClassCommandBinding(typeof(JetPackGrid), new CommandBinding(ClearFilterCommand, OnClearFilter));
         CommandManager.RegisterClassCommandBinding(typeof(JetPackGrid), new CommandBinding(CloseFilterCommand, OnCloseFilter));
         CommandManager.RegisterClassCommandBinding(typeof(JetPackGrid), new CommandBinding(FirstPageCommand,
@@ -131,6 +130,8 @@ public class JetPackGrid : DataGrid
         // The filter box lives in a popup of the column header; its events still bubble up to the grid.
         EventManager.RegisterClassHandler(typeof(JetPackGrid), ToggleButton.CheckedEvent, new RoutedEventHandler(OnFilterButtonChecked));
         EventManager.RegisterClassHandler(typeof(JetPackGrid), PreviewKeyDownEvent, new KeyEventHandler(OnFilterBoxKeyDown));
+        // The ScrollViewer marks the scroll bar's events handled; the thumb-drag preview still needs them.
+        EventManager.RegisterClassHandler(typeof(JetPackGrid), ScrollBar.ScrollEvent, new ScrollEventHandler(OnScrollBarScroll), handledEventsToo: true);
     }
 
     public JetPackGrid()
@@ -138,9 +139,8 @@ public class JetPackGrid : DataGrid
         timer = new DispatcherTimer(DispatcherPriority.Input);
         timer.Tick += (_, _) => ApplyFilters();
         Columns.CollectionChanged += OnColumnsChanged;
-        Loaded += (_, _) => EnsureGroupStyle();
         // Sorting or grouping changes which rows land on which page.
-        ((INotifyCollectionChanged)Items.SortDescriptions).CollectionChanged += (_, _) => ScheduleRepage(keepPage: false);
+        ((INotifyCollectionChanged)Items.SortDescriptions).CollectionChanged += (_, _) => OnSortDescriptionsChanged();
         Items.GroupDescriptions.CollectionChanged += (_, _) => ScheduleRepage(keepPage: false);
     }
 
@@ -181,7 +181,8 @@ public class JetPackGrid : DataGrid
     }
 
     private static readonly DependencyPropertyKey SearchWordsPropertyKey = DependencyProperty.RegisterReadOnly(
-        nameof(SearchWords), typeof(IReadOnlyList<string>), typeof(JetPackGrid), new PropertyMetadata(Array.Empty<string>()));
+        nameof(SearchWords), typeof(IReadOnlyList<string>), typeof(JetPackGrid),
+        new PropertyMetadata(Array.Empty<string>(), (d, e) => d.SetValue(JetPackGridColumn.WordsProperty, e.NewValue)));
 
     public static readonly DependencyProperty SearchWordsProperty = SearchWordsPropertyKey.DependencyProperty;
 
@@ -201,8 +202,8 @@ public class JetPackGrid : DataGrid
     public static readonly DependencyProperty HighlightForegroundProperty = DependencyProperty.Register(
         nameof(HighlightForeground), typeof(Brush), typeof(JetPackGrid), new PropertyMetadata(null, OnHighlightChanged));
 
-    // The cells copy the brushes into their runs (bindings per run made scrolling slower), so a new
-    // brush (an accent change) hands them a new word list to rebuild the runs from.
+    // The cells copy the brushes when they draw their text (bindings per cell made scrolling slower), so a
+    // new brush (an accent change) hands them a new word list to draw the text again with.
     private static void OnHighlightChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
         var grid = (JetPackGrid)d;
@@ -218,12 +219,37 @@ public class JetPackGrid : DataGrid
         set => SetValue(HighlightForegroundProperty, value);
     }
 
+    public static readonly DependencyProperty EnableLightweightTextRenderingProperty = DependencyProperty.Register(
+        nameof(EnableLightweightTextRendering), typeof(bool), typeof(JetPackGrid), new PropertyMetadata(true, OnRenderingChanged));
+
+    /// <summary>
+    /// Whether <see cref="JetPackGridColumn"/> cells draw their text as glyph runs (<see cref="GridCellText"/>)
+    /// instead of a TextBlock, which halves the cost of the rows that come into view while scrolling.
+    /// Columns with an ElementStyle and right-to-left grids keep the TextBlock.
+    /// </summary>
+    public bool EnableLightweightTextRendering
+    {
+        get => (bool)GetValue(EnableLightweightTextRenderingProperty);
+        set => SetValue(EnableLightweightTextRenderingProperty, value);
+    }
+
+    private static void OnRenderingChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+    {
+        foreach (var column in ((JetPackGrid)d).Columns.OfType<JetPackGridColumn>())
+        {
+            column.OnRenderingChanged();
+        }
+    }
+
     // ---------------- Grouping and counts ----------------
 
     public static readonly DependencyProperty GroupMemberPathProperty = DependencyProperty.Register(
         nameof(GroupMemberPath), typeof(string), typeof(JetPackGrid), new PropertyMetadata(null, (d, _) => ((JetPackGrid)d).UpdateGrouping()));
 
-    /// <summary>Member the rows are grouped by; empty for no groups.</summary>
+    /// <summary>
+    /// Member the rows are grouped by; empty for no groups. Each group gets a header row (<see cref="GridGroupRow"/>)
+    /// that folds it up.
+    /// </summary>
     public string? GroupMemberPath
     {
         get => (string?)GetValue(GroupMemberPathProperty);
@@ -519,7 +545,10 @@ public class JetPackGrid : DataGrid
             : item => Matches(item, searchWords, searched, filters);
 
         match = predicate;
-        ordered = PageSize > 0 && ItemsSource != null && Items.CanFilter ? OrderRows(predicate) : null;
+        groupRuns.Clear();
+        ordered = grouped != null ? OrderRows(predicate, groupRuns)
+            : PageSize > 0 && ItemsSource != null && Items.CanFilter ? OrderRows(predicate, null)
+            : null;
         ShowPage(keepPage ? PageIndex : 0, scrollToTop: !keepPage);
 
         SetValue(IsFilteredPropertyKey, predicate != null);
@@ -531,17 +560,21 @@ public class JetPackGrid : DataGrid
     protected override void OnItemsSourceChanged(IEnumerable oldValue, IEnumerable newValue)
     {
         base.OnItemsSourceChanged(oldValue, newValue);
-        // With paging, rows that are added or removed in the source move the pages along.
-        if (oldValue is INotifyCollectionChanged oldSource)
+        // With paging or groups, rows that are added or removed in the source move the pages along.
+        if (((oldValue as GroupedRows)?.Source ?? oldValue) is INotifyCollectionChanged oldSource)
         {
             CollectionChangedEventManager.RemoveHandler(oldSource, OnSourceChanged);
         }
-        if (newValue is INotifyCollectionChanged newSource)
+        if (((newValue as GroupedRows)?.Source ?? newValue) is INotifyCollectionChanged newSource)
         {
             CollectionChangedEventManager.AddHandler(newSource, OnSourceChanged);
         }
-        UpdateGrouping();
-        ApplyFilters();
+        if (!switchingGrouping)
+        {
+            // A new collection starts unsorted, as in DataGrid.
+            groupSorts.Clear();
+            ApplyFilters();
+        }
     }
 
     private void OnSourceChanged(object? sender, NotifyCollectionChangedEventArgs e)
@@ -558,9 +591,40 @@ public class JetPackGrid : DataGrid
         UpdateCounts();
     }
 
+    protected override void PrepareContainerForItemOverride(DependencyObject element, object item)
+    {
+        if (element is DataGridRow row)
+        {
+            PrepareGroupRow(row, item);
+        }
+        base.PrepareContainerForItemOverride(element, item);
+        if (element is DataGridRow dataRow && item is not GridGroupRow)
+        {
+            ScopeCellStyle(dataRow);
+            SetRowBackground(dataRow, item);
+        }
+    }
+
+    protected override void OnPropertyChanged(DependencyPropertyChangedEventArgs e)
+    {
+        base.OnPropertyChanged(e);
+        if (e.Property == CellStyleProperty && GetTemplateChild("DG_ScrollViewer") is ScrollViewer viewer)
+        {
+            // The rows in view; recycled rows get the new style when they are prepared again.
+            foreach (var row in FindRows(viewer))
+            {
+                ScopeCellStyle(row);
+            }
+        }
+    }
+
     protected override void OnSelectionChanged(SelectionChangedEventArgs e)
     {
         base.OnSelectionChanged(e);
+        if (DeselectHeaders(e))
+        {
+            return;
+        }
         var item = SelectedItem;
         if (!Equals(item, lastSelected))
         {
@@ -574,6 +638,13 @@ public class JetPackGrid : DataGrid
     protected override void OnSorting(DataGridSortingEventArgs e)
     {
         var column = e.Column;
+        if (grouped != null)
+        {
+            // The DataGrid would sort its view of the flat list, headers and all.
+            e.Handled = true;
+            SortGrouped(column);
+            return;
+        }
         if (column.SortDirection != ListSortDirection.Descending)
         {
             base.OnSorting(e);
@@ -614,19 +685,31 @@ public class JetPackGrid : DataGrid
     {
         var total = ordered?.Count ?? 0;
         var size = PageSize;
-        var pages = ordered != null && total > size ? (total + size - 1) / size : 1;
+        var pages = ordered != null && size > 0 && total > size ? (total + size - 1) / size : 1;
         index = Math.Clamp(index, 0, pages - 1);
 
-        var filter = match;
-        if (pages > 1)
+        if (grouped != null)
         {
-            var page = new HashSet<object>(ordered!.Skip(index * size).Take(size));
-            filter = page.Contains;
+            if (Items.Filter != null)
+            {
+                // The grid filters the grouped rows itself; a filter on its view of them would hide headers.
+                Items.Filter = null;
+            }
+            grouped.Reset(pages > 1 ? GroupRows(index * size, Math.Min(size, total - index * size)) : GroupRows(0, total));
         }
-        if (Items.CanFilter && (filter != null || Items.Filter != null))
+        else
         {
-            // Setting a new predicate refreshes the view.
-            Items.Filter = filter;
+            var filter = match;
+            if (pages > 1)
+            {
+                var page = new HashSet<object>(ordered!.Skip(index * size).Take(size));
+                filter = page.Contains;
+            }
+            if (Items.CanFilter && (filter != null || Items.Filter != null))
+            {
+                // Setting a new predicate refreshes the view.
+                Items.Filter = filter;
+            }
         }
 
         showingPage = true;
@@ -652,20 +735,94 @@ public class JetPackGrid : DataGrid
         }
     }
 
-    /// <summary>Every row that passes the filters, in the order the grid shows them (sorted, then by group).</summary>
-    private List<object> OrderRows(Predicate<object>? predicate)
+    // A cell gets the grid's CellStyle only while it is prepared (the DataGrid's "property transfer").
+    // A recycled row leaves the panel's children until it is used again, and on leaving and coming back
+    // its cells look up their style anew, find no implicit one and take the theme's: every cell built its
+    // template twice per recycled row. The same style as an implicit style next to the cells keeps it.
+    private void ScopeCellStyle(DataGridRow row)
     {
-        var view = new ListCollectionView(Items.SourceCollection.Cast<object>().Where(i => i != CollectionView.NewItemPlaceholder).ToList());
+        row.ApplyTemplate();
+        if ((row.Template?.FindName("DGR_CellsPresenter", row) ?? FindCellsPresenter(row)) is not FrameworkElement cells)
+        {
+            return;
+        }
+        var style = CellStyle;
+        if (!ReferenceEquals(cells.Resources[typeof(DataGridCell)], style))
+        {
+            if (style == null)
+            {
+                cells.Resources.Remove(typeof(DataGridCell));
+            }
+            else
+            {
+                cells.Resources[typeof(DataGridCell)] = style;
+            }
+        }
+    }
+
+    // In a row template of the app's own, without the name.
+    private static DataGridCellsPresenter? FindCellsPresenter(DependencyObject parent)
+    {
+        for (var i = 0; i < VisualTreeHelper.GetChildrenCount(parent); i++)
+        {
+            var child = VisualTreeHelper.GetChild(parent, i);
+            if (child is DataGridCellsPresenter presenter)
+            {
+                return presenter;
+            }
+            if (child is not DataGridRow && FindCellsPresenter(child) is { } deeper)
+            {
+                return deeper;
+            }
+        }
+        return null;
+    }
+
+    private static IEnumerable<DataGridRow> FindRows(DependencyObject parent)
+    {
+        for (var i = 0; i < VisualTreeHelper.GetChildrenCount(parent); i++)
+        {
+            var child = VisualTreeHelper.GetChild(parent, i);
+            if (child is DataGridRow row)
+            {
+                yield return row;
+            }
+            else
+            {
+                foreach (var deeper in FindRows(child))
+                {
+                    yield return deeper;
+                }
+            }
+        }
+    }
+
+    /// <summary>
+    /// Every row that passes the filters, in the order the grid shows them (sorted, then by group). With
+    /// <paramref name="runs"/>, grouped by <see cref="GroupMemberPath"/>, and the groups are added to it.
+    /// </summary>
+    private List<object> OrderRows(Predicate<object>? predicate, List<(object? Name, int Start, int Count)>? runs)
+    {
+        var source = Source.Cast<object>().Where(i => i != CollectionView.NewItemPlaceholder);
+        if (runs != null && Sorts.Count == 0)
+        {
+            return SplitIntoGroups(predicate == null ? source.ToList() : source.Where(i => predicate(i)).ToList(), runs);
+        }
+
+        var view = new ListCollectionView(source.ToList());
         using (view.DeferRefresh())
         {
             view.Filter = predicate;
-            foreach (var sort in Items.SortDescriptions)
+            foreach (var sort in Sorts)
             {
                 view.SortDescriptions.Add(sort);
             }
-            foreach (var group in Items.GroupDescriptions)
+            if (runs == null)
             {
-                view.GroupDescriptions.Add(group);
+                foreach (var group in Items.GroupDescriptions)
+                {
+                    view.GroupDescriptions.Add(group);
+                }
             }
         }
 
@@ -686,13 +843,13 @@ public class JetPackGrid : DataGrid
         }
         AddLeaves(view.Groups ?? (IEnumerable)view);
         view.DetachFromSourceCollection();
-        return rows;
+        return runs != null ? SplitIntoGroups(rows, runs) : rows;
     }
 
     // Sort and source changes arrive in steps (DataGrid clears, then adds); repage once they are done.
     private void ScheduleRepage(bool keepPage)
     {
-        if (PageSize <= 0 || repagePending)
+        if ((PageSize <= 0 && grouped == null) || repagePending)
         {
             return;
         }
@@ -765,7 +922,7 @@ public class JetPackGrid : DataGrid
         if (FilterListLimit > 0 && ColumnReader.Create(column, culture) is { } reader)
         {
             var counts = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase);
-            foreach (var item in Items.SourceCollection ?? Items)
+            foreach (var item in Source ?? Items)
             {
                 if (item == CollectionView.NewItemPlaceholder || reader.GetText(item).Trim() is not { Length: > 0 } text)
                 {
@@ -814,34 +971,6 @@ public class JetPackGrid : DataGrid
         column.SetCurrentValue(FilterTextProperty, string.Join(", ", values));
     }
 
-    private void UpdateGrouping()
-    {
-        var path = GroupMemberPath;
-        var current = Items.GroupDescriptions.Count == 1 ? (Items.GroupDescriptions[0] as PropertyGroupDescription)?.PropertyName : null;
-        if (current == path || (string.IsNullOrEmpty(path) && Items.GroupDescriptions.Count == 0))
-        {
-            return;
-        }
-
-        using (Items.DeferRefresh())
-        {
-            Items.GroupDescriptions.Clear();
-            if (!string.IsNullOrEmpty(path))
-            {
-                Items.GroupDescriptions.Add(new PropertyGroupDescription(path));
-            }
-        }
-        EnsureGroupStyle();
-    }
-
-    private void EnsureGroupStyle()
-    {
-        if (GroupStyle.Count == 0 && !string.IsNullOrEmpty(GroupMemberPath) && TryFindResource(GroupStyleKey) is GroupStyle style)
-        {
-            GroupStyle.Add(style);
-        }
-    }
-
     private void UpdateCounts()
     {
         var count = Items.Count;
@@ -849,7 +978,7 @@ public class JetPackGrid : DataGrid
         {
             count--;
         }
-        var total = Items.SourceCollection switch
+        var total = Source switch
         {
             ICollection collection => collection.Count,
             IEnumerable source when Items.Filter != null || ordered != null => source.Cast<object>().Count(),
@@ -1017,6 +1146,16 @@ public class JetPackGrid : DataGrid
             format = string.IsNullOrEmpty(stringFormat) ? null : stringFormat.Contains('{') ? stringFormat : "{0:" + stringFormat + "}";
         }
 
+        /// <summary>
+        /// A reader of the text the cell binds to (its Binding, not the FilterMemberPath the search reads);
+        /// null when the binding is not a plain path on the row's item.
+        /// </summary>
+        public static ColumnReader? ForCell(DataGridBoundColumn column, CultureInfo culture) =>
+            column.Binding is Binding binding && binding.Source == null && binding.RelativeSource == null && string.IsNullOrEmpty(binding.ElementName)
+                && Split(binding.Path?.Path) is { } path
+                ? new ColumnReader(path, binding, culture)
+                : null;
+
         public static ColumnReader? Create(DataGridColumn column, CultureInfo culture)
         {
             var memberPath = GetFilterMemberPath(column);
@@ -1030,6 +1169,28 @@ public class JetPackGrid : DataGrid
                 return new ColumnReader(Split(binding.Path?.Path), binding, culture);
             }
             return string.IsNullOrEmpty(column.SortMemberPath) ? null : new ColumnReader(Split(column.SortMemberPath), null, culture);
+        }
+
+        /// <summary>Reads the value at a member path, unformatted; null when the path is not a plain one.</summary>
+        public static Func<object, object?>? ForValue(string? memberPath)
+        {
+            if (Split(memberPath) is not { } path)
+            {
+                return null;
+            }
+            return item =>
+            {
+                object? value = item;
+                foreach (var name in path)
+                {
+                    if (value == null)
+                    {
+                        break;
+                    }
+                    value = GetMember(value, name);
+                }
+                return value;
+            };
         }
 
         // An empty array reads the item itself; null means a path this reader does not follow (indexers, attached properties).

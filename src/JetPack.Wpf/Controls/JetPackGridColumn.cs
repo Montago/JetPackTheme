@@ -47,12 +47,24 @@ public class JetPackGridColumn : DataGridTextColumn
         set => SetValue(FilterTextProperty, value);
     }
 
-    // The cell's text, its column and the grid's search words; any change rebuilds the marked runs.
+    public static readonly DependencyProperty TextAlignmentProperty = DependencyProperty.Register(
+        nameof(TextAlignment), typeof(TextAlignment), typeof(JetPackGridColumn),
+        new PropertyMetadata(TextAlignment.Left, (d, _) => ((JetPackGridColumn)d).NotifyPropertyChanged(nameof(TextAlignment))));
+
+    /// <summary>Alignment of the text in the cells (Right for numbers); use it rather than an ElementStyle, which turns off the drawn text.</summary>
+    public TextAlignment TextAlignment
+    {
+        get => (TextAlignment)GetValue(TextAlignmentProperty);
+        set => SetValue(TextAlignmentProperty, value);
+    }
+
+    // The cell's text, its column and the grid's search words; any change rebuilds the shown text.
     private static readonly DependencyProperty CellTextProperty = DependencyProperty.RegisterAttached(
         "CellText", typeof(string), typeof(JetPackGridColumn), new PropertyMetadata(null, OnCellChanged));
 
-    private static readonly DependencyProperty WordsProperty = DependencyProperty.RegisterAttached(
-        "Words", typeof(IReadOnlyList<string>), typeof(JetPackGridColumn), new PropertyMetadata(null, OnCellChanged));
+    // Set on the grid and inherited by every cell, so the cells need no binding to the grid.
+    internal static readonly DependencyProperty WordsProperty = DependencyProperty.RegisterAttached(
+        "Words", typeof(IReadOnlyList<string>), typeof(JetPackGridColumn), new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.Inherits, OnCellChanged));
 
     private static readonly DependencyProperty ColumnProperty = DependencyProperty.RegisterAttached(
         "Column", typeof(JetPackGridColumn), typeof(JetPackGridColumn), new PropertyMetadata(null));
@@ -60,30 +72,117 @@ public class JetPackGridColumn : DataGridTextColumn
     private static readonly DependencyProperty IsMarkedProperty = DependencyProperty.RegisterAttached(
         "IsMarked", typeof(bool), typeof(JetPackGridColumn), new PropertyMetadata(false));
 
+    /// <summary>The grid's <see cref="JetPackGrid.EnableLightweightTextRendering"/> changed: the cells get a new element.</summary>
+    internal void OnRenderingChanged() => NotifyPropertyChanged(nameof(JetPackGrid.EnableLightweightTextRendering));
+
+    protected override void RefreshCellContent(FrameworkElement element, string propertyName)
+    {
+        if (element is DataGridCell { IsEditing: false } cell
+            && (propertyName == nameof(JetPackGrid.EnableLightweightTextRendering)
+                || (cell.Content is GridCellText && propertyName is nameof(FontFamily) or nameof(FontSize) or nameof(FontStyle) or nameof(FontWeight) or nameof(Foreground))))
+        {
+            cell.Content = GenerateElement(cell, cell.DataContext);
+            return;
+        }
+        if (element is DataGridCell { Content: GridCellText or TextBlock } shown && propertyName == nameof(TextAlignment))
+        {
+            if (shown.Content is GridCellText text)
+            {
+                text.TextAlignment = TextAlignment;
+            }
+            else
+            {
+                ((TextBlock)shown.Content).TextAlignment = TextAlignment;
+            }
+            return;
+        }
+        base.RefreshCellContent(element, propertyName);
+    }
+
     protected override FrameworkElement GenerateElement(DataGridCell cell, object dataItem)
     {
-        // The base element carries the ElementStyle and the column's font settings; only its text is ours.
-        var block = (TextBlock)base.GenerateElement(cell, dataItem);
-        BindingOperations.ClearBinding(block, TextBlock.TextProperty);
-        block.SetValue(ColumnProperty, this);
-        if (DataGridOwner is JetPackGrid grid)
+        // One element and one binding (the text) per cell. The search words come down from the grid by inheritance.
+        FrameworkElement element;
+        if (DataGridOwner is JetPackGrid { EnableLightweightTextRendering: true, FlowDirection: FlowDirection.LeftToRight }
+            && (ElementStyle == null || ElementStyle == DefaultElementStyle))
         {
-            BindingOperations.SetBinding(block, WordsProperty, new Binding(nameof(JetPackGrid.SearchWords)) { Source = grid });
+            // The margin of the DataGrid's default element style, so the text sits where a TextBlock's would.
+            element = new GridCellText { TextAlignment = TextAlignment, Margin = new Thickness(2, 0, 2, 0) };
+            CopyIfSet(FontFamilyProperty, TextElement.FontFamilyProperty, element);
+            CopyIfSet(FontSizeProperty, TextElement.FontSizeProperty, element);
+            CopyIfSet(FontStyleProperty, TextElement.FontStyleProperty, element);
+            CopyIfSet(FontWeightProperty, TextElement.FontWeightProperty, element);
+            CopyIfSet(ForegroundProperty, TextElement.ForegroundProperty, element);
         }
+        else
+        {
+            // The base element carries the ElementStyle and the column's font settings; only its text is ours.
+            var block = (TextBlock)base.GenerateElement(cell, dataItem);
+            BindingOperations.ClearBinding(block, TextBlock.TextProperty);
+            block.TextAlignment = TextAlignment;
+            element = block;
+        }
+        element.SetValue(ColumnProperty, this);
         if (Binding != null)
         {
-            BindingOperations.SetBinding(block, CellTextProperty, Binding);
+            BindingOperations.SetBinding(element, CellTextProperty, Binding);
         }
-        return block;
+        return element;
+    }
+
+    private void CopyIfSet(DependencyProperty columnProperty, DependencyProperty elementProperty, FrameworkElement element)
+    {
+        if (ReadLocalValue(columnProperty) != DependencyProperty.UnsetValue)
+        {
+            element.SetValue(elementProperty, GetValue(columnProperty));
+        }
     }
 
     private static void OnCellChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
-        var block = (TextBlock)d;
-        var text = (string?)block.GetValue(CellTextProperty) ?? string.Empty;
-        var words = block.GetValue(WordsProperty) as IReadOnlyList<string>;
-        var column = block.GetValue(ColumnProperty) as JetPackGridColumn;
-        var hits = words is { Count: > 0 } && column is { IsSearchable: true } ? FindHits(text, words) : null;
+        if (d is FrameworkElement element && element.GetValue(ColumnProperty) is JetPackGridColumn column)
+        {
+            column.UpdateText(element);
+        }
+    }
+
+    /// <summary>
+    /// Shows another row's text in the cell without its item or binding (the grid's thumb-drag
+    /// preview); a drawn cell only draws it again. False for an editing cell.
+    /// </summary>
+    internal bool ShowPreview(FrameworkElement element, string text)
+    {
+        if (element is not (GridCellText or TextBlock) || element.GetValue(ColumnProperty) != this)
+        {
+            return false;
+        }
+        ShowText(element, text, measure: false);
+        return true;
+    }
+
+    /// <summary>Shows the cell's own text again, after <see cref="ShowPreview"/>.</summary>
+    internal void RestoreText(FrameworkElement element)
+    {
+        if (element.GetValue(ColumnProperty) == this)
+        {
+            UpdateText(element);
+        }
+    }
+
+    private void UpdateText(FrameworkElement element) => ShowText(element, (string?)element.GetValue(CellTextProperty) ?? string.Empty, measure: true);
+
+    private void ShowText(FrameworkElement element, string text, bool measure)
+    {
+        var grid = DataGridOwner as JetPackGrid;
+        var words = element.GetValue(WordsProperty) as IReadOnlyList<string>;
+        var hits = words is { Count: > 0 } && IsSearchable ? FindHits(text, words) : null;
+
+        if (element is GridCellText cellText)
+        {
+            cellText.SetText(text, hits, grid?.HighlightBrush, grid?.HighlightForeground, measure);
+            return;
+        }
+        var block = (TextBlock)element;
         if (hits == null)
         {
             if ((bool)block.GetValue(IsMarkedProperty))
@@ -96,7 +195,6 @@ public class JetPackGridColumn : DataGridTextColumn
             return;
         }
 
-        var grid = column!.DataGridOwner;
         block.SetValue(IsMarkedProperty, true);
         block.Inlines.Clear();
         var position = 0;
@@ -107,13 +205,13 @@ public class JetPackGridColumn : DataGridTextColumn
                 block.Inlines.Add(new Run(text[position..start]));
             }
             var run = new Run(text[start..end]);
-            if (grid is JetPackGrid { HighlightBrush: var background, HighlightForeground: var foreground })
+            if (grid?.HighlightBrush is { } background)
             {
                 run.Background = background;
-                if (foreground != null)
-                {
-                    run.Foreground = foreground;
-                }
+            }
+            if (grid?.HighlightForeground is { } foreground)
+            {
+                run.Foreground = foreground;
             }
             block.Inlines.Add(run);
             position = end;

@@ -17,7 +17,8 @@ developers to a commercial grid such as Telerik's RadGridView, in a free, MIT-li
 - A filter in every column header: tick values from a list with row counts, or type them with `*`
   wildcards
 - Grouping with headers that fold up, three-state sorting and paging
-- Virtualized rows and columns, also while grouping, for thousands of rows in tens of columns
+- Virtualized rows and columns, also while grouping, for thousands of rows in tens of columns;
+  cells draw their text straight from the font, and dragging the scroll bar shows the rows at once
 
 It does not try to match everything a commercial suite offers, such as hierarchical child grids or
 built-in export. [Documentation](https://montago.github.io/JetPackTheme/lists.html#jetpackgrid)

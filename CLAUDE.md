@@ -189,6 +189,13 @@ src/JetPack.Wpf.Demo/bin/Debug/net8.0-windows/JetPack.Wpf.Demo.exe --snapshot <f
 - **An implicit `DataGridColumnHeader` style wins over `DataGrid.ColumnHeaderStyle`**, and
   `DataGridColumnHeader.Column` does not notify. JetPackGrid puts its header style in
   `Style.Resources` and binds through `JetPackGrid.HeaderColumn`.
+- **`Items` keeps its `Filter` (and sort) when `ItemsSource` changes** and puts it on the new view.
+  JetPackGrid clears the filter before it swaps in its grouped list; a page filter left on it hid the
+  group headers and every row not on that page. Test grouping after a search and paging, as the demo does.
+- **No `RelativeSource AncestorType=DataGrid` in row or cell templates.** Such a binding finds the grid
+  a moment after the row is built; a refresh in between (filter, sort, grouping) cuts the row loose,
+  the binding gives up for good (`PathError`) and the recycled row later shows its row header. The
+  templates read `DataGridHelper` (inherited from the grid) in triggers instead.
 - Effects (DropShadowEffect) on text turn off ClearType; put shadows on a separate background
   Border rather than on content, except for the deliberate text emboss/glow.
 

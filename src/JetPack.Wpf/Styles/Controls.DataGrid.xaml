@@ -7,6 +7,12 @@
     <!-- Binding paths use jp: rather than c:. They are resolved at run time, and a clr-namespace without an
          assembly then points at the app's assembly, so (c:JetPackGrid.HeaderColumn) would not be found. -->
 
+    <!-- Rows and cells read the grid's settings from DataGridHelper (inherited from the grid) in triggers, never
+         through RelativeSource AncestorType=DataGrid: a recycled row whose rows were refreshed before that binding
+         found the grid kept a dead binding, and showed its row header wherever it was used again. Triggers rather
+         than bindings to the inherited values: a trigger has no source to find (bindings with these attached
+         properties in their path stayed unattached in an app without XAML of its own). -->
+
     <!-- Dark gradient header, light grey body with alternating rows, accent selection (SDKStyles.xaml) -->
 
     <Style x:Key="JetPack.Styles.DataGrid.Gripper" TargetType="Thumb">
@@ -98,14 +104,14 @@
             </Setter.Value>
         </Setter>
         <Style.Triggers>
-            <MultiDataTrigger>
-                <MultiDataTrigger.Conditions>
-                    <Condition Binding="{Binding IsSelected, RelativeSource={RelativeSource Self}}" Value="True" />
-                    <Condition Binding="{Binding SelectionUnit, RelativeSource={RelativeSource AncestorType=DataGrid}}" Value="Cell" />
-                </MultiDataTrigger.Conditions>
+            <MultiTrigger>
+                <MultiTrigger.Conditions>
+                    <Condition Property="IsSelected" Value="True" />
+                    <Condition Property="h:DataGridHelper.SelectionUnit" Value="Cell" />
+                </MultiTrigger.Conditions>
                 <Setter Property="Background" Value="{DynamicResource JetPack.Brushes.Accent.Selection}" />
                 <Setter Property="Foreground" Value="White" />
-            </MultiDataTrigger>
+            </MultiTrigger>
             <Trigger Property="IsKeyboardFocusWithin" Value="True">
                 <Setter Property="BorderBrush" Value="{DynamicResource JetPack.Brushes.Focus}" />
             </Trigger>
@@ -128,14 +134,22 @@
                                 <RowDefinition Height="*" />
                                 <RowDefinition Height="Auto" />
                             </SelectiveScrollingGrid.RowDefinitions>
-                            <DataGridCellsPresenter Grid.Column="1" ItemsPanel="{TemplateBinding ItemsPanel}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
-                            <DataGridDetailsPresenter Grid.Column="1" Grid.Row="1" Visibility="{TemplateBinding DetailsVisibility}"
-                                                      SelectiveScrollingGrid.SelectiveScrollingOrientation="{Binding AreRowDetailsFrozen, ConverterParameter={x:Static SelectiveScrollingOrientation.Vertical}, Converter={x:Static DataGrid.RowDetailsScrollingConverter}, RelativeSource={RelativeSource AncestorType=DataGrid}}" />
-                            <DataGridRowHeader Grid.RowSpan="2" SelectiveScrollingGrid.SelectiveScrollingOrientation="Vertical"
-                                               Visibility="{Binding HeadersVisibility, ConverterParameter={x:Static DataGridHeadersVisibility.Row}, Converter={x:Static DataGrid.HeadersVisibilityConverter}, RelativeSource={RelativeSource AncestorType=DataGrid}}" />
+                            <DataGridCellsPresenter x:Name="DGR_CellsPresenter" Grid.Column="1" ItemsPanel="{TemplateBinding ItemsPanel}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                            <DataGridDetailsPresenter x:Name="DGR_Details" Grid.Column="1" Grid.Row="1" Visibility="{TemplateBinding DetailsVisibility}" />
+                            <DataGridRowHeader x:Name="DGR_RowHeader" Grid.RowSpan="2" SelectiveScrollingGrid.SelectiveScrollingOrientation="Vertical" />
                         </SelectiveScrollingGrid>
                     </Border>
                     <ControlTemplate.Triggers>
+                        <!-- The row header shows for HeadersVisibility Row and All -->
+                        <Trigger Property="h:DataGridHelper.HeadersVisibility" Value="Column">
+                            <Setter TargetName="DGR_RowHeader" Property="Visibility" Value="Collapsed" />
+                        </Trigger>
+                        <Trigger Property="h:DataGridHelper.HeadersVisibility" Value="None">
+                            <Setter TargetName="DGR_RowHeader" Property="Visibility" Value="Collapsed" />
+                        </Trigger>
+                        <Trigger Property="h:DataGridHelper.AreRowDetailsFrozen" Value="True">
+                            <Setter TargetName="DGR_Details" Property="SelectiveScrollingGrid.SelectiveScrollingOrientation" Value="Vertical" />
+                        </Trigger>
                         <Trigger Property="IsMouseOver" Value="True">
                             <Setter TargetName="DGR_Border" Property="Background" Value="{DynamicResource JetPack.Brushes.Selection.MouseOver}" />
                         </Trigger>
@@ -185,6 +199,8 @@
             <Border Grid.Column="2" Background="{DynamicResource JetPack.Brushes.DataGrid.Header}"
                     Visibility="{Binding Visibility, ElementName=PART_ColumnHeadersPresenter}" />
             <ScrollContentPresenter x:Name="PART_ScrollContentPresenter" Grid.Row="1" Grid.ColumnSpan="2" CanContentScroll="{TemplateBinding CanContentScroll}" />
+            <!-- The group headers of a thumb drag over a grouped JetPackGrid (JetPackGrid.Scrolling.cs) -->
+            <Canvas x:Name="PART_ScrubLayer" Grid.Row="1" Grid.ColumnSpan="2" ClipToBounds="True" IsHitTestVisible="False" />
             <ScrollBar x:Name="PART_VerticalScrollBar" Grid.Column="2" Grid.Row="1" Orientation="Vertical" Maximum="{TemplateBinding ScrollableHeight}"
                        ViewportSize="{TemplateBinding ViewportHeight}" Value="{Binding VerticalOffset, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}"
                        Visibility="{TemplateBinding ComputedVerticalScrollBarVisibility}" />
@@ -218,6 +234,10 @@
         <Setter Property="RowHeaderWidth" Value="14" />
         <Setter Property="ScrollViewer.CanContentScroll" Value="True" />
         <Setter Property="ScrollViewer.PanningMode" Value="Both" />
+        <!-- Inherited by the rows and cells (see DataGridHelper at the top) -->
+        <Setter Property="h:DataGridHelper.HeadersVisibility" Value="{Binding HeadersVisibility, RelativeSource={RelativeSource Self}}" />
+        <Setter Property="h:DataGridHelper.AreRowDetailsFrozen" Value="{Binding AreRowDetailsFrozen, RelativeSource={RelativeSource Self}}" />
+        <Setter Property="h:DataGridHelper.SelectionUnit" Value="{Binding SelectionUnit, RelativeSource={RelativeSource Self}}" />
         <Setter Property="ColumnHeaderStyle" Value="{StaticResource JetPack.Styles.DataGridColumnHeader}" />
         <Setter Property="RowHeaderStyle" Value="{StaticResource JetPack.Styles.DataGridRowHeader}" />
         <Setter Property="CellStyle" Value="{StaticResource JetPack.Styles.DataGridCell}" />
@@ -396,27 +416,18 @@
         </Setter>
     </Style>
 
-    <GroupStyle x:Key="JetPack.GroupStyles.JetPackGrid">
-        <GroupStyle.ContainerStyle>
-            <Style TargetType="GroupItem">
-                <Setter Property="Template">
-                    <Setter.Value>
-                        <ControlTemplate TargetType="GroupItem">
-                            <StackPanel>
-                                <ToggleButton x:Name="Header" IsChecked="True" Style="{StaticResource JetPack.Styles.JetPackGrid.GroupHeader}" />
-                                <ItemsPresenter x:Name="Rows" />
-                            </StackPanel>
-                            <ControlTemplate.Triggers>
-                                <Trigger SourceName="Header" Property="IsChecked" Value="False">
-                                    <Setter TargetName="Rows" Property="Visibility" Value="Collapsed" />
-                                </Trigger>
-                            </ControlTemplate.Triggers>
-                        </ControlTemplate>
-                    </Setter.Value>
-                </Setter>
-            </Style>
-        </GroupStyle.ContainerStyle>
-    </GroupStyle>
+    <!-- Group header rows (JetPackGrid groups in its flat list of rows, JetPackGrid.Groups.cs): the header as
+         wide as the rows area, kept in view when the columns scroll sideways. DataContext: the GridGroupRow.
+         UpdateSourceTrigger is explicit: the DataGrid puts bindings to the row's item in the row's
+         BindingGroup, and with the default trigger IsExpanded would only be set when the row is committed,
+         which a header row never is. -->
+    <ControlTemplate x:Key="JetPack.Templates.JetPackGrid.GroupRow" TargetType="DataGridRow">
+        <SelectiveScrollingGrid>
+            <ToggleButton HorizontalAlignment="Left" SelectiveScrollingGrid.SelectiveScrollingOrientation="Vertical"
+                          Width="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType=ScrollContentPresenter}}"
+                          IsChecked="{Binding IsExpanded, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource JetPack.Styles.JetPackGrid.GroupHeader}" />
+        </SelectiveScrollingGrid>
+    </ControlTemplate>
 
     <Geometry x:Key="JetPack.Geometry.Pager.First">M0,0 L1.5,0 L1.5,8 L0,8 z M9,0 L9,8 L2.5,4 z</Geometry>
     <Geometry x:Key="JetPack.Geometry.Pager.Previous">M7,0 L7,8 L0.5,4 z</Geometry>
@@ -504,7 +515,10 @@
                                     </DockPanel>
                                 </Border>
                             </Border>
-                            <ScrollViewer x:Name="DG_ScrollViewer" Focusable="False" Template="{StaticResource JetPack.Templates.DataGrid.ScrollViewer}">
+                            <!-- The thumb is deferred: while it is dragged the rows in view show the rows at the thumb
+                                 (JetPackGrid.Scrolling.cs), and the grid scrolls when it is released -->
+                            <ScrollViewer x:Name="DG_ScrollViewer" Focusable="False" IsDeferredScrollingEnabled="True"
+                                          Template="{StaticResource JetPack.Templates.DataGrid.ScrollViewer}">
                                 <ItemsPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
                             </ScrollViewer>
                         </DockPanel>
@@ -522,7 +536,8 @@
             <Style TargetType="DataGridColumnHeader" BasedOn="{StaticResource JetPack.Styles.JetPackGrid.ColumnHeader}" />
         </Style.Resources>
         <Style.Triggers>
-            <!-- Keep virtualizing with groups (the plain DataGrid style turns it off) -->
+            <!-- CollectionView groups an app adds to Items.GroupDescriptions itself (GroupMemberPath groups in the
+                 grid's flat list instead): keep virtualizing (the plain DataGrid style turns it off) -->
             <Trigger Property="IsGrouping" Value="True">
                 <Setter Property="ScrollViewer.CanContentScroll" Value="True" />
                 <Setter Property="VirtualizingPanel.ScrollUnit" Value="Pixel" />
