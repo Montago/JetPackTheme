@@ -34,7 +34,8 @@ src/JetPack.Wpf/            library (net8.0-windows)
   Styles/Controls.*.xaml    one file per control group
   Themes/Generic.xaml       merges JetPack.xaml (needed: implicit styles don't reach subclasses
                             such as MainWindow : JetPackWindow)
-  Controls/                 own controls (JetPackWindow, Flyout, NumericUpDown, ...)
+  Controls/                 own controls (JetPackWindow, Flyout, NumericUpDown, JetPackGrid and its
+                            columns JetPackGridColumn / JetPackGridCheckBoxColumn, ...)
   Helpers/                  ControlHelper / TextBoxHelper attached properties, converters
   Theming/                  ThemeManager, AccentGenerator
 src/JetPack.Wpf.Demo/       demo app; pages in Views/
@@ -204,6 +205,10 @@ src/JetPack.Wpf.Demo/bin/Debug/net8.0-windows/JetPack.Wpf.Demo.exe --snapshot <f
 - Cells of `DataGrid`/`JetPackGrid` keep WPF's own check box (`DataGridCheckBoxColumn`) and edit
   fields (`DataGridTextColumn`, `DataGridComboBoxColumn`): chosen by the user, not a gap. Do not add
   JetPack element or editing styles for these columns; `docs/lists.md` shows how an app opts in.
+  The opt-in column of its own, `JetPackGridCheckBoxColumn` (approved by the user), has the JetPack
+  check box: `GridCheckBox` draws it in cells that are not being edited and must stay pixel for pixel
+  equal to `JetPack.Styles.CheckBox.OnLight` (it follows the template's layers, layout rounding and
+  snapping guidelines); change both together.
 - TabControl supports top tabs only; DatePicker watermark text comes from WPF and is English.
 - Popups (combo drop-downs, menus, tooltips, DatePicker) are checked in the gallery snapshots, but
   not yet driven interactively with the mouse.

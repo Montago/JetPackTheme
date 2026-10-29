@@ -21,6 +21,8 @@ public partial class GalleryPage : UserControl
         FilterGrid.ItemsSource = CarData.Cars.Take(80).ToArray();
         PagedGrid.ItemsSource = CarData.Cars.Skip(100).Take(95).ToArray();
         PagedGrid.PageIndex = 1;
+        // More sold cars than the stock has, so the column shows both values.
+        CheckBoxGrid.ItemsSource = CarData.Cars.Where((c, i) => c.IsSold || i % 4 == 0).Take(12).ToArray();
         GroupGrid.ItemsSource = CarData.Cars.Where(c => c.Make is "Skoda" or "Tesla").Take(14).OrderBy(c => c.Make).ToArray();
 
         // Fixed dates keep the pictures stable from run to run.

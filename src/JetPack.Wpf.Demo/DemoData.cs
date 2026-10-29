@@ -68,7 +68,11 @@ public static class DemoData
 
 public sealed record Car(
     int StockNo, string Make, string Model, string Trim, string Body, int Year, int Mileage, string Fuel, string Gearbox, string Drive,
-    int Power, int Co2, string Colour, int Doors, int Seats, int Owners, DateTime Registered, decimal Price, string Dealer, string Status);
+    int Power, int Co2, string Colour, int Doors, int Seats, int Owners, DateTime Registered, decimal Price, string Dealer, string Status)
+{
+    /// <summary>For the check box column of the JetPackGrid samples.</summary>
+    public bool IsSold => Status == "Sold";
+}
 
 /// <summary>3,000 used cars with 20 columns for the JetPackGrid samples; the same every run.</summary>
 public static class CarData

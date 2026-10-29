@@ -390,6 +390,7 @@ public partial class JetPackGrid : DataGrid
     /// <summary>
     /// Values the column must equal (ignoring case), separated by spaces or commas; a row passes if it
     /// matches any of them. Quotes keep a value with spaces together; * matches any text ("vol*").
+    /// Ranges compare numbers and dates by value: "&gt;50000", "&lt;=2019", "2020-01-01..2020-06-30".
     /// </summary>
     public static string GetFilterText(DependencyObject column) => (string)column.GetValue(FilterTextProperty);
     public static void SetFilterText(DependencyObject column, string value) => column.SetValue(FilterTextProperty, value);
@@ -535,7 +536,7 @@ public partial class JetPackGrid : DataGrid
             : Columns.Where(GetIsSearchable).Select(c => ColumnReader.Create(c, culture)).OfType<ColumnReader>().ToArray();
         var filters = Columns
             .Where(c => GetIsFilterable(c) && GetHasFilter(c))
-            .Select(c => ColumnReader.Create(c, culture) is { } reader ? new ColumnFilter(reader, Tokenize(GetFilterText(c)).Select(FilterValue.Parse).ToArray()) : null)
+            .Select(c => ColumnReader.Create(c, culture) is { } reader ? new ColumnFilter(reader, FilterTokens(GetFilterText(c)).Select(t => FilterValue.Parse(t, culture)).ToArray()) : null)
             .OfType<ColumnFilter>()
             .ToArray();
         var searchWords = words.ToArray();
@@ -895,7 +896,7 @@ public partial class JetPackGrid : DataGrid
         }
     }
 
-    private static void OnColumnSettingChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+    internal static void OnColumnSettingChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
         if (d.GetValue(OwnerProperty) is JetPackGrid grid && (grid.IsFiltered || GetHasFilter(d)))
         {
@@ -905,7 +906,7 @@ public partial class JetPackGrid : DataGrid
 
     private static void OnFilterTextChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
-        var tokens = Tokenize((string?)e.NewValue);
+        var tokens = FilterTokens((string?)e.NewValue);
         d.SetValue(HasFilterPropertyKey, tokens.Count > 0);
         foreach (var option in GetFilterOptions(d) ?? [])
         {
@@ -951,7 +952,7 @@ public partial class JetPackGrid : DataGrid
                     ? counts.Keys.OrderBy(k => numbers[k])
                     : counts.Keys.OrderBy(k => k, StringComparer.Create(culture, true));
                 options = keys.Select(k => new GridFilterOption(k, counts[k], _ => OnFilterOptionChanged(column))).ToList();
-                var tokens = Tokenize(GetFilterText(column));
+                var tokens = FilterTokens(GetFilterText(column));
                 foreach (var option in options)
                 {
                     option.SetChecked(tokens.Contains(option.Text, StringComparer.OrdinalIgnoreCase));
@@ -965,7 +966,7 @@ public partial class JetPackGrid : DataGrid
     private static void OnFilterOptionChanged(DataGridColumn column)
     {
         var options = GetFilterOptions(column) ?? [];
-        var typed = Tokenize(GetFilterText(column)).Where(t => !options.Any(o => o.Text.Equals(t, StringComparison.OrdinalIgnoreCase)));
+        var typed = FilterTokens(GetFilterText(column)).Where(t => !options.Any(o => o.Text.Equals(t, StringComparison.OrdinalIgnoreCase)));
         var values = typed.Concat(options.Where(o => o.IsChecked).Select(o => o.Text))
             .Select(v => v.IndexOfAny([' ', ',', ';', '\t']) >= 0 ? $"\"{v}\"" : v);
         column.SetCurrentValue(FilterTextProperty, string.Join(", ", values));
@@ -1020,7 +1021,12 @@ public partial class JetPackGrid : DataGrid
     }
 
     /// <summary>Splits on spaces, commas and semicolons; double quotes keep a value with spaces together.</summary>
-    internal static List<string> Tokenize(string? text)
+    internal static List<string> Tokenize(string? text) => Tokenize(text, joinRanges: false);
+
+    /// <summary>The values of a header filter: as <see cref="Tokenize(string?)"/>, with "&gt; 5" and "2019 .. 2021" kept together.</summary>
+    internal static List<string> FilterTokens(string? text) => Tokenize(text, joinRanges: true);
+
+    private static List<string> Tokenize(string? text, bool joinRanges)
     {
         var tokens = new List<string>();
         if (string.IsNullOrWhiteSpace(text))
@@ -1030,11 +1036,36 @@ public partial class JetPackGrid : DataGrid
 
         var current = new StringBuilder();
         var quoted = false;
+        // An operator, or a value and "..", waiting for the value after it.
+        string? pending = null;
         void Flush()
         {
             var token = current.ToString().Trim();
             current.Clear();
-            if (token.Length > 0 && !tokens.Contains(token, StringComparer.OrdinalIgnoreCase))
+            if (token.Length == 0)
+            {
+                return;
+            }
+            if (joinRanges)
+            {
+                if (token == ".." && pending == null && tokens.Count > 0)
+                {
+                    pending = tokens[^1] + token;
+                    tokens.RemoveAt(tokens.Count - 1);
+                    return;
+                }
+                if (token is ">" or "<" or ">=" or "<=")
+                {
+                    pending += token;
+                    return;
+                }
+                if (pending != null)
+                {
+                    token = pending + token;
+                    pending = null;
+                }
+            }
+            if (!tokens.Contains(token, StringComparer.OrdinalIgnoreCase))
             {
                 tokens.Add(token);
             }
@@ -1057,6 +1088,10 @@ public partial class JetPackGrid : DataGrid
             }
         }
         Flush();
+        if (pending != null && !tokens.Contains(pending, StringComparer.OrdinalIgnoreCase))
+        {
+            tokens.Add(pending);
+        }
         return tokens;
     }
 
@@ -1134,14 +1169,21 @@ public partial class JetPackGrid : DataGrid
         private readonly string? format;
         private readonly object? targetNullValue;
         private readonly CultureInfo culture;
+        // A check box column's texts for true and false (JetPackGridCheckBoxColumn).
+        private readonly (string True, string False)? checkTexts;
 
-        private ColumnReader(string[]? path, Binding? binding, CultureInfo culture)
+        private ColumnReader(string[]? path, Binding? binding, CultureInfo culture, DataGridColumn column)
         {
             this.path = path;
             this.culture = binding?.ConverterCulture ?? culture;
             converter = binding?.Converter;
             converterParameter = binding?.ConverterParameter;
             targetNullValue = binding?.TargetNullValue == DependencyProperty.UnsetValue ? null : binding?.TargetNullValue;
+            if (column is JetPackGridCheckBoxColumn check)
+            {
+                checkTexts = (check.TrueText, check.FalseText);
+                return;
+            }
             var stringFormat = binding?.StringFormat;
             format = string.IsNullOrEmpty(stringFormat) ? null : stringFormat.Contains('{') ? stringFormat : "{0:" + stringFormat + "}";
         }
@@ -1153,7 +1195,7 @@ public partial class JetPackGrid : DataGrid
         public static ColumnReader? ForCell(DataGridBoundColumn column, CultureInfo culture) =>
             column.Binding is Binding binding && binding.Source == null && binding.RelativeSource == null && string.IsNullOrEmpty(binding.ElementName)
                 && Split(binding.Path?.Path) is { } path
-                ? new ColumnReader(path, binding, culture)
+                ? new ColumnReader(path, binding, culture, column)
                 : null;
 
         public static ColumnReader? Create(DataGridColumn column, CultureInfo culture)
@@ -1161,14 +1203,14 @@ public partial class JetPackGrid : DataGrid
             var memberPath = GetFilterMemberPath(column);
             if (!string.IsNullOrEmpty(memberPath))
             {
-                return new ColumnReader(Split(memberPath), null, culture);
+                return new ColumnReader(Split(memberPath), null, culture, column);
             }
             if (column is DataGridBoundColumn { Binding: Binding binding }
                 && binding.Source == null && binding.RelativeSource == null && string.IsNullOrEmpty(binding.ElementName))
             {
-                return new ColumnReader(Split(binding.Path?.Path), binding, culture);
+                return new ColumnReader(Split(binding.Path?.Path), binding, culture, column);
             }
-            return string.IsNullOrEmpty(column.SortMemberPath) ? null : new ColumnReader(Split(column.SortMemberPath), null, culture);
+            return string.IsNullOrEmpty(column.SortMemberPath) ? null : new ColumnReader(Split(column.SortMemberPath), null, culture, column);
         }
 
         /// <summary>Reads the value at a member path, unformatted; null when the path is not a plain one.</summary>
@@ -1203,13 +1245,13 @@ public partial class JetPackGrid : DataGrid
             return memberPath.IndexOfAny(['[', '(', '/']) >= 0 ? null : memberPath.Split('.');
         }
 
-        public string GetText(object item)
+        /// <summary>The value at the path, before the binding's converter and format (what the range filter compares).</summary>
+        public object? GetRawValue(object item)
         {
             if (path == null)
             {
-                return string.Empty;
+                return null;
             }
-
             object? value = item;
             foreach (var name in path)
             {
@@ -1219,14 +1261,35 @@ public partial class JetPackGrid : DataGrid
                 }
                 value = GetMember(value, name);
             }
+            return value;
+        }
 
+        /// <summary>The value the cell gets: through the binding's converter, without its format.</summary>
+        public object? GetValue(object item)
+        {
+            var value = GetRawValue(item);
             if (converter != null)
             {
-                value = converter.Convert(value, typeof(string), converterParameter, culture);
+                value = converter.Convert(value, checkTexts != null ? typeof(bool?) : typeof(string), converterParameter, culture);
             }
             if (value == null || value == DependencyProperty.UnsetValue)
             {
                 value = targetNullValue;
+            }
+            return value;
+        }
+
+        public string GetText(object item)
+        {
+            if (path == null)
+            {
+                return string.Empty;
+            }
+
+            var value = GetValue(item);
+            if (checkTexts is var (yes, no))
+            {
+                return value switch { true => yes, false => no, _ => string.Empty };
             }
             if (value == null)
             {
@@ -1263,11 +1326,23 @@ public partial class JetPackGrid : DataGrid
 
     private sealed class ColumnFilter(ColumnReader reader, FilterValue[] values)
     {
+        private readonly bool hasRanges = values.Any(v => v.Range != null);
+
         public bool Matches(object item)
         {
-            var text = reader.GetText(item).Trim();
+            var raw = hasRanges ? reader.GetRawValue(item) : null;
+            string? text = null;
             foreach (var value in values)
             {
+                if (value.Range is { } range && range.TryMatch(raw, out var inRange))
+                {
+                    if (inRange)
+                    {
+                        return true;
+                    }
+                    continue;
+                }
+                text ??= reader.GetText(item).Trim();
                 if (value.Matches(text))
                 {
                     return true;
@@ -1277,13 +1352,14 @@ public partial class JetPackGrid : DataGrid
         }
     }
 
-    private readonly record struct FilterValue(string Text, bool AnyStart, bool AnyEnd)
+    /// <summary>A filter value; <see cref="Range"/> is set for "&gt;5", "&lt;=2019" and "2020-01-01..2020-06-30".</summary>
+    private readonly record struct FilterValue(string Text, bool AnyStart, bool AnyEnd, FilterRange? Range)
     {
-        public static FilterValue Parse(string token)
+        public static FilterValue Parse(string token, CultureInfo culture)
         {
             var anyStart = token.StartsWith('*');
             var anyEnd = token.EndsWith('*') && token.Length > 1;
-            return new FilterValue(token.Trim('*'), anyStart, anyEnd);
+            return new FilterValue(token.Trim('*'), anyStart, anyEnd, FilterRange.Parse(token, culture));
         }
 
         public bool Matches(string text) => (AnyStart, AnyEnd) switch
@@ -1294,5 +1370,164 @@ public partial class JetPackGrid : DataGrid
             (false, true) => text.StartsWith(Text, StringComparison.OrdinalIgnoreCase),
             _ => text.Equals(Text, StringComparison.OrdinalIgnoreCase),
         };
+    }
+
+    /// <summary>
+    /// A range of numbers or dates, compared with the raw value of the column (not the text the cell shows).
+    /// A date without a time stands for the whole day, and a year ("2019") or a month ("2019-03") for all
+    /// of it, so "&lt;=2019" takes in 31 December 2019 and "&gt;2019" starts on 1 January 2020.
+    /// </summary>
+    private sealed class FilterRange
+    {
+        private readonly Bound? from;
+        private readonly Bound? to;
+        // "&gt;": above all of From (else from its start on); "&lt;": below the start of To (else up to its end).
+        private readonly bool above;
+        private readonly bool below;
+
+        private FilterRange(Bound? from, bool above, Bound? to, bool below)
+        {
+            this.from = from;
+            this.above = above;
+            this.to = to;
+            this.below = below;
+        }
+
+        public static FilterRange? Parse(string token, CultureInfo culture)
+        {
+            string? low = null, high = null;
+            bool above = false, below = false;
+            if (token.StartsWith(">=", StringComparison.Ordinal))
+            {
+                low = token[2..];
+            }
+            else if (token.StartsWith("<=", StringComparison.Ordinal))
+            {
+                high = token[2..];
+            }
+            else if (token.StartsWith('>'))
+            {
+                low = token[1..];
+                above = true;
+            }
+            else if (token.StartsWith('<'))
+            {
+                high = token[1..];
+                below = true;
+            }
+            else if (token.IndexOf("..", StringComparison.Ordinal) is var dots and >= 0)
+            {
+                low = token[..dots];
+                high = token[(dots + 2)..];
+            }
+            else
+            {
+                return null;
+            }
+
+            low = low?.Trim();
+            high = high?.Trim();
+            if (string.IsNullOrEmpty(low) && string.IsNullOrEmpty(high))
+            {
+                return null;
+            }
+            Bound? from = null, to = null;
+            if ((!string.IsNullOrEmpty(low) && (from = Bound.Parse(low, culture)) == null)
+                || (!string.IsNullOrEmpty(high) && (to = Bound.Parse(high, culture)) == null))
+            {
+                return null;
+            }
+            return new FilterRange(from, above, to, below);
+        }
+
+        /// <summary>
+        /// Whether a value is in the range. Returns false when the range does not apply to the value (text, or
+        /// a bound that is no date for a date), which is then matched as text.
+        /// </summary>
+        public bool TryMatch(object? value, out bool result)
+        {
+            switch (value)
+            {
+                case null:
+                    result = false;
+                    return true;
+                case DateTime date:
+                    return TryMatchDate(date, out result);
+                case DateTimeOffset offset:
+                    return TryMatchDate(offset.DateTime, out result);
+                case DateOnly day:
+                    return TryMatchDate(day.ToDateTime(TimeOnly.MinValue), out result);
+                case double or float:
+                    var number = Convert.ToDouble(value, CultureInfo.InvariantCulture);
+                    return TryMatch(number, b => b.Number is { } n ? ((double)n, (double)n, true) : null, out result) && !double.IsNaN(number);
+                case decimal or int or long or short or byte or sbyte or uint or ulong or ushort:
+                    return TryMatch(Convert.ToDecimal(value, CultureInfo.InvariantCulture), b => b.Number is { } n ? (n, n, true) : null, out result);
+                default:
+                    result = false;
+                    return false;
+            }
+        }
+
+        private bool TryMatchDate(DateTime date, out bool result) =>
+            TryMatch(date, b => b.Start is { } start ? (start, b.End ?? start, b.End == null) : null, out result);
+
+        // Each bound as (Low, High, HighInclusive) in T: Low and High are equal for a number; a day, month or
+        // year runs from Low up to High, exclusive. False when a bound cannot be read as T.
+        private bool TryMatch<T>(T value, Func<Bound, (T Low, T High, bool HighInclusive)?> read, out bool result) where T : IComparable<T>
+        {
+            result = false;
+            (T Low, T High, bool HighInclusive)? low = null, high = null;
+            if ((from != null && (low = read(from)) == null) || (to != null && (high = read(to)) == null))
+            {
+                return false;
+            }
+            if (low is var (fromLow, fromHigh, fromInclusive))
+            {
+                var c = value.CompareTo(above ? fromHigh : fromLow);
+                if (c < 0 || (above && c == 0 && fromInclusive))
+                {
+                    return true;
+                }
+            }
+            if (high is var (toLow, toHigh, toInclusive))
+            {
+                var c = value.CompareTo(below ? toLow : toHigh);
+                if (below ? c >= 0 : c > 0 || (c == 0 && !toInclusive))
+                {
+                    return true;
+                }
+            }
+            result = true;
+            return true;
+        }
+
+        /// <summary>One end of a range, read both as a number and as a date (whichever the column's values are).</summary>
+        private sealed record Bound(decimal? Number, DateTime? Start, DateTime? End)
+        {
+            private static readonly string[] MonthFormats = ["yyyy-M", "yyyy-MM"];
+
+            public static Bound? Parse(string text, CultureInfo culture)
+            {
+                decimal? number = decimal.TryParse(text, NumberStyles.Number, culture, out var n) ? n : null;
+                DateTime? start = null, end = null;
+                if (text.Length == 4 && int.TryParse(text, NumberStyles.None, CultureInfo.InvariantCulture, out var year) && year >= 1)
+                {
+                    start = new DateTime(year, 1, 1);
+                    end = year < 9999 ? start.Value.AddYears(1) : DateTime.MaxValue;
+                }
+                else if (DateTime.TryParseExact(text, MonthFormats, CultureInfo.InvariantCulture, DateTimeStyles.None, out var month))
+                {
+                    start = month;
+                    end = month.AddMonths(1);
+                }
+                else if (DateTime.TryParse(text, culture, DateTimeStyles.AllowWhiteSpaces, out var date))
+                {
+                    start = date;
+                    // Without a time of day, the whole day.
+                    end = date.TimeOfDay == TimeSpan.Zero && text.IndexOf(':') < 0 && date < DateTime.MaxValue.Date ? date.AddDays(1) : null;
+                }
+                return number == null && start == null ? null : new Bound(number, start, end);
+            }
+        }
     }
 }
