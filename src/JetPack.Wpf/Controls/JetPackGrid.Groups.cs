@@ -84,6 +84,12 @@ public partial class JetPackGrid
         switchingGrouping = true;
         try
         {
+            if (Items.Filter != null)
+            {
+                // The ungrouped grid's search and page filter on the app's view. Items keeps its filter when the
+                // items change and would put it on the grid's list, where it hid the headers and the other pages.
+                Items.Filter = null;
+            }
             CoerceValue(ItemsSourceProperty);
             if (wasGrouped != (grouped != null))
             {

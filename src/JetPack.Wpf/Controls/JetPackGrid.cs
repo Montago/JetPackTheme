@@ -690,6 +690,11 @@ public partial class JetPackGrid : DataGrid
 
         if (grouped != null)
         {
+            if (Items.Filter != null)
+            {
+                // The grid filters the grouped rows itself; a filter on its view of them would hide headers.
+                Items.Filter = null;
+            }
             grouped.Reset(pages > 1 ? GroupRows(index * size, Math.Min(size, total - index * size)) : GroupRows(0, total));
         }
         else
