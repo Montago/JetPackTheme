@@ -1,4 +1,4 @@
-# JetPack for WPF
+# JetPack for WPF & Web
 
 The JetPack theme from Microsoft's Silverlight 4 Application Themes, rebuilt as a complete controls library for WPF on .NET 8 and later. It follows the same model as MahApps.Metro: one resource dictionary gives every standard control the JetPack look, and the library adds its own controls (window, ToggleSwitch, NumericUpDown, Flyout, HamburgerMenu and more), including a searchable, filterable data grid and a type-ahead combo box (see [Highlights](#highlights)).
 
