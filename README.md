@@ -189,7 +189,7 @@ Merging `JetPack.xaml` styles the standard controls; the variants in brackets ar
 | **[Navigation and layout][navigation]** | [TabControl] ([Navigation][tabcontrol-navigation], [Strip][tabcontrol-strip]), [Expander] (Accordion), [GroupBox], [Menu], [ContextMenu][menu], [ToolBar][menu], [StatusBar], [GridSplitter], [Separator][gridsplitter], [ToolTip] | [HamburgerMenu], [Accordion] |
 | **[Progress and status][status]** | [ProgressBar] | [ProgressRing], [BusyIndicator], [InfoBar] |
 | **[Typography][typography]** | [TextBlock][text-styles] (Heading1–6 and more) | [JetPackIcon] |
-| **[Helpers][helpers]** | | [ControlHelper] (corner radius and more), [TextBoxHelper] (watermark, clear button), [ScrollViewerHelper], [TabControlHelper] (notch animation, page transitions) |
+| **[Helpers][helpers]** | | [ControlHelper] (corner radius and more), [TextBoxHelper] (watermark, clear button), [ScrollViewerHelper], [TabControlHelper] (notch animation, page transitions), [DataGridHelper] (grid settings for row templates) |
 
 [window]: https://montago.github.io/JetPackTheme/window.html
 [plain-window]: https://montago.github.io/JetPackTheme/window.html#plain-window
@@ -261,6 +261,7 @@ Merging `JetPack.xaml` styles the standard controls; the variants in brackets ar
 [textboxhelper]: https://montago.github.io/JetPackTheme/helpers.html#textboxhelper
 [scrollviewerhelper]: https://montago.github.io/JetPackTheme/helpers.html#scrollviewerhelper
 [tabcontrolhelper]: https://montago.github.io/JetPackTheme/helpers.html#tabcontrolhelper
+[datagridhelper]: https://montago.github.io/JetPackTheme/helpers.html#datagridhelper
 
 ## Demo
 
