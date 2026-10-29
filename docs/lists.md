@@ -132,7 +132,7 @@ people need to narrow down. It adds:
   below the rows.
 - **Virtualization** of rows and columns, kept on while grouping.
 - **Fast scrolling:** the cells draw their text straight from the font, and dragging the scroll bar
-  thumb shows the rows at the thumb at once (see [Scrolling](#scrolling)).
+  thumb shows the rows at the thumb at once, grouped or not (see [Scrolling](#scrolling)).
 - Read-only by default, with no new-item row and no auto-generated columns.
 
 ```xml
@@ -185,9 +185,33 @@ it. A funnel turns accent-coloured while its column has a filter. Code can set t
 
 ![Rows grouped by make](screenshots/controls/jetpackgrid-groups.png)
 
-Set `GroupMemberPath` to group the rows. The default group header shows the value and the row
-count, and a click folds the group. A `GroupStyle` of your own replaces it. The default one is
-`JetPack.GroupStyles.JetPackGrid`.
+Set `GroupMemberPath` to group the rows by that member. Each group gets a header row with the
+value, the group's row count and an arrow. A click on the header folds the group up to it. Folded
+groups stay folded through searches, filters, sorting and paging until `GroupMemberPath` changes.
+`ExpandAllGroups()` and `CollapseAllGroups()` unfold or fold every group.
+
+The headers are rows of their own. While the grid is grouped, it gives the DataGrid a list of its
+own in place of your collection, with a `GridGroupRow` in front of each group's rows. The rows
+therefore virtualize and scroll row by row, as without groups, and dragging the thumb shows the
+rows at the thumb (see [Scrolling](#scrolling)). While grouped:
+
+- The groups come in the order of their first row. Within a group, the rows keep the sort.
+- `Items` holds the headers between the rows, so `SelectedIndex` and `Items.IndexOf` count them.
+  `ItemsSource` reads back the grid's list, although your binding still holds your collection.
+  `GetVisibleItems()` returns the rows without the headers. Headers are never selected, and the
+  arrow keys go past them.
+- The grid sorts and filters the rows itself, not your collection's default view. A sort added to
+  `Items.SortDescriptions` in code becomes the grid's sort.
+- Cells can be edited, but rows cannot be added or deleted through the grid. A row whose group
+  value changes moves at the next search or filter, or at `ApplyFilters()`.
+- The rows alternate their background within each group.
+
+The header is `JetPack.Styles.JetPackGrid.GroupHeader`, a `ToggleButton` whose DataContext is the
+`GridGroupRow` (`Name`, `ItemCount`, `Items`, `IsExpanded`). The header row's template is
+`JetPack.Templates.JetPackGrid.GroupRow` (`JetPackGrid.GroupRowTemplateKey`). Put a resource with
+either key in your app to change the look. A `GroupStyle` only applies to groups that you add to
+`Items.GroupDescriptions` yourself. These are WPF's own groups: they scroll by pixel, and dragging
+the thumb scrolls them live.
 
 ### Paging
 
@@ -232,12 +256,16 @@ Two things keep that low:
   another row (other columns, templates) is hidden until the release. The mouse wheel, the keys and
   the scroll bar arrows scroll as usual.
 
-A grouped grid, rows with details and pixel scrolling (`VirtualizingPanel.ScrollUnit="Pixel"`) have
-rows of different heights. There, dragging the thumb scrolls the rows live.
+A grouped grid works the same way. Its headers are rows in the list (see [Groups](#groups)), so the
+preview moves the rows to where the headers leave room for them, and draws the headers over them.
+
+Rows with details, pixel scrolling (`VirtualizingPanel.ScrollUnit="Pixel"`) and the groups of
+`Items.GroupDescriptions` have rows of different heights. There, dragging the thumb scrolls the
+rows live.
 
 With the demo's 20 columns and 30,000 rows, a far jump of the thumb costs about 4 ms on the UI thread
-instead of about 50 ms, and a page down about 20 ms instead of 45 ms. Grouped, a far jump went from
-about 225 ms to about 120 ms.
+instead of about 50 ms, and a page down about 20 ms instead of 45 ms. Grouped by make, a far jump
+costs about 6 ms instead of about 100 ms, and a page down costs the same as without groups.
 
 ### Grid properties
 
@@ -247,7 +275,8 @@ about 225 ms to about 120 ms.
 | `SearchDelay` | `TimeSpan` | 300 ms | Debounce: the rows are filtered once the search or a filter has not changed for this long, not on every key. Zero filters at once. |
 | `SearchWords` | `IReadOnlyList<string>` | empty | Read-only: the words the rows are filtered by and the cells mark. |
 | `FilterListLimit` | `int` | 20 | A header filter lists the values to tick when the column has at most this many different values; 0 never lists them. |
-| `GroupMemberPath` | `string` | `null` | Member to group by; empty for no groups. |
+| `GroupMemberPath` | `string` | `null` | Member to group by; empty for no groups. See [Groups](#groups). |
+| `IsGrouped` | `bool` | `false` | Read-only: true while `GroupMemberPath` groups the rows, and `Items` holds `GridGroupRow` headers. |
 | `HighlightBrush` | `Brush` | `JetPack.Brushes.Accent.Highlight` | Background of the search hits. |
 | `HighlightForeground` | `Brush` | `JetPack.Brushes.Control.Foreground` | Text colour of the search hits. |
 | `EnableLightweightTextRendering` | `bool` | `true` | `JetPackGridColumn` cells draw their text (`GridCellText`) instead of using a TextBlock; see [Scrolling](#scrolling). |
@@ -295,7 +324,8 @@ columns are still searched.
 | --- | --- |
 | `Filtered` event | After the rows have been filtered. The `GridFilteredEventArgs` give the rows left (`e.Count`) and in all (`e.TotalCount`). |
 | `SelectedItemChanged` event | When `SelectedItem` changes. Unlike `SelectionChanged`, it is not raised by combo boxes inside cells. |
-| `GetVisibleItems()` | The rows left after the search and filters, in the order shown (sorted, grouped), for example to export them. With paging, the rows of every page. |
+| `GetVisibleItems()` | The rows left after the search and filters, in the order shown (sorted, grouped), for example to export them. With paging, the rows of every page; with groups, also the rows of folded groups, and no headers. |
+| `ExpandAllGroups()`, `CollapseAllGroups()` | Unfold or fold every group. |
 | `ClearFilters()` | Clears the search and every column filter. |
 | `ApplyFilters()` | Filters at once instead of after `SearchDelay`, and goes back to the first page. Also re-reads values that changed in the items. |
 | `ClearFilterCommand` | Routed command. With a column as parameter it clears that column's filter; without one it clears everything. Use `CommandTarget` to point a button outside the grid at it. |
@@ -305,6 +335,7 @@ Notes:
 
 - The filter works on the collection's default view, like DataGrid sorting does. Two grids bound to
   the same list therefore share their filter. Give each grid its own list or `CollectionViewSource`.
+  A grouped grid filters a list of its own instead.
 - A row is filtered when it is added or when the search or a filter changes. A value that changes
   later in an item does not move the row until the next change, or until you call `ApplyFilters()`.
 - `DataTable` views (`BindingListCollectionView`) cannot filter by predicate, so a `DataView` is not

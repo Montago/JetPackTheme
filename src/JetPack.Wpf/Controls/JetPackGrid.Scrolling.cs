@@ -15,8 +15,14 @@ namespace JetPack.Wpf.Controls;
 // there costs a few milliseconds. On release the rows get their own texts back and the grid scrolls for
 // real, in the same layout pass, so no frame shows the rows in between.
 //
-// Grouped grids, pixel scrolling and rows with details scroll live instead: their rows do not all have
-// the same height, so the realized rows cannot stand in for the rows at the thumb.
+// Grouped, the rows at the thumb have group headers where the realized rows may have data rows and the
+// other way round, and headers are not as tall. The data rows (those in view and the panel's cache above
+// and below) are moved to their places with a render transform, which needs no layout, and the headers
+// are drawn by a few header toggles on PART_ScrubLayer over the rows.
+//
+// Pixel scrolling, rows with details and CollectionView groups (Items.GroupDescriptions set by the app)
+// scroll live instead: their rows do not all have the same height, so the realized rows cannot stand in
+// for the rows at the thumb.
 public partial class JetPackGrid
 {
     private ScrubPreview? scrub;
@@ -73,7 +79,10 @@ public partial class JetPackGrid
         private readonly HashSet<DataGridRow> styled = [];
         private readonly Dictionary<FrameworkElement, object> hidden = [];
         private readonly Dictionary<DataGridRow, (object Local, TranslateTransform Move)> moved = [];
-        private readonly List<(DataGridRow Row, double Top)> realized = [];
+        private readonly List<ToggleButton> headers = [];
+        private readonly List<(DataGridRow Row, double Top)> dataRows = [];
+        private readonly List<DataGridRow> headerRows = [];
+        private Canvas? layer;
 
         private ScrubPreview(JetPackGrid grid, (DataGridColumn, ColumnReader?)[] columns)
         {
@@ -106,8 +115,9 @@ public partial class JetPackGrid
             }
 
             // The realized rows and where the panel put them; the rows in view first, from the top, so
-            // they stay in place.
-            realized.Clear();
+            // they stay in place where they can.
+            dataRows.Clear();
+            headerRows.Clear();
             var panelTop = panel.TranslatePoint(default, presenter).Y;
             for (var i = 0; i < VisualTreeHelper.GetChildrenCount(panel); i++)
             {
@@ -119,35 +129,75 @@ public partial class JetPackGrid
                 {
                     return false;
                 }
-                realized.Add((row, VisualTreeHelper.GetOffset(row).Y + panelTop));
+                if (row.Item is GridGroupRow)
+                {
+                    headerRows.Add(row);
+                }
+                else
+                {
+                    dataRows.Add((row, VisualTreeHelper.GetOffset(row).Y + panelTop));
+                }
             }
-            if (realized.Count == 0)
+            if (dataRows.Count == 0)
             {
                 return false;
             }
-            realized.Sort((a, b) => a.Top < 0 != b.Top < 0 ? (a.Top < 0 ? 1 : -1) : a.Top.CompareTo(b.Top));
+            dataRows.Sort((a, b) => a.Top < 0 != b.Top < 0 ? (a.Top < 0 ? 1 : -1) : a.Top.CompareTo(b.Top));
 
             // The rows at the thumb, top down, until the view is full.
-            var rowHeight = realized[0].Row.ActualHeight;
+            var rowHeight = dataRows[0].Row.ActualHeight;
+            var headerHeight = headerRows.Count > 0 ? headerRows[0].ActualHeight : 0;
             var height = presenter.ActualHeight;
             var items = grid.Items;
             var used = 0;
+            var usedHeaders = 0;
             var y = 0.0;
             for (var index = first; y < height && index < items.Count; index++)
             {
                 var item = items[index];
-                if (item == CollectionView.NewItemPlaceholder || used == realized.Count)
+                if (item == CollectionView.NewItemPlaceholder)
                 {
                     return false;
                 }
-                var (row, top) = realized[used++];
+                if (item is GridGroupRow group)
+                {
+                    if (Header(usedHeaders++, viewer) is not { } header)
+                    {
+                        return false;
+                    }
+                    header.DataContext = group;
+                    header.Width = presenter.ActualWidth;
+                    header.Visibility = Visibility.Visible;
+                    Canvas.SetTop(header, y);
+                    if (headerHeight <= 0)
+                    {
+                        header.Measure(new Size(presenter.ActualWidth, double.PositiveInfinity));
+                        headerHeight = header.DesiredSize.Height;
+                    }
+                    y += headerHeight;
+                    continue;
+                }
+                if (used == dataRows.Count)
+                {
+                    return false;
+                }
+                var (row, top) = dataRows[used++];
                 Move(row, y - top);
                 ShowRow(row, item);
                 y += rowHeight;
             }
-            for (var i = used; i < realized.Count; i++)
+
+            for (var i = used; i < dataRows.Count; i++)
             {
-                Move(realized[i].Row, Away);
+                Move(dataRows[i].Row, Away);
+            }
+            foreach (var row in headerRows)
+            {
+                Move(row, Away);
+            }
+            for (var i = usedHeaders; i < headers.Count; i++)
+            {
+                headers[i].Visibility = Visibility.Collapsed;
             }
             return true;
         }
@@ -167,6 +217,26 @@ public partial class JetPackGrid
                 }
             }
             return null;
+        }
+
+        // A group header like the one in the group row template, on the layer over the rows.
+        private ToggleButton? Header(int index, ScrollViewer viewer)
+        {
+            if (index < headers.Count)
+            {
+                return headers[index];
+            }
+            layer ??= viewer.Template.FindName("PART_ScrubLayer", viewer) as Canvas;
+            if (layer == null)
+            {
+                return null;
+            }
+            var header = new ToggleButton { HorizontalAlignment = HorizontalAlignment.Left };
+            header.SetResourceReference(StyleProperty, "JetPack.Styles.JetPackGrid.GroupHeader");
+            header.SetBinding(ToggleButton.IsCheckedProperty, new Binding(nameof(GridGroupRow.IsExpanded)) { Mode = BindingMode.OneWay });
+            layer.Children.Add(header);
+            headers.Add(header);
+            return header;
         }
 
         // Moves a row by a distance from where the panel put it, without layout.
@@ -203,10 +273,12 @@ public partial class JetPackGrid
             }
 
             // The row's triggers show the selection of its own item; the previewed item's is set here, as
-            // the row template (JetPack.Styles.DataGridRow) shows it. The rows keep their alternating
-            // backgrounds: after a far jump WPF numbers them from the top row again, not by item index.
+            // the row template (JetPack.Styles.DataGridRow) shows it. Ungrouped, the rows keep their
+            // alternating backgrounds: after a far jump WPF numbers them from the top row again, not by item
+            // index. Grouped, the rows alternate within each group, so the previewed item's background is set.
             var isSelected = selected.Contains(item);
-            if (isSelected == row.IsSelected)
+            var background = grid.GroupedRowBackground(item) ?? row.Background;
+            if (isSelected == row.IsSelected && (isSelected || ReferenceEquals(background, row.Background)))
             {
                 Unstyle(row);
                 return;
@@ -225,7 +297,7 @@ public partial class JetPackGrid
                     : SystemColors.InactiveSelectionHighlightTextBrush;
                 return;
             }
-            border.Background = row.Background;
+            border.Background = background;
             // The colour the row inherits when its triggers do not set one; the cells are still selected, so
             // the theme's selection colour is replaced on them too.
             var foreground = VisualTreeHelper.GetParent(row)?.GetValue(TextElement.ForegroundProperty) as Brush ?? grid.Foreground;
@@ -272,6 +344,10 @@ public partial class JetPackGrid
             foreach (var (row, (local, _)) in moved)
             {
                 Reset(row, RenderTransformProperty, local);
+            }
+            foreach (var header in headers)
+            {
+                layer?.Children.Remove(header);
             }
         }
 
