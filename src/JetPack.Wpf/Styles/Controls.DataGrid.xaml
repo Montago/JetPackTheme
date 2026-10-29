@@ -7,6 +7,12 @@
     <!-- Binding paths use jp: rather than c:. They are resolved at run time, and a clr-namespace without an
          assembly then points at the app's assembly, so (c:JetPackGrid.HeaderColumn) would not be found. -->
 
+    <!-- Rows and cells read the grid's settings from DataGridHelper (inherited from the grid) in triggers, never
+         through RelativeSource AncestorType=DataGrid: a recycled row whose rows were refreshed before that binding
+         found the grid kept a dead binding, and showed its row header wherever it was used again. Triggers rather
+         than bindings to the inherited values: a trigger has no source to find (bindings with these attached
+         properties in their path stayed unattached in an app without XAML of its own). -->
+
     <!-- Dark gradient header, light grey body with alternating rows, accent selection (SDKStyles.xaml) -->
 
     <Style x:Key="JetPack.Styles.DataGrid.Gripper" TargetType="Thumb">
@@ -98,14 +104,14 @@
             </Setter.Value>
         </Setter>
         <Style.Triggers>
-            <MultiDataTrigger>
-                <MultiDataTrigger.Conditions>
-                    <Condition Binding="{Binding IsSelected, RelativeSource={RelativeSource Self}}" Value="True" />
-                    <Condition Binding="{Binding SelectionUnit, RelativeSource={RelativeSource AncestorType=DataGrid}}" Value="Cell" />
-                </MultiDataTrigger.Conditions>
+            <MultiTrigger>
+                <MultiTrigger.Conditions>
+                    <Condition Property="IsSelected" Value="True" />
+                    <Condition Property="h:DataGridHelper.SelectionUnit" Value="Cell" />
+                </MultiTrigger.Conditions>
                 <Setter Property="Background" Value="{DynamicResource JetPack.Brushes.Accent.Selection}" />
                 <Setter Property="Foreground" Value="White" />
-            </MultiDataTrigger>
+            </MultiTrigger>
             <Trigger Property="IsKeyboardFocusWithin" Value="True">
                 <Setter Property="BorderBrush" Value="{DynamicResource JetPack.Brushes.Focus}" />
             </Trigger>
@@ -129,13 +135,21 @@
                                 <RowDefinition Height="Auto" />
                             </SelectiveScrollingGrid.RowDefinitions>
                             <DataGridCellsPresenter x:Name="DGR_CellsPresenter" Grid.Column="1" ItemsPanel="{TemplateBinding ItemsPanel}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
-                            <DataGridDetailsPresenter Grid.Column="1" Grid.Row="1" Visibility="{TemplateBinding DetailsVisibility}"
-                                                      SelectiveScrollingGrid.SelectiveScrollingOrientation="{Binding AreRowDetailsFrozen, ConverterParameter={x:Static SelectiveScrollingOrientation.Vertical}, Converter={x:Static DataGrid.RowDetailsScrollingConverter}, RelativeSource={RelativeSource AncestorType=DataGrid}}" />
-                            <DataGridRowHeader Grid.RowSpan="2" SelectiveScrollingGrid.SelectiveScrollingOrientation="Vertical"
-                                               Visibility="{Binding HeadersVisibility, ConverterParameter={x:Static DataGridHeadersVisibility.Row}, Converter={x:Static DataGrid.HeadersVisibilityConverter}, RelativeSource={RelativeSource AncestorType=DataGrid}}" />
+                            <DataGridDetailsPresenter x:Name="DGR_Details" Grid.Column="1" Grid.Row="1" Visibility="{TemplateBinding DetailsVisibility}" />
+                            <DataGridRowHeader x:Name="DGR_RowHeader" Grid.RowSpan="2" SelectiveScrollingGrid.SelectiveScrollingOrientation="Vertical" />
                         </SelectiveScrollingGrid>
                     </Border>
                     <ControlTemplate.Triggers>
+                        <!-- The row header shows for HeadersVisibility Row and All -->
+                        <Trigger Property="h:DataGridHelper.HeadersVisibility" Value="Column">
+                            <Setter TargetName="DGR_RowHeader" Property="Visibility" Value="Collapsed" />
+                        </Trigger>
+                        <Trigger Property="h:DataGridHelper.HeadersVisibility" Value="None">
+                            <Setter TargetName="DGR_RowHeader" Property="Visibility" Value="Collapsed" />
+                        </Trigger>
+                        <Trigger Property="h:DataGridHelper.AreRowDetailsFrozen" Value="True">
+                            <Setter TargetName="DGR_Details" Property="SelectiveScrollingGrid.SelectiveScrollingOrientation" Value="Vertical" />
+                        </Trigger>
                         <Trigger Property="IsMouseOver" Value="True">
                             <Setter TargetName="DGR_Border" Property="Background" Value="{DynamicResource JetPack.Brushes.Selection.MouseOver}" />
                         </Trigger>
@@ -220,6 +234,10 @@
         <Setter Property="RowHeaderWidth" Value="14" />
         <Setter Property="ScrollViewer.CanContentScroll" Value="True" />
         <Setter Property="ScrollViewer.PanningMode" Value="Both" />
+        <!-- Inherited by the rows and cells (see DataGridHelper at the top) -->
+        <Setter Property="h:DataGridHelper.HeadersVisibility" Value="{Binding HeadersVisibility, RelativeSource={RelativeSource Self}}" />
+        <Setter Property="h:DataGridHelper.AreRowDetailsFrozen" Value="{Binding AreRowDetailsFrozen, RelativeSource={RelativeSource Self}}" />
+        <Setter Property="h:DataGridHelper.SelectionUnit" Value="{Binding SelectionUnit, RelativeSource={RelativeSource Self}}" />
         <Setter Property="ColumnHeaderStyle" Value="{StaticResource JetPack.Styles.DataGridColumnHeader}" />
         <Setter Property="RowHeaderStyle" Value="{StaticResource JetPack.Styles.DataGridRowHeader}" />
         <Setter Property="CellStyle" Value="{StaticResource JetPack.Styles.DataGridCell}" />

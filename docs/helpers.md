@@ -58,6 +58,23 @@ Selection animations for `TabControl` (see [Navigation](navigation.md#notch-anim
 | `ContentTransition` | `TabContentTransition`: `None` (default), `Fade` | How the page changes. Works with any `TabControl` template that has a `PART_SelectedContentHost`. |
 | `IsSelectionIndicator` | `bool` | Set on the element in a `TabControl` template that should sit under the selected tab (the notch). It needs a parent panel the width of the tab row, such as a `Canvas`; the helper moves it with a `RenderTransform`. |
 
+## DataGridHelper
+
+The DataGrid style copies three of the grid's settings into these attached properties. Its rows and
+cells inherit them, and the row and cell templates read them in triggers. A row template of your own
+can do the same instead of binding with `RelativeSource AncestorType=DataGrid`.
+
+| Attached property | Type | Description |
+| --- | --- | --- |
+| `HeadersVisibility` | `DataGridHeadersVisibility` | The grid's `HeadersVisibility`. The row header shows for `Row` and `All`. |
+| `AreRowDetailsFrozen` | `bool` | The grid's `AreRowDetailsFrozen`. When true, the details stay in view while the columns scroll sideways. |
+| `SelectionUnit` | `DataGridSelectionUnit` | The grid's `SelectionUnit`. Cells take the selected look when it is `Cell`. |
+
+Such a binding finds the grid a moment after the row is built. When the grid refreshes its rows in
+between (a new filter, sort or grouping), the row is first removed from the grid. The binding then
+finds no grid and gives up for good. WPF reuses the row later, and it shows its row header (or keeps
+the frozen details scrolling) wherever it appears.
+
 ## Converters
 
 | Key | Class | Converts |

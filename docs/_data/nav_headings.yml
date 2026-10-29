@@ -42,6 +42,8 @@ helpers.md:
     title: "ScrollViewerHelper"
   - id: "tabcontrolhelper"
     title: "TabControlHelper"
+  - id: "datagridhelper"
+    title: "DataGridHelper"
   - id: "converters"
     title: "Converters"
   - id: "reusable-resources"
