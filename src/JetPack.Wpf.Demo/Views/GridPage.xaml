@@ -14,7 +14,7 @@
         <TextBlock MaxWidth="900"
                    Margin="0,0,0,16"
                    Style="{StaticResource Demo.Intro}"
-                   Text="jp:JetPackGrid with 3,000 used cars in 20 columns. Every word of the search must be found somewhere in a row, and the hits are marked. Click a header to sort ascending, descending and back to the stock order; the funnel keeps only the rows with the values you list. With more rows than fit on a page, a pager appears below them. Rows and columns are virtualized." />
+                   Text="jp:JetPackGrid with 3,000 used cars in 21 columns. Every word of the search must be found somewhere in a row, and the hits are marked. Click a header to sort ascending, descending and back to the stock order; the funnel keeps only the rows with the values you list. With more rows than fit on a page, a pager appears below them. Rows and columns are virtualized." />
 
         <DockPanel Grid.Row="1"
                    Margin="0,0,0,10"
@@ -152,6 +152,9 @@
                 <jp:JetPackGridColumn Width="84"
                                       Binding="{Binding Status}"
                                       Header="Status" />
+                <jp:JetPackGridCheckBoxColumn Width="56"
+                                              Binding="{Binding IsSold}"
+                                              Header="Sold" />
             </jp:JetPackGrid.Columns>
         </jp:JetPackGrid>
 

@@ -15,10 +15,10 @@ developers to a commercial grid such as Telerik's RadGridView, in a free, MIT-li
 
 - Search across all columns, with every hit marked in the cells (`volvo "dark blue" automatic`)
 - A filter in every column header: tick values from a list with row counts, or type them with `*`
-  wildcards
+  wildcards, and ranges for numbers and dates (`>50000`, `2020-01-01..2020-06-30`)
 - Grouping with headers that fold up, three-state sorting and paging
 - Virtualized rows and columns, also while grouping, for thousands of rows in tens of columns;
-  cells draw their text straight from the font, and dragging the scroll bar shows the rows at once
+  cells draw their text and check boxes themselves, and dragging the scroll bar shows the rows at once
 
 It does not try to match everything a commercial suite offers, such as hierarchical child grids or
 built-in export. [Documentation](https://montago.github.io/JetPackTheme/lists.html#jetpackgrid)

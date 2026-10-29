@@ -114,7 +114,7 @@ public partial class JetPackGrid
             var culture = grid.Language.GetSpecificCulture();
             var columns = grid.Columns
                 .Where(c => c.Visibility == Visibility.Visible)
-                .Select(c => (c, c is JetPackGridColumn text ? ColumnReader.ForCell(text, culture) : null))
+                .Select(c => (c, c is JetPackGridColumn or JetPackGridCheckBoxColumn ? ColumnReader.ForCell((DataGridBoundColumn)c, culture) : null))
                 .ToArray();
             // A text column whose value cannot be read without its binding would show the wrong rows.
             return columns.Any(c => c.Item1 is JetPackGridColumn && c.Item2 == null) ? null : new ScrubPreview(grid, columns);
@@ -277,7 +277,12 @@ public partial class JetPackGrid
                 {
                     continue;
                 }
-                var drawn = column is JetPackGridColumn text && reader != null && text.ShowPreview(content, reader.GetText(item));
+                var drawn = reader != null && column switch
+                {
+                    JetPackGridColumn text => text.ShowPreview(content, reader.GetText(item)),
+                    JetPackGridCheckBoxColumn => JetPackGridCheckBoxColumn.ShowPreview(content, reader.GetValue(item)),
+                    _ => false,
+                };
                 if (!drawn && !hidden.ContainsKey(content))
                 {
                     // Content the grid cannot show for another item (other columns, templates) is left out until release.
@@ -370,9 +375,14 @@ public partial class JetPackGrid
             {
                 foreach (var (column, _) in columns)
                 {
-                    if (column is JetPackGridColumn text && column.GetCellContent(row) is { } content)
+                    switch (column, column.GetCellContent(row))
                     {
-                        text.RestoreText(content);
+                        case (JetPackGridColumn text, { } content):
+                            text.RestoreText(content);
+                            break;
+                        case (JetPackGridCheckBoxColumn, { } content):
+                            JetPackGridCheckBoxColumn.RestoreValue(content);
+                            break;
                     }
                 }
                 Unstyle(row);

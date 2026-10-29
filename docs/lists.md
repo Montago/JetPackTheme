@@ -86,7 +86,9 @@ row. Behaviour (sorting, editing, adding rows) is plain WPF.
 combo box that `DataGridTextColumn` and `DataGridComboBoxColumn` open for editing are plain WPF as
 well. This is on purpose: a mark in a table only has to be recognisable, and the light standard
 check box sits well on the light rows. (The columns set `ElementStyle` and `EditingElementStyle`
-themselves, which shuts out the implicit JetPack styles.)
+themselves, which shuts out the implicit JetPack styles.) In a `JetPackGrid`, use
+`jp:JetPackGridCheckBoxColumn` instead (see [Check box column](#check-box-column)): it has the
+JetPack check box and keeps the grid fast.
 
 For the JetPack check box in a column, give the column a style based on
 `JetPack.Styles.CheckBox.OnLight`, or use a template column, where the implicit style applies:
@@ -111,7 +113,7 @@ For the JetPack check box in a column, give the column a style based on
 </DataGridTemplateColumn>
 ```
 
-The same holds for `JetPackGrid`, which is a `DataGrid`.
+The same holds for a `DataGridCheckBoxColumn` in a `JetPackGrid`, which is a `DataGrid`.
 
 ## JetPackGrid
 
@@ -124,7 +126,8 @@ people need to narrow down. It adds:
   (ignoring case). Every hit is marked in the cells. Quotes keep a phrase together:
   `volvo "dark blue" automatic`.
 - **Value filter per column:** the funnel in a header opens a box for values the column must
-  equal. A row passes if it matches any of the values, and every filtered column must pass.
+  equal, or ranges for numbers and dates (`>50000`, `2020-01-01..2020-06-30`). A row passes if it
+  matches any of the values, and every filtered column must pass.
 - **Three-state sorting:** clicking a header sorts ascending, then descending, then back to the
   source order. Shift+click sorts by more columns, as in DataGrid.
 - **Grouping** by one member (`GroupMemberPath`), with a header row per group that folds up.
@@ -145,12 +148,12 @@ people need to narrow down. It adds:
         <jp:JetPackGridColumn Header="Make" Binding="{Binding Make}" Width="100" />
         <jp:JetPackGridColumn Header="Body" Binding="{Binding Body}" Width="85" FilterText="estate suv" />
         <jp:JetPackGridColumn Header="Mileage" Binding="{Binding Mileage, StringFormat=N0}" Width="90" IsSearchable="False" />
-        <DataGridCheckBoxColumn Header="Sold" Binding="{Binding IsSold}" jp:JetPackGrid.IsFilterable="False" />
+        <jp:JetPackGridCheckBoxColumn Header="Sold" Binding="{Binding IsSold}" />
     </jp:JetPackGrid.Columns>
 </jp:JetPackGrid>
 ```
 
-The demo's *JetPackGrid* page shows 3,000 cars in 20 columns, searched for `volvo automatic` with the
+The demo's *JetPackGrid* page shows 3,000 cars in 21 columns, searched for `volvo automatic` with the
 *Body* column filtered to `estate suv`:
 
 ![The JetPackGrid page of the demo](screenshots/jetpackgrid.png)
@@ -177,9 +180,58 @@ matched like this:
   with or contains the value.
 - `*` alone matches any cell that is not empty.
 
+Numbers and dates can also be filtered by range:
+
+| Value | Matches |
+| --- | --- |
+| `>50000`, `>=50000` | more than 50,000; 50,000 or more |
+| `<2019`, `<=2019` | before 2019; up to and including 2019 |
+| `2016..2018` | 2016 to 2018, both included |
+| `2020-03..`, `..2015` | from March 2020 on; up to and including 2015 |
+| `<2015, >2024` | before 2015 or after 2024 (values still combine with "or") |
+
+- A range compares the value itself, not the text the cell shows: `>100000` works on a column bound
+  with `StringFormat=N0`. It reads `FilterMemberPath` when the column has one, and otherwise the
+  binding's path, before its converter.
+- Numbers and dates are read in the grid's culture (`Language`). The value is split at commas and
+  spaces like any other, so write `>20000`, or quote a value with a thousands separator or a decimal
+  comma: `">20,000"`. Spaces around the operator are fine: `> 20000`, `2016 .. 2018`.
+- A date can be a year (`2019`), a month (`2020-03`) or a day (`2020-03-15`, or the culture's own
+  form such as `3/15/2020` in en-US). A year, month or day stands for all of it: `<=2019` takes in 31
+  December 2019, `>2020-03-15` starts on 16 March, and `2020-03..2020-06` runs to the end of June.
+- Ranges apply to values of the number types, `DateTime`, `DateTimeOffset` and `DateOnly`. In a text
+  column, or when a bound cannot be read as a number or a date, the value is matched as text.
+
 The rows are filtered while you type. Enter, Escape or *Done* closes the box, and *Clear* empties
 it. A funnel turns accent-coloured while its column has a filter. Code can set the filter through
 `FilterText` on the column, which is two-way bindable.
+
+### Check box column
+
+![A JetPackGridCheckBoxColumn showing which cars are sold](screenshots/controls/jetpackgrid-checkbox.png)
+
+`jp:JetPackGridCheckBoxColumn` is a `DataGridCheckBoxColumn` for `JetPackGrid` with the JetPack
+check box (`JetPack.Styles.CheckBox.OnLight`):
+
+```xml
+<jp:JetPackGridCheckBoxColumn Header="Sold" Binding="{Binding IsSold}" />
+<jp:JetPackGridCheckBoxColumn Header="Done" Binding="{Binding IsDone}" TrueText="Done" FalseText="Open" IsSearchable="True" />
+```
+
+- A cell that is not being edited draws its check box (`GridCheckBox`, one element per cell) instead
+  of holding a CheckBox and its template. It scrolls as fast as a text cell and shows in the
+  thumb-drag preview, and it looks exactly like the CheckBox it becomes for editing.
+- The header filter lists the values as `TrueText` and `FalseText` ("Yes" and "No" by default), with
+  their row counts, so `FilterText="yes"` keeps the ticked rows. Ctrl+C copies the same texts.
+- The search leaves the column out unless `IsSearchable="True"`; then the search finds "yes" and "no".
+- A `null` value shows the bar of an undecided CheckBox and has no text, so it is not in the filter
+  list. `IsThreeState` keeps its WPF meaning: clicks cycle through `null` as well.
+- When the grid is not read-only, the click that starts the edit ticks the box, as in
+  `DataGridCheckBoxColumn`. The binding needs a property that can be set for that; a read-only grid
+  can bind to a computed one (`public bool IsSold => Status == "Sold";`).
+- Grouping by the bool member (`GroupMemberPath="IsSold"`) names the groups `True` and `False`.
+- An `ElementStyle` turns the drawn check box off for the column: the cells get the base CheckBox
+  with that style. An `EditingElementStyle` replaces the JetPack style of the editing CheckBox.
 
 ### Groups
 
@@ -243,7 +295,8 @@ Scrolling costs the same for 3,000 and 100,000 rows: what costs is the rows that
 Two things keep that low:
 
 - **Drawn text.** A `JetPackGridColumn` cell draws its text as glyph runs read straight from the font
-  (`GridCellText`), with the search hits marked and an ellipsis where the text is cut. A TextBlock
+  (`GridCellText`), with the search hits marked and an ellipsis where the text is cut. A
+  `JetPackGridCheckBoxColumn` cell draws its check box the same way (`GridCheckBox`). A TextBlock
   lays out every new text through WPF's line formatting, which was most of the cost of a row coming
   into view. Text with characters the font lacks (other scripts, emoji) is drawn with
   `FormattedText`, which falls back to other fonts. Align numbers with the column's `TextAlignment`:
@@ -295,13 +348,14 @@ Everything else is DataGrid: `SelectedItem` (two-way), `SelectionMode` (`Single`
 
 ### Column settings
 
-`jp:JetPackGridColumn` is a `DataGridTextColumn` that also marks the search hits. These settings
-are properties on it, and attached properties (`jp:JetPackGrid.IsFilterable="False"`) on any other
-DataGrid column:
+`jp:JetPackGridColumn` is a `DataGridTextColumn` that also marks the search hits, and
+`jp:JetPackGridCheckBoxColumn` is the check box column (see [Check box column](#check-box-column)).
+These settings are properties on both, and attached properties (`jp:JetPackGrid.IsFilterable="False"`)
+on any other DataGrid column:
 
 | Property | Type | Default | Description |
 | --- | --- | --- | --- |
-| `IsSearchable` | `bool` | `true` | Whether the search looks in this column. |
+| `IsSearchable` | `bool` | `true` | Whether the search looks in this column. `false` on `JetPackGridCheckBoxColumn`. |
 | `IsFilterable` | `bool` | `true` | Whether the header shows the funnel. |
 | `FilterText` | `string` | `""` | The values of the header filter; two-way bindable. |
 | `FilterMemberPath` | `string` | `null` | Member the search and filter read instead of the binding. |
@@ -312,8 +366,13 @@ DataGrid column:
 than an `ElementStyle`, which turns the drawn text off for the column. A cell's content is a
 `GridCellText` (its `Text` is the text shown) unless the column falls back to a TextBlock.
 
-The search and the filter compare the text the cell shows. They read the column's `Binding`,
-including its `StringFormat` and `Converter`. A column without a binding (such as a
+`JetPackGridCheckBoxColumn` also has `TrueText` (`"Yes"`) and `FalseText` (`"No"`), the texts of its
+values in the filter, the search and Ctrl+C. A cell's content is a `GridCheckBox` (its `IsChecked` is
+the value shown) unless the cell is being edited or the column has an `ElementStyle`.
+
+The search and the filter compare the text the cell shows (a range in the filter compares the
+value; see [Header filter](#header-filter)). They read the column's `Binding`, including its
+`StringFormat` and `Converter`. A column without a binding (such as a
 `DataGridTemplateColumn`) uses `FilterMemberPath` or `SortMemberPath`. Paths can be dotted
 (`Owner.Name`), but indexers are not followed. Only `JetPackGridColumn` cells mark the hits; other
 columns are still searched.

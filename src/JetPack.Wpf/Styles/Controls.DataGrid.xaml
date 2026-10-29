@@ -346,7 +346,7 @@
                                     <TextBox x:Name="PART_FilterBox" h:TextBoxHelper.Watermark="Values, e.g. volvo, saab" h:TextBoxHelper.ClearTextButton="True"
                                              Text="{Binding (jp:JetPackGrid.HeaderColumn).(jp:JetPackGrid.FilterText), RelativeSource={RelativeSource TemplatedParent}, UpdateSourceTrigger=PropertyChanged}" />
                                     <TextBlock Margin="0,6,0,0" TextWrapping="Wrap" Opacity="0.7" FontSize="{DynamicResource JetPack.Font.Size.Small}"
-                                               Text="Tick values or type them, separated by spaces or commas. Quote values with spaces; * matches any text." />
+                                               Text="Tick values or type them, separated by spaces or commas. Quote values with spaces; * matches any text. Numbers and dates: &gt;100, &lt;=2019, 2020-01-01..2020-06-30." />
                                     <StackPanel Margin="0,10,0,0" Orientation="Horizontal" HorizontalAlignment="Right">
                                         <Button MinWidth="64" Content="Clear" Command="{x:Static c:JetPackGrid.ClearFilterCommand}"
                                                 CommandParameter="{Binding (jp:JetPackGrid.HeaderColumn), RelativeSource={RelativeSource TemplatedParent}}" />
