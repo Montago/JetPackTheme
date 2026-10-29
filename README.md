@@ -21,7 +21,8 @@ Telerik's RadGridView, in a free, MIT-licensed `DataGrid`:
   as a wildcard.
 - **Grouping** with headers that fold up, **three-state sorting** and **paging**.
 - **Virtualized rows and columns**, also while grouping, so thousands of rows in tens of columns
-  stay fast.
+  stay fast. Cells draw their text straight from the font, and dragging the scroll bar shows the
+  rows at the thumb at once.
 
 It derives from `DataGrid`, so columns, bindings, selection and templates work as usual:
 

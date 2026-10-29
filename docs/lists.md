@@ -131,6 +131,8 @@ people need to narrow down. It adds:
 - **Paging** (`PageSize`): with more rows than that, the grid shows one page at a time and a pager
   below the rows.
 - **Virtualization** of rows and columns, kept on while grouping.
+- **Fast scrolling:** the cells draw their text straight from the font, and dragging the scroll bar
+  thumb shows the rows at the thumb at once (see [Scrolling](#scrolling)).
 - Read-only by default, with no new-item row and no auto-generated columns.
 
 ```xml
@@ -211,6 +213,32 @@ previous, next and last page, the page number, and which rows the page holds (`2
 Paging shortens the list, but each scroll step costs the same as without it. The cost comes from
 the rows and cells on screen, not from the number of rows in the source.
 
+### Scrolling
+
+Scrolling costs the same for 3,000 and 100,000 rows: what costs is the rows that come into view.
+Two things keep that low:
+
+- **Drawn text.** A `JetPackGridColumn` cell draws its text as glyph runs read straight from the font
+  (`GridCellText`), with the search hits marked and an ellipsis where the text is cut. A TextBlock
+  lays out every new text through WPF's line formatting, which was most of the cost of a row coming
+  into view. Text with characters the font lacks (other scripts, emoji) is drawn with
+  `FormattedText`, which falls back to other fonts. Align numbers with the column's `TextAlignment`:
+  a column with an `ElementStyle`, and a right-to-left grid, keep the TextBlock.
+  `EnableLightweightTextRendering="False"` gives every cell a TextBlock again.
+- **Dragging the thumb.** Moving the rows to a far place builds every row again, which cannot keep up
+  with a fast drag. While the thumb is dragged, the rows in view therefore stay where they are and
+  show the texts of the rows at the thumb, with their selection. When the thumb is released, the
+  grid scrolls there for real and looks exactly the same. Content that the grid cannot show for
+  another row (other columns, templates) is hidden until the release. The mouse wheel, the keys and
+  the scroll bar arrows scroll as usual.
+
+A grouped grid, rows with details and pixel scrolling (`VirtualizingPanel.ScrollUnit="Pixel"`) have
+rows of different heights. There, dragging the thumb scrolls the rows live.
+
+With the demo's 20 columns and 30,000 rows, a far jump of the thumb costs about 4 ms on the UI thread
+instead of about 50 ms, and a page down about 20 ms instead of 45 ms. Grouped, a far jump went from
+about 225 ms to about 120 ms.
+
 ### Grid properties
 
 | Property | Type | Default | Description |
@@ -222,6 +250,7 @@ the rows and cells on screen, not from the number of rows in the source.
 | `GroupMemberPath` | `string` | `null` | Member to group by; empty for no groups. |
 | `HighlightBrush` | `Brush` | `JetPack.Brushes.Accent.Highlight` | Background of the search hits. |
 | `HighlightForeground` | `Brush` | `JetPack.Brushes.Control.Foreground` | Text colour of the search hits. |
+| `EnableLightweightTextRendering` | `bool` | `true` | `JetPackGridColumn` cells draw their text (`GridCellText`) instead of using a TextBlock; see [Scrolling](#scrolling). |
 | `FilteredItemCount` | `int` | 0 | Read-only: rows left after the search and filters. |
 | `TotalItemCount` | `int` | 0 | Read-only: rows in the source. |
 | `IsFiltered` | `bool` | `false` | Read-only: true while a search or a filter is applied. |
@@ -249,6 +278,10 @@ DataGrid column:
 | `FilterMemberPath` | `string` | `null` | Member the search and filter read instead of the binding. |
 | `HasFilter` | `bool` | `false` | Read-only: true when `FilterText` holds a value. |
 | `FilterOptions` | `IReadOnlyList<GridFilterOption>` | `null` | Read-only: the values in the tick list, read when the filter box opens. `null` when the column has more than `FilterListLimit` values. Each `GridFilterOption` has `Text`, `Count` and `IsChecked`. |
+
+`JetPackGridColumn` also has `TextAlignment` (`Left` by default; `Right` for numbers). Use it rather
+than an `ElementStyle`, which turns the drawn text off for the column. A cell's content is a
+`GridCellText` (its `Text` is the text shown) unless the column falls back to a TextBlock.
 
 The search and the filter compare the text the cell shows. They read the column's `Binding`,
 including its `StringFormat` and `Converter`. A column without a binding (such as a

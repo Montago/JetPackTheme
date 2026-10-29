@@ -88,7 +88,7 @@ public sealed class GridFilterOption : INotifyPropertyChanged
 /// cells, a value filter in every column header, three-state sorting and grouping. Rows and columns
 /// are virtualized. Columns are defined by hand (<see cref="JetPackGridColumn"/> or any DataGrid column).
 /// </summary>
-public class JetPackGrid : DataGrid
+public partial class JetPackGrid : DataGrid
 {
     /// <summary>Clears the filter of the column (or header) in the parameter; without one, clears the search and every filter.</summary>
     public static readonly RoutedUICommand ClearFilterCommand = new("Clear", nameof(ClearFilterCommand), typeof(JetPackGrid));
@@ -131,6 +131,8 @@ public class JetPackGrid : DataGrid
         // The filter box lives in a popup of the column header; its events still bubble up to the grid.
         EventManager.RegisterClassHandler(typeof(JetPackGrid), ToggleButton.CheckedEvent, new RoutedEventHandler(OnFilterButtonChecked));
         EventManager.RegisterClassHandler(typeof(JetPackGrid), PreviewKeyDownEvent, new KeyEventHandler(OnFilterBoxKeyDown));
+        // The ScrollViewer marks the scroll bar's events handled; the thumb-drag preview still needs them.
+        EventManager.RegisterClassHandler(typeof(JetPackGrid), ScrollBar.ScrollEvent, new ScrollEventHandler(OnScrollBarScroll), handledEventsToo: true);
     }
 
     public JetPackGrid()
@@ -181,7 +183,8 @@ public class JetPackGrid : DataGrid
     }
 
     private static readonly DependencyPropertyKey SearchWordsPropertyKey = DependencyProperty.RegisterReadOnly(
-        nameof(SearchWords), typeof(IReadOnlyList<string>), typeof(JetPackGrid), new PropertyMetadata(Array.Empty<string>()));
+        nameof(SearchWords), typeof(IReadOnlyList<string>), typeof(JetPackGrid),
+        new PropertyMetadata(Array.Empty<string>(), (d, e) => d.SetValue(JetPackGridColumn.WordsProperty, e.NewValue)));
 
     public static readonly DependencyProperty SearchWordsProperty = SearchWordsPropertyKey.DependencyProperty;
 
@@ -201,8 +204,8 @@ public class JetPackGrid : DataGrid
     public static readonly DependencyProperty HighlightForegroundProperty = DependencyProperty.Register(
         nameof(HighlightForeground), typeof(Brush), typeof(JetPackGrid), new PropertyMetadata(null, OnHighlightChanged));
 
-    // The cells copy the brushes into their runs (bindings per run made scrolling slower), so a new
-    // brush (an accent change) hands them a new word list to rebuild the runs from.
+    // The cells copy the brushes when they draw their text (bindings per cell made scrolling slower), so a
+    // new brush (an accent change) hands them a new word list to draw the text again with.
     private static void OnHighlightChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
         var grid = (JetPackGrid)d;
@@ -216,6 +219,28 @@ public class JetPackGrid : DataGrid
     {
         get => (Brush?)GetValue(HighlightForegroundProperty);
         set => SetValue(HighlightForegroundProperty, value);
+    }
+
+    public static readonly DependencyProperty EnableLightweightTextRenderingProperty = DependencyProperty.Register(
+        nameof(EnableLightweightTextRendering), typeof(bool), typeof(JetPackGrid), new PropertyMetadata(true, OnRenderingChanged));
+
+    /// <summary>
+    /// Whether <see cref="JetPackGridColumn"/> cells draw their text as glyph runs (<see cref="GridCellText"/>)
+    /// instead of a TextBlock, which halves the cost of the rows that come into view while scrolling.
+    /// Columns with an ElementStyle and right-to-left grids keep the TextBlock.
+    /// </summary>
+    public bool EnableLightweightTextRendering
+    {
+        get => (bool)GetValue(EnableLightweightTextRenderingProperty);
+        set => SetValue(EnableLightweightTextRenderingProperty, value);
+    }
+
+    private static void OnRenderingChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+    {
+        foreach (var column in ((JetPackGrid)d).Columns.OfType<JetPackGridColumn>())
+        {
+            column.OnRenderingChanged();
+        }
     }
 
     // ---------------- Grouping and counts ----------------
@@ -558,6 +583,28 @@ public class JetPackGrid : DataGrid
         UpdateCounts();
     }
 
+    protected override void PrepareContainerForItemOverride(DependencyObject element, object item)
+    {
+        base.PrepareContainerForItemOverride(element, item);
+        if (element is DataGridRow row)
+        {
+            ScopeCellStyle(row);
+        }
+    }
+
+    protected override void OnPropertyChanged(DependencyPropertyChangedEventArgs e)
+    {
+        base.OnPropertyChanged(e);
+        if (e.Property == CellStyleProperty && GetTemplateChild("DG_ScrollViewer") is ScrollViewer viewer)
+        {
+            // The rows in view; recycled rows get the new style when they are prepared again.
+            foreach (var row in FindRows(viewer))
+            {
+                ScopeCellStyle(row);
+            }
+        }
+    }
+
     protected override void OnSelectionChanged(SelectionChangedEventArgs e)
     {
         base.OnSelectionChanged(e);
@@ -649,6 +696,68 @@ public class JetPackGrid : DataGrid
         if (scrollToTop && GetTemplateChild("DG_ScrollViewer") is ScrollViewer viewer)
         {
             viewer.ScrollToTop();
+        }
+    }
+
+    // A cell gets the grid's CellStyle only while it is prepared (the DataGrid's "property transfer").
+    // A recycled row leaves the panel's children until it is used again, and on leaving and coming back
+    // its cells look up their style anew, find no implicit one and take the theme's: every cell built its
+    // template twice per recycled row. The same style as an implicit style next to the cells keeps it.
+    private void ScopeCellStyle(DataGridRow row)
+    {
+        row.ApplyTemplate();
+        if ((row.Template?.FindName("DGR_CellsPresenter", row) ?? FindCellsPresenter(row)) is not FrameworkElement cells)
+        {
+            return;
+        }
+        var style = CellStyle;
+        if (!ReferenceEquals(cells.Resources[typeof(DataGridCell)], style))
+        {
+            if (style == null)
+            {
+                cells.Resources.Remove(typeof(DataGridCell));
+            }
+            else
+            {
+                cells.Resources[typeof(DataGridCell)] = style;
+            }
+        }
+    }
+
+    // In a row template of the app's own, without the name.
+    private static DataGridCellsPresenter? FindCellsPresenter(DependencyObject parent)
+    {
+        for (var i = 0; i < VisualTreeHelper.GetChildrenCount(parent); i++)
+        {
+            var child = VisualTreeHelper.GetChild(parent, i);
+            if (child is DataGridCellsPresenter presenter)
+            {
+                return presenter;
+            }
+            if (child is not DataGridRow && FindCellsPresenter(child) is { } deeper)
+            {
+                return deeper;
+            }
+        }
+        return null;
+    }
+
+    private static IEnumerable<DataGridRow> FindRows(DependencyObject parent)
+    {
+        for (var i = 0; i < VisualTreeHelper.GetChildrenCount(parent); i++)
+        {
+            var child = VisualTreeHelper.GetChild(parent, i);
+            if (child is DataGridRow row)
+            {
+                yield return row;
+            }
+            else
+            {
+                foreach (var deeper in FindRows(child))
+                {
+                    yield return deeper;
+                }
+            }
         }
     }
 
@@ -1016,6 +1125,16 @@ public class JetPackGrid : DataGrid
             var stringFormat = binding?.StringFormat;
             format = string.IsNullOrEmpty(stringFormat) ? null : stringFormat.Contains('{') ? stringFormat : "{0:" + stringFormat + "}";
         }
+
+        /// <summary>
+        /// A reader of the text the cell binds to (its Binding, not the FilterMemberPath the search reads);
+        /// null when the binding is not a plain path on the row's item.
+        /// </summary>
+        public static ColumnReader? ForCell(DataGridBoundColumn column, CultureInfo culture) =>
+            column.Binding is Binding binding && binding.Source == null && binding.RelativeSource == null && string.IsNullOrEmpty(binding.ElementName)
+                && Split(binding.Path?.Path) is { } path
+                ? new ColumnReader(path, binding, culture)
+                : null;
 
         public static ColumnReader? Create(DataGridColumn column, CultureInfo culture)
         {

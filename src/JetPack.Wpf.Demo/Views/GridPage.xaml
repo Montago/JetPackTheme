@@ -3,12 +3,6 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="clr-namespace:JetPack.Wpf.Demo"
              xmlns:jp="urn:jetpack-wpf">
-    <UserControl.Resources>
-        <Style x:Key="Right" TargetType="TextBlock">
-            <Setter Property="HorizontalAlignment" Value="Right" />
-        </Style>
-    </UserControl.Resources>
-
     <Grid Margin="0,22,0,14">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -99,13 +93,13 @@
                                       Header="Body" />
                 <jp:JetPackGridColumn Width="62"
                                       Binding="{Binding Year}"
-                                      ElementStyle="{StaticResource Right}"
-                                      Header="Year" />
+                                      Header="Year"
+                                      TextAlignment="Right" />
                 <jp:JetPackGridColumn Width="108"
                                       Binding="{Binding Mileage, StringFormat=N0}"
-                                      ElementStyle="{StaticResource Right}"
                                       Header="Mileage (km)"
-                                      IsSearchable="False" />
+                                      IsSearchable="False"
+                                      TextAlignment="Right" />
                 <jp:JetPackGridColumn Width="70"
                                       Binding="{Binding Fuel}"
                                       Header="Fuel" />
@@ -117,41 +111,41 @@
                                       Header="Drive" />
                 <jp:JetPackGridColumn Width="72"
                                       Binding="{Binding Power, StringFormat='{}{0} hp'}"
-                                      ElementStyle="{StaticResource Right}"
-                                      Header="Power" />
+                                      Header="Power"
+                                      TextAlignment="Right" />
                 <jp:JetPackGridColumn Width="76"
                                       Binding="{Binding Co2, StringFormat='{}{0} g/km'}"
-                                      ElementStyle="{StaticResource Right}"
                                       Header="CO₂"
-                                      IsSearchable="False" />
+                                      IsSearchable="False"
+                                      TextAlignment="Right" />
                 <jp:JetPackGridColumn Width="80"
                                       Binding="{Binding Colour}"
                                       Header="Colour" />
                 <jp:JetPackGridColumn Width="66"
                                       Binding="{Binding Doors}"
-                                      ElementStyle="{StaticResource Right}"
                                       Header="Doors"
-                                      IsSearchable="False" />
+                                      IsSearchable="False"
+                                      TextAlignment="Right" />
                 <jp:JetPackGridColumn Width="64"
                                       Binding="{Binding Seats}"
-                                      ElementStyle="{StaticResource Right}"
                                       Header="Seats"
-                                      IsSearchable="False" />
+                                      IsSearchable="False"
+                                      TextAlignment="Right" />
                 <jp:JetPackGridColumn Width="74"
                                       Binding="{Binding Owners}"
-                                      ElementStyle="{StaticResource Right}"
                                       Header="Owners"
-                                      IsSearchable="False" />
+                                      IsSearchable="False"
+                                      TextAlignment="Right" />
                 <jp:JetPackGridColumn Width="96"
                                       Binding="{Binding Registered, StringFormat=d}"
-                                      ElementStyle="{StaticResource Right}"
                                       Header="Registered"
-                                      IsSearchable="False" />
+                                      IsSearchable="False"
+                                      TextAlignment="Right" />
                 <jp:JetPackGridColumn Width="96"
                                       Binding="{Binding Price, StringFormat=N0}"
-                                      ElementStyle="{StaticResource Right}"
                                       Header="Price (EUR)"
-                                      IsSearchable="False" />
+                                      IsSearchable="False"
+                                      TextAlignment="Right" />
                 <jp:JetPackGridColumn Width="90"
                                       Binding="{Binding Dealer}"
                                       Header="Dealer" />
