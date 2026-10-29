@@ -3,6 +3,7 @@ using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Documents;
+using System.Windows.Input;
 using System.Windows.Media;
 
 namespace JetPack.Wpf.Controls;
@@ -78,6 +79,10 @@ public partial class JetPackGrid
         private readonly HashSet<DataGridRow> rows = [];
         private readonly HashSet<DataGridRow> styled = [];
         private readonly Dictionary<FrameworkElement, object> hidden = [];
+        private readonly Dictionary<DataGridCell, object> framed = [];
+        // The cell with keyboard focus, which shows the focus frame (JetPack.Styles.DataGridCell), and its item.
+        private readonly DataGridCell? focused;
+        private readonly object? focusedItem;
         private readonly Dictionary<DataGridRow, (object Local, TranslateTransform Move)> moved = [];
         private readonly List<ToggleButton> headers = [];
         private readonly List<(DataGridRow Row, double Top)> dataRows = [];
@@ -89,6 +94,15 @@ public partial class JetPackGrid
             this.grid = grid;
             this.columns = columns;
             selected = new HashSet<object>(grid.SelectedItems.Cast<object>(), ReferenceEqualityComparer.Instance);
+            for (var element = Keyboard.FocusedElement as DependencyObject; element != null && element != grid; element = VisualTreeHelper.GetParent(element))
+            {
+                if (element is DataGridCell { IsKeyboardFocusWithin: true } cell)
+                {
+                    focused = cell;
+                    focusedItem = cell.DataContext;
+                    break;
+                }
+            }
         }
 
         public static ScrubPreview? Create(JetPackGrid grid)
@@ -270,6 +284,10 @@ public partial class JetPackGrid
                     hidden[content] = content.ReadLocalValue(OpacityProperty);
                     content.Opacity = 0;
                 }
+                if (content.Parent is DataGridCell cell)
+                {
+                    ShowFocus(cell, focused != null && ReferenceEquals(item, focusedItem) && column == focused.Column);
+                }
             }
 
             // The row's triggers show the selection of its own item; the previewed item's is set here, as
@@ -311,6 +329,28 @@ public partial class JetPackGrid
             }
         }
 
+        // The focus frame belongs on the cell that shows the focused cell's item, not on the focused cell.
+        private void ShowFocus(DataGridCell cell, bool frame)
+        {
+            if (frame == ReferenceEquals(cell, focused))
+            {
+                if (framed.Remove(cell, out var local))
+                {
+                    Reset(cell, BorderBrushProperty, local);
+                }
+                return;
+            }
+            framed.TryAdd(cell, cell.ReadLocalValue(BorderBrushProperty));
+            if (frame)
+            {
+                cell.SetResourceReference(BorderBrushProperty, "JetPack.Brushes.Focus");
+            }
+            else
+            {
+                cell.BorderBrush = Brushes.Transparent;
+            }
+        }
+
         private void Unstyle(DataGridRow row)
         {
             if (styled.Remove(row))
@@ -340,6 +380,10 @@ public partial class JetPackGrid
             foreach (var (content, opacity) in hidden)
             {
                 Reset(content, OpacityProperty, opacity);
+            }
+            foreach (var (cell, brush) in framed)
+            {
+                Reset(cell, BorderBrushProperty, brush);
             }
             foreach (var (row, (local, _)) in moved)
             {

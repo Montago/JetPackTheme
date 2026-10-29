@@ -199,7 +199,7 @@ rows at the thumb (see [Scrolling](#scrolling)). While grouped:
 - `Items` holds the headers between the rows, so `SelectedIndex` and `Items.IndexOf` count them.
   `ItemsSource` reads back the grid's list, although your binding still holds your collection.
   `GetVisibleItems()` returns the rows without the headers. Headers are never selected, and the
-  arrow keys go past them.
+  arrow keys go past them. Folding a group deselects its rows.
 - The grid sorts and filters the rows itself, not your collection's default view. A sort added to
   `Items.SortDescriptions` in code becomes the grid's sort.
 - Cells can be edited, but rows cannot be added or deleted through the grid. A row whose group
