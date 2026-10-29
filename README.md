@@ -175,12 +175,92 @@ Resource keys follow the MahApps scheme with a `JetPack.` prefix: `JetPack.Brush
 
 ## What's included
 
-| Group | Controls |
-| --- | --- |
-| Standard WPF (implicit styles) | Button, RepeatButton, ToggleButton, Hyperlink, TextBox, PasswordBox, RichTextBox, Label, CheckBox, RadioButton, ComboBox, ListBox, ListView/GridView, TreeView, ScrollBar, ScrollViewer, ProgressBar, Slider, ToolTip, GroupBox, Expander, TabControl, Calendar, DatePicker, DataGrid, GridSplitter, Separator, Menu, ContextMenu, ToolBar, StatusBar, ResizeGrip, validation errors |
-| Named variants | `Button.Accent/Green/Orange/Blue/Square/Flat/Link`, `TextBox.Dark`, `TextBox.MultiLine(.Dark)`, `PasswordBox.Dark`, `TabControl.Navigation` (the full-width light link bar with the notch), `TabControl.Strip` (the dark tab strip), `Expander.Accordion`, `TextBlock.Heading1–6` |
-| Own controls (`jp:`) | JetPackWindow, JetPackDialog, ToggleSwitch, NumericUpDown, SplitButton, DropDownButton, ProgressRing, Badged, Tile, Flyout, HamburgerMenu, InfoBar, RangeSlider, Rating, TimePicker, ColorPicker, AutoSuggestBox, SearchComboBox, JetPackGrid, BusyIndicator, Accordion, JetPackIcon, Vignette, DitheredFill |
-| Helpers | `TextBoxHelper.Watermark`, `TextBoxHelper.ClearTextButton`, `TabControlHelper.SelectionAnimation`, `TabControlHelper.ContentTransition`, `ControlHelper.CornerRadius` and others |
+Every name links to its section in the [documentation](https://montago.github.io/JetPackTheme/).
+Merging `JetPack.xaml` styles the standard controls; the variants in brackets are named styles
+(`JetPack.Styles.Button.Accent` and so on), and the last column lists the controls the library adds.
+
+| Area | Standard WPF | Added by JetPack (`jp:`) |
+| --- | --- | --- |
+| **[Window and dialogs][window]** | [Window][plain-window] (named style), [ResizeGrip][resizegrip] | [JetPackWindow], [JetPackDialog], [Flyout], [Vignette], [DitheredFill][flyout] |
+| **[Buttons][buttons]** | [Button] ([Accent, Green, Orange, Blue, Square, Flat, Link][button-variants]), [ToggleButton][togglebutton], [RepeatButton][togglebutton], [Hyperlink] | [SplitButton], [DropDownButton], [Tile], [Badged] |
+| **[Text and input][inputs]** | [TextBox] ([Dark][textbox-dark], [MultiLine][textbox-multiline], MultiLine.Dark), [PasswordBox][passwordbox] (Dark), [RichTextBox][passwordbox], [Label], [ComboBox], [DatePicker], [validation errors][validation] | [NumericUpDown], [AutoSuggestBox], [SearchComboBox], [TimePicker], [ColorPicker] |
+| **[Selection][selection]** | [CheckBox][checkbox], [RadioButton][checkbox], [Slider] | [ToggleSwitch], [RangeSlider], [Rating] |
+| **[Lists and data][lists]** | [ListBox], [ListView/GridView][listview], [TreeView], [DataGrid], [Calendar], [ScrollViewer][scrollviewer] ([Thin][scrollviewer-thin]), [ScrollBar][scrollviewer] | [JetPackGrid] |
+| **[Navigation and layout][navigation]** | [TabControl] ([Navigation][tabcontrol-navigation], [Strip][tabcontrol-strip]), [Expander] (Accordion), [GroupBox], [Menu], [ContextMenu][menu], [ToolBar][menu], [StatusBar], [GridSplitter], [Separator][gridsplitter], [ToolTip] | [HamburgerMenu], [Accordion] |
+| **[Progress and status][status]** | [ProgressBar] | [ProgressRing], [BusyIndicator], [InfoBar] |
+| **[Typography][typography]** | [TextBlock][text-styles] (Heading1–6 and more) | [JetPackIcon] |
+| **[Helpers][helpers]** | | [ControlHelper] (corner radius and more), [TextBoxHelper] (watermark, clear button), [ScrollViewerHelper], [TabControlHelper] (notch animation, page transitions) |
+
+[window]: https://montago.github.io/JetPackTheme/window.html
+[plain-window]: https://montago.github.io/JetPackTheme/window.html#plain-window
+[resizegrip]: https://montago.github.io/JetPackTheme/window.html#resizing-and-the-grip
+[jetpackwindow]: https://montago.github.io/JetPackTheme/window.html#jetpackwindow
+[jetpackdialog]: https://montago.github.io/JetPackTheme/window.html#jetpackdialog
+[flyout]: https://montago.github.io/JetPackTheme/window.html#flyouts
+[vignette]: https://montago.github.io/JetPackTheme/window.html#vignette
+[buttons]: https://montago.github.io/JetPackTheme/buttons.html
+[button]: https://montago.github.io/JetPackTheme/buttons.html#button
+[button-variants]: https://montago.github.io/JetPackTheme/buttons.html#variants
+[togglebutton]: https://montago.github.io/JetPackTheme/buttons.html#togglebutton-and-repeatbutton
+[hyperlink]: https://montago.github.io/JetPackTheme/buttons.html#hyperlink
+[splitbutton]: https://montago.github.io/JetPackTheme/buttons.html#splitbutton
+[dropdownbutton]: https://montago.github.io/JetPackTheme/buttons.html#dropdownbutton
+[tile]: https://montago.github.io/JetPackTheme/buttons.html#tile
+[badged]: https://montago.github.io/JetPackTheme/buttons.html#badged
+[inputs]: https://montago.github.io/JetPackTheme/inputs.html
+[textbox]: https://montago.github.io/JetPackTheme/inputs.html#textbox
+[textbox-dark]: https://montago.github.io/JetPackTheme/inputs.html#dark-variant
+[textbox-multiline]: https://montago.github.io/JetPackTheme/inputs.html#multi-line
+[passwordbox]: https://montago.github.io/JetPackTheme/inputs.html#passwordbox-and-richtextbox
+[label]: https://montago.github.io/JetPackTheme/inputs.html#label
+[validation]: https://montago.github.io/JetPackTheme/inputs.html#validation
+[combobox]: https://montago.github.io/JetPackTheme/inputs.html#combobox
+[numericupdown]: https://montago.github.io/JetPackTheme/inputs.html#numericupdown
+[autosuggestbox]: https://montago.github.io/JetPackTheme/inputs.html#autosuggestbox
+[searchcombobox]: https://montago.github.io/JetPackTheme/inputs.html#searchcombobox
+[datepicker]: https://montago.github.io/JetPackTheme/inputs.html#datepicker
+[timepicker]: https://montago.github.io/JetPackTheme/inputs.html#timepicker
+[colorpicker]: https://montago.github.io/JetPackTheme/inputs.html#colorpicker
+[selection]: https://montago.github.io/JetPackTheme/selection.html
+[checkbox]: https://montago.github.io/JetPackTheme/selection.html#checkbox-and-radiobutton
+[toggleswitch]: https://montago.github.io/JetPackTheme/selection.html#toggleswitch
+[slider]: https://montago.github.io/JetPackTheme/selection.html#slider
+[rangeslider]: https://montago.github.io/JetPackTheme/selection.html#rangeslider
+[rating]: https://montago.github.io/JetPackTheme/selection.html#rating
+[lists]: https://montago.github.io/JetPackTheme/lists.html
+[listbox]: https://montago.github.io/JetPackTheme/lists.html#listbox
+[listview]: https://montago.github.io/JetPackTheme/lists.html#listview-with-gridview
+[treeview]: https://montago.github.io/JetPackTheme/lists.html#treeview
+[datagrid]: https://montago.github.io/JetPackTheme/lists.html#datagrid
+[jetpackgrid]: https://montago.github.io/JetPackTheme/lists.html#jetpackgrid
+[calendar]: https://montago.github.io/JetPackTheme/lists.html#calendar
+[scrollviewer]: https://montago.github.io/JetPackTheme/lists.html#scrollviewer-and-scrollbar
+[scrollviewer-thin]: https://montago.github.io/JetPackTheme/lists.html#thin-scroll-bars
+[navigation]: https://montago.github.io/JetPackTheme/navigation.html
+[tabcontrol]: https://montago.github.io/JetPackTheme/navigation.html#tabcontrol
+[tabcontrol-navigation]: https://montago.github.io/JetPackTheme/navigation.html#navigation-bar
+[tabcontrol-strip]: https://montago.github.io/JetPackTheme/navigation.html#strip
+[hamburgermenu]: https://montago.github.io/JetPackTheme/navigation.html#hamburgermenu
+[expander]: https://montago.github.io/JetPackTheme/navigation.html#expander
+[accordion]: https://montago.github.io/JetPackTheme/navigation.html#accordion
+[groupbox]: https://montago.github.io/JetPackTheme/navigation.html#groupbox
+[menu]: https://montago.github.io/JetPackTheme/navigation.html#menu-contextmenu-and-toolbar
+[statusbar]: https://montago.github.io/JetPackTheme/navigation.html#statusbar
+[gridsplitter]: https://montago.github.io/JetPackTheme/navigation.html#gridsplitter-and-separator
+[tooltip]: https://montago.github.io/JetPackTheme/navigation.html#tooltip
+[status]: https://montago.github.io/JetPackTheme/status.html
+[progressbar]: https://montago.github.io/JetPackTheme/status.html#progressbar
+[progressring]: https://montago.github.io/JetPackTheme/status.html#progressring
+[busyindicator]: https://montago.github.io/JetPackTheme/status.html#busyindicator
+[infobar]: https://montago.github.io/JetPackTheme/status.html#infobar
+[typography]: https://montago.github.io/JetPackTheme/typography.html
+[text-styles]: https://montago.github.io/JetPackTheme/typography.html#text-styles
+[jetpackicon]: https://montago.github.io/JetPackTheme/typography.html#icons
+[helpers]: https://montago.github.io/JetPackTheme/helpers.html
+[controlhelper]: https://montago.github.io/JetPackTheme/helpers.html#controlhelper
+[textboxhelper]: https://montago.github.io/JetPackTheme/helpers.html#textboxhelper
+[scrollviewerhelper]: https://montago.github.io/JetPackTheme/helpers.html#scrollviewerhelper
+[tabcontrolhelper]: https://montago.github.io/JetPackTheme/helpers.html#tabcontrolhelper
 
 ## Demo
 
