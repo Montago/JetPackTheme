@@ -355,22 +355,25 @@
                                             </ItemsControl>
                                         </ScrollViewer>
                                     </Border>
-                                    <!-- A column of dates: years (or decades) with their months and days to tick -->
-                                    <TreeView x:Name="DateTree" Margin="0,0,0,8" MaxHeight="240" Focusable="False"
-                                              ItemContainerStyle="{DynamicResource JetPack.Styles.JetPackGrid.DateFilterItem}"
-                                              ItemsSource="{Binding (jp:JetPackGrid.HeaderColumn).(jp:JetPackGrid.FilterDateTree), RelativeSource={RelativeSource TemplatedParent}}">
-                                        <TreeView.ItemTemplate>
-                                            <HierarchicalDataTemplate ItemsSource="{Binding Children}">
-                                                <!-- Not focusable: a focused check box would select its tree item (accent bar) -->
-                                                <CheckBox IsChecked="{Binding IsChecked}" Focusable="False">
-                                                    <TextBlock TextTrimming="CharacterEllipsis">
-                                                        <Run Text="{Binding Text, Mode=OneWay}" />
-                                                        <Run Text="{Binding Count, Mode=OneWay, StringFormat='({0:N0})'}" Foreground="{DynamicResource JetPack.Brushes.Text.Dim}" FontWeight="Normal" />
-                                                    </TextBlock>
-                                                </CheckBox>
-                                            </HierarchicalDataTemplate>
-                                        </TreeView.ItemTemplate>
-                                    </TreeView>
+                                    <!-- A column of dates: years (or decades) with their months and days to tick, drawn straight on the
+                                         filter box like the tick list (no panel of the TreeView's own) -->
+                                    <Border x:Name="DateTree" Margin="0,0,0,8" BorderBrush="#40000000" BorderThickness="0,0,0,1" Padding="0,0,0,6">
+                                        <TreeView MaxHeight="240" Focusable="False" Background="Transparent" BorderThickness="0" Padding="0"
+                                                  ItemContainerStyle="{DynamicResource JetPack.Styles.JetPackGrid.DateFilterItem}"
+                                                  ItemsSource="{Binding (jp:JetPackGrid.HeaderColumn).(jp:JetPackGrid.FilterDateTree), RelativeSource={RelativeSource TemplatedParent}}">
+                                            <TreeView.ItemTemplate>
+                                                <HierarchicalDataTemplate ItemsSource="{Binding Children}">
+                                                    <!-- Not focusable: a focused check box would select its tree item (accent bar) -->
+                                                    <CheckBox IsChecked="{Binding IsChecked}" Focusable="False">
+                                                        <TextBlock TextTrimming="CharacterEllipsis">
+                                                            <Run Text="{Binding Text, Mode=OneWay}" />
+                                                            <Run Text="{Binding Count, Mode=OneWay, StringFormat='({0:N0})'}" Foreground="{DynamicResource JetPack.Brushes.Text.Dim}" FontWeight="Normal" />
+                                                        </TextBlock>
+                                                    </CheckBox>
+                                                </HierarchicalDataTemplate>
+                                            </TreeView.ItemTemplate>
+                                        </TreeView>
+                                    </Border>
                                     <TextBox x:Name="PART_FilterBox" h:TextBoxHelper.Watermark="Values, e.g. volvo, saab" h:TextBoxHelper.ClearTextButton="True"
                                              Text="{Binding (jp:JetPackGrid.HeaderColumn).(jp:JetPackGrid.FilterText), RelativeSource={RelativeSource TemplatedParent}, UpdateSourceTrigger=PropertyChanged}" />
                                     <TextBlock Margin="0,6,0,0" TextWrapping="Wrap" Opacity="0.7" FontSize="{DynamicResource JetPack.Font.Size.Small}"
