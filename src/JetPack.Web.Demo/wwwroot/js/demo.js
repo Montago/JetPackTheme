@@ -100,6 +100,22 @@
     JetPack.openFlyout(saved);
   });
 
+  /* ------------------------------------------------------------- PalettePage */
+  const paletteGroups = [...document.querySelectorAll('.demo-palette-group')];
+  on($('PaletteSearch'), 'input', e => {
+    const text = e.target.value.trim().toLowerCase();
+    let shown = 0;
+    paletteGroups.forEach(group => {
+      const swatches = [...group.querySelectorAll('.demo-swatch')];
+      swatches.forEach(s => { s.hidden = text.length > 0 && !s.dataset.key.toLowerCase().includes(text); });
+      const visible = swatches.filter(s => !s.hidden).length;
+      group.hidden = visible === 0;
+      shown += visible;
+    });
+    const count = $('PaletteCount'), total = Number(count.dataset.total);
+    count.textContent = shown === total ? `${total} brushes and colours` : `${shown} of ${total}`;
+  });
+
   /* --------------------------------------------------------------- IconsPage */
   const cards = [...document.querySelectorAll('.demo-icon-card')];
   on($('IconSearch'), 'input', e => {
