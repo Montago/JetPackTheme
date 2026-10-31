@@ -1415,10 +1415,13 @@ Load this file before Tailwind: the first @layer statement fixes the order of th
   }
   .jp-data-grid td:first-child { border-left: 0; }
   .jp-data-grid tbody tr:nth-child(even) td { background: var(--jp-data-grid-alternating-row); }
-  .jp-data-grid tbody tr:hover td { background: var(--jp-selection-mouse-over); }
+  /* As the WPF row: the accent at 25 % over the grid's ground while the mouse is over it, and the
+     accent gradient behind the cells' own dark text when selected */
+  .jp-data-grid tbody tr:hover td {
+    background: linear-gradient(var(--jp-accent-selection-mouse-over), var(--jp-accent-selection-mouse-over)), var(--jp-data-grid-background);
+  }
   .jp-data-grid tbody tr[aria-selected="true"] td {
     background: var(--jp-accent-selection);
-    color: #fff;
     border-top-color: transparent;
   }
   .jp-data-grid tbody tr[data-href] { cursor: pointer; }
@@ -1560,7 +1563,7 @@ Load this file before Tailwind: the first @layer statement fixes the order of th
     padding: 4px 8px;
     border-top: 1px solid var(--jp-data-grid-grid-lines);
     border-right: 1px solid var(--jp-data-grid-grid-lines);
-    background: var(--jp-data-grid-background);
+    background: var(--jp-jetpack-grid-row-background);
     line-height: 18px;
     white-space: nowrap;
     overflow: hidden;
@@ -1568,10 +1571,18 @@ Load this file before Tailwind: the first @layer statement fixes the order of th
     cursor: default;
   }
   .jp-jetpack-grid__table tbody tr:first-child td { border-top-color: transparent; }
-  .jp-jetpack-grid__table tr.is-alternate td { background: var(--jp-data-grid-alternating-row); }
-  .jp-jetpack-grid__table td.is-hit { background: var(--jp-jetpack-grid-highlight-cell-background); }
-  .jp-jetpack-grid__table tr.jp-jetpack-grid__row:hover td { background: var(--jp-selection-mouse-over); }
-  .jp-jetpack-grid__table tr[aria-selected="true"] td { background: var(--jp-accent-selection); color: #fff; }
+  /* The layers of the WPF row: the row's ground (alternating, or the accent at 25 % while the mouse is
+     over it, which replaces the alternating colour), the grey of a cell with search hits on top, and the
+     accent gradient of a selected row over everything, with the cells' own dark text */
+  .jp-jetpack-grid__table tr { --jp-jetpack-grid-row-background: var(--jp-data-grid-background); }
+  .jp-jetpack-grid__table tr.is-alternate { --jp-jetpack-grid-row-background: var(--jp-data-grid-alternating-row); }
+  .jp-jetpack-grid__table tr.jp-jetpack-grid__row:hover {
+    --jp-jetpack-grid-row-background: linear-gradient(var(--jp-accent-selection-mouse-over), var(--jp-accent-selection-mouse-over)), var(--jp-data-grid-background);
+  }
+  .jp-jetpack-grid__table td.is-hit {
+    background: linear-gradient(var(--jp-jetpack-grid-highlight-cell-background), var(--jp-jetpack-grid-highlight-cell-background)), var(--jp-jetpack-grid-row-background);
+  }
+  .jp-jetpack-grid__table tr[aria-selected="true"] td { background: var(--jp-accent-selection); }
   .jp-jetpack-grid__table td.is-right { text-align: right; font-variant-numeric: tabular-nums; }
   .jp-jetpack-grid__table td.is-center { text-align: center; }
   .jp-jetpack-grid__hit { background: none; color: var(--jp-jetpack-grid-highlight-foreground); }
