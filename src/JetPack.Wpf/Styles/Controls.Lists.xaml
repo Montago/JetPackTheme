@@ -840,6 +840,13 @@
         </Setter>
     </Style>
 
+    <!-- Years, months and days in JetPackGrid's date filter (Controls.DataGrid.xaml); here because BasedOn needs its base in the same file -->
+    <Style x:Key="JetPack.Styles.JetPackGrid.DateFilterItem" TargetType="TreeViewItem" BasedOn="{StaticResource JetPack.Styles.TreeViewItem}">
+        <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}" />
+        <Setter Property="Padding" Value="3,1" />
+        <Setter Property="Margin" Value="0" />
+    </Style>
+
     <!-- Dark panel with bold white items, as in the "Need Placement" accordion -->
     <Style x:Key="JetPack.Styles.TreeView" TargetType="TreeView">
         <Setter Property="SnapsToDevicePixels" Value="True" />

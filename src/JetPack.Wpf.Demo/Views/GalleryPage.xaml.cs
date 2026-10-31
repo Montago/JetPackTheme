@@ -1,6 +1,7 @@
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
+using JetPack.Wpf.Controls;
 
 namespace JetPack.Wpf.Demo.Views;
 
@@ -19,7 +20,16 @@ public partial class GalleryPage : UserControl
         CarGrid.Items.SortDescriptions.Add(new SortDescription(nameof(Car.Price), ListSortDirection.Descending));
         CarGrid.SelectedIndex = 1;
         FilterGrid.ItemsSource = CarData.Cars.Take(80).ToArray();
-        PagedGrid.ItemsSource = CarData.Cars.Skip(100).Take(95).ToArray();
+        // Three years in the date tree; all of March 2020 and two days in August ticked, so 2020 and August open.
+        var registered = CarData.Cars.Where(c => c.Registered.Year is >= 2019 and <= 2021).Take(80).ToArray();
+        DateFilterGrid.ItemsSource = registered;
+        JetPackGrid.SetFilterDates(DateFilterGrid.Columns[2], registered
+            .Select(c => c.Registered)
+            .Where(d => d is { Year: 2020, Month: 3 })
+            .Concat(registered.Select(c => c.Registered).Where(d => d is { Year: 2020, Month: 8 }).Take(2))
+            .Select(d => (DateTime?)d)
+            .ToArray());
+        PagedGrid.ItemsSource =CarData.Cars.Skip(100).Take(95).ToArray();
         PagedGrid.PageIndex = 1;
         // More sold cars than the stock has, so the column shows both values.
         CheckBoxGrid.ItemsSource = CarData.Cars.Where((c, i) => c.IsSold || i % 4 == 0).Take(12).ToArray();

@@ -193,6 +193,8 @@
     <SolidColorBrush x:Key="JetPack.Brushes.DataGrid.AlternatingRow" Color="#FFE0E0E0" />
     <SolidColorBrush x:Key="JetPack.Brushes.DataGrid.GridLines" Color="#20000000" />
     <SolidColorBrush x:Key="JetPack.Brushes.DataGrid.Header.Separator" Color="#20FFFFFF" />
+    <!-- JetPackGrid cells with search hits: a grey darker than both row colours -->
+    <SolidColorBrush x:Key="JetPack.Brushes.DataGrid.SearchHit" Color="#FFD0D0D2" />
 
     <!-- Menus, dialogs, overlays -->
     <SolidColorBrush x:Key="JetPack.Brushes.Menu.Background" Color="#FFE0E0E0" />

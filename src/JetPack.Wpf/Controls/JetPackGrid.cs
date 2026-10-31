@@ -130,6 +130,8 @@ public partial class JetPackGrid : DataGrid
         // The filter box lives in a popup of the column header; its events still bubble up to the grid.
         EventManager.RegisterClassHandler(typeof(JetPackGrid), ToggleButton.CheckedEvent, new RoutedEventHandler(OnFilterButtonChecked));
         EventManager.RegisterClassHandler(typeof(JetPackGrid), PreviewKeyDownEvent, new KeyEventHandler(OnFilterBoxKeyDown));
+        // The date tree has nothing to select; the TreeView selects an item on a click all the same (accent bar).
+        EventManager.RegisterClassHandler(typeof(JetPackGrid), TreeViewItem.SelectedEvent, new RoutedEventHandler(OnDateNodeSelected));
         // The ScrollViewer marks the scroll bar's events handled; the thumb-drag preview still needs them.
         EventManager.RegisterClassHandler(typeof(JetPackGrid), ScrollBar.ScrollEvent, new ScrollEventHandler(OnScrollBarScroll), handledEventsToo: true);
     }
@@ -192,18 +194,15 @@ public partial class JetPackGrid : DataGrid
     public static readonly DependencyProperty HighlightBrushProperty = DependencyProperty.Register(
         nameof(HighlightBrush), typeof(Brush), typeof(JetPackGrid), new PropertyMetadata(null, OnHighlightChanged));
 
-    /// <summary>Background of the search hits in <see cref="JetPackGridColumn"/> cells.</summary>
+    /// <summary>Background behind the search hits in <see cref="JetPackGridColumn"/> cells; none by default.</summary>
     public Brush? HighlightBrush
     {
         get => (Brush?)GetValue(HighlightBrushProperty);
         set => SetValue(HighlightBrushProperty, value);
     }
 
-    public static readonly DependencyProperty HighlightForegroundProperty = DependencyProperty.Register(
-        nameof(HighlightForeground), typeof(Brush), typeof(JetPackGrid), new PropertyMetadata(null, OnHighlightChanged));
-
-    // The cells copy the brushes when they draw their text (bindings per cell made scrolling slower), so a
-    // new brush (an accent change) hands them a new word list to draw the text again with.
+    // The cells copy the brush when they draw their text (bindings per cell made scrolling slower), so a
+    // new brush hands them a new word list to draw the text again with.
     private static void OnHighlightChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
         var grid = (JetPackGrid)d;
@@ -213,10 +212,60 @@ public partial class JetPackGrid : DataGrid
         }
     }
 
+    // Inherited, so a selected row can take it away (its hits get the selection's white text) and each cell
+    // hears of a change (an accent change, a row selected) without a binding to the grid.
+    public static readonly DependencyProperty HighlightForegroundProperty = DependencyProperty.RegisterAttached(
+        nameof(HighlightForeground), typeof(Brush), typeof(JetPackGrid),
+        new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.Inherits, JetPackGridColumn.OnHighlightForegroundChanged));
+
+    /// <summary>
+    /// Text colour of the search hits in <see cref="JetPackGridColumn"/> cells: the accent by default
+    /// (<c>JetPack.Brushes.Accent.Solid</c>); null keeps the cell's own colour.
+    /// </summary>
     public Brush? HighlightForeground
     {
         get => (Brush?)GetValue(HighlightForegroundProperty);
         set => SetValue(HighlightForegroundProperty, value);
+    }
+
+    public static Brush? GetHighlightForeground(DependencyObject element) => (Brush?)element.GetValue(HighlightForegroundProperty);
+    public static void SetHighlightForeground(DependencyObject element, Brush? value) => element.SetValue(HighlightForegroundProperty, value);
+
+    // Inherited, so a hit cell's style reads it from the cell itself, and a selected row can take it away.
+    public static readonly DependencyProperty HighlightCellBackgroundProperty = DependencyProperty.RegisterAttached(
+        nameof(HighlightCellBackground), typeof(Brush), typeof(JetPackGrid), new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.Inherits));
+
+    /// <summary>
+    /// Background of the <see cref="JetPackGridColumn"/> cells with search hits, except in selected rows:
+    /// a grey by default (<c>JetPack.Brushes.DataGrid.SearchHit</c>); null for none.
+    /// </summary>
+    public Brush? HighlightCellBackground
+    {
+        get => (Brush?)GetValue(HighlightCellBackgroundProperty);
+        set => SetValue(HighlightCellBackgroundProperty, value);
+    }
+
+    public static Brush? GetHighlightCellBackground(DependencyObject element) => (Brush?)element.GetValue(HighlightCellBackgroundProperty);
+    public static void SetHighlightCellBackground(DependencyObject element, Brush? value) => element.SetValue(HighlightCellBackgroundProperty, value);
+
+    private static readonly DependencyPropertyKey IsSearchHitPropertyKey = DependencyProperty.RegisterAttachedReadOnly(
+        "IsSearchHit", typeof(bool), typeof(JetPackGrid), new PropertyMetadata(false));
+
+    public static readonly DependencyProperty IsSearchHitProperty = IsSearchHitPropertyKey.DependencyProperty;
+
+    /// <summary>True on a <see cref="JetPackGridColumn"/> cell whose text has search hits; the cell style gives it <see cref="HighlightCellBackground"/>.</summary>
+    public static bool GetIsSearchHit(DependencyObject cell) => (bool)cell.GetValue(IsSearchHitProperty);
+
+    internal static void SetIsSearchHit(DependencyObject cell, bool value)
+    {
+        if (value)
+        {
+            cell.SetValue(IsSearchHitPropertyKey, true);
+        }
+        else
+        {
+            cell.ClearValue(IsSearchHitPropertyKey);
+        }
     }
 
     public static readonly DependencyProperty EnableLightweightTextRenderingProperty = DependencyProperty.Register(
@@ -395,12 +444,24 @@ public partial class JetPackGrid : DataGrid
     public static string GetFilterText(DependencyObject column) => (string)column.GetValue(FilterTextProperty);
     public static void SetFilterText(DependencyObject column, string value) => column.SetValue(FilterTextProperty, value);
 
+    public static readonly DependencyProperty FilterDatesProperty = DependencyProperty.RegisterAttached(
+        "FilterDates", typeof(IReadOnlyList<DateTime?>), typeof(JetPackGrid),
+        new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, OnFilterDatesChanged));
+
+    /// <summary>
+    /// Days the column's date (DateTime, DateTimeOffset or DateOnly; its time does not count) must be one
+    /// of; null or empty for no filter. The date tree in the header filter fills it, and a null entry stands
+    /// for rows without a date. A row must also pass the column's <c>FilterText</c>.
+    /// </summary>
+    public static IReadOnlyList<DateTime?>? GetFilterDates(DependencyObject column) => (IReadOnlyList<DateTime?>?)column.GetValue(FilterDatesProperty);
+    public static void SetFilterDates(DependencyObject column, IReadOnlyList<DateTime?>? value) => column.SetValue(FilterDatesProperty, value);
+
     private static readonly DependencyPropertyKey HasFilterPropertyKey = DependencyProperty.RegisterAttachedReadOnly(
         "HasFilter", typeof(bool), typeof(JetPackGrid), new PropertyMetadata(false));
 
     public static readonly DependencyProperty HasFilterProperty = HasFilterPropertyKey.DependencyProperty;
 
-    /// <summary>True when the column's <c>FilterText</c> holds at least one value.</summary>
+    /// <summary>True when the column's <c>FilterText</c> holds at least one value, or it has <c>FilterDates</c>.</summary>
     public static bool GetHasFilter(DependencyObject column) => (bool)column.GetValue(HasFilterProperty);
 
     private static readonly DependencyPropertyKey FilterOptionsPropertyKey = DependencyProperty.RegisterAttachedReadOnly(
@@ -410,10 +471,22 @@ public partial class JetPackGrid : DataGrid
 
     /// <summary>
     /// The column's different values, read when its filter box opens; null when the column has more
-    /// than <see cref="FilterListLimit"/> of them.
+    /// than <see cref="FilterListLimit"/> of them, and for a column of dates (see <see cref="GetFilterDateTree"/>).
     /// </summary>
     public static IReadOnlyList<GridFilterOption>? GetFilterOptions(DependencyObject column) =>
         (IReadOnlyList<GridFilterOption>?)column.GetValue(FilterOptionsProperty);
+
+    private static readonly DependencyPropertyKey FilterDateTreePropertyKey = DependencyProperty.RegisterAttachedReadOnly(
+        "FilterDateTree", typeof(IReadOnlyList<GridDateFilterNode>), typeof(JetPackGrid), new PropertyMetadata(null));
+
+    public static readonly DependencyProperty FilterDateTreeProperty = FilterDateTreePropertyKey.DependencyProperty;
+
+    /// <summary>
+    /// The years, months and days of a column whose values are all dates, read when its filter box opens;
+    /// null for other columns. Ticking them fills the column's <c>FilterDates</c>.
+    /// </summary>
+    public static IReadOnlyList<GridDateFilterNode>? GetFilterDateTree(DependencyObject column) =>
+        (IReadOnlyList<GridDateFilterNode>?)column.GetValue(FilterDateTreeProperty);
 
     private static readonly DependencyPropertyKey HeaderColumnPropertyKey = DependencyProperty.RegisterAttachedReadOnly(
         "HeaderColumn", typeof(DataGridColumn), typeof(JetPackGrid), new PropertyMetadata(null));
@@ -485,6 +558,7 @@ public partial class JetPackGrid : DataGrid
         foreach (var column in Columns)
         {
             column.SetCurrentValue(FilterTextProperty, string.Empty);
+            column.SetCurrentValue(FilterDatesProperty, null);
         }
         ApplyFilters();
     }
@@ -521,7 +595,9 @@ public partial class JetPackGrid : DataGrid
             : Columns.Where(GetIsSearchable).Select(c => ColumnReader.Create(c, culture)).OfType<ColumnReader>().ToArray();
         var filters = Columns
             .Where(c => GetIsFilterable(c) && GetHasFilter(c))
-            .Select(c => ColumnReader.Create(c, culture) is { } reader ? new ColumnFilter(reader, FilterTokens(GetFilterText(c)).Select(t => FilterValue.Parse(t, culture)).ToArray()) : null)
+            .Select(c => ColumnReader.Create(c, culture) is { } reader
+                ? new ColumnFilter(reader, FilterTokens(GetFilterText(c)).Select(t => FilterValue.Parse(t, culture)).ToArray(), GetFilterDates(c))
+                : null)
             .OfType<ColumnFilter>()
             .ToArray();
         var searchWords = words.ToArray();
@@ -892,7 +968,7 @@ public partial class JetPackGrid : DataGrid
     private static void OnFilterTextChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
         var tokens = FilterTokens((string?)e.NewValue);
-        d.SetValue(HasFilterPropertyKey, tokens.Count > 0);
+        UpdateHasFilter(d);
         foreach (var option in GetFilterOptions(d) ?? [])
         {
             option.SetChecked(tokens.Contains(option.Text, StringComparer.OrdinalIgnoreCase));
@@ -900,13 +976,64 @@ public partial class JetPackGrid : DataGrid
         (d.GetValue(OwnerProperty) as JetPackGrid)?.ScheduleFilter();
     }
 
-    /// <summary>Reads the column's different values for the tick list, unless there are more than <see cref="FilterListLimit"/>.</summary>
+    private static void OnFilterDatesChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+    {
+        UpdateHasFilter(d);
+        if (GetFilterDateTree(d) is { } tree)
+        {
+            GridDateFilterNode.Tick(tree, (IReadOnlyList<DateTime?>?)e.NewValue);
+        }
+        (d.GetValue(OwnerProperty) as JetPackGrid)?.ScheduleFilter();
+    }
+
+    private static void UpdateHasFilter(DependencyObject column) =>
+        column.SetValue(HasFilterPropertyKey, FilterTokens(GetFilterText(column)).Count > 0 || GetFilterDates(column) is { Count: > 0 });
+
+    /// <summary>
+    /// Reads the column's days for the date tree when all its values are dates; otherwise its different
+    /// values for the tick list, unless there are more than <see cref="FilterListLimit"/>.
+    /// </summary>
     private void LoadFilterOptions(DataGridColumn column)
     {
         List<GridFilterOption>? options = null;
+        List<GridDateFilterNode>? tree = null;
         var culture = Language.GetSpecificCulture();
         if (FilterListLimit > 0 && ColumnReader.Create(column, culture) is { } reader)
         {
+            // Day -> rows. The first value that is no date (and not empty) ends it: the column gets the tick list.
+            Dictionary<DateTime, int>? days = new();
+            var blanks = 0;
+            foreach (var item in Source ?? Items)
+            {
+                if (item == CollectionView.NewItemPlaceholder)
+                {
+                    continue;
+                }
+                var value = reader.GetRawValue(item);
+                if (GridDateFilterNode.TryGetDay(value, out var day))
+                {
+                    days[day] = days.GetValueOrDefault(day) + 1;
+                }
+                else if (value == null)
+                {
+                    blanks++;
+                }
+                else
+                {
+                    days = null;
+                    break;
+                }
+            }
+            if (days is { Count: > 0 })
+            {
+                tree = GridDateFilterNode.Build(days, blanks, culture, () => OnFilterDateChanged(column));
+                GridDateFilterNode.Tick(tree, GetFilterDates(column));
+                GridDateFilterNode.ExpandPartlyTicked(tree);
+                column.SetValue(FilterOptionsPropertyKey, null);
+                column.SetValue(FilterDateTreePropertyKey, tree);
+                return;
+            }
+
             var counts = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase);
             foreach (var item in Source ?? Items)
             {
@@ -945,6 +1072,14 @@ public partial class JetPackGrid : DataGrid
             }
         }
         column.SetValue(FilterOptionsPropertyKey, options);
+        column.SetValue(FilterDateTreePropertyKey, tree);
+    }
+
+    /// <summary>Writes the ticked days of the date tree into FilterDates.</summary>
+    private static void OnFilterDateChanged(DataGridColumn column)
+    {
+        var ticked = GridDateFilterNode.GetTicked(GetFilterDateTree(column) ?? []);
+        column.SetCurrentValue(FilterDatesProperty, ticked.Count == 0 ? null : ticked);
     }
 
     /// <summary>Writes the ticked values into FilterText, keeping typed values that are not in the list (such as "vol*").</summary>
@@ -1098,6 +1233,14 @@ public partial class JetPackGrid : DataGrid
         }
     }
 
+    private static void OnDateNodeSelected(object sender, RoutedEventArgs e)
+    {
+        if (e.OriginalSource is TreeViewItem { DataContext: GridDateFilterNode } item)
+        {
+            item.IsSelected = false;
+        }
+    }
+
     private static void OnFilterBoxKeyDown(object sender, KeyEventArgs e)
     {
         if (e.Key is Key.Enter or Key.Escape && e.OriginalSource is TextBox { Name: "PART_FilterBox", TemplatedParent: DataGridColumnHeader header })
@@ -1117,6 +1260,7 @@ public partial class JetPackGrid : DataGrid
             return;
         }
         column.SetCurrentValue(FilterTextProperty, string.Empty);
+        column.SetCurrentValue(FilterDatesProperty, null);
         grid.ApplyFilters();
     }
 
@@ -1309,13 +1453,24 @@ public partial class JetPackGrid : DataGrid
         }
     }
 
-    private sealed class ColumnFilter(ColumnReader reader, FilterValue[] values)
+    private sealed class ColumnFilter(ColumnReader reader, FilterValue[] values, IReadOnlyList<DateTime?>? dates)
     {
         private readonly bool hasRanges = values.Any(v => v.Range != null);
+        // The ticked days of the date tree (FilterDates), and whether rows without a date pass; null for none.
+        private readonly HashSet<DateTime>? days = dates is { Count: > 0 } ? dates.OfType<DateTime>().Select(d => d.Date).ToHashSet() : null;
+        private readonly bool blankDays = dates?.Contains(null) == true;
 
         public bool Matches(object item)
         {
-            var raw = hasRanges ? reader.GetRawValue(item) : null;
+            var raw = hasRanges || days != null ? reader.GetRawValue(item) : null;
+            if (days != null && !(GridDateFilterNode.TryGetDay(raw, out var day) ? days.Contains(day) : raw == null && blankDays))
+            {
+                return false;
+            }
+            if (values.Length == 0)
+            {
+                return true;
+            }
             string? text = null;
             foreach (var value in values)
             {

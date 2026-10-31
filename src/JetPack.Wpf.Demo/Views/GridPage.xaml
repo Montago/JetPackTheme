@@ -14,17 +14,17 @@
         <TextBlock MaxWidth="900"
                    Margin="0,0,0,16"
                    Style="{StaticResource Demo.Intro}"
-                   Text="jp:JetPackGrid with 3,000 used cars in 21 columns. Every word of the search must be found somewhere in a row, and the hits are marked. Click a header to sort ascending, descending and back to the stock order; the funnel keeps only the rows with the values you list. With more rows than fit on a page, a pager appears below them. Rows and columns are virtualized." />
+                   Text="jp:JetPackGrid with 3,000 used cars in 21 columns. Every word of the search must be found somewhere in a row; the hits are drawn in the accent colour and their cells turn grey. Click a header to sort ascending, descending and back to the stock order; the funnel keeps only the rows with the values you list, and a column of dates (Registered) gets a tree of years, months and days to tick. With more rows than fit on a page, a pager appears below them. Rows and columns are virtualized." />
 
         <DockPanel Grid.Row="1"
                    Margin="0,0,0,10"
                    LastChildFill="False">
             <TextBox x:Name="Search"
-                     Width="300"
+                     Width="250"
                      jp:TextBoxHelper.ClearTextButton="True"
                      jp:TextBoxHelper.Watermark="Search, e.g. volvo estate automatic"
                      Text="volvo automatic" />
-            <TextBlock Margin="20,0,8,0"
+            <TextBlock Margin="16,0,8,0"
                        VerticalAlignment="Center"
                        Text="Group by" />
             <ComboBox x:Name="GroupBy"
@@ -36,7 +36,7 @@
                 <ComboBoxItem Content="Fuel" Tag="Fuel" />
                 <ComboBoxItem Content="Dealer" Tag="Dealer" />
             </ComboBox>
-            <TextBlock Margin="20,0,8,0"
+            <TextBlock Margin="16,0,8,0"
                        VerticalAlignment="Center"
                        Text="Rows per page" />
             <ComboBox x:Name="PageSize"
@@ -47,8 +47,19 @@
                 <ComboBoxItem Content="100" Tag="100" />
                 <ComboBoxItem Content="500" Tag="500" />
             </ComboBox>
+            <TextBlock Margin="16,0,8,0"
+                       VerticalAlignment="Center"
+                       Text="Hits" />
+            <ComboBox x:Name="Marks"
+                      Width="125"
+                      SelectedIndex="0"
+                      SelectionChanged="OnMarksChanged">
+                <ComboBoxItem Content="Accent + grey" />
+                <ComboBoxItem Content="Accent only" />
+                <ComboBoxItem Content="Red + grey" />
+            </ComboBox>
             <CheckBox x:Name="Multi"
-                      Margin="20,0,0,0"
+                      Margin="16,0,0,0"
                       VerticalAlignment="Center"
                       Checked="OnMultiChanged"
                       Content="Select several rows"

@@ -24,6 +24,9 @@ namespace JetPack.Wpf.Controls;
 // Pixel scrolling, rows with details and CollectionView groups (Items.GroupDescriptions set by the app)
 // scroll live instead: their rows do not all have the same height, so the realized rows cannot stand in
 // for the rows at the thumb.
+//
+// The horizontal thumb is deferred too (the setting covers both bars), but columns are cheap to bring in,
+// so the grid scrolls sideways live while it is dragged.
 public partial class JetPackGrid
 {
     private ScrubPreview? scrub;
@@ -31,9 +34,18 @@ public partial class JetPackGrid
     private static void OnScrollBarScroll(object sender, ScrollEventArgs e)
     {
         var grid = (JetPackGrid)sender;
-        if (e.OriginalSource is not ScrollBar { Orientation: Orientation.Vertical } bar
+        if (e.OriginalSource is not ScrollBar bar
             || bar.TemplatedParent is not ScrollViewer { Name: "DG_ScrollViewer", IsDeferredScrollingEnabled: true } viewer)
         {
+            return;
+        }
+        if (bar.Orientation == Orientation.Horizontal)
+        {
+            // The deferral is meant for the rows; the columns follow the thumb live.
+            if (e.ScrollEventType == ScrollEventType.ThumbTrack)
+            {
+                viewer.ScrollToHorizontalOffset(e.NewValue);
+            }
             return;
         }
         if (e.ScrollEventType == ScrollEventType.ThumbTrack)
@@ -311,6 +323,11 @@ public partial class JetPackGrid
                 return;
             }
             styled.Add(row);
+            // Search hits as the previewed item's row shows them: a selected row takes the accent and the grey
+            // away (JetPack.Styles.DataGridRow), so a row that is selected but shows another item gets them
+            // back, and the other way round.
+            row.SetValue(HighlightForegroundProperty, isSelected ? null : grid.HighlightForeground);
+            row.SetValue(HighlightCellBackgroundProperty, isSelected ? null : grid.HighlightCellBackground);
             if (isSelected)
             {
                 border.SetResourceReference(Border.BackgroundProperty, "JetPack.Brushes.Accent.Selection");
@@ -362,6 +379,8 @@ public partial class JetPackGrid
             {
                 (row.Template?.FindName("DGR_Border", row) as Border)?.ClearValue(Border.BackgroundProperty);
                 row.ClearValue(ForegroundProperty);
+                row.ClearValue(HighlightForegroundProperty);
+                row.ClearValue(HighlightCellBackgroundProperty);
                 foreach (var (column, _) in columns)
                 {
                     (column.GetCellContent(row)?.Parent as DataGridCell)?.ClearValue(ForegroundProperty);

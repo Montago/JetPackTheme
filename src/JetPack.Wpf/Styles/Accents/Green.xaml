@@ -27,6 +27,8 @@
     </LinearGradientBrush>
     <SolidColorBrush x:Key="JetPack.Brushes.Accent.Highlight" Color="#FFC2DF00" />
     <SolidColorBrush x:Key="JetPack.Brushes.Accent.Solid" Color="#FF75A20A" />
+    <!-- Rows under the mouse in DataGrid and JetPackGrid: the accent, light -->
+    <SolidColorBrush x:Key="JetPack.Brushes.Accent.Selection.MouseOver" Color="#4075A20A" />
     <SolidColorBrush x:Key="JetPack.Brushes.Accent.Link" Color="#FFD0FF00" />
     <SolidColorBrush x:Key="JetPack.Brushes.Accent.Foreground" Color="#FFFFFFFF" />
 
