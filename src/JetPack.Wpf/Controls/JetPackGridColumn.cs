@@ -47,6 +47,15 @@ public class JetPackGridColumn : DataGridTextColumn
         set => SetValue(FilterTextProperty, value);
     }
 
+    public static readonly DependencyProperty FilterDatesProperty = JetPackGrid.FilterDatesProperty.AddOwner(typeof(JetPackGridColumn));
+
+    /// <summary>Days a column of dates must be one of, as the date tree in the header ticks them (see <see cref="JetPackGrid.GetFilterDates"/>).</summary>
+    public IReadOnlyList<DateTime?>? FilterDates
+    {
+        get => (IReadOnlyList<DateTime?>?)GetValue(FilterDatesProperty);
+        set => SetValue(FilterDatesProperty, value);
+    }
+
     public static readonly DependencyProperty TextAlignmentProperty = DependencyProperty.Register(
         nameof(TextAlignment), typeof(TextAlignment), typeof(JetPackGridColumn),
         new PropertyMetadata(TextAlignment.Left, (d, _) => ((JetPackGridColumn)d).NotifyPropertyChanged(nameof(TextAlignment))));
@@ -146,6 +155,16 @@ public class JetPackGridColumn : DataGridTextColumn
         }
     }
 
+    /// <summary><see cref="JetPackGrid.HighlightForegroundProperty"/> changed on a cell's element (an accent change, a row selected).</summary>
+    internal static void OnHighlightForegroundChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+    {
+        if (d is FrameworkElement element && element.GetValue(ColumnProperty) is JetPackGridColumn column
+            && element.GetValue(WordsProperty) is IReadOnlyList<string> { Count: > 0 })
+        {
+            column.UpdateText(element);
+        }
+    }
+
     /// <summary>
     /// Shows another row's text in the cell without its item or binding (the grid's thumb-drag
     /// preview); a drawn cell only draws it again. False for an editing cell.
@@ -176,10 +195,15 @@ public class JetPackGridColumn : DataGridTextColumn
         var grid = DataGridOwner as JetPackGrid;
         var words = element.GetValue(WordsProperty) as IReadOnlyList<string>;
         var hits = words is { Count: > 0 } && IsSearchable ? FindHits(text, words) : null;
+        var hitForeground = hits == null ? null : JetPackGrid.GetHighlightForeground(element);
+        if (element.Parent is DataGridCell cell && JetPackGrid.GetIsSearchHit(cell) != (hits != null))
+        {
+            JetPackGrid.SetIsSearchHit(cell, hits != null);
+        }
 
         if (element is GridCellText cellText)
         {
-            cellText.SetText(text, hits, grid?.HighlightBrush, grid?.HighlightForeground, measure);
+            cellText.SetText(text, hits, grid?.HighlightBrush, hitForeground, measure);
             return;
         }
         var block = (TextBlock)element;
@@ -209,9 +233,9 @@ public class JetPackGridColumn : DataGridTextColumn
             {
                 run.Background = background;
             }
-            if (grid?.HighlightForeground is { } foreground)
+            if (hitForeground != null)
             {
-                run.Foreground = foreground;
+                run.Foreground = hitForeground;
             }
             block.Inlines.Add(run);
             position = end;

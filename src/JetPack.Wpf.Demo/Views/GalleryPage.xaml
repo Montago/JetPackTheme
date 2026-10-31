@@ -397,6 +397,18 @@
             </jp:JetPackGrid>
         </ContentControl>
 
+        <ContentControl Style="{StaticResource Demo.Sample}" Tag="jetpackgrid-datefilter">
+            <jp:JetPackGrid x:Name="DateFilterGrid" Width="560" Height="200" SearchDelay="0" d:Demo.Open="True">
+                <jp:JetPackGrid.Columns>
+                    <jp:JetPackGridColumn Header="Make" Binding="{Binding Make}" Width="110" />
+                    <jp:JetPackGridColumn Header="Model" Binding="{Binding Model}" Width="100" />
+                    <jp:JetPackGridColumn Header="Registered" Binding="{Binding Registered, StringFormat=d}" Width="96" TextAlignment="Right" />
+                    <jp:JetPackGridColumn Header="Gearbox" Binding="{Binding Gearbox}" Width="80" />
+                    <jp:JetPackGridColumn Header="Price" Binding="{Binding Price, StringFormat=N0}" Width="*" TextAlignment="Right" />
+                </jp:JetPackGrid.Columns>
+            </jp:JetPackGrid>
+        </ContentControl>
+
         <ContentControl Style="{StaticResource Demo.Sample}" Tag="jetpackgrid-paging">
             <jp:JetPackGrid x:Name="PagedGrid" Width="560" Height="230" PageSize="20" SearchDelay="0">
                 <jp:JetPackGrid.Columns>

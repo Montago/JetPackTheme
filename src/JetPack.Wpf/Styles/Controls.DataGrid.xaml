@@ -104,6 +104,13 @@
             </Setter.Value>
         </Setter>
         <Style.Triggers>
+            <!-- JetPackGrid: a cell with search hits. A selected row sets the brush to null (see the row style), and
+                 TargetNullValue keeps the cell hit-testable then. -->
+            <Trigger Property="c:JetPackGrid.IsSearchHit" Value="True">
+                <Setter Property="Background" Value="{Binding Path=(jp:JetPackGrid.HighlightCellBackground), RelativeSource={RelativeSource Self}, TargetNullValue={x:Static Brushes.Transparent}}" />
+                <!-- The (focus) border too, so the grey reaches the grid lines -->
+                <Setter Property="BorderBrush" Value="{Binding Path=(jp:JetPackGrid.HighlightCellBackground), RelativeSource={RelativeSource Self}, TargetNullValue={x:Static Brushes.Transparent}}" />
+            </Trigger>
             <MultiTrigger>
                 <MultiTrigger.Conditions>
                     <Condition Property="IsSelected" Value="True" />
@@ -111,6 +118,8 @@
                 </MultiTrigger.Conditions>
                 <Setter Property="Background" Value="{DynamicResource JetPack.Brushes.Accent.Selection}" />
                 <Setter Property="Foreground" Value="White" />
+                <!-- Search hits take the selection's white text -->
+                <Setter Property="c:JetPackGrid.HighlightForeground" Value="{x:Null}" />
             </MultiTrigger>
             <Trigger Property="IsKeyboardFocusWithin" Value="True">
                 <Setter Property="BorderBrush" Value="{DynamicResource JetPack.Brushes.Focus}" />
@@ -156,6 +165,9 @@
                         <Trigger Property="IsSelected" Value="True">
                             <Setter TargetName="DGR_Border" Property="Background" Value="{DynamicResource JetPack.Brushes.Accent.Selection}" />
                             <Setter Property="Foreground" Value="White" />
+                            <!-- JetPackGrid's search hits: white text on the selection, no grey cells -->
+                            <Setter Property="c:JetPackGrid.HighlightForeground" Value="{x:Null}" />
+                            <Setter Property="c:JetPackGrid.HighlightCellBackground" Value="{x:Null}" />
                         </Trigger>
                         <Trigger Property="IsEnabled" Value="False">
                             <Setter Property="Opacity" Value="0.5" />
@@ -342,6 +354,22 @@
                                             </ItemsControl>
                                         </ScrollViewer>
                                     </Border>
+                                    <!-- A column of dates: years (or decades) with their months and days to tick -->
+                                    <TreeView x:Name="DateTree" Margin="0,0,0,8" MaxHeight="240" Focusable="False"
+                                              ItemContainerStyle="{DynamicResource JetPack.Styles.JetPackGrid.DateFilterItem}"
+                                              ItemsSource="{Binding (jp:JetPackGrid.HeaderColumn).(jp:JetPackGrid.FilterDateTree), RelativeSource={RelativeSource TemplatedParent}}">
+                                        <TreeView.ItemTemplate>
+                                            <HierarchicalDataTemplate ItemsSource="{Binding Children}">
+                                                <!-- Not focusable: a focused check box would select its tree item (accent bar) -->
+                                                <CheckBox IsChecked="{Binding IsChecked}" Focusable="False">
+                                                    <TextBlock TextTrimming="CharacterEllipsis">
+                                                        <Run Text="{Binding Text, Mode=OneWay}" />
+                                                        <Run Text="{Binding Count, Mode=OneWay, StringFormat='({0:N0})'}" Foreground="{DynamicResource JetPack.Brushes.Text.Dim}" FontWeight="Normal" />
+                                                    </TextBlock>
+                                                </CheckBox>
+                                            </HierarchicalDataTemplate>
+                                        </TreeView.ItemTemplate>
+                                    </TreeView>
                                     <TextBox x:Name="PART_FilterBox" h:TextBoxHelper.Watermark="Values, e.g. volvo, saab" h:TextBoxHelper.ClearTextButton="True"
                                              Text="{Binding (jp:JetPackGrid.HeaderColumn).(jp:JetPackGrid.FilterText), RelativeSource={RelativeSource TemplatedParent}, UpdateSourceTrigger=PropertyChanged}" />
                                     <TextBlock Margin="0,6,0,0" TextWrapping="Wrap" Opacity="0.7" FontSize="{DynamicResource JetPack.Font.Size.Small}"
@@ -374,6 +402,9 @@
                         <!-- Too many different values (or none read yet): only the text box -->
                         <DataTrigger Binding="{Binding (jp:JetPackGrid.HeaderColumn).(jp:JetPackGrid.FilterOptions), RelativeSource={RelativeSource Self}}" Value="{x:Null}">
                             <Setter TargetName="FilterList" Property="Visibility" Value="Collapsed" />
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding (jp:JetPackGrid.HeaderColumn).(jp:JetPackGrid.FilterDateTree), RelativeSource={RelativeSource Self}}" Value="{x:Null}">
+                            <Setter TargetName="DateTree" Property="Visibility" Value="Collapsed" />
                         </DataTrigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
@@ -470,8 +501,9 @@
         <Setter Property="EnableColumnVirtualization" Value="True" />
         <Setter Property="VirtualizingPanel.VirtualizationMode" Value="Recycling" />
         <Setter Property="VirtualizingPanel.IsVirtualizingWhenGrouping" Value="True" />
-        <Setter Property="HighlightBrush" Value="{DynamicResource JetPack.Brushes.Accent.Highlight}" />
-        <Setter Property="HighlightForeground" Value="{DynamicResource JetPack.Brushes.Control.Foreground}" />
+        <!-- Search hits: accent text in grey cells (HighlightBrush, a background behind the words, is unset) -->
+        <Setter Property="HighlightForeground" Value="{DynamicResource JetPack.Brushes.Accent.Solid}" />
+        <Setter Property="HighlightCellBackground" Value="{DynamicResource JetPack.Brushes.DataGrid.SearchHit}" />
         <Setter Property="ColumnHeaderStyle" Value="{StaticResource JetPack.Styles.JetPackGrid.ColumnHeader}" />
         <Setter Property="Template">
             <Setter.Value>

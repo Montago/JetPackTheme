@@ -1,6 +1,7 @@
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 using JetPack.Wpf.Controls;
 
 namespace JetPack.Wpf.Demo.Views;
@@ -33,6 +34,26 @@ public partial class GridPage : UserControl
     private void OnMultiChanged(object sender, RoutedEventArgs e)
     {
         Cars.SelectionMode = Multi.IsChecked == true ? DataGridSelectionMode.Extended : DataGridSelectionMode.Single;
+    }
+
+    private void OnMarksChanged(object sender, SelectionChangedEventArgs e)
+    {
+        if (Cars == null)
+        {
+            return;
+        }
+        // The grid's style gives the accent and the grey; local values override them.
+        Cars.ClearValue(JetPackGrid.HighlightForegroundProperty);
+        Cars.ClearValue(JetPackGrid.HighlightCellBackgroundProperty);
+        switch (Marks.SelectedIndex)
+        {
+            case 1:
+                Cars.HighlightCellBackground = null;
+                break;
+            case 2:
+                Cars.HighlightForeground = Brushes.Firebrick;
+                break;
+        }
     }
 
     private void OnCopyVisible(object sender, RoutedEventArgs e)
