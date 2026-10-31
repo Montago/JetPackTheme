@@ -1,16 +1,18 @@
 <UserControl x:Class="JetPack.Wpf.Demo.Views.PalettePage"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:jp="urn:jetpack-wpf">
     <ScrollViewer Style="{StaticResource JetPack.Styles.ScrollViewer.Thin}" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Padding="0,22,12,0">
         <StackPanel>
             <TextBlock Style="{StaticResource Demo.Intro}"
-                       Text="The resource keys the library exposes. Names follow the MahApps scheme (MahApps.Brushes.Accent → JetPack.Brushes.Accent), so moving an existing app over is easy. The accent colours change with the picker in the title bar." />
-            <TextBlock Style="{StaticResource JetPack.Styles.TextBlock.Heading5}" Text="Accent" Margin="0,0,0,10" />
-            <WrapPanel x:Name="AccentSwatches" Margin="0,0,0,24" />
-            <TextBlock Style="{StaticResource JetPack.Styles.TextBlock.Heading5}" Text="Neutrals and states" Margin="0,0,0,10" />
-            <WrapPanel x:Name="NeutralSwatches" Margin="0,0,0,24" />
-            <TextBlock Style="{StaticResource JetPack.Styles.TextBlock.Heading5}" Text="Buttons and chart" Margin="0,0,0,10" />
-            <WrapPanel x:Name="OtherSwatches" Margin="0,0,0,24" />
+                       Text="Every brush and colour the library exposes, read from its resource dictionaries. Names follow the MahApps scheme (MahApps.Brushes.Accent → JetPack.Brushes.Accent), so moving an existing app over is easy. The accent colours change with the picker in the title bar." />
+
+            <DockPanel Margin="0,0,0,16" LastChildFill="False">
+                <TextBox x:Name="Search" Width="220" jp:TextBoxHelper.Watermark="Filter colours…" jp:TextBoxHelper.ClearTextButton="True" TextChanged="OnSearchChanged" />
+                <TextBlock x:Name="Count" Style="{StaticResource Demo.State}" Margin="20,0,0,0" VerticalAlignment="Center" />
+            </DockPanel>
+
+            <StackPanel x:Name="Groups" />
         </StackPanel>
     </ScrollViewer>
 </UserControl>

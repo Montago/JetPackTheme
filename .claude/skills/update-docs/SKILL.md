@@ -1,6 +1,6 @@
 ---
 name: update-docs
-description: Bring the JetPack documentation up to date with the code - screenshots of the demo, the control gallery and the sample apps, docs/resource-keys.md, and the docs pages for anything that changed. Use before a release (a v*.*.* tag) or after larger changes to controls, styles or the demo, or when the user asks to update the docs or the screenshots.
+description: Bring the JetPack documentation up to date with the code - screenshots of the demo, the control gallery and the sample apps, docs/resource-keys.md, and the docs pages for anything that changed. Use before a release (a v*.*.* or web-v*.*.* tag), or when the user asks to update the docs or the screenshots. Not after ordinary code changes: docs and screenshots change only for releases.
 ---
 
 # Update the documentation
@@ -38,16 +38,20 @@ and run the script again.
 
 ## 3. Check the text against the code
 
-Find what changed since the last release:
+Docs change only for releases, so the code changes since the last commit that touched `docs/` are
+the ones the text has not caught up with yet (WPF and web alike, whichever package is released):
 
 ```bash
-git describe --tags --abbrev=0
-git diff --stat <tag>..HEAD -- src/JetPack.Wpf samples
-git diff <tag>..HEAD -- docs/resource-keys.md
+git log -1 --format="%h %s" -- docs
+git diff --stat <that commit>..HEAD -- src samples
+git log --oneline <that commit>..HEAD
+git diff HEAD -- docs/resource-keys.md
 ```
 
 Then, for each change:
 
+- **Web theme**: a tag helper, attribute, class or `jetpack.js` behaviour that changed gets its page
+  in `docs/web/` (same page names as the WPF pages), and a new web control a gallery picture there.
 - **New or renamed control, property or style key**: the matching page in `docs/` (see the table in
   `docs/README.md`) describes it, with a XAML example and, for properties, the table row. Give a new
   control a sample in `GalleryPage.xaml` (`Style="{StaticResource Demo.Sample}" Tag="<file name>"`)
@@ -66,5 +70,5 @@ Everything in the repository is English, also when the user writes in Danish.
 
 Run `python tools/update_docs.py --check` once more; it must end with 0 errors. Tell the user what
 changed (pictures and pages), what you fixed, and anything you could not verify. Commit or push only
-when the user asks; the docs changes belong in the same commit as the code they describe when that
-code is not committed yet.
+when the user asks; the docs update is one commit of its own (e.g. "Update docs and screenshots for
+JetPack.Wpf 1.2.3"), made before the release tag.

@@ -12,6 +12,9 @@
     <ProjectReference Include="..\JetPack.Web\JetPack.Web.csproj" />
     <!-- The WPF demo's fixed data (plain C#, no WPF types) -->
     <Compile Include="..\JetPack.Wpf.Demo\DemoData.cs" Link="DemoData.cs" />
+    <!-- The Palette tab: the WPF demo's groups and the keys of the dictionaries the tokens come from -->
+    <Compile Include="..\JetPack.Wpf.Demo\PaletteGroups.cs" Link="PaletteGroups.cs" />
+    <EmbeddedResource Include="..\JetPack.Wpf\Styles\Brushes.xaml;..\JetPack.Wpf\Styles\Accents\Green.xaml" LogicalName="Palette.%(Filename).xaml" />
   </ItemGroup>
 
 </Project>
