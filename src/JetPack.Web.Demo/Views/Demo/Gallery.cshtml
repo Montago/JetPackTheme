@@ -335,6 +335,80 @@ tools/web_snapshots.py can cut the picture out to docs/screenshots/web/controls/
         </jp-data-grid>
     </div>
 
+    @* Each grid gets its own rows, as in GalleryPage.xaml.cs *@
+    @{
+        // Three years in the date tree; all of March 2020 and two days in August ticked, so 2020 and August open.
+        var registered = CarData.Cars.Where(c => c.Registered.Year is >= 2019 and <= 2021).Take(80).ToArray();
+        var ticked = registered.Select(c => c.Registered).Where(d => d is { Year: 2020, Month: 3 })
+            .Concat(registered.Select(c => c.Registered).Where(d => d is { Year: 2020, Month: 8 }).Take(2))
+            .Select(d => (DateTime?)d).ToArray();
+    }
+    <div class="gallery-sample" data-shot="jetpackgrid">
+        <jp-jetpack-grid items='CarData.Cars.Where(c => c.Make is "Volvo" or "Toyota" or "Kia").Take(60)' search-text="volvo auto" search-delay="0" selected-index="1" height="200" class="w-[560px]">
+            <jp-jetpack-grid-column header="Make" binding="Make" width="110" />
+            <jp-jetpack-grid-column header="Model" binding="Model" width="100" />
+            <jp-jetpack-grid-column header="Body" binding="Body" width="80" />
+            <jp-jetpack-grid-column header="Year" binding="Year" width="62" />
+            <jp-jetpack-grid-column header="Gearbox" binding="Gearbox" width="80" />
+            <jp-jetpack-grid-column header="Price" binding="Price" string-format="N0" width="*" sort-direction="Descending" />
+        </jp-jetpack-grid>
+    </div>
+
+    <div class="gallery-sample" data-shot="jetpackgrid-filter">
+        <jp-jetpack-grid items="CarData.Cars.Take(80)" search-delay="0" height="200" class="w-[560px]" data-demo-open>
+            <jp-jetpack-grid-column header="Make" binding="Make" width="110" />
+            <jp-jetpack-grid-column header="Model" binding="Model" width="100" />
+            <jp-jetpack-grid-column header="Body" binding="Body" width="80" filter-text="estate suv" />
+            <jp-jetpack-grid-column header="Year" binding="Year" width="62" />
+            <jp-jetpack-grid-column header="Gearbox" binding="Gearbox" width="80" />
+            <jp-jetpack-grid-column header="Price" binding="Price" string-format="N0" width="*" />
+        </jp-jetpack-grid>
+    </div>
+
+    <div class="gallery-sample" data-shot="jetpackgrid-datefilter">
+        <jp-jetpack-grid items="registered" search-delay="0" height="200" class="w-[560px]" data-demo-open>
+            <jp-jetpack-grid-column header="Make" binding="Make" width="110" />
+            <jp-jetpack-grid-column header="Model" binding="Model" width="100" />
+            <jp-jetpack-grid-column header="Registered" binding="Registered" string-format="d" width="96" text-alignment="Right" filter-dates="ticked" />
+            <jp-jetpack-grid-column header="Gearbox" binding="Gearbox" width="80" />
+            <jp-jetpack-grid-column header="Price" binding="Price" string-format="N0" width="*" text-alignment="Right" />
+        </jp-jetpack-grid>
+    </div>
+
+    <div class="gallery-sample" data-shot="jetpackgrid-paging">
+        <jp-jetpack-grid items="CarData.Cars.Skip(100).Take(95)" page-size="20" page-index="1" search-delay="0" height="230" class="w-[560px]">
+            <jp-jetpack-grid-column header="Make" binding="Make" width="110" />
+            <jp-jetpack-grid-column header="Model" binding="Model" width="100" />
+            <jp-jetpack-grid-column header="Body" binding="Body" width="80" />
+            <jp-jetpack-grid-column header="Year" binding="Year" width="62" />
+            <jp-jetpack-grid-column header="Gearbox" binding="Gearbox" width="80" />
+            <jp-jetpack-grid-column header="Price" binding="Price" string-format="N0" width="*" />
+        </jp-jetpack-grid>
+    </div>
+
+    <div class="gallery-sample" data-shot="jetpackgrid-groups">
+        <jp-jetpack-grid items='CarData.Cars.Where(c => c.Make is "Skoda" or "Tesla").Take(14).OrderBy(c => c.Make)' group-member-path="Make" search-delay="0" height="220" class="w-[560px]">
+            <jp-jetpack-grid-column header="Make" binding="Make" width="110" />
+            <jp-jetpack-grid-column header="Model" binding="Model" width="100" />
+            <jp-jetpack-grid-column header="Body" binding="Body" width="80" />
+            <jp-jetpack-grid-column header="Year" binding="Year" width="62" />
+            <jp-jetpack-grid-column header="Gearbox" binding="Gearbox" width="80" />
+            <jp-jetpack-grid-column header="Price" binding="Price" string-format="N0" width="*" />
+        </jp-jetpack-grid>
+    </div>
+
+    @* More sold cars than the stock has, so the column shows both values *@
+    <div class="gallery-sample" data-shot="jetpackgrid-checkbox">
+        <jp-jetpack-grid items="CarData.Cars.Where((c, i) => c.IsSold || i % 4 == 0).Take(12)" search-delay="0" height="200" class="w-[560px]">
+            <jp-jetpack-grid-column header="Make" binding="Make" width="110" />
+            <jp-jetpack-grid-column header="Model" binding="Model" width="100" />
+            <jp-jetpack-grid-column header="Year" binding="Year" width="62" />
+            <jp-jetpack-grid-column header="Status" binding="Status" width="90" />
+            <jp-jetpack-grid-check-box-column header="Sold" binding="IsSold" width="56" />
+            <jp-jetpack-grid-column header="Price" binding="Price" string-format="N0" width="*" text-alignment="Right" />
+        </jp-jetpack-grid>
+    </div>
+
     <div class="gallery-sample" data-shot="calendar">
         <jp-calendar />
     </div>

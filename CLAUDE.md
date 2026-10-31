@@ -48,6 +48,7 @@ src/JetPack.Web/            web theme (Razor class library, net8.0; NuGet packag
                             into one file by tools/bundle_web_css.py (sites link it; never edit it);
                             js/jetpack.js (all behaviour, no dependencies); img/texture.png and icons.svg
                             (generated); TagHelpers/ (<jp-*> for every demo control, WPF property names)
+                            Grid/JetPackGridServer.cs (server mode of the JetPackGrid tag helper)
 src/JetPack.Web.Demo/       the WPF demo as a web page: Views/Demo/Pages/<UserControl>.cshtml per tab,
                             wwwroot/js/demo.js as code-behind; links src/JetPack.Wpf.Demo/DemoData.cs;
                             Views/Demo/Gallery.cshtml (/Demo/Gallery) is the web GalleryPage
@@ -216,8 +217,15 @@ src/JetPack.Wpf.Demo/bin/Debug/net8.0-windows/JetPack.Wpf.Demo.exe --snapshot <f
 - TabControl supports top tabs only; DatePicker watermark text comes from WPF and is English.
 - Popups (combo drop-downs, menus, tooltips, DatePicker) are checked in the gallery snapshots, but
   not yet driven interactively with the mouse.
-- The web demo mirrors the WPF demo tab for tab (JetPackGrid left out on purpose); when a WPF
-  demo page changes, change its `.cshtml` twin. Web class names follow the WPF names (`ComboBox` ->
+- The web demo mirrors the WPF demo tab for tab; when a WPF demo page changes, change its `.cshtml`
+  twin. The web JetPackGrid (`<jp-jetpack-grid>`, `.jp-jetpack-grid`, `JetPack.jetpackGrid(el)`) is
+  meant for up to a few thousand rows: the tag helper writes them as JSON and jetpack.js draws every
+  row of the page shown (no virtualization, chosen by the user). In server mode (`items-source-url`,
+  `grid.itemsSource`) it posts a `JetPackGridRequest` per page and filter box, and
+  `JetPackGridServer.Query` (`src/JetPack.Web/Grid/`) answers from rows in memory, reading only allowed
+  bindings and harmless formats. The filter, sort, group and paging rules live in three places:
+  `JetPackGrid.cs`, jetpack.js and `JetPackGridServer.cs`; change them together (the demo's "Pages from
+  the server" box lets you compare both modes). Web class names follow the WPF names (`ComboBox` ->
   `.jp-combo-box`, `JetPack.Styles.Button.Accent` -> `.jp-button--accent`) and tag helper attributes
   the WPF properties (`IsEnabled` -> `is-enabled`); keep that rule when adding controls. Load
   `jetpack.css` before Tailwind.

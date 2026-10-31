@@ -11,4 +11,7 @@ app.UseStaticFiles();
 app.UseRouting();
 app.MapControllerRoute("default", "{controller=Demo}/{action=Index}");
 
+// The JetPackGrid tab's server mode: one page of the cars at a time, searched, filtered and sorted here
+app.MapPost("/api/cars", (JetPack.Web.JetPackGridRequest request) => JetPack.Web.JetPackGridServer.Query(JetPack.Wpf.Demo.CarData.Cars, request));
+
 app.Run();

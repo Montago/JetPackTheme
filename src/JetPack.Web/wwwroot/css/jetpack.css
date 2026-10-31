@@ -1457,6 +1457,271 @@ Load this file before Tailwind: the first @layer statement fixes the order of th
   .jp-data-grid.is-resizing { cursor: col-resize; user-select: none; }
   .jp-data-grid.is-resizing th { cursor: col-resize; }
 
+  /* ----------------------------------------------------------- JetPackGrid */
+  /*
+  The DataGrid look plus a funnel in each header that opens a value filter, group header rows and a
+  pager below the rows (JetPack.Styles.JetPackGrid). <jp-jetpack-grid> writes the frame and the rows as
+  JSON; jetpack.js draws the rows of the page shown:
+  <div class="jp-jetpack-grid"><div class="jp-jetpack-grid__viewport"><table class="jp-jetpack-grid__table">…
+  */
+  .jp-jetpack-grid {
+    --jp-jetpack-grid-highlight-foreground: var(--jp-accent-solid);
+    --jp-jetpack-grid-highlight-cell-background: var(--jp-data-grid-search-hit);
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    min-height: 0;
+    border: 1px solid var(--jp-control-border);
+    border-radius: 3px 3px 0 0;
+    background: var(--jp-data-grid-background);
+    box-shadow: var(--jp-shadow-light);
+    color: var(--jp-control-foreground);
+    font-size: var(--jp-font-size-control);
+    overflow: hidden;
+  }
+  .jp-jetpack-grid[aria-disabled="true"] { opacity: 0.5; pointer-events: none; }
+  /* server mode: the rows dim while the next page is on its way, after a moment so quick answers do not flicker */
+  .jp-jetpack-grid[aria-busy="true"] .jp-jetpack-grid__table tbody { opacity: 0.6; transition: opacity 0.1s 0.25s; }
+  /* The columns scroll inside the grid; their width must not widen the page around it */
+  .jp-jetpack-grid__viewport { flex: 1; min-height: 0; overflow: auto; outline: none; contain: inline-size; }
+  .jp-jetpack-grid__table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    table-layout: fixed;
+  }
+  .jp-jetpack-grid__table th {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    box-sizing: border-box;
+    padding: 5px 8px;
+    background: var(--jp-data-grid-header);
+    border-right: 1px solid rgb(0 0 0 / 0.25);
+    box-shadow: inset 1px 0 0 var(--jp-data-grid-header-separator);
+    color: #fff;
+    font-weight: 400;
+    text-align: left;
+    white-space: nowrap;
+    user-select: none;
+  }
+  .jp-jetpack-grid__table th:first-child { box-shadow: none; }
+  .jp-jetpack-grid__table th.is-sortable { cursor: pointer; }
+  .jp-jetpack-grid__table th.is-sortable:hover {
+    background: linear-gradient(rgb(255 255 255 / 0.08), rgb(255 255 255 / 0.08)), var(--jp-data-grid-header);
+  }
+  .jp-jetpack-grid__head { display: flex; align-items: center; min-width: 0; }
+  .jp-jetpack-grid__label { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; }
+  /* the sort arrow left of the funnel, as in the WPF header's DockPanel */
+  .jp-jetpack-grid__sort { display: none; flex: none; width: 8px; height: 4px; margin-left: 6px; background: #fff; opacity: 0.85; }
+  .jp-jetpack-grid__table th[aria-sort="ascending"] .jp-jetpack-grid__sort { display: block; clip-path: polygon(50% 0, 100% 100%, 0 100%); }
+  .jp-jetpack-grid__table th[aria-sort="descending"] .jp-jetpack-grid__sort { display: block; clip-path: polygon(0 0, 100% 0, 50% 100%); }
+  .jp-jetpack-grid__filter-button {
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: 16px;
+    height: 16px;
+    margin: -3px -4px -3px 4px;
+    padding: 0;
+    border: 0;
+    border-radius: 2px;
+    background: transparent;
+    cursor: pointer;
+  }
+  .jp-jetpack-grid__filter-button::before {
+    content: "";
+    width: 9px;
+    height: 8.5px;
+    background: #fff;
+    opacity: 0.5;
+    mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 9 8.5'%3E%3Cpath d='M0 0h9L5.5 4v4.5l-2-1V4z'/%3E%3C/svg%3E") center / contain no-repeat;
+  }
+  .jp-jetpack-grid__filter-button:hover { background: rgb(255 255 255 / 0.15); }
+  .jp-jetpack-grid__filter-button[aria-expanded="true"] { background: rgb(0 0 0 / 0.25); }
+  .jp-jetpack-grid__filter-button:is(:hover, [aria-expanded="true"])::before { opacity: 1; }
+  .jp-jetpack-grid__table th.has-filter .jp-jetpack-grid__filter-button::before { opacity: 1; background: var(--jp-accent-highlight); }
+  .jp-jetpack-grid__table th.jp-jetpack-grid__filler { padding: 0; }
+  .jp-jetpack-grid__resizer {
+    position: absolute;
+    top: 0;
+    right: -4px;
+    bottom: 0;
+    z-index: 1;
+    width: 8px;
+    cursor: col-resize;
+    touch-action: none;
+  }
+  .jp-jetpack-grid__table th:last-child > .jp-jetpack-grid__resizer { right: 0; width: 4px; }
+  .jp-jetpack-grid.is-resizing { cursor: col-resize; user-select: none; }
+
+  .jp-jetpack-grid__table td {
+    box-sizing: border-box;
+    padding: 4px 8px;
+    border-top: 1px solid var(--jp-data-grid-grid-lines);
+    border-right: 1px solid var(--jp-data-grid-grid-lines);
+    background: var(--jp-data-grid-background);
+    line-height: 18px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    cursor: default;
+  }
+  .jp-jetpack-grid__table tbody tr:first-child td { border-top-color: transparent; }
+  .jp-jetpack-grid__table tr.is-alternate td { background: var(--jp-data-grid-alternating-row); }
+  .jp-jetpack-grid__table td.is-hit { background: var(--jp-jetpack-grid-highlight-cell-background); }
+  .jp-jetpack-grid__table tr.jp-jetpack-grid__row:hover td { background: var(--jp-selection-mouse-over); }
+  .jp-jetpack-grid__table tr[aria-selected="true"] td { background: var(--jp-accent-selection); color: #fff; }
+  .jp-jetpack-grid__table td.is-right { text-align: right; font-variant-numeric: tabular-nums; }
+  .jp-jetpack-grid__table td.is-center { text-align: center; }
+  .jp-jetpack-grid__hit { background: none; color: var(--jp-jetpack-grid-highlight-foreground); }
+  .jp-jetpack-grid__table tr[aria-selected="true"] .jp-jetpack-grid__hit { color: inherit; }
+  .jp-jetpack-grid__table :is(th, td).is-frozen { position: sticky; z-index: 1; }
+  .jp-jetpack-grid__table th.is-frozen { z-index: 3; }
+  .jp-jetpack-grid__viewport:focus-visible tr.is-current td { box-shadow: inset 0 1px 0 var(--jp-focus), inset 0 -1px 0 var(--jp-focus); }
+  .jp-jetpack-grid__viewport:focus-visible tr.is-current td:first-child { box-shadow: inset 1px 1px 0 var(--jp-focus), inset 0 -1px 0 var(--jp-focus); }
+
+  /* JetPackGridCheckBoxColumn: the JetPack check box, read only */
+  .jp-jetpack-grid__table td.jp-jetpack-grid__check { padding-block: 0; text-align: center; }
+  .jp-jetpack-grid__check > .jp-check-box { vertical-align: middle; pointer-events: none; }
+
+  /* Group header rows: a light raised strip with the fold arrow, the group's value and its row count,
+     as wide as the grid and kept in view when the columns scroll sideways */
+  .jp-jetpack-grid__table td.jp-jetpack-grid__group { padding: 0; border: 0; background: transparent; overflow: visible; }
+  .jp-jetpack-grid__group-header {
+    position: sticky;
+    left: 0;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    box-sizing: border-box;
+    width: var(--jp-jetpack-grid-viewport-width, 100%);
+    padding: 4px 6px;
+    border-bottom: 1px solid rgb(0 0 0 / 0.19);
+    background: var(--jp-static-background);
+    box-shadow: inset 0 1px 0 var(--jp-control-highlight);
+    color: var(--jp-header-foreground);
+    line-height: 18px;
+    cursor: default;
+    user-select: none;
+  }
+  .jp-jetpack-grid__group-header:hover { background: var(--jp-static-background-mouse-over); }
+  .jp-jetpack-grid__group-header::before {
+    content: "";
+    width: 8px;
+    height: 4px;
+    margin-right: 1px;
+    background: var(--jp-control-glyph-dark);
+    clip-path: polygon(0 0, 100% 0, 50% 100%);
+  }
+  .jp-jetpack-grid__group-header[aria-expanded="false"]::before {
+    width: 4px;
+    height: 8px;
+    margin: 0 3px 0 2px;
+    clip-path: polygon(0 0, 100% 50%, 0 100%);
+  }
+  .jp-jetpack-grid__group-name { font-weight: 700; }
+  .jp-jetpack-grid__group-count { opacity: 0.65; }
+
+  /* The pager: white glyphs and text on the dark header gradient, below the rows */
+  .jp-jetpack-grid__pager {
+    display: flex;
+    align-items: center;
+    flex: none;
+    padding: 3px 4px;
+    background: var(--jp-data-grid-header);
+    box-shadow: inset 0 1px 0 var(--jp-data-grid-header-separator);
+    color: #fff;
+  }
+  .jp-jetpack-grid__pager[hidden] { display: none; }
+  .jp-jetpack-grid__page { margin: 0 8px; }
+  .jp-jetpack-grid__range { margin: 0 6px 0 auto; padding-left: 12px; opacity: 0.8; }
+  .jp-jetpack-grid__pager-button {
+    display: grid;
+    place-items: center;
+    width: 24px;
+    height: 20px;
+    padding: 0;
+    border: 0;
+    border-radius: 2px;
+    background: transparent;
+    cursor: pointer;
+  }
+  .jp-jetpack-grid__pager-button::before {
+    content: "";
+    width: 9px;
+    height: 8px;
+    background: #fff;
+    opacity: 0.85;
+    mask: var(--jp-pager-glyph) center / contain no-repeat;
+  }
+  .jp-jetpack-grid__pager-button:hover { background: rgb(255 255 255 / 0.15); }
+  .jp-jetpack-grid__pager-button:hover::before { opacity: 1; }
+  .jp-jetpack-grid__pager-button:active { background: rgb(0 0 0 / 0.25); }
+  .jp-jetpack-grid__pager-button:disabled { background: transparent; cursor: default; }
+  .jp-jetpack-grid__pager-button:disabled::before { opacity: 0.3; }
+  .jp-jetpack-grid__pager-button[data-page="first"] { --jp-pager-glyph: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 9 8'%3E%3Cpath d='M0 0h1.5v8H0zM9 0v8L2.5 4z'/%3E%3C/svg%3E"); }
+  .jp-jetpack-grid__pager-button[data-page="previous"] { --jp-pager-glyph: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 9 8'%3E%3Cpath d='M7 0v8L.5 4z'/%3E%3C/svg%3E"); }
+  .jp-jetpack-grid__pager-button[data-page="next"] { --jp-pager-glyph: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 9 8'%3E%3Cpath d='M0 0v8l6.5-4z'/%3E%3C/svg%3E"); }
+  .jp-jetpack-grid__pager-button[data-page="last"] { --jp-pager-glyph: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 9 8'%3E%3Cpath d='M0 0v8l6.5-4zM7.5 0H9v8H7.5z'/%3E%3C/svg%3E"); }
+
+  /* The filter box under a header: the window's grey ground (its texture, without the vignette) */
+  .jp-jetpack-grid-filter {
+    position: fixed;
+    inset: auto;
+    box-sizing: border-box;
+    width: 240px;
+    margin: 0;
+    padding: 8px 10px 10px;
+    border: 1px solid var(--jp-window-border);
+    border-top: 0;
+    border-radius: 0 0 4px 4px;
+    background: var(--jp-window-ground) var(--jp-window-background);
+    box-shadow: var(--jp-effect-popup-shadow);
+    color: var(--jp-text);
+    font-size: var(--jp-font-size-control);
+    overflow: visible;
+  }
+  .jp-jetpack-grid-filter__title { margin-bottom: 6px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .jp-jetpack-grid-filter__list {
+    max-height: 220px;
+    margin-bottom: 8px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid rgb(0 0 0 / 0.25);
+    overflow: auto;
+  }
+  .jp-jetpack-grid-filter__list[hidden] { display: none; }
+  .jp-jetpack-grid-filter__list .jp-check-box { display: flex; margin: 4px 0; min-width: 0; }
+  .jp-jetpack-grid-filter__text { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .jp-jetpack-grid-filter__count { color: var(--jp-text-dim); font-weight: 400; }
+  .jp-jetpack-grid-filter .jp-text-box-host > .jp-text-box { width: 100%; box-sizing: border-box; }
+  .jp-jetpack-grid-filter__hint { margin-top: 6px; font-size: var(--jp-font-size-small); line-height: 1.45; opacity: 0.7; }
+  .jp-jetpack-grid-filter__buttons { display: flex; justify-content: flex-end; gap: 6px; margin-top: 10px; }
+  .jp-jetpack-grid-filter__buttons > .jp-button { min-width: 64px; }
+  /* The date tree: years (or decades), months and days with the [+]/[−] box of the TreeView */
+  .jp-jetpack-grid-filter__tree, .jp-jetpack-grid-filter__tree ul { list-style: none; margin: 0; padding: 0; }
+  .jp-jetpack-grid-filter__tree { max-height: 240px; }
+  .jp-jetpack-grid-filter__tree ul { padding-left: 17px; }
+  .jp-jetpack-grid-filter__tree ul[hidden] { display: none; }
+  .jp-jetpack-grid-filter__node { display: flex; align-items: center; gap: 5px; padding: 1px 0; font-weight: 700; }
+  .jp-jetpack-grid-filter__node > .jp-check-box { margin: 1px 0; min-width: 0; font-weight: inherit; }
+  .jp-jetpack-grid-filter__expander {
+    flex: none;
+    width: 9px;
+    height: 9px;
+    margin: 0 2px 0 0;
+    padding: 0;
+    box-sizing: border-box;
+    border: 1px solid #333;
+    background:
+      linear-gradient(#000, #000) center / 5px 1px no-repeat,
+      linear-gradient(#000, #000) center / 1px 5px no-repeat,
+      #fff;
+    cursor: pointer;
+  }
+  .jp-jetpack-grid-filter__expander[aria-expanded="true"] { background: linear-gradient(#000, #000) center / 5px 1px no-repeat, #fff; }
+  .jp-jetpack-grid-filter__expander.is-leaf { visibility: hidden; }
+
   /* ------------------------------------------------------------- tree view */
   /* Nested lists; each item is a link or a button: <ul class="jp-tree-view"><li><details open><summary>..</summary><ul>..</ul></details></li></ul> */
   .jp-tree-view, .jp-tree-view ul {
@@ -1590,48 +1855,48 @@ Load this file before Tailwind: the first @layer statement fixes the order of th
   /* ------------------------------------------------------------ scrollbars */
   /* JetPack.Styles.ScrollBar: the light track, a raised thumb and arrow buttons (Chromium).
      Every JetPack element that scrolls gets them. */
-  :where(.jp-scroll-viewer, .jp-list-box, .jp-list-view, .jp-data-grid-host, .jp-popup, .jp-tree-view, textarea.jp-text-box) {
+  :where(.jp-scroll-viewer, .jp-list-box, .jp-list-view, .jp-data-grid-host, .jp-jetpack-grid__viewport, .jp-jetpack-grid-filter__list, .jp-popup, .jp-tree-view, textarea.jp-text-box) {
     scrollbar-color: #C8C8C8 var(--jp-scroll-bar-track);
   }
   .jp-scroll-viewer { overflow: auto; }
   @supports selector(::-webkit-scrollbar) {
-    :where(.jp-scroll-viewer, .jp-list-box, .jp-list-view, .jp-data-grid-host, .jp-popup, .jp-tree-view, textarea.jp-text-box) { scrollbar-color: auto; }
+    :where(.jp-scroll-viewer, .jp-list-box, .jp-list-view, .jp-data-grid-host, .jp-jetpack-grid__viewport, .jp-jetpack-grid-filter__list, .jp-popup, .jp-tree-view, textarea.jp-text-box) { scrollbar-color: auto; }
   }
-  :where(.jp-scroll-viewer, .jp-list-box, .jp-list-view, .jp-data-grid-host, .jp-popup, .jp-tree-view, textarea.jp-text-box)::-webkit-scrollbar {
+  :where(.jp-scroll-viewer, .jp-list-box, .jp-list-view, .jp-data-grid-host, .jp-jetpack-grid__viewport, .jp-jetpack-grid-filter__list, .jp-popup, .jp-tree-view, textarea.jp-text-box)::-webkit-scrollbar {
     width: 16px;
     height: 16px;
     background: var(--jp-scroll-bar-track);
   }
-  :where(.jp-scroll-viewer, .jp-list-box, .jp-list-view, .jp-data-grid-host, .jp-popup, .jp-tree-view, textarea.jp-text-box)::-webkit-scrollbar-corner { background: var(--jp-scroll-bar-track); }
-  :where(.jp-scroll-viewer, .jp-list-box, .jp-list-view, .jp-data-grid-host, .jp-popup, .jp-tree-view, textarea.jp-text-box)::-webkit-scrollbar-thumb {
+  :where(.jp-scroll-viewer, .jp-list-box, .jp-list-view, .jp-data-grid-host, .jp-jetpack-grid__viewport, .jp-jetpack-grid-filter__list, .jp-popup, .jp-tree-view, textarea.jp-text-box)::-webkit-scrollbar-corner { background: var(--jp-scroll-bar-track); }
+  :where(.jp-scroll-viewer, .jp-list-box, .jp-list-view, .jp-data-grid-host, .jp-jetpack-grid__viewport, .jp-jetpack-grid-filter__list, .jp-popup, .jp-tree-view, textarea.jp-text-box)::-webkit-scrollbar-thumb {
     min-height: 24px;
     background: var(--jp-scroll-bar-thumb-vertical) padding-box;
     border: 2px solid transparent;
     border-radius: 4px;
     box-shadow: inset 1px 1px 0 #fff, inset -1px -1px 0 rgb(0 0 0 / 0.25);
   }
-  :where(.jp-scroll-viewer, .jp-list-box, .jp-list-view, .jp-data-grid-host, .jp-popup, .jp-tree-view, textarea.jp-text-box)::-webkit-scrollbar-thumb:horizontal {
+  :where(.jp-scroll-viewer, .jp-list-box, .jp-list-view, .jp-data-grid-host, .jp-jetpack-grid__viewport, .jp-jetpack-grid-filter__list, .jp-popup, .jp-tree-view, textarea.jp-text-box)::-webkit-scrollbar-thumb:horizontal {
     background: var(--jp-scroll-bar-thumb) padding-box;
   }
-  :where(.jp-scroll-viewer, .jp-list-box, .jp-list-view, .jp-data-grid-host, .jp-popup, .jp-tree-view, textarea.jp-text-box)::-webkit-scrollbar-button:single-button {
+  :where(.jp-scroll-viewer, .jp-list-box, .jp-list-view, .jp-data-grid-host, .jp-jetpack-grid__viewport, .jp-jetpack-grid-filter__list, .jp-popup, .jp-tree-view, textarea.jp-text-box)::-webkit-scrollbar-button:single-button {
     display: block;
     width: 16px;
     height: 14px;
     background: var(--jp-scroll-bar-track) center / 7px 4px no-repeat;
   }
-  :where(.jp-scroll-viewer, .jp-list-box, .jp-list-view, .jp-data-grid-host, .jp-popup, .jp-tree-view, textarea.jp-text-box)::-webkit-scrollbar-button:single-button:vertical:decrement {
+  :where(.jp-scroll-viewer, .jp-list-box, .jp-list-view, .jp-data-grid-host, .jp-jetpack-grid__viewport, .jp-jetpack-grid-filter__list, .jp-popup, .jp-tree-view, textarea.jp-text-box)::-webkit-scrollbar-button:single-button:vertical:decrement {
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 7 4'%3E%3Cpath d='M0 4h7L3.5 0z' fill='%23606060'/%3E%3C/svg%3E");
   }
-  :where(.jp-scroll-viewer, .jp-list-box, .jp-list-view, .jp-data-grid-host, .jp-popup, .jp-tree-view, textarea.jp-text-box)::-webkit-scrollbar-button:single-button:vertical:increment {
+  :where(.jp-scroll-viewer, .jp-list-box, .jp-list-view, .jp-data-grid-host, .jp-jetpack-grid__viewport, .jp-jetpack-grid-filter__list, .jp-popup, .jp-tree-view, textarea.jp-text-box)::-webkit-scrollbar-button:single-button:vertical:increment {
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 7 4'%3E%3Cpath d='M0 0h7L3.5 4z' fill='%23606060'/%3E%3C/svg%3E");
   }
-  :where(.jp-scroll-viewer, .jp-list-box, .jp-list-view, .jp-data-grid-host, .jp-popup, .jp-tree-view, textarea.jp-text-box)::-webkit-scrollbar-button:single-button:horizontal:decrement {
+  :where(.jp-scroll-viewer, .jp-list-box, .jp-list-view, .jp-data-grid-host, .jp-jetpack-grid__viewport, .jp-jetpack-grid-filter__list, .jp-popup, .jp-tree-view, textarea.jp-text-box)::-webkit-scrollbar-button:single-button:horizontal:decrement {
     width: 14px;
     height: 16px;
     background-size: 4px 7px;
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 4 7'%3E%3Cpath d='M4 0v7L0 3.5z' fill='%23606060'/%3E%3C/svg%3E");
   }
-  :where(.jp-scroll-viewer, .jp-list-box, .jp-list-view, .jp-data-grid-host, .jp-popup, .jp-tree-view, textarea.jp-text-box)::-webkit-scrollbar-button:single-button:horizontal:increment {
+  :where(.jp-scroll-viewer, .jp-list-box, .jp-list-view, .jp-data-grid-host, .jp-jetpack-grid__viewport, .jp-jetpack-grid-filter__list, .jp-popup, .jp-tree-view, textarea.jp-text-box)::-webkit-scrollbar-button:single-button:horizontal:increment {
     width: 14px;
     height: 16px;
     background-size: 4px 7px;

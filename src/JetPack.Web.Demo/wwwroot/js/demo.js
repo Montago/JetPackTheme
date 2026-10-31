@@ -100,6 +100,51 @@
     JetPack.openFlyout(saved);
   });
 
+  /* ---------------------------------------------------------------- GridPage */
+  const cars = $('Cars') && JetPack.jetpackGrid('Cars');
+  if (cars) {
+    const showStatus = () => {
+      $('GridStatus').textContent = `Showing ${cars.filteredItemCount.toLocaleString('en-US')} of ${cars.totalItemCount.toLocaleString('en-US')} cars`;
+    };
+    const showSelection = car => {
+      $('GridSelection').textContent = car ? `Selected: ${car.StockNo}, ${car.Make} ${car.Model} ${car.Year}` : 'Nothing selected';
+    };
+    on($('Cars'), 'jp-filtered', showStatus);
+    on($('Cars'), 'jp-selected-item-changed', e => showSelection(e.detail.newValue));
+    showStatus();
+    showSelection(cars.selectedItem);
+
+    // GroupMemberPath and PageSize are bound to the combo boxes in GridPage.xaml
+    on($('GroupBy'), 'change', e => { cars.groupMemberPath = e.target.value; });
+    on($('PageSize'), 'change', e => { cars.pageSize = Number(e.target.value); });
+    on(document.querySelector('#Multi'), 'change', e => { cars.selectionMode = e.target.checked ? 'Extended' : 'Single'; });
+    // Server mode (web only): the same rows, a page at a time from JetPackGridServer.Query
+    on(document.querySelector('#ServerMode'), 'change', e => {
+      cars.itemsSource = e.target.checked ? e.target.closest('[data-url]').dataset.url : null;
+    });
+    on($('Cars'), 'jp-load-failed', e => { $('GridStatus').textContent = `The server did not answer: ${e.detail.error.message}`; });
+    on($('Marks'), 'change', e => {
+      // The theme gives the accent and the grey; local values override them
+      const grid = $('Cars');
+      grid.style.removeProperty('--jp-jetpack-grid-highlight-foreground');
+      grid.style.removeProperty('--jp-jetpack-grid-highlight-cell-background');
+      if (e.target.selectedIndex === 1) grid.style.setProperty('--jp-jetpack-grid-highlight-cell-background', 'transparent');
+      if (e.target.selectedIndex === 2) grid.style.setProperty('--jp-jetpack-grid-highlight-foreground', 'firebrick');
+    });
+    on($('ClearFilters'), 'click', () => cars.clearFilters());
+    on($('CopyVisible'), 'click', async () => {
+      // getVisibleItems gives the rows left after the search and filters, in the order shown
+      const text = 'Stock no.\tMake\tModel\tYear\tPrice\n' +
+        cars.getVisibleItems().map(c => `${c.StockNo}\t${c.Make}\t${c.Model}\t${c.Year}\t${c.Price}\n`).join('');
+      try {
+        await navigator.clipboard.writeText(text);
+        $('GridStatus').textContent = `Copied ${cars.filteredItemCount.toLocaleString('en-US')} rows to the clipboard`;
+      } catch {
+        $('GridStatus').textContent = 'The browser did not allow copying';
+      }
+    });
+  }
+
   /* ------------------------------------------------------------- PalettePage */
   const paletteGroups = [...document.querySelectorAll('.demo-palette-group')];
   on($('PaletteSearch'), 'input', e => {
