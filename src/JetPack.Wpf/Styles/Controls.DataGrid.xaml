@@ -330,23 +330,24 @@
                         <Popup x:Name="PART_FilterPopup" AllowsTransparency="True" Placement="Bottom" PlacementTarget="{Binding ElementName=Root}" StaysOpen="False"
                                Focusable="False" PopupAnimation="Slide" IsOpen="{Binding IsChecked, ElementName=PART_FilterButton, Mode=TwoWay}">
                             <Grid Margin="0,0,6,6" Width="240" SnapsToDevicePixels="True"
-                                  TextElement.Foreground="{DynamicResource JetPack.Brushes.Control.Foreground}" TextElement.FontWeight="Normal">
-                                <Border Background="{DynamicResource JetPack.Brushes.Input.Background}" BorderBrush="{DynamicResource JetPack.Brushes.Control.Border}"
+                                  TextElement.Foreground="{DynamicResource JetPack.Brushes.Text}" TextElement.FontWeight="Normal">
+                                <!-- The window's grey ground (its texture, without the vignette), light text on it -->
+                                <Border Background="{DynamicResource JetPack.Brushes.Window.Background}" BorderBrush="{DynamicResource JetPack.Brushes.Window.Border}"
                                         BorderThickness="1,0,1,1" CornerRadius="0,0,4,4" Effect="{DynamicResource JetPack.Effects.PopupShadow}" />
                                 <StackPanel Margin="10,8,10,10">
                                     <TextBlock Margin="0,0,0,6" FontWeight="Bold" TextTrimming="CharacterEllipsis"
                                                Text="{Binding (jp:JetPackGrid.HeaderColumn).Header, RelativeSource={RelativeSource TemplatedParent}, Mode=OneWay, StringFormat='Filter {0}'}" />
                                     <!-- The column's values to tick, when it has few enough of them (JetPackGrid.FilterListLimit) -->
-                                    <Border x:Name="FilterList" Margin="0,0,0,8" BorderBrush="{DynamicResource JetPack.Brushes.DataGrid.GridLines}" BorderThickness="0,0,0,1" Padding="0,0,0,6">
+                                    <Border x:Name="FilterList" Margin="0,0,0,8" BorderBrush="#40000000" BorderThickness="0,0,0,1" Padding="0,0,0,6">
                                         <ScrollViewer MaxHeight="220" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Focusable="False">
                                             <ItemsControl Focusable="False"
                                                           ItemsSource="{Binding (jp:JetPackGrid.HeaderColumn).(jp:JetPackGrid.FilterOptions), RelativeSource={RelativeSource TemplatedParent}}">
                                                 <ItemsControl.ItemTemplate>
                                                     <DataTemplate>
-                                                        <CheckBox Margin="0,2" IsChecked="{Binding IsChecked}" Style="{DynamicResource JetPack.Styles.CheckBox.OnLight}">
+                                                        <CheckBox Margin="0,2" IsChecked="{Binding IsChecked}" Style="{DynamicResource JetPack.Styles.CheckBox}">
                                                             <TextBlock TextTrimming="CharacterEllipsis">
                                                                 <Run Text="{Binding Text, Mode=OneWay}" />
-                                                                <Run Text="{Binding Count, Mode=OneWay, StringFormat='({0:N0})'}" Foreground="#FF808080" />
+                                                                <Run Text="{Binding Count, Mode=OneWay, StringFormat='({0:N0})'}" Foreground="{DynamicResource JetPack.Brushes.Text.Dim}" />
                                                             </TextBlock>
                                                         </CheckBox>
                                                     </DataTemplate>

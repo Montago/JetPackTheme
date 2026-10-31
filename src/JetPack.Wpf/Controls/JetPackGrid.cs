@@ -130,6 +130,8 @@ public partial class JetPackGrid : DataGrid
         // The filter box lives in a popup of the column header; its events still bubble up to the grid.
         EventManager.RegisterClassHandler(typeof(JetPackGrid), ToggleButton.CheckedEvent, new RoutedEventHandler(OnFilterButtonChecked));
         EventManager.RegisterClassHandler(typeof(JetPackGrid), PreviewKeyDownEvent, new KeyEventHandler(OnFilterBoxKeyDown));
+        // The date tree has nothing to select; the TreeView selects an item on a click all the same (accent bar).
+        EventManager.RegisterClassHandler(typeof(JetPackGrid), TreeViewItem.SelectedEvent, new RoutedEventHandler(OnDateNodeSelected));
         // The ScrollViewer marks the scroll bar's events handled; the thumb-drag preview still needs them.
         EventManager.RegisterClassHandler(typeof(JetPackGrid), ScrollBar.ScrollEvent, new ScrollEventHandler(OnScrollBarScroll), handledEventsToo: true);
     }
@@ -1228,6 +1230,14 @@ public partial class JetPackGrid : DataGrid
                     box.SelectAll();
                 }
             });
+        }
+    }
+
+    private static void OnDateNodeSelected(object sender, RoutedEventArgs e)
+    {
+        if (e.OriginalSource is TreeViewItem { DataContext: GridDateFilterNode } item)
+        {
+            item.IsSelected = false;
         }
     }
 
