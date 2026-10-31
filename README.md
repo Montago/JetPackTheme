@@ -15,10 +15,11 @@ The JetPack theme from Microsoft's Silverlight 4 Application Themes, rebuilt as 
 `JetPackGrid` brings the features that usually send WPF developers to a commercial grid such as
 Telerik's RadGridView, in a free, MIT-licensed `DataGrid`:
 
-- **Search across all columns.** Every word must match somewhere in the row, every hit is marked in
-  the cells, and quotes keep a phrase together: `volvo "dark blue" automatic`.
+- **Search across all columns.** Every word must match somewhere in the row, every hit is drawn in
+  the accent colour on a grey cell, and quotes keep a phrase together: `volvo "dark blue" automatic`.
 - **Filter in every column header.** Tick values from a list with row counts, or type them, with `*`
-  as a wildcard, and ranges for numbers and dates: `>50000`, `2020-01-01..2020-06-30`.
+  as a wildcard, and ranges for numbers and dates: `>50000`, `2020-01-01..2020-06-30`. A column of
+  dates gets a tree of years, months and days to tick.
 - **Grouping** with headers that fold up, **three-state sorting** and **paging**.
 - **Virtualized rows and columns**, also while grouping, so thousands of rows in tens of columns
   stay fast. Cells draw their text straight from the font, a check box column draws its JetPack

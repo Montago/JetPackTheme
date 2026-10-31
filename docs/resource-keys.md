@@ -29,6 +29,7 @@ Values shown are the default green accent. `Accents/Orange.xaml` and `Accents/Bl
 | `JetPack.Brushes.Accent.Pressed` | LinearGradientBrush | `#FF6D9000` 0.31 → `#FF5A8100` 0.78 |
 | `JetPack.Brushes.Accent.Highlight` | SolidColorBrush | `#FFC2DF00` |
 | `JetPack.Brushes.Accent.Solid` | SolidColorBrush | `#FF75A20A` |
+| `JetPack.Brushes.Accent.Selection.MouseOver` | SolidColorBrush | `#4075A20A` |
 | `JetPack.Brushes.Accent.Link` | SolidColorBrush | `#FFD0FF00` |
 | `JetPack.Brushes.Accent.Foreground` | SolidColorBrush | `#FFFFFFFF` |
 | `JetPack.Brushes.Accent.Button.Normal` | LinearGradientBrush | `#FFA0BB0E` 0.176 → `#FF6D9700` 0.894 |
@@ -124,6 +125,7 @@ Shared by every accent.
 | `JetPack.Brushes.DataGrid.AlternatingRow` | SolidColorBrush | `#FFE0E0E0` |
 | `JetPack.Brushes.DataGrid.GridLines` | SolidColorBrush | `#20000000` |
 | `JetPack.Brushes.DataGrid.Header.Separator` | SolidColorBrush | `#20FFFFFF` |
+| `JetPack.Brushes.DataGrid.SearchHit` | SolidColorBrush | `#FFD0D0D2` |
 | `JetPack.Brushes.Menu.Background` | SolidColorBrush | `#FFE0E0E0` |
 | `JetPack.Brushes.Menu.Disabled` | SolidColorBrush | `#FF9A9A9A` |
 | `JetPack.Brushes.Dialog.Background` | SolidColorBrush | `#FFE0E0E0` |
@@ -268,6 +270,7 @@ variants and building blocks; use them with `Style="{StaticResource ...}"` or as
 | `JetPack.Styles.ComboBox.Toggle.Editable` | `ToggleButton` | Controls.Lists.xaml |
 | `JetPack.Styles.ComboBoxItem` | `ComboBoxItem` | Controls.Lists.xaml |
 | `JetPack.Styles.GridViewColumnHeader` | `GridViewColumnHeader` | Controls.Lists.xaml |
+| `JetPack.Styles.JetPackGrid.DateFilterItem` | `TreeViewItem` | Controls.Lists.xaml |
 | `JetPack.Styles.ListBox` | `ListBox` | Controls.Lists.xaml |
 | `JetPack.Styles.ListBoxItem` | `ListBoxItem` | Controls.Lists.xaml |
 | `JetPack.Styles.ListView` | `ListView` | Controls.Lists.xaml |

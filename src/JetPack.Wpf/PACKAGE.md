@@ -13,9 +13,10 @@ dialogs, `ToggleSwitch`, `NumericUpDown`, `Flyout`, `HamburgerMenu`, `InfoBar`, 
 **JetPackGrid: a free data grid for large lists.** It brings the features that usually send WPF
 developers to a commercial grid such as Telerik's RadGridView, in a free, MIT-licensed `DataGrid`:
 
-- Search across all columns, with every hit marked in the cells (`volvo "dark blue" automatic`)
+- Search across all columns, with every hit drawn in the accent colour on a grey cell (`volvo "dark blue" automatic`)
 - A filter in every column header: tick values from a list with row counts, or type them with `*`
-  wildcards, and ranges for numbers and dates (`>50000`, `2020-01-01..2020-06-30`)
+  wildcards, and ranges for numbers and dates (`>50000`, `2020-01-01..2020-06-30`); a column of
+  dates gets a tree of years, months and days to tick
 - Grouping with headers that fold up, three-state sorting and paging
 - Virtualized rows and columns, also while grouping, for thousands of rows in tens of columns;
   cells draw their text and check boxes themselves, and dragging the scroll bar shows the rows at once

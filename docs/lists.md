@@ -64,7 +64,8 @@ Inside another dark panel (such as an accordion section) set `Background="Transp
 ![DataGrid](screenshots/controls/datagrid.png)
 
 The dark gradient header with a sort arrow, a light grey body with alternating rows and faint grid
-lines, a light hover band and the accent gradient on the selected row.
+lines, a faint accent band on the row under the mouse (`JetPack.Brushes.Accent.Selection.MouseOver`)
+and the accent gradient on the selected row.
 
 ```xml
 <DataGrid ItemsSource="{Binding Timesheets}" AutoGenerateColumns="False" IsReadOnly="True">
@@ -123,11 +124,12 @@ The same holds for a `DataGridCheckBoxColumn` in a `JetPackGrid`, which is a `Da
 people need to narrow down. It adds:
 
 - **Search:** `SearchText` holds words that must all be found in a row, in any searchable column
-  (ignoring case). Every hit is marked in the cells. Quotes keep a phrase together:
-  `volvo "dark blue" automatic`.
+  (ignoring case). Every hit is drawn in the accent colour, and its cell turns grey (see
+  [Search hits](#search-hits)). Quotes keep a phrase together: `volvo "dark blue" automatic`.
 - **Value filter per column:** the funnel in a header opens a box for values the column must
-  equal, or ranges for numbers and dates (`>50000`, `2020-01-01..2020-06-30`). A row passes if it
-  matches any of the values, and every filtered column must pass.
+  equal, or ranges for numbers and dates (`>50000`, `2020-01-01..2020-06-30`). A column of dates
+  also gets a tree of years, months and days to tick. A row passes if it matches any of the values,
+  and every filtered column must pass.
 - **Three-state sorting:** clicking a header sorts ascending, then descending, then back to the
   source order. Shift+click sorts by more columns, as in DataGrid.
 - **Grouping** by one member (`GroupMemberPath`), with a header row per group that folds up.
@@ -157,6 +159,27 @@ The demo's *JetPackGrid* page shows 3,000 cars in 21 columns, searched for `volv
 *Body* column filtered to `estate suv`:
 
 ![The JetPackGrid page of the demo](screenshots/jetpackgrid.png)
+
+### Search hits
+
+In `JetPackGridColumn` cells, the words of the search are drawn in the accent colour
+(`HighlightForeground`, `JetPack.Brushes.Accent.Solid` by default), and a cell with a hit gets a grey
+background up to the grid lines (`HighlightCellBackground`, `JetPack.Brushes.DataGrid.SearchHit`). In a
+selected row the hits take the selection's white text and the grey is left out. `HighlightBrush` puts
+a background behind the words themselves; it is not set by default.
+
+Set them on the grid to change the look, or to null to turn a part off:
+
+```xml
+<!-- Red hits, no grey cells -->
+<jp:JetPackGrid HighlightForeground="#FFE0301E" HighlightCellBackground="{x:Null}" ... />
+```
+
+Both are inherited attached properties, so a row or cell style can also set
+`jp:JetPackGrid.HighlightForeground` and `jp:JetPackGrid.HighlightCellBackground` for its own part of
+the grid. A cell style can react to hits through the read-only `jp:JetPackGrid.IsSearchHit`, which is
+true on cells whose text has a hit. The demo's *Hits* box switches between the accent with grey cells,
+the accent only and a custom colour.
 
 ### Header filter
 
@@ -205,6 +228,23 @@ Numbers and dates can also be filtered by range:
 The rows are filtered while you type. Enter, Escape or *Done* closes the box, and *Clear* empties
 it. A funnel turns accent-coloured while its column has a filter. Code can set the filter through
 `FilterText` on the column, which is two-way bindable.
+
+#### Dates
+
+![The filter box of a column of dates, with its tree of years, months and days](screenshots/controls/jetpackgrid-datefilter.png)
+
+A column whose values are all dates (`DateTime`, `DateTimeOffset` or `DateOnly`) gets a tree instead
+of the tick list: years with their months and days, each with its row count, under decades when the
+years span ten or more, and *(blank)* for rows without a date. Ticking a year or a month ticks every
+day in it; a node with only some of its days ticked is partly ticked, and opens when the box opens
+again. The time of day does not count.
+
+The ticked days go into the column's `FilterDates`. A row must pass both `FilterDates` and the typed
+values in `FilterText`, so a range such as `>=2020` still works next to the tree. *Clear* and
+`ClearFilters()` clear both. The tree is built from `GridDateFilterNode` items (`Level`, `Date`,
+`Text`, `Count`, `Children`, `IsChecked`, `IsExpanded`), read from the column's `FilterDateTree` when
+the box opens; its items use `JetPack.Styles.JetPackGrid.DateFilterItem`, based on the JetPack
+TreeViewItem.
 
 ### Check box column
 
@@ -330,8 +370,9 @@ costs about 6 ms instead of about 100 ms, and a page down costs the same as with
 | `FilterListLimit` | `int` | 20 | A header filter lists the values to tick when the column has at most this many different values; 0 never lists them. |
 | `GroupMemberPath` | `string` | `null` | Member to group by; empty for no groups. See [Groups](#groups). |
 | `IsGrouped` | `bool` | `false` | Read-only: true while `GroupMemberPath` groups the rows, and `Items` holds `GridGroupRow` headers. |
-| `HighlightBrush` | `Brush` | `JetPack.Brushes.Accent.Highlight` | Background of the search hits. |
-| `HighlightForeground` | `Brush` | `JetPack.Brushes.Control.Foreground` | Text colour of the search hits. |
+| `HighlightForeground` | `Brush` | `JetPack.Brushes.Accent.Solid` | Text colour of the search hits; null keeps the cell's colour. Inherited attached property. See [Search hits](#search-hits). |
+| `HighlightCellBackground` | `Brush` | `JetPack.Brushes.DataGrid.SearchHit` | Background of cells with search hits, except in selected rows; null for none. Inherited attached property. |
+| `HighlightBrush` | `Brush` | `null` | Background behind the search hits themselves. |
 | `EnableLightweightTextRendering` | `bool` | `true` | `JetPackGridColumn` cells draw their text (`GridCellText`) instead of using a TextBlock; see [Scrolling](#scrolling). |
 | `FilteredItemCount` | `int` | 0 | Read-only: rows left after the search and filters. |
 | `TotalItemCount` | `int` | 0 | Read-only: rows in the source. |
@@ -359,8 +400,10 @@ on any other DataGrid column:
 | `IsFilterable` | `bool` | `true` | Whether the header shows the funnel. |
 | `FilterText` | `string` | `""` | The values of the header filter; two-way bindable. |
 | `FilterMemberPath` | `string` | `null` | Member the search and filter read instead of the binding. |
-| `HasFilter` | `bool` | `false` | Read-only: true when `FilterText` holds a value. |
-| `FilterOptions` | `IReadOnlyList<GridFilterOption>` | `null` | Read-only: the values in the tick list, read when the filter box opens. `null` when the column has more than `FilterListLimit` values. Each `GridFilterOption` has `Text`, `Count` and `IsChecked`. |
+| `FilterDates` | `IReadOnlyList<DateTime?>` | `null` | The days a column of dates must be one of, as the date tree ticks them; a null entry stands for rows without a date. See [Dates](#dates). |
+| `HasFilter` | `bool` | `false` | Read-only: true when `FilterText` holds a value or `FilterDates` holds a day. |
+| `FilterOptions` | `IReadOnlyList<GridFilterOption>` | `null` | Read-only: the values in the tick list, read when the filter box opens. `null` when the column has more than `FilterListLimit` values, or is a column of dates. Each `GridFilterOption` has `Text`, `Count` and `IsChecked`. |
+| `FilterDateTree` | `IReadOnlyList<GridDateFilterNode>` | `null` | Read-only: the date tree of a column whose values are all dates, read when the filter box opens; `null` for other columns. Attached property only. |
 
 `JetPackGridColumn` also has `TextAlignment` (`Left` by default; `Right` for numbers). Use it rather
 than an `ElementStyle`, which turns the drawn text off for the column. A cell's content is a
