@@ -426,23 +426,8 @@ public partial class JetPackGrid : DataGrid
     /// </summary>
     public static DataGridColumn? GetHeaderColumn(DependencyObject header) => (DataGridColumn?)header.GetValue(HeaderColumnProperty);
 
-    public static readonly DependencyProperty TracksHeaderColumnProperty = DependencyProperty.RegisterAttached(
-        "TracksHeaderColumn", typeof(int), typeof(JetPackGrid), new PropertyMetadata(-1, OnTracksHeaderColumnChanged));
-
-    /// <summary>Bound to the header's DisplayIndex by the header style; it changes whenever the header gets a column.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never)]
-    public static int GetTracksHeaderColumn(DependencyObject header) => (int)header.GetValue(TracksHeaderColumnProperty);
-
-    [EditorBrowsable(EditorBrowsableState.Never)]
-    public static void SetTracksHeaderColumn(DependencyObject header, int value) => header.SetValue(TracksHeaderColumnProperty, value);
-
-    private static void OnTracksHeaderColumnChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-    {
-        if (d is DataGridColumnHeader header)
-        {
-            header.SetValue(HeaderColumnPropertyKey, header.Column);
-        }
-    }
+    // Set by GridColumnHeadersPresenter, the header row of the grid template.
+    internal static void SetHeaderColumn(DependencyObject header, DataGridColumn? column) => header.SetValue(HeaderColumnPropertyKey, column);
 
     // The grid a column belongs to, so a changed FilterText can reach it.
     private static readonly DependencyProperty OwnerProperty = DependencyProperty.RegisterAttached(
