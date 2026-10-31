@@ -30,7 +30,7 @@ write the markup itself.
 | [Buttons](web/buttons.md) | `jp-button` and its variants, `jp-toggle-button`, `jp-repeat-button`, `jp-hyperlink`, `jp-split-button`, `jp-drop-down-button`, `jp-tile`, `jp-badged` |
 | [Text and input](web/inputs.md) | `jp-text-box`, `jp-password-box`, `jp-label`, validation, `jp-combo-box`, `jp-numeric-up-down`, `jp-auto-suggest-box`, `jp-search-combo-box`, `jp-date-picker`, `jp-time-picker`, `jp-color-picker` |
 | [Selection](web/selection.md) | `jp-check-box`, `jp-radio-button`, `jp-toggle-switch`, `jp-slider`, `jp-range-slider`, `jp-rating` |
-| [Lists and data](web/lists.md) | `jp-list-box`, `jp-list-view`, `jp-tree-view`, `jp-data-grid`, `jp-calendar`, `jp-scroll-viewer` |
+| [Lists and data](web/lists.md) | `jp-list-box`, `jp-list-view`, `jp-tree-view`, `jp-data-grid`, `jp-jetpack-grid`, `jp-calendar`, `jp-scroll-viewer` |
 | [Navigation and layout](web/navigation.md) | `jp-tab-control` (three looks), `jp-hamburger-menu`, `jp-expander`, `jp-accordion`, `jp-group-box`, `jp-menu`, `jp-context-menu`, `jp-tool-bar`, `jp-status-bar`, `jp-grid-splitter`, `jp-separator`, tool tips |
 | [Progress and status](web/status.md) | `jp-progress-bar`, `jp-progress-ring`, `jp-busy-indicator`, `jp-info-bar` |
 
@@ -58,7 +58,8 @@ are generated from the same XAML dictionaries, so a desktop app and its web port
 
 ## Limitations
 
-- JetPackGrid has no web version; use a grid library for large, filterable tables.
+- The web JetPackGrid draws every row of the page shown, so it suits up to a few thousand rows in the
+  page; for more, use its paging or its server mode.
 - Scroll bars get the JetPack look only in Chromium browsers (Edge, Chrome); Firefox gets colours only.
 - Dates are shown as en-US (M/d/yyyy).
 - `jetpack.tailwind.css` has not been tried with the Tailwind CLI yet; the demo and the sample use

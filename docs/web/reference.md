@@ -44,6 +44,7 @@ details and the HTML each one writes. The tag helpers marked * also take `is-ena
 | `jp-list-view` * | `ListView` + `GridView` | as `jp-data-grid`; children: `jp-grid-view-column` (`display-member-binding` …) | [Lists and data](lists.md#listview-with-gridview) |
 | `jp-tree-view` * | `TreeView` | `name`; children: `jp-tree-view-item` (`header`, `is-expanded`, `is-selected`, `value`) | [Lists and data](lists.md#treeview) |
 | `jp-data-grid` * | `DataGrid` | `items`, `selected-index`, `height`, `selection-mode`, `can-user-sort-columns`, `can-user-resize-columns`; children: `jp-data-grid-text-column` (`header`, `binding`, `width`, `string-format`, `horizontal-alignment`, `sort-direction`, `sort-member-path`, `can-user-sort`, `can-user-resize`) | [Lists and data](lists.md#datagrid) |
+| `jp-jetpack-grid` * | `jp:JetPackGrid` | `items`, `items-source-url`, `search-text`, `search-box`, `search-delay`, `filter-list-limit`, `group-member-path`, `page-size`, `page-index`, `selected-index`, `selection-mode`, `frozen-column-count`, `height`, `can-user-sort-columns`, `can-user-resize-columns`, `highlight-foreground`, `highlight-cell-background`; children: `jp-jetpack-grid-column` (`header`, `binding`, `width`, `string-format`, `text-alignment`, `sort-direction`, `can-user-sort`, `can-user-resize`, `is-searchable`, `is-filterable`, `filter-text`, `filter-dates`), `jp-jetpack-grid-check-box-column` (as the column, `true-text`, `false-text`) | [Lists and data](lists.md#jetpackgrid) |
 | `jp-calendar` * | `Calendar` | `selected-date`, `display-date` | [Lists and data](lists.md#calendar) |
 | `jp-scroll-viewer` * | `ScrollViewer` | `horizontal-scroll-bar-visibility`, `vertical-scroll-bar-visibility`, `thin` | [Lists and data](lists.md#scrollviewer-and-scrollbar) |
 | `jp-tab-control` * | `TabControl` | `tab-control-style`, `selected-index`, `selection-animation`, `content-transition`, `use-hash`, `id`; children: `jp-tab-item` (`header`, `name`, `is-selected`, `is-enabled`), `jp-tab-control-tag` | [Navigation](navigation.md#tabcontrol) |
@@ -141,6 +142,7 @@ write them in your own markup:
 | `JetPack.init(element)` | sets up the controls inside `element` that a script added later |
 | `JetPack.formatDate(date)`, `JetPack.parseDate(text)` | dates in the pickers' format (M/d/yyyy) |
 | `element.jetpack.select(indexOrName)`, `element.jetpack.selectedIndex` | on a `.jp-tab-control` |
+| `JetPack.jetpackGrid(idOrElement)` | the API of a `.jp-jetpack-grid` (see [JetPackGrid](lists.md#script)) |
 
 The stored choices are kept in `localStorage` under `jetpack.accent`, `jetpack.focusVisuals`,
 `jetpack.controlFontSize` and `jetpack.paneOpen`.
@@ -176,6 +178,7 @@ Other events:
 | `jp-accent-changed` | `document` | the accent changes; `event.detail` is the accent |
 | `jp-sorting` | `table.jp-data-grid` | before a header click sorts; cancelable; `{ column, header, direction }` |
 | `jp-sorted` | `table.jp-data-grid` | after it sorted; a list of `{ column, header, direction }` |
+| `jp-filtered`, `jp-page-changed`, `jp-selected-item-changed`, `jp-sorting`, `jp-sorted`, `jp-load-failed` | `.jp-jetpack-grid` | see [JetPackGrid](lists.md#script) |
 
 ```js
 document.addEventListener('jp-change', e => {

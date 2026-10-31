@@ -218,6 +218,243 @@ links or buttons in the row still work on their own.
 </div>
 ```
 
+## JetPackGrid
+
+![JetPackGrid with the search "volvo auto" marked in the cells](../screenshots/web/controls/jetpackgrid.png)
+
+`jp-jetpack-grid` is the web version of [`jp:JetPackGrid`](../lists.md#jetpackgrid), for lists that
+people need to narrow down. It has the same rules as the WPF grid:
+
+- **Search:** every word must be found in a row, in any searchable column, ignoring case. The hits
+  are drawn in the accent colour and their cells turn grey. Quotes keep a phrase together.
+- **Value filter per column:** the funnel in a header opens a box for values the column must equal,
+  or ranges for numbers and dates. A column of dates gets a tree of years, months and days to tick.
+- **Three-state sorting:** a header click sorts ascending, then descending, then back to the source
+  order. Shift+click sorts by more columns.
+- **Grouping** by a column, with a header row per group that folds up.
+- **Paging** with the pager below the rows.
+- Single or extended selection with the mouse and the keys, frozen columns on the left, and columns
+  that resize by their header's right edge.
+
+The tag helper writes the header and the rows into the page as JSON: each cell as it is shown
+(formatted on the server, in the request's culture), plus the value for numbers, dates and check
+boxes, which sorting and ranges use. `jetpack.js` draws every row of the page shown. That suits up to
+a few thousand rows; for more, page the grid or let the server do the work in
+[server mode](#server-mode).
+
+```cshtml
+<jp-text-box id="Search" watermark="Search, e.g. volvo estate automatic" clear-text-button="true" />
+
+<jp-jetpack-grid id="Cars" items="Model.Cars" page-size="100" search-box="Search" frozen-column-count="2" class="h-[600px]">
+    <jp-jetpack-grid-column header="Make" binding="Make" width="100" />
+    <jp-jetpack-grid-column header="Body" binding="Body" width="85" filter-text="estate suv" />
+    <jp-jetpack-grid-column header="Mileage (km)" binding="Mileage" string-format="N0" width="108" text-alignment="Right" is-searchable="false" />
+    <jp-jetpack-grid-column header="Registered" binding="Registered" string-format="d" width="96" text-alignment="Right" />
+    <jp-jetpack-grid-check-box-column header="Sold" binding="IsSold" width="56" />
+</jp-jetpack-grid>
+```
+
+```html
+<div class="jp-jetpack-grid h-[600px]" id="Cars" data-jp-culture="en-US" data-jp-search-box="Search" data-jp-page-size="100" data-jp-frozen-column-count="2">
+    <div class="jp-jetpack-grid__viewport" tabindex="0">
+        <table class="jp-jetpack-grid__table" role="grid">
+            <thead><tr>
+                <th data-binding="Make" data-type="text" data-width="100">Make</th>
+                <th data-binding="Body" data-type="text" data-width="85" data-filter-text="estate suv">Body</th>
+                <th data-binding="Mileage" data-type="number" data-width="108" data-string-format="N0" data-align="right" data-searchable="false">Mileage (km)</th>
+                …
+            </tr></thead>
+            <tbody></tbody>
+        </table>
+    </div>
+    <script type="application/json" class="jp-jetpack-grid__items">[["Volvo","SUV",["88,539",88539],["9/20/2015","2015-09-20"],false], …]</script>
+</div>
+```
+
+The grid takes the height its parent gives it (in a flex column, give it `flex: 1`), or `height`.
+Its columns scroll sideways inside it, so a wide grid never widens the page. The web demo's
+*JetPackGrid* tab shows 3,000 cars in 21 columns, searched for `volvo automatic` with the *Body*
+column filtered to `estate suv`:
+
+![The JetPackGrid tab of the web demo](../screenshots/web/jetpackgrid.png)
+
+### Search hits
+
+The words of the search are drawn in the accent colour, and a cell with a hit gets a grey
+background up to the grid lines. In a selected row the grey is left out and the hits take the row's
+text colour. The two colours are CSS variables on the grid, which `highlight-foreground` and
+`highlight-cell-background` set (`none` turns a part off):
+
+```css
+#Cars {
+    --jp-jetpack-grid-highlight-foreground: firebrick;   /* default: var(--jp-accent-solid) */
+    --jp-jetpack-grid-highlight-cell-background: transparent;   /* default: var(--jp-data-grid-search-hit) */
+}
+```
+
+As in WPF, the row the mouse is over takes the accent at 25 %, and a selected row the accent
+gradient behind the cells' dark text.
+
+### Header filter
+
+![The filter box of the Body column, with its values to tick](../screenshots/web/controls/jetpackgrid-filter.png)
+
+When the box opens, the grid reads the column's values from every row. With at most
+`filter-list-limit` different values (20 by default) they are listed with their row counts to
+tick; a column with more values only gets the text box. Ticking writes the value into the text,
+typing a value ticks it, and typed values that are not in the list stay in the text.
+
+The values and ranges are those of the WPF grid ([Header filter](../lists.md#header-filter)):
+values separated by spaces, commas or semicolons; quotes keep a value with spaces together; `*`
+matches any text (`vol*`, `*tron`); `>50000`, `<=2019`, `2016..2018` and `2020-03..` compare the value
+itself, not the text the cell shows. A date can be a year, a month (`2020-03`), a day (`2020-03-15`)
+or the page culture's own form (`3/15/2020` in en-US), and stands for all of it.
+
+The rows are filtered while you type, after `search-delay`. Enter, Escape or *Done* closes the box,
+and *Clear* empties it. A funnel turns accent-coloured while its column has a filter.
+
+#### Dates
+
+![The filter box of a column of dates, with its tree of years, months and days](../screenshots/web/controls/jetpackgrid-datefilter.png)
+
+A column of `DateTime`, `DateTimeOffset` or `DateOnly` values gets a tree instead of the tick list:
+years with their months and days, each with its row count, under decades when the years span ten or
+more, and *(blank)* for rows without a date. Ticking a year or a month ticks every day in it; a
+partly ticked node opens when the box opens again. The ticked days go into the column's
+`filter-dates`, and a row must also pass the typed values.
+
+### Check box column
+
+![A check box column showing which cars are sold](../screenshots/web/controls/jetpackgrid-checkbox.png)
+
+`jp-jetpack-grid-check-box-column` shows a `bool` as the JetPack check box. The filter lists the
+values as `true-text` and `false-text` ("Yes" and "No"), so `filter-text="yes"` keeps the ticked
+rows. The search leaves the column out unless `is-searchable="true"`.
+
+### Groups
+
+![Rows grouped by make](../screenshots/web/controls/jetpackgrid-groups.png)
+
+`group-member-path` groups the rows by the column with that binding. Each group gets a header row with
+the value and its row count, which folds the group up when clicked. The groups come in the order of
+their first row, the rows keep the sort within each group and alternate their background, and folded
+groups stay folded until `group-member-path` changes.
+
+### Paging
+
+![The pager below the rows, on page 2 of 5](../screenshots/web/controls/jetpackgrid-paging.png)
+
+With `page-size`, the pager appears when more rows than that pass the search and the filters. Sorting
+and grouping apply to all rows; the pages are cut from the sorted rows, and a group can continue on
+the next page. A new search, filter or sort goes back to the first page, and a row selected on one
+page is deselected when another is shown.
+
+### Server mode
+
+With `items-source-url`, the rows stay on the server. For each page, and for the values of a filter
+box, the grid posts a `JetPackGridRequest` (page, page size, search, filters, sort, grouping, and its
+columns' bindings and formats) and draws the `JetPackGridResponse` that comes back. The tag helper
+then writes no rows into the page. `JetPackGridServer.Query` answers from rows in memory with the
+same rules as the browser:
+
+```cshtml
+<jp-jetpack-grid items-source-url="@Url.Content("~/api/cars")" page-size="100" search-box="Search">
+    <jp-jetpack-grid-column header="Make" binding="Make" width="100" />
+    …
+</jp-jetpack-grid>
+```
+
+```csharp
+app.MapPost("/api/cars", (JetPackGridRequest request) => JetPackGridServer.Query(cars, request));
+```
+
+- The browser names the columns it wants, so `Query` reads only bindings you allow: the ones you
+  list (`Query(cars, request, "Make", "Model", "Price")`), or else the public properties of the item
+  type itself, not nested paths. Hand it view models, not entities with fields the page must not
+  see. Formats that would build huge strings are ignored.
+- For a database, write the endpoint yourself from the request (its `Columns`, `Sorts`, `SearchText`
+  and each column's `FilterText` and `FilterDates`) and send back the same response: the page's
+  `Rows` (one cell per column, in the form above), `TotalCount`, `FilteredCount`, `PageIndex`, and
+  `Groups` while grouped. For a filter box, `ValuesFor` names the column, and the response holds its
+  `Values` (or `Dates` for a column of dates) instead of rows.
+- `grid.itemsSource` can also be a function `(request) => response` (or a promise of one), for a
+  transport of your own. MVC's antiforgery token on the page is sent as the `RequestVerificationToken`
+  header.
+- The grid is `aria-busy` while a page is on its way (its rows dim after a moment), a newer request
+  wins over one still on its way, and a failed request raises `jp-load-failed` and keeps the rows shown.
+
+### Attributes
+
+| Attribute | Default | Description |
+| --- | --- | --- |
+| `items` | | the rows, any `IEnumerable` (`ItemsSource`) |
+| `items-source-url` | | server mode: the address the grid posts its requests to |
+| `search-text` | | the search when the page loads |
+| `search-box` | | the id of a text box whose text is the search (`SearchText` bound to it) |
+| `search-delay` | 300 | milliseconds after the last change to the search or a filter before the rows are filtered |
+| `filter-list-limit` | 20 | a filter box lists the values to tick when the column has at most this many; 0 never |
+| `group-member-path` | | the binding of the column to group by |
+| `page-size` | 0 | rows per page; 0 shows every row |
+| `page-index` | 0 | the page shown, from 0 |
+| `selected-index` | -1 | the selected row, among the rows shown |
+| `selection-mode` | `Single` | `Single`, `Extended` (Ctrl, Shift, Ctrl+A) or `None` |
+| `frozen-column-count` | 0 | columns on the left that stay when the others scroll sideways |
+| `height` | | height in pixels |
+| `can-user-sort-columns`, `can-user-resize-columns` | `true` | `false` turns header sorting or resizing off |
+| `highlight-foreground`, `highlight-cell-background` | | CSS colours of the search hits; `none` for none |
+
+| Column attribute | Description |
+| --- | --- |
+| `header`, `binding` | the header text and the property shown (a dotted path reads nested properties) |
+| `width` | a pixel width; `*` for the rest of the row |
+| `string-format` | a .NET format such as `N0` or `d`, or a composite one such as `{0} hp` |
+| `text-alignment` | `Right` for numbers, or `Center` |
+| `sort-direction` | `Ascending` or `Descending`: the order the rows start in |
+| `can-user-sort`, `can-user-resize` | `false` for this column |
+| `is-searchable` | `false` leaves the column out of the search (`false` by default on the check box column) |
+| `is-filterable` | `false` hides the funnel |
+| `filter-text` | the values of the header filter |
+| `filter-dates` | the days a column of dates must be one of (`IEnumerable<DateTime?>`; null for rows without a date) |
+| `true-text`, `false-text` | the check box column's texts of its values ("Yes", "No") |
+
+### Script
+
+`JetPack.jetpackGrid(elementOrId)` gives the grid's API:
+
+| Member | Description |
+| --- | --- |
+| `searchText` | get or set the search; follows the `search-box` both ways |
+| `groupMemberPath`, `pageSize`, `pageIndex`, `selectionMode` | get or set, as the attributes |
+| `sorts` | get or set the sort as `[{ binding, direction }]`, first column first (`SortDescriptions`) |
+| `pageCount`, `isPaging`, `isGrouped`, `isFiltered` | read only |
+| `filteredItemCount`, `totalItemCount` | rows left after the search and filters; rows in all |
+| `items` | get or set the rows. Setting takes plain objects keyed by the columns' bindings, which the grid formats in the page's culture, and leaves server mode. Reading gives such objects (`{ Make: "Volvo", Price: 41400, Registered: "2025-03-14" }`) |
+| `itemsSource` | get or set server mode: a URL, a function, or `null` for the rows in the page |
+| `selectedItem`, `selectedItems`, `selectedIndex` (set) | the selection |
+| `getFilterText(column)`, `setFilterText(column, text)`, `setFilterDates(column, days)` | a column's filter; a column is its binding, header or index |
+| `clearFilters(column?)` | clears one column's filter, or the search and every filter |
+| `applyFilters()` | filters at once instead of after `search-delay`, back to the first page |
+| `refresh()` | reads the rows again, keeping the page |
+| `getVisibleItems()` | the rows left after the search and filters, in the order shown; with paging every page's (in server mode only the page shown) |
+| `expandAllGroups()`, `collapseAllGroups()` | unfold or fold every group |
+
+| Event | `event.detail` |
+| --- | --- |
+| `jp-filtered` | `{ count, totalCount }` after the rows were filtered |
+| `jp-page-changed` | `{ pageIndex, pageCount }` when another page is shown |
+| `jp-selected-item-changed` | `{ oldValue, newValue }` (row objects, or `null`) |
+| `jp-sorting` | before a header click sorts; cancelable; `{ column, binding, direction }` |
+| `jp-sorted` | after it sorted; a list of `{ column, binding, direction }` |
+| `jp-load-failed` | server mode: `{ error }` when a request failed |
+
+```js
+const cars = JetPack.jetpackGrid('Cars');
+document.getElementById('Cars').addEventListener('jp-filtered', e => {
+    status.textContent = `Showing ${e.detail.count} of ${e.detail.totalCount} cars`;
+});
+groupBy.addEventListener('change', () => { cars.groupMemberPath = groupBy.value; });
+```
+
 ## Calendar
 
 ![Calendar](../screenshots/web/controls/calendar.png)

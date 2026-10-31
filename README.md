@@ -280,7 +280,8 @@ dotnet run --project samples/JetPack.Wpf.Samples.Portal
 
 `src/JetPack.Web` is the same look for web sites: CSS classes named after the controls, tokens
 generated from the WPF brushes, and a Razor tag helper per control with the WPF property names. It is
-the [JetPack.Web](https://www.nuget.org/packages/JetPack.Web) package (`dotnet add package JetPack.Web`).
+the [JetPack.Web](https://www.nuget.org/packages/JetPack.Web) package (`dotnet add package JetPack.Web`),
+and it has the JetPackGrid too (`<jp-jetpack-grid>`, with a server mode for paging on the server).
 `src/JetPack.Web.Demo` is the WPF demo as a web page, and `samples/JetPack.Web.Samples.Mvc` the admin
 sample as an ASP.NET Core MVC site (see [JetPack for the web](https://montago.github.io/JetPackTheme/web.html)):
 

@@ -17,7 +17,7 @@ one, behaviour in `jetpack.js`. Native elements get the look from their class (`
 | [Buttons](buttons.md) | `jp-button` and its variants, `jp-toggle-button`, `jp-repeat-button`, `jp-hyperlink`, `jp-split-button`, `jp-drop-down-button`, `jp-tile`, `jp-badged` |
 | [Text and input](inputs.md) | `jp-text-box`, `jp-password-box`, `jp-label`, validation, `jp-combo-box`, `jp-numeric-up-down`, `jp-auto-suggest-box`, `jp-search-combo-box`, `jp-date-picker`, `jp-time-picker`, `jp-color-picker` |
 | [Selection](selection.md) | `jp-check-box`, `jp-radio-button`, `jp-toggle-switch`, `jp-slider`, `jp-range-slider`, `jp-rating` |
-| [Lists and data](lists.md) | `jp-list-box`, `jp-list-view`, `jp-tree-view`, `jp-data-grid`, `jp-calendar`, `jp-scroll-viewer` |
+| [Lists and data](lists.md) | `jp-list-box`, `jp-list-view`, `jp-tree-view`, `jp-data-grid`, `jp-jetpack-grid`, `jp-calendar`, `jp-scroll-viewer` |
 | [Navigation and layout](navigation.md) | `jp-tab-control` (three looks), `jp-hamburger-menu`, `jp-expander`, `jp-accordion`, `jp-group-box`, `jp-menu`, `jp-context-menu`, `jp-tool-bar`, `jp-status-bar`, `jp-grid-splitter`, `jp-separator`, tool tips |
 | [Progress and status](status.md) | `jp-progress-bar`, `jp-progress-ring`, `jp-busy-indicator`, `jp-info-bar` |
 
