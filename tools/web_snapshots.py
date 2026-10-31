@@ -25,7 +25,6 @@ import shutil
 import subprocess
 import sys
 import tempfile
-import threading
 import time
 import urllib.request
 
@@ -61,11 +60,30 @@ def wait_for(url, seconds=90):
     raise TimeoutError(url)
 
 
-def edge_shot(browser, profile, url, raw, size='1280,900'):
-    shutil.rmtree(profile, ignore_errors=True)
+def edge_shot(browser, scratch, url, raw, size='1280,900'):
+    # A fresh profile for every picture: an Edge that is still shutting down keeps its profile, and a
+    # new Edge on the same profile hands the URL to it and quits without taking a picture. The old
+    # picture is deleted first, and the new one waited for, so a stale or half-written file is never used.
+    if os.path.exists(raw):
+        os.remove(raw)
+    profile = tempfile.mkdtemp(prefix='edge-profile-', dir=scratch)
     subprocess.run([browser, '--headless=new', '--disable-gpu', '--force-device-scale-factor=1', '--user-data-dir=' + profile,
                     '--window-size=' + size, '--virtual-time-budget=5000', '--screenshot=' + raw, url],
                    capture_output=True, timeout=120)
+    wait_for_file(raw)
+    shutil.rmtree(profile, ignore_errors=True)
+
+
+def wait_for_file(path, seconds=60):
+    """Until the picture exists and its size stands still (Edge may write it after its process exits)."""
+    end, last = time.time() + seconds, -1
+    while time.time() < end:
+        size = os.path.getsize(path) if os.path.exists(path) else -1
+        if size > 0 and size == last:
+            return
+        last = size
+        time.sleep(0.5)
+    raise RuntimeError(f'Edge did not write {path}')
 
 
 def cut_out(raw):
@@ -114,11 +132,11 @@ def gallery(browser, base, scratch, added, changed):
     def one(name):
         raw = os.path.join(scratch, 'shots', 'web', 'controls', name + '.png')
         os.makedirs(os.path.dirname(raw), exist_ok=True)
-        edge_shot(browser, os.path.join(scratch, f'edge-profile-{threading.get_ident()}'), f'{base}Demo/Gallery?shot={name}', raw)
+        edge_shot(browser, scratch, f'{base}Demo/Gallery?shot={name}', raw)
         cut_out(raw)
         return name, raw
 
-    # four Edge instances at a time, each with its own profile
+    # four Edge instances at a time
     with concurrent.futures.ThreadPoolExecutor(4) as pool:
         for name, raw in sorted(pool.map(one, names)):
             copy_if_changed(raw, os.path.join('web', 'controls', name + '.png'), added, changed)
@@ -146,7 +164,7 @@ def main():
             for path, target in pages:
                 raw = os.path.join(args.scratch, 'shots', target)
                 os.makedirs(os.path.dirname(raw), exist_ok=True)
-                edge_shot(browser, os.path.join(args.scratch, 'edge-profile'), base + path, raw)
+                edge_shot(browser, args.scratch, base + path, raw)
                 copy_if_changed(raw, target, added, changed)
             if name == 'JetPack.Web.Demo':
                 gallery(browser, base, args.scratch, added, changed)
