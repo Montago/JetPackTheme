@@ -32,6 +32,7 @@ public static class AccentGenerator
             ["JetPack.Brushes.Accent.Pressed"] = Vertical((Shade(-0.06), 0.31), (Shade(-0.09), 0.78)),
             ["JetPack.Brushes.Accent.Highlight"] = Freeze(new SolidColorBrush(highlight)),
             ["JetPack.Brushes.Accent.Solid"] = Freeze(new SolidColorBrush(solid)),
+            ["JetPack.Brushes.Accent.Selection.MouseOver"] = Freeze(new SolidColorBrush(Color.FromArgb(0x40, solid.R, solid.G, solid.B))),
             ["JetPack.Brushes.Accent.Link"] = Freeze(new SolidColorBrush(Shade(0.16, fixedS: 1))),
             ["JetPack.Brushes.Accent.Foreground"] = Brushes.White,
             ["JetPack.Brushes.Accent.Button.Normal"] = Vertical((Shade(0.05, 0.9), 0.176), (Shade(-0.04), 0.894)),

@@ -78,7 +78,11 @@ public class JetPackGridColumn : DataGridTextColumn
     private static readonly DependencyProperty ColumnProperty = DependencyProperty.RegisterAttached(
         "Column", typeof(JetPackGridColumn), typeof(JetPackGridColumn), new PropertyMetadata(null));
 
-    private static readonly DependencyProperty IsMarkedProperty = DependencyProperty.RegisterAttached(
+    // The text a cell shows in the thumb-drag preview (ShowPreview), until RestoreText.
+    private static readonly DependencyProperty PreviewTextProperty = DependencyProperty.RegisterAttached(
+        "PreviewText", typeof(string), typeof(JetPackGridColumn), new PropertyMetadata(null));
+
+    private static readonly DependencyProperty IsMarkedProperty =DependencyProperty.RegisterAttached(
         "IsMarked", typeof(bool), typeof(JetPackGridColumn), new PropertyMetadata(false));
 
     /// <summary>The grid's <see cref="JetPackGrid.EnableLightweightTextRendering"/> changed: the cells get a new element.</summary>
@@ -161,7 +165,15 @@ public class JetPackGridColumn : DataGridTextColumn
         if (d is FrameworkElement element && element.GetValue(ColumnProperty) is JetPackGridColumn column
             && element.GetValue(WordsProperty) is IReadOnlyList<string> { Count: > 0 })
         {
-            column.UpdateText(element);
+            // A cell in the thumb-drag preview keeps the previewed text.
+            if (element.GetValue(PreviewTextProperty) is string preview)
+            {
+                column.ShowText(element, preview, measure: false);
+            }
+            else
+            {
+                column.UpdateText(element);
+            }
         }
     }
 
@@ -175,6 +187,7 @@ public class JetPackGridColumn : DataGridTextColumn
         {
             return false;
         }
+        element.SetValue(PreviewTextProperty, text);
         ShowText(element, text, measure: false);
         return true;
     }
@@ -184,6 +197,7 @@ public class JetPackGridColumn : DataGridTextColumn
     {
         if (element.GetValue(ColumnProperty) == this)
         {
+            element.ClearValue(PreviewTextProperty);
             UpdateText(element);
         }
     }

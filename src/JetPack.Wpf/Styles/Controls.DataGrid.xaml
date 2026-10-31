@@ -160,7 +160,7 @@
                             <Setter TargetName="DGR_Details" Property="SelectiveScrollingGrid.SelectiveScrollingOrientation" Value="Vertical" />
                         </Trigger>
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="DGR_Border" Property="Background" Value="{DynamicResource JetPack.Brushes.Selection.MouseOver}" />
+                            <Setter TargetName="DGR_Border" Property="Background" Value="{DynamicResource JetPack.Brushes.Accent.Selection.MouseOver}" />
                         </Trigger>
                         <Trigger Property="IsSelected" Value="True">
                             <Setter TargetName="DGR_Border" Property="Background" Value="{DynamicResource JetPack.Brushes.Accent.Selection}" />

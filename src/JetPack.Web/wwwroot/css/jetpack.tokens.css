@@ -160,6 +160,7 @@
   --jp-accent-pressed: linear-gradient(#6D9000 31%, #5A8100 78%);
   --jp-accent-highlight: #C2DF00;
   --jp-accent-solid: #75A20A;
+  --jp-accent-selection-mouse-over: #75A20A40;
   --jp-accent-link: #D0FF00;
   --jp-accent-foreground: #FFFFFF;
   --jp-accent-button-normal: linear-gradient(#A0BB0E 17.6%, #6D9700 89.4%);
@@ -181,6 +182,7 @@
   --jp-accent-pressed: linear-gradient(#DD870D 0%, #CE5300 100%);
   --jp-accent-highlight: #FFC600;
   --jp-accent-solid: #FE770A;
+  --jp-accent-selection-mouse-over: #FE770A40;
   --jp-accent-link: #FFC600;
   --jp-accent-foreground: #FFFFFF;
   --jp-accent-button-normal: linear-gradient(#FFB400 16.9%, #FFA700 48.2%, #FF7600 86.4%);
@@ -202,6 +204,7 @@
   --jp-accent-pressed: linear-gradient(#1AA0EC 31%, #0072BE 78%);
   --jp-accent-highlight: #8DDBFF;
   --jp-accent-solid: #148CD1;
+  --jp-accent-selection-mouse-over: #148CD140;
   --jp-accent-link: #8DDBFF;
   --jp-accent-foreground: #FFFFFF;
   --jp-accent-button-normal: linear-gradient(#99C7E2 14%, #87BDDD 37.5%, #4599CA 87.1%);

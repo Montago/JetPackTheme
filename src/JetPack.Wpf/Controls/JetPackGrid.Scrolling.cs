@@ -323,6 +323,11 @@ public partial class JetPackGrid
                 return;
             }
             styled.Add(row);
+            // Search hits as the previewed item's row shows them: a selected row takes the accent and the grey
+            // away (JetPack.Styles.DataGridRow), so a row that is selected but shows another item gets them
+            // back, and the other way round.
+            row.SetValue(HighlightForegroundProperty, isSelected ? null : grid.HighlightForeground);
+            row.SetValue(HighlightCellBackgroundProperty, isSelected ? null : grid.HighlightCellBackground);
             if (isSelected)
             {
                 border.SetResourceReference(Border.BackgroundProperty, "JetPack.Brushes.Accent.Selection");
@@ -374,6 +379,8 @@ public partial class JetPackGrid
             {
                 (row.Template?.FindName("DGR_Border", row) as Border)?.ClearValue(Border.BackgroundProperty);
                 row.ClearValue(ForegroundProperty);
+                row.ClearValue(HighlightForegroundProperty);
+                row.ClearValue(HighlightCellBackgroundProperty);
                 foreach (var (column, _) in columns)
                 {
                     (column.GetCellContent(row)?.Parent as DataGridCell)?.ClearValue(ForegroundProperty);
