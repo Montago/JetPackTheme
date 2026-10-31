@@ -24,6 +24,10 @@ sets up controls added later.
   DataGrid          table.jp-data-grid: header click sorts (Shift adds a column), header edge resizes;
                     data-jp-sort="false", data-jp-resize="false", data-sort-value on a cell
   tr[data-href]     a data grid row that opens a page when clicked
+  JetPackGrid       .jp-jetpack-grid: search, header filters, sorting, groups and paging in the browser,
+                    or on the server with data-jp-items-source-url (server mode);
+                    JetPack.jetpackGrid(el or id) → { searchText, groupMemberPath, pageSize, pageIndex,
+                    items, itemsSource, selectedItem, clearFilters(), getVisibleItems(), refresh(), … }
 
 Controls raise the usual input and change events; value controls (slider, pickers, combo boxes)
 also raise "jp-change" with the new value in event.detail. A data grid raises "jp-sorting"
@@ -680,6 +684,1230 @@ also raise "jp-change" with the new value in event.detail. A data grid raises "j
         resize(i, Math.max(...cells.map(contentWidth)));
       });
     });
+  }
+
+  /* ============================================================ JetPackGrid */
+  /*
+  The data grid for lists of up to a few thousand rows (jp:JetPackGrid). <jp-jetpack-grid> writes the
+  header and the rows as JSON in a script element; this draws the rows of the page shown. A word search
+  across the columns marks its hits, every header has a value filter (a tick list, a tree of dates, or
+  typed values and ranges), a header click sorts ascending, descending and back to the source order
+  (Shift adds a column), GroupMemberPath groups the rows under headers that fold, and PageSize shows a
+  pager. JetPack.jetpackGrid(element or id) gives the API; the grid raises "jp-filtered" ({ count,
+  totalCount }), "jp-page-changed" ({ pageIndex, pageCount }), "jp-selected-item-changed" ({ oldValue,
+  newValue }), "jp-sorting" and "jp-sorted".
+
+  Server mode (items-source-url, or grid.itemsSource = url or function): the grid posts what it shows
+  (page, page size, search, filters, sort, groups and its columns' bindings and formats: a
+  JetPackGridRequest) and draws the page the server answers with (a JetPackGridResponse; see
+  JetPackGridServer.Query). A filter box asks for its column's values the same way, with valuesFor.
+  The grid is aria-busy while a page is on its way and raises "jp-load-failed" ({ error }) when it fails.
+  */
+  const GRID_HINT = 'Tick values or type them, separated by spaces or commas. Quote values with spaces; * matches any text. ' +
+    'Numbers and dates: &gt;100, &lt;=2019, 2020-01-01..2020-06-30.';
+  const DAY_MS = 86400000;
+
+  /* Splits on spaces, commas and semicolons; double quotes keep a value with spaces together. With
+     joinRanges (the values of a header filter), "> 5" and "2019 .. 2021" stay one value. */
+  function gridTokens(text, joinRanges) {
+    const tokens = [];
+    if (!text || !text.trim()) return tokens;
+    const has = t => tokens.some(x => x.toLowerCase() === t.toLowerCase());
+    let current = '', quoted = false, pending = null;
+    const flush = () => {
+      let token = current.trim();
+      current = '';
+      if (!token) return;
+      if (joinRanges) {
+        if (token === '..' && pending === null && tokens.length > 0) {
+          pending = tokens.pop() + token;
+          return;
+        }
+        if (token === '>' || token === '<' || token === '>=' || token === '<=') {
+          pending = (pending ?? '') + token;
+          return;
+        }
+        if (pending !== null) {
+          token = pending + token;
+          pending = null;
+        }
+      }
+      if (!has(token)) tokens.push(token);
+    };
+    for (const ch of text) {
+      if (ch === '"') {
+        flush();
+        quoted = !quoted;
+      } else if (!quoted && (/\s/.test(ch) || ch === ',' || ch === ';')) {
+        flush();
+      } else {
+        current += ch;
+      }
+    }
+    flush();
+    if (pending !== null && !has(pending)) tokens.push(pending);
+    return tokens;
+  }
+
+  /* The separators and the order of day, month and year of a culture, for typed numbers and dates */
+  function gridCulture(name) {
+    let locale;
+    try { locale = Intl.getCanonicalLocales(name || [])[0]; } catch { locale = undefined; }
+    const parts = new Intl.NumberFormat(locale).formatToParts(12345.6);
+    const order = new Intl.DateTimeFormat(locale, { timeZone: 'UTC' }).formatToParts(Date.UTC(2001, 1, 3))
+      .filter(p => p.type === 'day' || p.type === 'month' || p.type === 'year').map(p => p.type[0]).join('');
+    return {
+      locale,
+      group: parts.find(p => p.type === 'group')?.value ?? ',',
+      decimal: parts.find(p => p.type === 'decimal')?.value ?? '.',
+      order: order.length === 3 ? order : 'mdy',
+      numbers: new Intl.NumberFormat(locale),
+      collator: new Intl.Collator(locale),
+    };
+  }
+
+  function parseGridNumber(text, c) {
+    let s = text.replace(/\s/g, '').split(c.group).join('');
+    if (c.decimal !== '.') s = s.replace(c.decimal, '.');
+    return /^[+-]?(\d+\.?\d*|\.\d+)$/.test(s) ? Number(s) : NaN;
+  }
+
+  /* "2020-03-14", "2020-03-14T10:30" as milliseconds in UTC (the time zone plays no part) */
+  function parseIsoMs(s) {
+    const m = /^(\d{4})-(\d{1,2})-(\d{1,2})(?:[T ](\d{1,2}):(\d{2})(?::(\d{2}))?)?$/.exec(s);
+    return m ? Date.UTC(+m[1], m[2] - 1, +m[3], +(m[4] || 0), +(m[5] || 0), +(m[6] || 0)) : NaN;
+  }
+
+  /* A typed date: year first, or in the culture's order; { ms, hasTime } or null */
+  function parseGridDate(text, c) {
+    const m = /^(\d{1,4})[-/.](\d{1,2})[-/.](\d{1,4})\.?(?:T(\d{1,2}):(\d{2})(?::(\d{2}))?)?$/.exec(text);
+    if (!m) return null;
+    let y, mo, d;
+    if (m[1].length === 4) {
+      [y, mo, d] = [+m[1], +m[2], +m[3]];
+    } else {
+      const at = {};
+      [...c.order].forEach((k, i) => { at[k] = +m[i + 1]; });
+      [y, mo, d] = [at.y, at.m, at.d];
+      if (y < 100) y += 2000;
+    }
+    const ms = Date.UTC(y, mo - 1, d, +(m[4] || 0), +(m[5] || 0), +(m[6] || 0));
+    const date = new Date(ms);
+    return date.getUTCMonth() === mo - 1 && date.getUTCDate() === d ? { ms, hasTime: m[4] !== undefined } : null;
+  }
+
+  /* One end of a range, read both as a number and as a date (whichever the column's values are). A year
+     or a month stands for all of it and a date without a time for the whole day, so "<=2019" takes in
+     31 December 2019 and ">2019" starts on 1 January 2020. */
+  function parseGridBound(text, c) {
+    const number = parseGridNumber(text, c);
+    let start = null, end = null, m;
+    if ((m = /^(\d{4})$/.exec(text)) && +m[1] >= 1) {
+      start = Date.UTC(+m[1], 0, 1);
+      end = Date.UTC(+m[1] + 1, 0, 1);
+    } else if ((m = /^(\d{4})-(\d{1,2})$/.exec(text)) && +m[2] >= 1 && +m[2] <= 12) {
+      start = Date.UTC(+m[1], m[2] - 1, 1);
+      end = Date.UTC(+m[1], +m[2], 1);
+    } else {
+      const date = parseGridDate(text, c);
+      if (date) {
+        start = date.ms;
+        end = date.hasTime ? null : date.ms + DAY_MS;
+      }
+    }
+    return isNaN(number) && start === null ? null : { number: isNaN(number) ? null : number, start, end };
+  }
+
+  /* ">5", ">=5", "<5", "<=5" and "a..b"; null for any other value */
+  function parseGridRange(token, c) {
+    let low = null, high = null, above = false, below = false;
+    if (token.startsWith('>=')) low = token.slice(2);
+    else if (token.startsWith('<=')) high = token.slice(2);
+    else if (token.startsWith('>')) { low = token.slice(1); above = true; }
+    else if (token.startsWith('<')) { high = token.slice(1); below = true; }
+    else {
+      const dots = token.indexOf('..');
+      if (dots < 0) return null;
+      low = token.slice(0, dots);
+      high = token.slice(dots + 2);
+    }
+    low = low?.trim();
+    high = high?.trim();
+    if (!low && !high) return null;
+    let from = null, to = null;
+    if ((low && !(from = parseGridBound(low, c))) || (high && !(to = parseGridBound(high, c)))) return null;
+    return { from, above, to, below };
+  }
+
+  /* Whether a value is in the range; undefined when the range does not apply to it (text, or a bound
+     that is no date for a date), and the value is then matched as text */
+  function inGridRange(range, value, type) {
+    if (value == null) return false;
+    let v, read;
+    if (type === 'number' && typeof value === 'number') {
+      v = value;
+      read = b => b.number === null ? null : { low: b.number, high: b.number, inclusive: true };
+    } else if (type === 'date' && !isNaN(v = parseIsoMs(String(value)))) {
+      read = b => b.start === null ? null : { low: b.start, high: b.end ?? b.start, inclusive: b.end === null };
+    } else {
+      return undefined;
+    }
+    let lo = null, hi = null;
+    if ((range.from && !(lo = read(range.from))) || (range.to && !(hi = read(range.to)))) return undefined;
+    if (lo) {
+      const d = v - (range.above ? lo.high : lo.low);
+      if (d < 0 || (range.above && d === 0 && lo.inclusive)) return false;
+    }
+    if (hi) {
+      const d = v - (range.below ? hi.low : hi.high);
+      if (range.below ? d >= 0 : d > 0 || (d === 0 && !hi.inclusive)) return false;
+    }
+    return true;
+  }
+
+  /* A header filter value: text that must equal the cell (ignoring case), * for any text, or a range */
+  function gridFilterValue(token, c) {
+    const anyStart = token.startsWith('*');
+    const anyEnd = token.endsWith('*') && token.length > 1;
+    const text = token.replace(/^\*+|\*+$/g, '').toLowerCase();
+    return {
+      range: parseGridRange(token, c),
+      matches(cell) {
+        const t = cell.toLowerCase();
+        if (!text) return t.length > 0;
+        return anyStart && anyEnd ? t.includes(text) : anyStart ? t.endsWith(text) : anyEnd ? t.startsWith(text) : t === text;
+      },
+    };
+  }
+
+  /* The cell text with the search words wrapped in marks; null when none is in it */
+  function markGridHits(text, words) {
+    const lower = text.toLowerCase();
+    const ranges = [];
+    for (const w of words) {
+      for (let i = lower.indexOf(w); i >= 0; i = lower.indexOf(w, i + w.length)) ranges.push([i, i + w.length]);
+    }
+    if (ranges.length === 0) return null;
+    ranges.sort((a, b) => a[0] - b[0]);
+    let html = '', at = 0;
+    for (const [s, e] of ranges) {
+      if (e <= at) continue;
+      const from = Math.max(s, at);
+      html += escapeHtml(text.slice(at, from)) + '<mark class="jp-jetpack-grid__hit">' + escapeHtml(text.slice(from, e)) + '</mark>';
+      at = e;
+    }
+    return html + escapeHtml(text.slice(at));
+  }
+
+  /* ---------------------------------------------------------- date tree */
+  /* The years, months and days of a column of dates with their row counts, under decades when the years
+     span ten or more, and "(blank)" last. A node is ticked (true), not (false) or partly (null). */
+  function buildDateTree(days, blanks, c) {
+    const monthName = new Intl.DateTimeFormat(c.locale, { month: 'long', timeZone: 'UTC' });
+    const node = (level, day, text, count, children = []) => {
+      const n = { level, day, text, count, children, checked: false, expanded: false, parent: null };
+      children.forEach(ch => { ch.parent = n; });
+      return n;
+    };
+    const years = [];
+    for (const day of [...days.keys()].sort()) {
+      const y = +day.slice(0, 4), m = +day.slice(5, 7);
+      let year = years[years.length - 1];
+      if (year?.y !== y) years.push(year = { y, months: [] });
+      let month = year.months[year.months.length - 1];
+      if (month?.m !== m) year.months.push(month = { m, days: [] });
+      month.days.push(node('day', day, String(+day.slice(8, 10)), days.get(day)));
+    }
+    const sum = nodes => nodes.reduce((s, n) => s + n.count, 0);
+    const yearNodes = years.map(year => {
+      const months = year.months.map(month => {
+        const name = monthName.format(Date.UTC(2000, month.m - 1, 1));
+        return node('month', null, name.charAt(0).toLocaleUpperCase(c.locale) + name.slice(1), sum(month.days), month.days);
+      });
+      const n = node('year', null, String(year.y), sum(months), months);
+      n.y = year.y;
+      return n;
+    });
+    let top = yearNodes;
+    if (yearNodes.length > 1 && yearNodes[yearNodes.length - 1].y - yearNodes[0].y >= 10) {
+      const decades = new Map();
+      yearNodes.forEach(y => {
+        const d = Math.floor(y.y / 10) * 10;
+        if (!decades.has(d)) decades.set(d, []);
+        decades.get(d).push(y);
+      });
+      top = [...decades].map(([d, ys]) => node('decade', null, `${d}–${d + 9}`, sum(ys), ys));
+    }
+    /* a single year (or decade) has nothing to choose between; show what is in it */
+    if (top.length === 1) top[0].expanded = true;
+    if (blanks > 0) top.push(node('blank', null, '(blank)', blanks));
+    return top;
+  }
+
+  const combineTicks = states => states.every(s => s === states[0]) ? states[0] : null;
+
+  /* Ticks exactly the days in the list (null ticks "(blank)") */
+  function tickDateTree(nodes, dates) {
+    const days = new Set((dates ?? []).filter(d => d != null).map(d => String(d).slice(0, 10)));
+    const blanks = (dates ?? []).includes(null);
+    const tick = n => {
+      n.checked = n.level === 'day' ? days.has(n.day) : n.level === 'blank' ? blanks : combineTicks(n.children.map(tick));
+      return n.checked;
+    };
+    nodes.forEach(tick);
+  }
+
+  function tickedDates(nodes, out = []) {
+    for (const n of nodes) {
+      if (n.checked === false) continue;
+      if (n.level === 'day') out.push(n.day);
+      else if (n.level === 'blank') out.push(null);
+      else tickedDates(n.children, out);
+    }
+    return out;
+  }
+
+  function setDateTick(node, value) {
+    const all = n => { n.checked = value; n.children.forEach(all); };
+    all(node);
+    for (let p = node.parent; p; p = p.parent) p.checked = combineTicks(p.children.map(ch => ch.checked));
+  }
+
+  /* Opens every node with only some of its days ticked, so the tree shows what the filter holds */
+  function expandPartlyTicked(nodes) {
+    nodes.forEach(n => {
+      if (n.checked === null) {
+        n.expanded = true;
+        expandPartlyTicked(n.children);
+      }
+    });
+  }
+
+  /* -------------------------------------------------------------- the grid */
+  function setUpJetPackGrid(grid) {
+    const viewport = grid.querySelector('.jp-jetpack-grid__viewport');
+    const table = viewport?.querySelector('table');
+    const headRow = table?.tHead?.rows[0];
+    if (!headRow) return;
+    const body = table.tBodies[0] ?? table.createTBody();
+    const ds = grid.dataset;
+    const c = gridCulture(ds.jpCulture || root.lang);
+    const fmt = n => c.numbers.format(n);
+
+    const columns = [...headRow.cells].map((th, index) => ({
+      th,
+      index,
+      header: th.textContent.trim(),
+      binding: th.dataset.binding ?? '',
+      type: th.dataset.type ?? null,
+      align: th.dataset.align ?? (th.hasAttribute('data-check-box') ? 'center' : ''),
+      width: Number(th.dataset.width) > 0 ? Number(th.dataset.width) : null,
+      checkBox: th.hasAttribute('data-check-box'),
+      trueText: th.dataset.trueText ?? 'Yes',
+      falseText: th.dataset.falseText ?? 'No',
+      searchable: th.dataset.searchable !== 'false',
+      filterable: th.dataset.filterable !== 'false',
+      sortable: ds.jpSort !== 'false' && th.dataset.jpSort !== 'false',
+      resizable: ds.jpResize !== 'false' && th.dataset.jpResize !== 'false',
+      filterText: th.dataset.filterText ?? '',
+      filterDates: th.dataset.filterDates ? JSON.parse(th.dataset.filterDates) : null,
+      stringFormat: th.dataset.stringFormat ?? null,
+    }));
+
+    /* ---- rows: { i, t: texts, v: values }, plus the app's object when the items came from script */
+    let rows = [];
+    const readPath = (obj, path) => path ? path.split('.').reduce((v, name) => v?.[name], obj) : obj;
+    const toRow = (cells, i, source) => {
+      const t = [], v = [];
+      columns.forEach((col, k) => {
+        const cell = cells[k];
+        if (Array.isArray(cell)) { t.push(String(cell[0] ?? '')); v.push(cell[1] ?? null); }
+        else if (cell == null) { t.push(''); v.push(null); }
+        else if (typeof cell === 'boolean') { t.push(cell ? col.trueText : col.falseText); v.push(cell); }
+        else { t.push(String(cell)); v.push(cell); }
+      });
+      return { i, t, v, lower: null, item: null, source };
+    };
+    /* An object of the app's: numbers and dates are shown in the culture's format */
+    const fromObject = (obj, i) => toRow(columns.map(col => {
+      const value = readPath(obj, col.binding);
+      if (value == null) return null;
+      if (col.type === 'bool') return Boolean(value);
+      if (value instanceof Date) return [value.toLocaleDateString(c.locale), value.toISOString().slice(0, 19)];
+      if (col.type === 'date' && !isNaN(parseIsoMs(String(value)))) {
+        return [new Date(parseIsoMs(String(value))).toLocaleDateString(c.locale, { timeZone: 'UTC' }), String(value)];
+      }
+      if (typeof value === 'number') return col.type === 'number' ? [fmt(value), value] : String(value);
+      return String(value);
+    }), i, obj);
+    const inferTypes = list => columns.forEach(col => {
+      if (col.type) return;
+      const value = list.map(obj => readPath(obj, col.binding)).find(v => v != null);
+      col.type = col.checkBox || typeof value === 'boolean' ? 'bool' : typeof value === 'number' ? 'number'
+        : value instanceof Date || (typeof value === 'string' && /^\d{4}-\d{2}-\d{2}/.test(value)) ? 'date' : 'text';
+    });
+    const setRows = list => {
+      list = Array.isArray(list) ? list : [];
+      if (list.length && !Array.isArray(list[0])) inferTypes(list);
+      columns.forEach(col => { col.type ??= col.checkBox ? 'bool' : 'text'; });
+      rows = list.map((entry, i) => Array.isArray(entry) ? toRow(entry, i) : fromObject(entry, i));
+    };
+    const script = grid.querySelector('script.jp-jetpack-grid__items');
+    let data = [];
+    try { data = JSON.parse(script?.textContent || '[]'); } catch { /* no rows */ }
+    setRows(data);
+    const itemOf = row => row ? row.source ?? (row.item ??= Object.fromEntries(
+      columns.filter(col => col.binding).map(col => [col.binding, row.v[col.index]]))) : null;
+    const lowerOf = row => row.lower ??= row.t.map(s => s.toLowerCase());
+
+    /* ---- state */
+    let searchText = ds.jpSearchText ?? '';
+    let words = [];
+    const delay = Number(ds.jpSearchDelay ?? 300);
+    const listLimit = Number(ds.jpFilterListLimit ?? 20);
+    let groupBy = ds.jpGroupMemberPath ?? '';
+    let pageSize = Math.max(0, Number(ds.jpPageSize) || 0);
+    let pageIndex = Math.max(0, Number(ds.jpPageIndex) || 0);
+    let pageCount = 1;
+    let selectionMode = (ds.jpSelection ?? 'single').toLowerCase();
+    const frozenCount = Number(ds.jpFrozenColumnCount) || 0;
+    let sorts = columns.filter(col => col.th.hasAttribute('aria-sort')).map(col => ({ col, dir: col.th.getAttribute('aria-sort') }));
+    let ordered = [];     // the rows that pass, in the order shown
+    let runs = null;      // while grouped: the groups as runs of `ordered`
+    let page = { rows: [], groups: null, index: 0, start: 0, filteredCount: 0 };  // the page shown
+    let entries = [];     // what the page shows: { row, alt } and { group, count, expanded }
+    let filtered = false;
+    let timer = 0;
+    /* server mode: a URL to post requests to, or a function (query) => response (or a promise of one) */
+    let itemsSource = ds.jpItemsSourceUrl || null;
+    let localRows = rows;
+    let totalCount = rows.length;
+    let requestId = 0;
+    let shownPage = -1;
+    let pendingSelectedIndex = -1;
+    const folded = new Set();
+    const selected = new Set();
+    let current = null, anchor = null, lastSelected = null;
+
+    /* ---- header: label, sort arrow, funnel and grip; the column widths in a colgroup */
+    columns.forEach(col => {
+      const th = col.th;
+      th.innerHTML = `<div class="jp-jetpack-grid__head"><span class="jp-jetpack-grid__label">${th.innerHTML}</span>` +
+        '<span class="jp-jetpack-grid__sort" aria-hidden="true"></span>' +
+        (col.filterable ? `<button type="button" class="jp-jetpack-grid__filter-button" tabindex="-1" aria-haspopup="dialog" aria-expanded="false" aria-label="Filter ${escapeHtml(col.header)}" data-jp-tool-tip="Filter"></button>` : '') +
+        '</div>' + (col.resizable ? '<span class="jp-jetpack-grid__resizer" aria-hidden="true"></span>' : '');
+      if (col.sortable && col.binding) th.classList.add('is-sortable');
+      if (col.align === 'center') th.style.textAlign = 'center';
+      col.button = th.querySelector('.jp-jetpack-grid__filter-button');
+    });
+    const colgroup = document.createElement('colgroup');
+    columns.forEach(col => {
+      col.col = document.createElement('col');
+      if (col.width) col.col.style.width = col.width + 'px';
+      colgroup.append(col.col);
+    });
+    table.prepend(colgroup);
+    /* Without a star column, an empty header after the last one takes the room that is left, as the
+       filler header of a WPF DataGrid does */
+    let filler = null;
+    const ensureFiller = () => {
+      if (filler || columns.some(col => !col.col.style.width)) return;
+      filler = document.createElement('th');
+      filler.className = 'jp-jetpack-grid__filler';
+      filler.setAttribute('aria-hidden', 'true');
+      headRow.append(filler);
+      colgroup.append(document.createElement('col'));
+    };
+    ensureFiller();
+    const layout = () => {
+      table.style.minWidth = columns.reduce((sum, col) => sum + (parseFloat(col.col.style.width) || 60), 0) + 'px';
+      let left = 0;
+      columns.forEach((col, k) => {
+        col.left = k < frozenCount ? left : null;
+        col.th.classList.toggle('is-frozen', col.left !== null);
+        col.th.style.left = col.left !== null ? col.left + 'px' : '';
+        if (col.left !== null) left += col.th.offsetWidth;
+      });
+    };
+    layout();
+
+    const updateHeaders = () => columns.forEach(col => {
+      const sort = sorts.find(s => s.col === col);
+      if (sort) col.th.setAttribute('aria-sort', sort.dir); else col.th.removeAttribute('aria-sort');
+      col.th.classList.toggle('has-filter', hasFilter(col));
+    });
+    const hasFilter = col => gridTokens(col.filterText, true).length > 0 || (col.filterDates?.length ?? 0) > 0;
+
+    /* ---- pager */
+    const pager = document.createElement('div');
+    pager.className = 'jp-jetpack-grid__pager';
+    pager.hidden = true;
+    const pageButton = (name, label) =>
+      `<button type="button" class="jp-jetpack-grid__pager-button" data-page="${name}" aria-label="${label}" data-jp-tool-tip="${label}"></button>`;
+    pager.innerHTML = pageButton('first', 'First page') + pageButton('previous', 'Previous page') +
+      '<span class="jp-jetpack-grid__page"></span>' + pageButton('next', 'Next page') + pageButton('last', 'Last page') +
+      '<span class="jp-jetpack-grid__range"></span>';
+    viewport.after(pager);
+    pager.addEventListener('click', e => {
+      const page = e.target.closest('[data-page]')?.dataset.page;
+      if (!page) return;
+      showPage({ first: 0, previous: pageIndex - 1, next: pageIndex + 1, last: pageCount - 1 }[page], true);
+    });
+
+    /* ---- filtering, sorting, grouping */
+    const compareValues = (col, a, b) => {
+      if (a === b) return 0;
+      if (a == null) return -1;
+      if (b == null) return 1;
+      if (typeof a === 'number' && typeof b === 'number') return a - b;
+      if (typeof a === 'boolean' || typeof b === 'boolean') return Number(a) - Number(b);
+      if (col.type === 'date') return a < b ? -1 : a > b ? 1 : 0;
+      return c.collator.compare(String(a), String(b));
+    };
+    const compareRows = (x, y) => {
+      for (const s of sorts) {
+        const r = compareValues(s.col, x.v[s.col.index], y.v[s.col.index]);
+        if (r) return s.dir === 'descending' ? -r : r;
+      }
+      return x.i - y.i;
+    };
+    const groupColumn = () => groupBy ? columns.find(col => col.binding.toLowerCase() === groupBy.toLowerCase()) ?? null : null;
+
+    function refilter(keepPage) {
+      clearTimeout(timer);
+      timer = 0;
+      words = gridTokens(searchText, false).map(w => w.toLowerCase());
+      if (itemsSource) {
+        filtered = words.length > 0 || columns.some(col => col.filterable && hasFilter(col));
+        updateHeaders();
+        load(keepPage ? pageIndex : 0, !keepPage, true);
+        return;
+      }
+      const searched = words.length ? columns.filter(col => col.searchable) : [];
+      const filters = columns.filter(col => col.filterable && hasFilter(col)).map(col => ({
+        col,
+        values: gridTokens(col.filterText, true).map(t => gridFilterValue(t, c)),
+        days: col.filterDates?.length ? new Set(col.filterDates.filter(d => d != null).map(d => String(d).slice(0, 10))) : null,
+        blanks: col.filterDates?.includes(null) ?? false,
+      }));
+      const passesFilter = (f, row) => {
+        const raw = row.v[f.col.index];
+        if (f.days) {
+          const day = f.col.type === 'date' && raw != null ? String(raw).slice(0, 10) : null;
+          if (day ? !f.days.has(day) : !(raw == null && f.blanks)) return false;
+        }
+        if (f.values.length === 0) return true;
+        let text = null;
+        for (const value of f.values) {
+          if (value.range) {
+            const inRange = inGridRange(value.range, raw, f.col.type);
+            if (inRange !== undefined) {
+              if (inRange) return true;
+              continue;
+            }
+          }
+          text ??= row.t[f.col.index].trim();
+          if (value.matches(text)) return true;
+        }
+        return false;
+      };
+      const passes = row => filters.every(f => passesFilter(f, row)) &&
+        words.every(w => searched.some(col => lowerOf(row)[col.index].includes(w)));
+
+      filtered = filters.length > 0 || words.length > 0;
+      let list = filtered ? rows.filter(passes) : rows.slice();
+      if (sorts.length) list.sort(compareRows);
+
+      /* groups in the order of their first row, as CollectionView groups are */
+      runs = null;
+      const by = groupColumn();
+      if (by) {
+        const groups = new Map();
+        for (const row of list) {
+          const raw = row.v[by.index];
+          const key = raw == null ? '' : typeof raw + ':' + raw;
+          let g = groups.get(key);
+          if (!g) groups.set(key, g = { key, name: raw == null ? '(blank)' : row.t[by.index], rows: [] });
+          g.rows.push(row);
+        }
+        list = [];
+        runs = [];
+        for (const g of groups.values()) {
+          runs.push({ key: g.key, name: g.name, start: list.length, count: g.rows.length });
+          for (const row of g.rows) list.push(row);
+        }
+      }
+      ordered = list;
+      totalCount = rows.length;
+      updateHeaders();
+      showPage(keepPage ? pageIndex : 0, !keepPage);
+      fire(grid, 'jp-filtered', { count: ordered.length, totalCount });
+    }
+
+    /* ---- server mode */
+    /* What the server needs to send a page: a JetPackGridRequest */
+    const query = extra => ({
+      pageIndex,
+      pageSize,
+      searchText,
+      groupMemberPath: groupBy,
+      culture: ds.jpCulture || c.locale || '',
+      columns: columns.map(col => ({
+        binding: col.binding,
+        stringFormat: col.stringFormat,
+        isCheckBox: col.checkBox,
+        trueText: col.trueText,
+        falseText: col.falseText,
+        isSearchable: col.searchable,
+        filterText: col.filterable ? col.filterText : '',
+        filterDates: col.filterable ? col.filterDates : null,
+      })),
+      sorts: sorts.map(s => ({ binding: s.col.binding, direction: s.dir })),
+      valuesLimit: listLimit,
+      ...extra,
+    });
+    async function ask(request) {
+      if (typeof itemsSource === 'function') return itemsSource(request);
+      const headers = { 'Content-Type': 'application/json', Accept: 'application/json' };
+      /* MVC's [ValidateAntiForgeryToken] reads the token of the page's form */
+      const token = document.querySelector('input[name="__RequestVerificationToken"]')?.value;
+      if (token) headers.RequestVerificationToken = token;
+      const response = await fetch(itemsSource, { method: 'POST', headers, body: JSON.stringify(request), credentials: 'same-origin' });
+      if (!response.ok) throw new Error(`${response.status} ${response.statusText}`);
+      return response.json();
+    }
+    /* reads a property of a response in camelCase or PascalCase, whatever the server's JSON options */
+    const prop = (o, name) => o?.[name] ?? o?.[name[0].toUpperCase() + name.slice(1)];
+    /* Asks the server for a page; a newer request wins over one still on its way */
+    async function load(index, scrollToTop, filterChanged) {
+      const id = ++requestId;
+      grid.setAttribute('aria-busy', 'true');
+      try {
+        const response = await ask(query({ pageIndex: Math.max(0, Number(index) || 0) }));
+        if (id !== requestId) return;
+        rows = (prop(response, 'rows') ?? []).map((cells, i) => toRow(cells, i));
+        totalCount = prop(response, 'totalCount') ?? rows.length;
+        const filteredCount = prop(response, 'filteredCount') ?? rows.length;
+        const at = prop(response, 'pageIndex') ?? index;
+        const groups = prop(response, 'groups');
+        present({
+          rows,
+          groups: groups ? groups.map(g => ({ key: prop(g, 'key'), name: prop(g, 'name'), start: prop(g, 'start'), count: prop(g, 'count') })) : null,
+          index: at,
+          start: pageSize > 0 && filteredCount > pageSize ? at * pageSize : 0,
+          filteredCount,
+        }, scrollToTop);
+        if (filterChanged) fire(grid, 'jp-filtered', { count: filteredCount, totalCount });
+      } catch (error) {
+        if (id === requestId) fire(grid, 'jp-load-failed', { error });
+      } finally {
+        if (id === requestId) grid.removeAttribute('aria-busy');
+      }
+    }
+
+    const schedule = () => {
+      clearTimeout(timer);
+      if (delay <= 0) refilter(false);
+      else timer = setTimeout(() => refilter(false), delay);
+    };
+
+    /* One page of the ordered rows (or all of them when they fit on one); in server mode, the page the
+       server sends */
+    function showPage(index, scrollToTop) {
+      if (itemsSource) {
+        load(index, scrollToTop, false);
+        return;
+      }
+      const total = ordered.length;
+      const pages = pageSize > 0 && total > pageSize ? Math.ceil(total / pageSize) : 1;
+      const at = clamp(Number(index) || 0, 0, pages - 1);
+      const start = pages > 1 ? at * pageSize : 0;
+      const end = pages > 1 ? Math.min(total, start + pageSize) : total;
+      present({ rows: ordered.slice(start, end), groups: runs, index: at, start, filteredCount: total }, scrollToTop);
+    }
+
+    /* Shows a page: a header in front of each group's part of it; the rows alternate within each group */
+    function present(next, scrollToTop) {
+      page = next;
+      const total = page.filteredCount;
+      pageCount = pageSize > 0 && total > pageSize ? Math.ceil(total / pageSize) : 1;
+      pageIndex = clamp(page.index, 0, pageCount - 1);
+      const start = page.start, end = start + page.rows.length;
+      entries = [];
+      if (page.groups) {
+        for (const run of page.groups) {
+          const from = Math.max(start, run.start), to = Math.min(end, run.start + run.count);
+          if (from >= to) continue;
+          const expanded = !folded.has(run.key);
+          entries.push({ group: run, count: to - from, expanded });
+          if (expanded) for (let k = from; k < to; k++) entries.push({ row: page.rows[k - start], alt: (k - from) % 2 === 1 });
+        }
+      } else {
+        page.rows.forEach((row, k) => entries.push({ row, alt: k % 2 === 1 }));
+      }
+      /* rows that are not shown leave the selection, as rows leave a WPF DataGrid's view */
+      const shown = new Set(entries.map(e => e.row));
+      [...selected].forEach(row => { if (!shown.has(row)) selected.delete(row); });
+      if (!shown.has(current)) current = null;
+      if (!shown.has(anchor)) anchor = null;
+
+      render();
+      pager.hidden = pageCount <= 1;
+      pager.querySelector('.jp-jetpack-grid__page').textContent = `Page ${fmt(pageIndex + 1)} of ${fmt(pageCount)}`;
+      pager.querySelector('.jp-jetpack-grid__range').textContent = `${fmt(Math.min(start + 1, total))}–${fmt(end)} of ${fmt(total)}`;
+      pager.querySelectorAll('[data-page]').forEach(btn => {
+        btn.disabled = btn.dataset.page === 'first' || btn.dataset.page === 'previous' ? pageIndex === 0 : pageIndex >= pageCount - 1;
+      });
+      if (scrollToTop) viewport.scrollTop = 0;
+      if (pendingSelectedIndex >= 0 && entries.length) {
+        const row = shownRows()[pendingSelectedIndex];
+        pendingSelectedIndex = -1;
+        if (row) {
+          selectRow(row, false, false);
+          reveal(row);
+        }
+      }
+      selectionChanged();
+      if (shownPage !== -1 && shownPage !== pageIndex) fire(grid, 'jp-page-changed', { pageIndex, pageCount });
+      shownPage = pageIndex;
+    }
+
+    function cellHtml(col, row) {
+      const text = row.t[col.index];
+      const classes = [];
+      let content;
+      if (col.checkBox) {
+        classes.push('jp-jetpack-grid__check');
+        content = `<span class="jp-check-box jp-check-box--on-light"><input type="checkbox" tabindex="-1" aria-label="${escapeHtml(text)}"${row.v[col.index] === true ? ' checked' : ''}></span>`;
+      } else {
+        content = escapeHtml(text);
+        if (words.length && col.searchable) {
+          const marked = markGridHits(text, words);
+          if (marked) {
+            content = marked;
+            classes.push('is-hit');
+          }
+        }
+      }
+      if (col.align === 'right') classes.push('is-right');
+      else if (col.align === 'center') classes.push('is-center');
+      let style = '';
+      if (col.left !== null && col.left !== undefined) {
+        classes.push('is-frozen');
+        style = ` style="left:${col.left}px"`;
+      }
+      return `<td${classes.length ? ` class="${classes.join(' ')}"` : ''}${style}>${content}</td>`;
+    }
+
+    function render() {
+      const span = colgroup.children.length;
+      let html = '';
+      entries.forEach((e, k) => {
+        if (e.group) {
+          html += `<tr class="jp-jetpack-grid__group-row" data-entry="${k}"><td class="jp-jetpack-grid__group" colspan="${span}">` +
+            `<div class="jp-jetpack-grid__group-header" role="button" aria-expanded="${e.expanded}">` +
+            `<span class="jp-jetpack-grid__group-name">${escapeHtml(e.group.name)}</span>` +
+            `<span class="jp-jetpack-grid__group-count">(${fmt(e.count)})</span></div></td></tr>`;
+          return;
+        }
+        html += `<tr class="jp-jetpack-grid__row${e.alt ? ' is-alternate' : ''}${e.row === current ? ' is-current' : ''}" data-entry="${k}" aria-selected="${selected.has(e.row)}">`;
+        for (const col of columns) html += cellHtml(col, e.row);
+        html += '</tr>';
+      });
+      body.innerHTML = html;
+    }
+
+    /* ---- selection */
+    const shownRows = () => entries.filter(e => e.row).map(e => e.row);
+    const firstSelected = () => selected.values().next().value ?? null;
+    function selectionChanged() {
+      const item = firstSelected();
+      if (item === lastSelected) return;
+      const old = lastSelected;
+      lastSelected = item;
+      fire(grid, 'jp-selected-item-changed', { oldValue: itemOf(old), newValue: itemOf(item) });
+    }
+    function updateSelection() {
+      for (const tr of body.rows) {
+        const row = entries[tr.dataset.entry]?.row;
+        if (!row) continue;
+        tr.setAttribute('aria-selected', String(selected.has(row)));
+        tr.classList.toggle('is-current', row === current);
+      }
+      selectionChanged();
+    }
+    function selectRow(row, toggle, extend) {
+      if (selectionMode === 'none' || !row) return;
+      if (selectionMode === 'extended' && extend && anchor) {
+        const list = shownRows();
+        const a = list.indexOf(anchor), b = list.indexOf(row);
+        selected.clear();
+        list.slice(Math.min(a, b), Math.max(a, b) + 1).forEach(r => selected.add(r));
+      } else if (selectionMode === 'extended' && toggle) {
+        if (selected.has(row)) selected.delete(row); else selected.add(row);
+        anchor = row;
+      } else {
+        selected.clear();
+        selected.add(row);
+        anchor = row;
+      }
+      current = row;
+      updateSelection();
+    }
+    /* scrolls a row into view below the sticky header */
+    function reveal(row) {
+      const tr = [...body.rows].find(r => entries[r.dataset.entry]?.row === row);
+      if (!tr) return;
+      const head = table.tHead.offsetHeight;
+      if (tr.offsetTop - head < viewport.scrollTop) viewport.scrollTop = tr.offsetTop - head;
+      else if (tr.offsetTop + tr.offsetHeight > viewport.scrollTop + viewport.clientHeight) viewport.scrollTop = tr.offsetTop + tr.offsetHeight - viewport.clientHeight;
+    }
+
+    function toggleGroup(entry) {
+      if (entry.expanded) folded.add(entry.group.key); else folded.delete(entry.group.key);
+      present(page, false);
+    }
+
+    body.addEventListener('click', e => {
+      const entry = entries[e.target.closest('tr')?.dataset.entry];
+      if (!entry) return;
+      if (entry.group) toggleGroup(entry);
+      else selectRow(entry.row, e.ctrlKey || e.metaKey, e.shiftKey);
+      viewport.focus({ preventScroll: true });
+    });
+    /* Shift+click selects a range; keep the browser from selecting text as well */
+    body.addEventListener('mousedown', e => { if (e.shiftKey && selectionMode === 'extended') e.preventDefault(); });
+
+    viewport.addEventListener('keydown', e => {
+      if (e.target !== viewport) return;
+      const list = shownRows();
+      if (list.length === 0) return;
+      if (e.key === 'a' && (e.ctrlKey || e.metaKey) && selectionMode === 'extended') {
+        list.forEach(r => selected.add(r));
+        updateSelection();
+        e.preventDefault();
+        return;
+      }
+      const height = body.querySelector('tr.jp-jetpack-grid__row')?.offsetHeight || 27;
+      const step = Math.max(1, Math.floor((viewport.clientHeight - table.tHead.offsetHeight) / height) - 1);
+      let k = list.indexOf(current);
+      switch (e.key) {
+        case 'ArrowDown': k = k < 0 ? 0 : k + 1; break;
+        case 'ArrowUp': k = k < 0 ? 0 : k - 1; break;
+        case 'PageDown': k += step; break;
+        case 'PageUp': k -= step; break;
+        case 'Home': k = 0; break;
+        case 'End': k = list.length - 1; break;
+        default: return;
+      }
+      const row = list[clamp(k, 0, list.length - 1)];
+      selectRow(row, false, e.shiftKey);
+      reveal(row);
+      e.preventDefault();
+    });
+
+    /* ---- sorting: ascending, descending and back to the source order; Shift keeps the other columns */
+    function sortBy(col, add) {
+      const index = sorts.findIndex(s => s.col === col);
+      const dir = index < 0 ? 'ascending' : sorts[index].dir === 'ascending' ? 'descending' : null;
+      const sorting = new CustomEvent('jp-sorting', { bubbles: true, cancelable: true, detail: { column: col.index, binding: col.binding, direction: dir } });
+      if (!grid.dispatchEvent(sorting)) return;
+      if (!add) sorts = dir ? [{ col, dir }] : [];
+      else if (index >= 0) { if (dir) sorts[index].dir = dir; else sorts.splice(index, 1); }
+      else sorts.push({ col, dir });
+      refilter(false);
+      fire(grid, 'jp-sorted', sorts.map(s => ({ column: s.col.index, binding: s.col.binding, direction: s.dir })));
+    }
+    headRow.addEventListener('click', e => {
+      if (e.target.closest('.jp-jetpack-grid__filter-button, .jp-jetpack-grid__resizer')) return;
+      const col = columns.find(x => x.th === e.target.closest('th.is-sortable'));
+      if (col) sortBy(col, e.shiftKey);
+    });
+
+    /* ---- resizing: dragging a header's right edge */
+    columns.forEach(col => {
+      const grip = col.th.querySelector('.jp-jetpack-grid__resizer');
+      grip?.addEventListener('pointerdown', e => {
+        if (e.button !== 0) return;
+        e.preventDefault();
+        const startX = e.clientX, start = col.th.offsetWidth;
+        const move = ev => {
+          col.col.style.width = Math.max(MIN_COLUMN_WIDTH, Math.round(start + ev.clientX - startX)) + 'px';
+          ensureFiller();
+          layout();
+        };
+        const end = () => {
+          grip.removeEventListener('pointermove', move);
+          grip.removeEventListener('lostpointercapture', end);
+          grid.classList.remove('is-resizing');
+          if (frozenCount) render();
+        };
+        grip.setPointerCapture(e.pointerId);
+        grip.addEventListener('pointermove', move);
+        grip.addEventListener('lostpointercapture', end);
+        grid.classList.add('is-resizing');
+      });
+    });
+
+    /* the group headers are as wide as the viewport, and the frozen columns need the header widths */
+    new ResizeObserver(() => {
+      grid.style.setProperty('--jp-jetpack-grid-viewport-width', viewport.clientWidth + 'px');
+      const before = columns.map(col => col.left).join();
+      layout();
+      if (columns.map(col => col.left).join() !== before) render();
+    }).observe(viewport);
+
+    /* ---- the filter box under a header */
+    let popup = null, filterColumn = null, options = null, tree = null, treeNodes = [], filterRequest = 0;
+    function writeOptions(col, input) {
+      const known = new Set(options.map(o => o.text.toLowerCase()));
+      const typed = gridTokens(col.filterText, true).filter(t => !known.has(t.toLowerCase()));
+      const values = typed.concat(options.filter(o => o.checked).map(o => o.text))
+        .map(v => /[\s,;]/.test(v) ? `"${v}"` : v);
+      col.filterText = input.value = values.join(', ');
+    }
+    function syncOptions(col) {
+      const tokens = new Set(gridTokens(col.filterText, true).map(t => t.toLowerCase()));
+      options?.forEach(o => { o.checked = tokens.has(o.text.toLowerCase()); });
+      popup.querySelectorAll('input[data-option]').forEach(input => { input.checked = options[input.dataset.option].checked; });
+    }
+    function syncTree() {
+      popup.querySelectorAll('input[data-node]').forEach(input => {
+        const n = treeNodes[input.dataset.node];
+        input.checked = n.checked === true;
+        input.indeterminate = n.checked === null;
+      });
+    }
+    const countHtml = n => ` <span class="jp-jetpack-grid-filter__count">(${fmt(n)})</span>`;
+    function treeHtml(nodes) {
+      return nodes.map(n => {
+        const id = treeNodes.push(n) - 1;
+        const children = n.children.length && n.expanded ? `<ul role="group">${treeHtml(n.children)}</ul>` : '';
+        return `<li><div class="jp-jetpack-grid-filter__node">` +
+          `<button type="button" class="jp-jetpack-grid-filter__expander${n.children.length ? '' : ' is-leaf'}" data-expand="${id}" tabindex="-1" aria-label="Expand" aria-expanded="${n.expanded}"></button>` +
+          `<label class="jp-check-box"><input type="checkbox" data-node="${id}"><span class="jp-jetpack-grid-filter__text">${escapeHtml(n.text)}${countHtml(n.count)}</span></label>` +
+          `</div>${children}</li>`;
+      }).join('');
+    }
+    /* The values of a column for its filter box, as the server sends them: { dates: [{ day, count }] } for a
+       column of dates (day null for the rows without one), else { values: [{ text, count }] }, or nothing
+       when the column has more than FilterListLimit different values */
+    function valuesOf(col) {
+      if (listLimit <= 0) return {};
+      if (col.type === 'date') {
+        const days = new Map();
+        for (const row of rows) {
+          const v = row.v[col.index];
+          const day = v == null ? null : String(v).slice(0, 10);
+          days.set(day, (days.get(day) ?? 0) + 1);
+        }
+        if ([...days.keys()].some(d => d !== null)) return { dates: [...days].map(([day, count]) => ({ day, count })) };
+      }
+      const counts = new Map();
+      for (const row of rows) {
+        const text = row.t[col.index].trim();
+        if (!text) continue;
+        const key = text.toLowerCase();
+        const value = counts.get(key);
+        if (value) value.count++;
+        else if (counts.size === listLimit) return {};
+        else counts.set(key, { text, count: 1 });
+      }
+      return { values: [...counts.values()] };
+    }
+    /* The tick list or the date tree from a column's values */
+    function useValues(col, result) {
+      options = tree = null;
+      const dates = prop(result, 'dates'), values = prop(result, 'values');
+      if (dates?.length) {
+        const days = new Map();
+        let blanks = 0;
+        for (const d of dates) {
+          const day = prop(d, 'day');
+          if (day == null) blanks += prop(d, 'count'); else days.set(String(day).slice(0, 10), prop(d, 'count'));
+        }
+        if (days.size) {
+          tree = buildDateTree(days, blanks, c);
+          tickDateTree(tree, col.filterDates);
+          expandPartlyTicked(tree);
+          return;
+        }
+      }
+      if (!values?.length) return;
+      options = values.map(v => ({ text: String(prop(v, 'text')), count: prop(v, 'count'), checked: false }));
+      /* numbers in numeric order, everything else alphabetically */
+      if (options.every(o => !isNaN(parseGridNumber(o.text, c)))) options.sort((x, y) => parseGridNumber(x.text, c) - parseGridNumber(y.text, c));
+      else options.sort((x, y) => c.collator.compare(x.text, y.text));
+    }
+    function openFilter(col) {
+      if (!popup) {
+        popup = document.createElement('div');
+        popup.className = 'jp-jetpack-grid-filter';
+        popup.popover = 'auto';
+        popup.setAttribute('role', 'dialog');
+        document.body.appendChild(popup);
+        popup.addEventListener('toggle', e => { if (e.newState === 'closed') filterClosed(); });
+        popup.addEventListener('input', e => {
+          if (!e.target.matches('.jp-text-box') || !filterColumn) return;
+          filterColumn.filterText = e.target.value;
+          syncOptions(filterColumn);
+          updateHeaders();
+          schedule();
+        });
+        popup.addEventListener('change', e => {
+          const col = filterColumn, input = e.target;
+          if (!col) return;
+          if (input.dataset.option !== undefined) {
+            options[input.dataset.option].checked = input.checked;
+            writeOptions(col, popup.querySelector('.jp-text-box'));
+          } else if (input.dataset.node !== undefined) {
+            const n = treeNodes[input.dataset.node];
+            /* a partly ticked node clears, as the WPF check box goes from partly ticked to empty */
+            setDateTick(n, n.checked === false);
+            const days = tickedDates(tree);
+            col.filterDates = days.length ? days : null;
+            syncTree();
+          } else {
+            return;
+          }
+          updateHeaders();
+          schedule();
+        });
+        popup.addEventListener('click', e => {
+          const expander = e.target.closest('[data-expand]');
+          if (expander) {
+            const n = treeNodes[expander.dataset.expand];
+            n.expanded = !n.expanded;
+            expander.setAttribute('aria-expanded', String(n.expanded));
+            let list = expander.parentElement.nextElementSibling;
+            if (n.expanded && !list) {
+              list = document.createElement('ul');
+              list.setAttribute('role', 'group');
+              list.innerHTML = treeHtml(n.children);
+              expander.closest('li').append(list);
+              syncTree();
+            }
+            if (list) list.hidden = !n.expanded;
+          } else if (e.target.closest('[data-filter="clear"]') && filterColumn) {
+            api.clearFilters(filterColumn.index);
+            popup.querySelector('.jp-text-box').value = '';
+            syncOptions(filterColumn);
+            if (tree) {
+              tickDateTree(tree, null);
+              syncTree();
+            }
+          } else if (e.target.closest('[data-filter="done"]')) {
+            closePopup(popup);
+          }
+        });
+        popup.addEventListener('keydown', e => {
+          if (e.key === 'Enter' && e.target.matches('.jp-text-box')) {
+            closePopup(popup);
+            e.preventDefault();
+          }
+        });
+      }
+      filterColumn = col;
+      options = tree = null;
+      fillFilter(col);
+      columns.forEach(x => x.button?.setAttribute('aria-expanded', String(x === col)));
+      openPopup(popup, col.th);
+      const input = popup.querySelector('.jp-text-box');
+      input.focus();
+      input.select();
+      /* the values to tick; in server mode the server reads them from every row */
+      if (!itemsSource) {
+        useValues(col, valuesOf(col));
+        fillList(col);
+        return;
+      }
+      if (listLimit <= 0) return;
+      const id = ++filterRequest;
+      ask(query({ valuesFor: col.binding }))
+        .then(result => {
+          if (id !== filterRequest || filterColumn !== col) return;
+          useValues(col, result);
+          fillList(col);
+          place(popup, col.th);
+        })
+        .catch(error => fire(grid, 'jp-load-failed', { error }));
+    }
+    /* the filter box without its list, which fillList adds once the values are read */
+    function fillFilter(col) {
+      popup.innerHTML = `<div class="jp-jetpack-grid-filter__title">Filter ${escapeHtml(col.header)}</div>` +
+        '<div class="jp-jetpack-grid-filter__list" hidden></div>' +
+        '<div class="jp-text-box-host"><input class="jp-text-box" type="search" placeholder="Values, e.g. volvo, saab" aria-label="Values" autocomplete="off">' +
+        '<button type="button" class="jp-text-box-host__clear" data-jp-clear aria-label="Clear" tabindex="-1">×</button></div>' +
+        `<div class="jp-jetpack-grid-filter__hint">${GRID_HINT}</div>` +
+        '<div class="jp-jetpack-grid-filter__buttons"><button type="button" class="jp-button" data-filter="clear">Clear</button>' +
+        '<button type="button" class="jp-button jp-button--accent" data-filter="done">Done</button></div>';
+      popup.querySelector('.jp-text-box').value = col.filterText;
+    }
+    function fillList(col) {
+      treeNodes = [];
+      const list = popup.querySelector('.jp-jetpack-grid-filter__list');
+      list.innerHTML = options
+        ? options.map((o, k) => `<label class="jp-check-box"><input type="checkbox" data-option="${k}"><span class="jp-jetpack-grid-filter__text">${escapeHtml(o.text)}${countHtml(o.count)}</span></label>`).join('')
+        : tree ? `<ul class="jp-jetpack-grid-filter__tree" role="tree">${treeHtml(tree)}</ul>` : '';
+      list.hidden = !options && !tree;
+      if (options) syncOptions(col);
+      if (tree) syncTree();
+    }
+    function filterClosed() {
+      const col = filterColumn;
+      filterColumn = null;
+      col?.button?.setAttribute('aria-expanded', 'false');
+      if (timer) refilter(false);
+      if (popup.contains(document.activeElement) || document.activeElement === document.body) viewport.focus({ preventScroll: true });
+    }
+    columns.forEach(col => {
+      if (!col.button) return;
+      dropDownOnClick(col.button, () => filterColumn === col && popup?.matches(':popover-open'), () => openFilter(col), () => closePopup(popup));
+    });
+
+    /* ---- the search box the grid follows (SearchText bound to a TextBox's Text) */
+    const box = ds.jpSearchBox ? document.getElementById(ds.jpSearchBox) : null;
+    const searchInput = box?.matches('input, textarea') ? box : box?.querySelector('input');
+    if (searchInput) {
+      if (searchText) searchInput.value = searchText; else searchText = searchInput.value;
+      searchInput.addEventListener('input', () => {
+        searchText = searchInput.value;
+        schedule();
+      });
+    }
+
+    const columnOf = key => typeof key === 'number' ? columns[key]
+      : columns.find(col => col.binding === key) ?? columns.find(col => col.header === key);
+
+    const api = {
+      get columns() { return columns.map(col => ({ header: col.header, binding: col.binding, type: col.type })); },
+      /* the rows (in server mode, those of the page shown): the app's objects, or objects of each
+         column's binding and value; setting them leaves server mode */
+      get items() { return rows.map(itemOf); },
+      set items(list) {
+        itemsSource = null;
+        setRows(list);
+        localRows = rows;
+        selected.clear();
+        folded.clear();
+        current = anchor = null;
+        refilter(false);
+      },
+      /* server mode: a URL the grid posts a JetPackGridRequest to for each page, or a function
+         (request) => response, or a promise of one; null goes back to the items in the page */
+      get itemsSource() { return itemsSource; },
+      set itemsSource(value) {
+        itemsSource = value || null;
+        requestId++;
+        if (!itemsSource) rows = localRows;
+        selected.clear();
+        folded.clear();
+        current = anchor = null;
+        refilter(false);
+      },
+      get searchText() { return searchText; },
+      set searchText(value) {
+        searchText = value ?? '';
+        if (searchInput) searchInput.value = searchText;
+        schedule();
+      },
+      /* the sort, as SortDescriptions: [{ binding, direction: 'ascending' | 'descending' }], first column first */
+      get sorts() { return sorts.map(x => ({ binding: x.col.binding, direction: x.dir })); },
+      set sorts(list) {
+        sorts = (list ?? []).flatMap(x => {
+          const col = columnOf(x.binding);
+          return col ? [{ col, dir: String(x.direction).toLowerCase() === 'descending' ? 'descending' : 'ascending' }] : [];
+        });
+        refilter(false);
+      },
+      get groupMemberPath() { return groupBy; },
+      set groupMemberPath(value) {
+        groupBy = value ?? '';
+        folded.clear();
+        refilter(false);
+      },
+      get isGrouped() { return page.groups !== null; },
+      get pageSize() { return pageSize; },
+      set pageSize(value) {
+        pageSize = Math.max(0, Number(value) || 0);
+        refilter(false);
+      },
+      get pageIndex() { return pageIndex; },
+      set pageIndex(value) { showPage(value, true); },
+      get pageCount() { return pageCount; },
+      get isPaging() { return pageCount > 1; },
+      get filteredItemCount() { return page.filteredCount; },
+      get totalItemCount() { return totalCount; },
+      get isFiltered() { return filtered; },
+      get selectionMode() { return selectionMode; },
+      set selectionMode(value) {
+        selectionMode = String(value).toLowerCase();
+        if (selectionMode !== 'extended' && selected.size > 1) {
+          const first = firstSelected();
+          selected.clear();
+          if (selectionMode === 'single') selected.add(first);
+        }
+        if (selectionMode === 'none') selected.clear();
+        updateSelection();
+      },
+      get selectedItem() { return itemOf(firstSelected()); },
+      get selectedItems() { return [...selected].map(itemOf); },
+      /* the index (in the rows shown) of a row to select, -1 for none */
+      set selectedIndex(index) {
+        const row = shownRows()[index];
+        if (row) selectRow(row, false, false);
+        else { selected.clear(); updateSelection(); }
+      },
+      /* reads the rows again: in server mode the page shown, else after a change to the items' values */
+      refresh() { refilter(true); },
+      getFilterText(column) { return columnOf(column)?.filterText ?? ''; },
+      setFilterText(column, text) {
+        const col = columnOf(column);
+        if (!col) return;
+        col.filterText = text ?? '';
+        updateHeaders();
+        schedule();
+      },
+      /* days as "yyyy-mm-dd" or Date (null for rows without a date); null for no filter */
+      setFilterDates(column, dates) {
+        const col = columnOf(column);
+        if (!col) return;
+        col.filterDates = dates?.length ? dates.map(d => d instanceof Date ? d.toISOString().slice(0, 10) : d) : null;
+        updateHeaders();
+        schedule();
+      },
+      /* clears the filter of one column, or the search and every filter */
+      clearFilters(column) {
+        const col = column === undefined ? null : columnOf(column);
+        if (!col) {
+          searchText = '';
+          if (searchInput) searchInput.value = '';
+        }
+        (col ? [col] : columns).forEach(x => {
+          x.filterText = '';
+          x.filterDates = null;
+        });
+        refilter(false);
+      },
+      /* filters now instead of after SearchDelay, and goes back to the first page */
+      applyFilters() { refilter(false); },
+      /* the rows left after the search and the filters, in the order shown; with paging, every page's
+         (in server mode only the page shown: the others are on the server) */
+      getVisibleItems() { return (itemsSource ? page.rows : ordered).map(itemOf); },
+      expandAllGroups() {
+        folded.clear();
+        present(page, false);
+      },
+      collapseAllGroups() {
+        page.groups?.forEach(run => folded.add(run.key));
+        present(page, false);
+      },
+    };
+    grid.jetpackGrid = api;
+
+    /* SelectedIndex is applied once the first page is shown (in server mode, when it has come) */
+    pendingSelectedIndex = Number(ds.jpSelectedIndex ?? -1);
+    refilter(true);
   }
 
   /* =========================================================== thin scroll */
@@ -1742,6 +2970,7 @@ also raise "jp-change" with the new value in event.detail. A data grid raises "j
     ['.jp-list-view', el => setUpSelection(el, 'tbody > tr')],
     ['.jp-data-grid[data-jp-selection]', el => setUpSelection(el, 'tbody > tr')],
     ['table.jp-data-grid', setUpDataGrid],
+    ['.jp-jetpack-grid', setUpJetPackGrid],
     ['.jp-tree-view', setUpTreeView],
     ['.jp-scroll-viewer--thin', setUpThinScroll],
     ['.jp-slider, .jp-range-slider', setUpSlider],
@@ -1793,5 +3022,14 @@ also raise "jp-change" with the new value in event.detail. A data grid raises "j
     closeFlyout: el => closeFlyout(typeof el === 'string' ? document.getElementById(el) : el),
     formatDate,
     parseDate,
+    /* the API of a .jp-jetpack-grid; sets the grid up first when the page asks before DOMContentLoaded */
+    jetpackGrid(el) {
+      el = typeof el === 'string' ? document.getElementById(el) : el;
+      if (el && !el.jetpackGrid && el.matches('.jp-jetpack-grid')) {
+        (el.jpReady ??= {})['.jp-jetpack-grid'] = true;
+        setUpJetPackGrid(el);
+      }
+      return el?.jetpackGrid ?? null;
+    },
   };
 })();

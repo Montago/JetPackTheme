@@ -31,6 +31,11 @@
     font-size: 13px;
   }
   .demo-state { color: var(--jp-text-soft); font-size: 11px; text-align: center; }
+
+  /* GridPage: the grid takes the height the intro, the tool row and the status line leave */
+  .demo-grid-page { display: flex; flex-direction: column; }
+  .demo-grid-page__grid { flex: 1; }
+  .demo-grid-page__status { color: var(--jp-text-soft); }
   .demo-state--left { text-align: left; }
 
   /* WrapPanel of Demo.Columns */

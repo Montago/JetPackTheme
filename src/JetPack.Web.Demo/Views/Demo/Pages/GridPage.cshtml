@@ -1,0 +1,65 @@
+@* GridPage.xaml *@
+<div class="demo-page demo-grid-page">
+    <p class="demo-intro">jp-jetpack-grid with 3,000 used cars in 21 columns. Every word of the search must be found somewhere in a row; the hits are drawn in the accent colour and their cells turn grey. Click a header to sort ascending, descending and back to the stock order; the funnel keeps only the rows with the values you list, and a column of dates (Registered) gets a tree of years, months and days to tick. With more rows than fit on a page, a pager appears below them. The rows come into the page as JSON and are filtered, sorted, grouped and paged in the browser.</p>
+
+    <div class="flex flex-wrap items-center gap-y-2 mb-2.5">
+        <jp-text-box id="Search" text="volvo automatic" watermark="Search, e.g. volvo estate automatic" clear-text-button="true" class="w-[250px]" />
+        <span class="ml-4 mr-2">Group by</span>
+        <jp-combo-box id="GroupBy" selected-index="0" class="w-[110px]">
+            <jp-combo-box-item content="Nothing" value="" />
+            <jp-combo-box-item content="Make" value="Make" />
+            <jp-combo-box-item content="Body" value="Body" />
+            <jp-combo-box-item content="Fuel" value="Fuel" />
+            <jp-combo-box-item content="Dealer" value="Dealer" />
+        </jp-combo-box>
+        <span class="ml-4 mr-2">Rows per page</span>
+        <jp-combo-box id="PageSize" selected-index="2" class="w-[70px]">
+            <jp-combo-box-item content="All" value="0" />
+            <jp-combo-box-item content="50" value="50" />
+            <jp-combo-box-item content="100" value="100" />
+            <jp-combo-box-item content="500" value="500" />
+        </jp-combo-box>
+        <span class="ml-4 mr-2">Hits</span>
+        <jp-combo-box id="Marks" selected-index="0" class="w-[125px]">
+            <jp-combo-box-item content="Accent + grey" />
+            <jp-combo-box-item content="Accent only" />
+            <jp-combo-box-item content="Red + grey" />
+        </jp-combo-box>
+        <jp-check-box id="Multi" content="Select several rows" class="ml-4" />
+        <div class="flex gap-2 ml-auto">
+            <jp-button id="ClearFilters">Clear filters</jp-button>
+            <jp-button id="CopyVisible" tool-tip="Copies the rows left after the search and filters as tab-separated text">Copy visible rows</jp-button>
+        </div>
+    </div>
+
+    <jp-jetpack-grid id="Cars" items="CarData.Cars" frozen-column-count="2" page-size="100" search-box="Search" class="demo-grid-page__grid">
+        <jp-jetpack-grid-column header="Stock no." binding="StockNo" width="84" />
+        <jp-jetpack-grid-column header="Make" binding="Make" width="100" />
+        <jp-jetpack-grid-column header="Model" binding="Model" width="120" />
+        <jp-jetpack-grid-column header="Trim" binding="Trim" width="75" />
+        <jp-jetpack-grid-column header="Body" binding="Body" width="85" filter-text="estate suv" />
+        <jp-jetpack-grid-column header="Year" binding="Year" width="62" text-alignment="Right" />
+        <jp-jetpack-grid-column header="Mileage (km)" binding="Mileage" string-format="N0" width="108" is-searchable="false" text-alignment="Right" />
+        <jp-jetpack-grid-column header="Fuel" binding="Fuel" width="70" />
+        <jp-jetpack-grid-column header="Gearbox" binding="Gearbox" width="80" />
+        <jp-jetpack-grid-column header="Drive" binding="Drive" width="64" />
+        <jp-jetpack-grid-column header="Power" binding="Power" string-format="{0} hp" width="72" text-alignment="Right" />
+        <jp-jetpack-grid-column header="CO₂" binding="Co2" string-format="{0} g/km" width="76" is-searchable="false" text-alignment="Right" />
+        <jp-jetpack-grid-column header="Colour" binding="Colour" width="80" />
+        <jp-jetpack-grid-column header="Doors" binding="Doors" width="66" is-searchable="false" text-alignment="Right" />
+        <jp-jetpack-grid-column header="Seats" binding="Seats" width="64" is-searchable="false" text-alignment="Right" />
+        <jp-jetpack-grid-column header="Owners" binding="Owners" width="74" is-searchable="false" text-alignment="Right" />
+        <jp-jetpack-grid-column header="Registered" binding="Registered" string-format="d" width="96" is-searchable="false" text-alignment="Right" />
+        <jp-jetpack-grid-column header="Price (EUR)" binding="Price" string-format="N0" width="96" is-searchable="false" text-alignment="Right" />
+        <jp-jetpack-grid-column header="Dealer" binding="Dealer" width="90" />
+        <jp-jetpack-grid-column header="Status" binding="Status" width="84" />
+        <jp-jetpack-grid-check-box-column header="Sold" binding="IsSold" width="56" />
+    </jp-jetpack-grid>
+
+    <div class="flex mt-2 mb-3.5 demo-grid-page__status">
+        <span id="GridStatus"></span>
+        @* Web only: server mode, where the grid asks the server for each page *@
+        <jp-check-box id="ServerMode" content="Pages from the server" class="ml-6" tool-tip="Server mode: the grid asks /api/cars (JetPackGridServer.Query) for each page" data-url="@Url.Content("~/api/cars")" />
+        <span id="GridSelection" class="ml-auto"></span>
+    </div>
+</div>

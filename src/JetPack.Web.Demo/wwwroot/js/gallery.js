@@ -40,6 +40,9 @@
     } else if (el.matches('[data-jp-context-menu]')) {
       const r = el.getBoundingClientRect();
       el.dispatchEvent(new MouseEvent('contextmenu', { bubbles: true, cancelable: true, clientX: Math.round(r.left + 130), clientY: Math.round(r.top + 40) }));
+    } else if (el.matches('.jp-jetpack-grid')) {
+      // the filter box of the first column with a filter
+      click(el.querySelector('th.has-filter .jp-jetpack-grid__filter-button'));
     } else if (el.matches('.jp-scroll-viewer--thin')) {
       el.classList.add('is-active');
     } else if (el.matches('[data-jp-error]')) {
