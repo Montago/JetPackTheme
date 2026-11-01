@@ -354,8 +354,9 @@ page is deselected when another is shown.
 With `items-source-url`, the rows stay on the server. For each page, and for the values of a filter
 box, the grid posts a `JetPackGridRequest` (page, page size, search, filters, sort, grouping, and its
 columns' bindings and formats) and draws the `JetPackGridResponse` that comes back. The tag helper
-then writes no rows into the page. `JetPackGridServer.Query` answers from rows in memory with the
-same rules as the browser:
+then writes no rows into the page, and `selected-index` applies once the first page has come.
+`JetPackGridServer.Query` (namespace `JetPack.Web`) answers from rows in memory with the same rules
+as the browser:
 
 ```cshtml
 <jp-jetpack-grid items-source-url="@Url.Content("~/api/cars")" page-size="100" search-box="Search">
@@ -368,20 +369,199 @@ same rules as the browser:
 app.MapPost("/api/cars", (JetPackGridRequest request) => JetPackGridServer.Query(cars, request));
 ```
 
-- The browser names the columns it wants, so `Query` reads only bindings you allow: the ones you
-  list (`Query(cars, request, "Make", "Model", "Price")`), or else the public properties of the item
-  type itself, not nested paths. Hand it view models, not entities with fields the page must not
-  see. Formats that would build huge strings are ignored.
-- For a database, write the endpoint yourself from the request (its `Columns`, `Sorts`, `SearchText`
-  and each column's `FilterText` and `FilterDates`) and send back the same response: the page's
-  `Rows` (one cell per column, in the form above), `TotalCount`, `FilteredCount`, `PageIndex`, and
-  `Groups` while grouped. For a filter box, `ValuesFor` names the column, and the response holds its
-  `Values` (or `Dates` for a column of dates) instead of rows.
-- `grid.itemsSource` can also be a function `(request) => response` (or a promise of one), for a
-  transport of your own. MVC's antiforgery token on the page is sent as the `RequestVerificationToken`
-  header.
 - The grid is `aria-busy` while a page is on its way (its rows dim after a moment), a newer request
   wins over one still on its way, and a failed request raises `jp-load-failed` and keeps the rows shown.
+- It posts with `credentials: 'same-origin'`, so the user's cookie goes along and the endpoint can be
+  protected like any other (`.RequireAuthorization()`, `[Authorize]`).
+- `grid.itemsSource = url` switches a grid to server mode from a script, and `null` back to the rows
+  in the page, as the demo's *Pages from the server* box does.
+
+#### In an MVC controller
+
+Put `@Html.AntiForgeryToken()` in the view (a `<form>` tag helper writes it too): `jetpack.js` sends
+the page's `__RequestVerificationToken` in the `RequestVerificationToken` header, which
+`[ValidateAntiForgeryToken]` reads.
+
+```csharp
+public class CarsController(CarStore store) : Controller
+{
+    [HttpPost, ValidateAntiForgeryToken]
+    public JetPackGridResponse Query([FromBody] JetPackGridRequest request) =>
+        JetPackGridServer.Query(store.Cars, request);
+}
+```
+
+```cshtml
+@Html.AntiForgeryToken()
+<jp-jetpack-grid items-source-url="@Url.Action("Query", "Cars")" page-size="100">…</jp-jetpack-grid>
+```
+
+#### What Query reads
+
+The browser names the columns it wants, so `Query` reads only bindings you allow: the ones you list,
+or else the public properties of the item type itself, not nested paths. A column with another
+binding comes back empty.
+
+```csharp
+// Only these members, a nested one included
+JetPackGridServer.Query(orders, request, "Number", "Customer.Name", "Total", "IsPaid");
+```
+
+Hand it view models, not entities with fields the page must not see. Formats sent by the browser
+are used only when they are short and harmless (one argument, no alignment, at most two digits of
+precision); a page holds at most 10,000 rows and a request at most 200 columns. `Query` reads the
+whole source for each request (an `IQueryable` too), which is fine for some tens of thousands of
+rows in memory; for a large table, page in the database (below).
+
+#### The request
+
+The grid posts JSON in camel case, which ASP.NET Core reads into `JetPackGridRequest`:
+
+```json
+{
+  "pageIndex": 0,
+  "pageSize": 100,
+  "searchText": "volvo automatic",
+  "groupMemberPath": "",
+  "culture": "en-US",
+  "columns": [
+    { "binding": "Make", "stringFormat": null, "isCheckBox": false, "trueText": "Yes", "falseText": "No",
+      "isSearchable": true, "filterText": "", "filterDates": null },
+    { "binding": "Body", "stringFormat": null, "isCheckBox": false, "trueText": "Yes", "falseText": "No",
+      "isSearchable": true, "filterText": "estate suv", "filterDates": null },
+    { "binding": "Mileage", "stringFormat": "N0", "isCheckBox": false, "trueText": "Yes", "falseText": "No",
+      "isSearchable": false, "filterText": ">50000", "filterDates": null },
+    { "binding": "Registered", "stringFormat": "d", "isCheckBox": false, "trueText": "Yes", "falseText": "No",
+      "isSearchable": true, "filterText": "", "filterDates": ["2019-03-14", null] },
+    { "binding": "IsSold", "stringFormat": null, "isCheckBox": true, "trueText": "Yes", "falseText": "No",
+      "isSearchable": false, "filterText": "", "filterDates": null }
+  ],
+  "sorts": [{ "binding": "Mileage", "direction": "descending" }],
+  "valuesLimit": 20
+}
+```
+
+| Member | Description |
+| --- | --- |
+| `PageIndex`, `PageSize` | the page asked for, from 0; rows per page (0 for every row) |
+| `SearchText` | words that must all be found in a row, in a column with `IsSearchable`; quotes keep a phrase together |
+| `GroupMemberPath` | the binding to group by; empty for no groups |
+| `Culture` | the page's culture (`data-jp-culture`), for the cells' formats and for typed numbers and dates |
+| `Columns` | the grid's columns in order: `Binding`, `StringFormat`, `IsCheckBox`, `TrueText`, `FalseText`, `IsSearchable`, `FilterText` (the typed values and ranges) and `FilterDates` (the ticked days as `yyyy-MM-dd`, `null` for rows without a date) |
+| `Sorts` | the sort, first column first: `Binding` and `Direction` (`"ascending"` or `"descending"`) |
+| `ValuesFor` | set when a filter box opens: the binding of its column; the answer then lists the column's values instead of rows |
+| `ValuesLimit` | the filter box lists the values when there are at most this many (`filter-list-limit`) |
+
+#### The response
+
+```json
+{
+  "rows": [
+    ["Volvo", "Estate", ["148,200", 148200], ["3/14/2019", "2019-03-14"], false],
+    ["Volvo", "SUV", ["96,950", 96950], ["9/2/2021", "2021-09-02"], true]
+  ],
+  "totalCount": 3000,
+  "filteredCount": 214,
+  "pageIndex": 0,
+  "groups": null
+}
+```
+
+| Member | Description |
+| --- | --- |
+| `Rows` | the rows of the page: one cell per requested column, in the order of `Columns` |
+| `TotalCount` | rows in the source |
+| `FilteredCount` | rows that pass the search and the filters; the pager counts the pages from it |
+| `PageIndex` | the page sent (the one asked for, kept within the pages there are) |
+| `Groups` | while grouped: the groups with rows on the page, each `{ key, name, start, count }`, `start` counting from the first row that passes (not from the page) |
+| `Values` | for `ValuesFor`: the column's values as `{ text, count }`; `null` when there are more than `ValuesLimit` (the box then has only its text box) |
+| `Dates` | for `ValuesFor` on a column of dates: its days as `{ day: "yyyy-MM-dd", count }`, plus `{ day: null, count }` for rows without a date |
+
+A cell is:
+
+| Column | Cell |
+| --- | --- |
+| text | the text as shown: `"Volvo"` |
+| number | the number, or `[text, number]` when the text shows it formatted: `2019`, `["148,200", 148200]` |
+| date | `[text, "yyyy-MM-dd"]`, or with the time `"yyyy-MM-ddTHH:mm:ss"`: `["3/14/2019", "2019-03-14"]` |
+| check box | `true` or `false` |
+| empty | `null` |
+
+The grid shows the text and keeps the value for the row objects it hands out. It does not sort or
+filter in server mode, so the server decides the order. Property names may also come in Pascal case.
+
+#### Paging in a database
+
+To page in the database, read the request yourself and send back a `JetPackGridResponse`. This
+endpoint searches two columns, sorts by the first sort column and sends one page, with the cells in
+the order of `request.Columns`:
+
+```csharp
+app.MapPost("/api/orders", async (JetPackGridRequest request, ShopDb db) =>
+{
+    var culture = CultureInfo.CurrentCulture;   // or request.Culture
+    IQueryable<Order> query = db.Orders;
+    foreach (var word in (request.SearchText ?? "").Split(' ', StringSplitOptions.RemoveEmptyEntries))
+    {
+        query = query.Where(o => o.Number.Contains(word) || o.Customer.Contains(word));
+    }
+    // Header filters: request.Columns[i].FilterText and FilterDates, as far as your app needs them
+
+    var sort = request.Sorts.FirstOrDefault();
+    var descending = sort?.Direction == "descending";
+    query = sort?.Binding switch
+    {
+        "Customer" => descending ? query.OrderByDescending(o => o.Customer) : query.OrderBy(o => o.Customer),
+        "Total" => descending ? query.OrderByDescending(o => o.Total) : query.OrderBy(o => o.Total),
+        "Ordered" => descending ? query.OrderByDescending(o => o.Ordered) : query.OrderBy(o => o.Ordered),
+        _ => query.OrderBy(o => o.Id),
+    };
+
+    var filtered = await query.CountAsync();
+    var size = Math.Clamp(request.PageSize, 0, 1000);
+    var pages = size == 0 ? 1 : Math.Max(1, (filtered + size - 1) / size);
+    var index = Math.Clamp(request.PageIndex, 0, pages - 1);
+    var page = await (size == 0 ? query : query.Skip(index * size).Take(size)).ToListAsync();
+
+    return new JetPackGridResponse
+    {
+        TotalCount = await db.Orders.CountAsync(),
+        FilteredCount = filtered,
+        PageIndex = index,
+        Rows = page.Select(o => request.Columns.Select(c => c.Binding switch
+        {
+            "Number" => (object?)o.Number,
+            "Customer" => o.Customer,
+            "Total" => new object[] { o.Total.ToString("N2", culture), o.Total },
+            "Ordered" => new object[] { o.Ordered.ToString("d", culture), o.Ordered.ToString("yyyy-MM-dd") },
+            "IsPaid" => o.IsPaid,
+            _ => null,
+        }).ToArray()).ToList(),
+    };
+});
+```
+
+Leave out what you do not support: without `Groups` the rows are not grouped, and an answer to
+`ValuesFor` without `Values` or `Dates` gives the filter box only its text box. Give such columns
+`is-filterable="false"` (and `can-user-sort="false"` for columns the server cannot sort by).
+
+#### A function instead of a URL
+
+`grid.itemsSource` also takes a function that gets the request object and returns the response, or a
+promise of one: for another address scheme, a token in a header, or rows from somewhere else. Throw
+(or reject) on failure to raise `jp-load-failed`.
+
+```js
+JetPack.jetpackGrid('Orders').itemsSource = async request => {
+    const response = await fetch('https://api.example.com/orders/query', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+        body: JSON.stringify(request),
+    });
+    if (!response.ok) throw new Error(`${response.status} ${response.statusText}`);
+    return response.json();
+};
+```
 
 ### Attributes
 
@@ -437,6 +617,16 @@ app.MapPost("/api/cars", (JetPackGridRequest request) => JetPackGridServer.Query
 | `refresh()` | reads the rows again, keeping the page |
 | `getVisibleItems()` | the rows left after the search and filters, in the order shown; with paging every page's (in server mode only the page shown) |
 | `expandAllGroups()`, `collapseAllGroups()` | unfold or fold every group |
+| `columns` | read only: `[{ header, binding, type }]`, `type` being `text`, `number`, `date` or `bool` |
+
+Rows set from a script get their column types from the first value that is not `null`: numbers,
+booleans, `Date` objects and ISO 8601 text (`2019-03-14`) become numbers, check boxes and dates.
+To load every row once from an API and filter in the browser:
+
+```js
+const response = await fetch('/api/cars');
+JetPack.jetpackGrid('Cars').items = await response.json();
+```
 
 | Event | `event.detail` |
 | --- | --- |
