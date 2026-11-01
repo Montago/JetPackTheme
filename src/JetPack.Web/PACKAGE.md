@@ -10,6 +10,9 @@ admin portals and other business sites on ASP.NET Core. The package is a Razor c
   dialogs, tool tips, validation call-outs, accents and the vignette. It has no dependencies.
 - **Tag helpers** for every control: `<jp-combo-box>`, `<jp-tab-control>`, `<jp-date-picker>`,
   `<jp-data-grid>` … Their attributes are the WPF property names in kebab case.
+- **JetPackGrid** (`<jp-jetpack-grid>`): the data grid of JetPack.Wpf, with a word search that marks
+  its hits, a value filter in every header, three-state sorting, grouping and paging, in the browser
+  or, in server mode, on the server (`JetPackGridServer.Query`).
 - **Icons**: Material Design Icons as an SVG sprite, with the same names as `JetPackIcon` in WPF.
 
 ![The JetPack web demo](https://raw.githubusercontent.com/Montago/JetPackTheme/master/docs/screenshots/web/core.png)

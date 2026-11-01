@@ -249,6 +249,8 @@ web/lists.md:
     title: "TreeView"
   - id: "datagrid"
     title: "DataGrid"
+  - id: "jetpackgrid"
+    title: "JetPackGrid"
   - id: "calendar"
     title: "Calendar"
   - id: "scrollviewer-and-scrollbar"

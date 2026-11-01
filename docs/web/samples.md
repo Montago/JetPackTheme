@@ -12,8 +12,8 @@ nav_order: 6
 same controls in the same places, the same data (it links the WPF demo's `DemoData.cs`), and the
 Settings, Recent, Update and Saved flyouts of the window. Each tab is a partial view named after the
 WPF UserControl (`Views/Demo/Pages/CorePage.cshtml` ↔ `Views/CorePage.xaml`), and
-`wwwroot/js/demo.js` is the code-behind. The JetPackGrid tab is left out; grids of that kind are
-better served by a dedicated grid library.
+`wwwroot/js/demo.js` is the code-behind. The JetPackGrid tab also has a *Pages from the server* box,
+which switches the grid to its server mode (`/api/cars`, answered by `JetPackGridServer.Query`).
 
 ```bash
 dotnet run --project src/JetPack.Web.Demo
@@ -26,6 +26,8 @@ dotnet run --project src/JetPack.Web.Demo
 ![Toolkit](../screenshots/web/toolkit.png)
 
 ![Extras](../screenshots/web/extras.png)
+
+![JetPackGrid](../screenshots/web/jetpackgrid.png)
 
 ![Window](../screenshots/web/window.png)
 

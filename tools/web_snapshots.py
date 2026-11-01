@@ -1,7 +1,7 @@
 """Pictures of the web theme for the docs: every tab of src/JetPack.Web.Demo and every page of
 samples/JetPack.Web.Samples.Mvc, taken with headless Microsoft Edge at 1280 × 900.
 
-    docs/screenshots/web/<tab>.png              core, sdk, toolkit, extras, window, palette, icons
+    docs/screenshots/web/<tab>.png              core, sdk, toolkit, extras, jetpackgrid, window, palette, icons
     docs/screenshots/web/controls/<name>.png    one per sample of the demo's /Demo/Gallery page
     docs/screenshots/samples/web-<page>.png     dashboard, employees, timesheets, projects
 
@@ -34,7 +34,7 @@ EDGE = [r'C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe', r'C:\Pr
 
 SITES = [
     ('src/JetPack.Web.Demo', 'JetPack.Web.Demo', 5291,
-     [(f'?snapshot#{tab}', os.path.join('web', tab + '.png')) for tab in ('core', 'sdk', 'toolkit', 'extras', 'window', 'palette', 'icons')]),
+     [(f'?snapshot#{tab}', os.path.join('web', tab + '.png')) for tab in ('core', 'sdk', 'toolkit', 'extras', 'jetpackgrid', 'window', 'palette', 'icons')]),
     ('samples/JetPack.Web.Samples.Mvc', 'JetPack.Web.Samples.Mvc', 5292,
      [(path, os.path.join('samples', 'web-' + name + '.png')) for name, path in
       (('dashboard', ''), ('employees', 'Employees'), ('timesheets', 'Timesheets'), ('projects', 'Projects'))]),
