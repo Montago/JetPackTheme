@@ -1,4 +1,4 @@
-/*
+﻿/*
 JetPack for the web: the behaviour the CSS classes need, in plain JavaScript without dependencies.
 Load it in <head> without defer, so the stored accent is set before the page is drawn; everything
 else starts on DOMContentLoaded and works from classes and data attributes. JetPack.init(element)
@@ -2192,16 +2192,22 @@ also raise "jp-change" with the new value in event.detail. A data grid raises "j
     const cal = document.createElement('div');
     cal.className = 'jp-calendar';
     const initial = parseIso(host.dataset.selectedDate) || parseDate(input.value);
+    host.dataset.selectedDate = initial ? iso(initial) : '';
     if (initial) {
       cal.dataset.selectedDate = iso(initial);
       input.value = formatDate(initial);
     }
     popup.appendChild(cal);
     setUpCalendar(cal);
+    /* Raises change and jp-change only when the date changes, as SelectedDateChanged does. The change
+       it raises on the input comes back to the change handler below, which then finds the same date
+       and stops; without the check every pick looped until the browser gave up (some 40 times). */
     const commit = d => {
+      const value = d ? iso(d) : '';
       input.value = d ? formatDate(d) : '';
-      host.dataset.selectedDate = d ? iso(d) : '';
-      if (hidden) hidden.value = d ? iso(d) : '';
+      if (value === host.dataset.selectedDate) return;
+      host.dataset.selectedDate = value;
+      if (hidden) hidden.value = value;
       notify(input);
       fire(host, 'jp-change', d);
     };
@@ -2217,7 +2223,12 @@ also raise "jp-change" with the new value in event.detail. A data grid raises "j
     };
     dropDownOnClick(button, () => popup.matches(':popover-open'), open, () => closePopup(popup));
     popup.addEventListener('toggle', e => button.setAttribute('aria-expanded', String(e.newState === 'open')));
+    /* a typed date is read when the box loses the focus; an emptied box clears the date */
     input.addEventListener('change', () => {
+      if (input.value.trim() === '') {
+        commit(null);
+        return;
+      }
       const d = parseDate(input.value);
       if (d) commit(d);
     });
