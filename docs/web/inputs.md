@@ -297,7 +297,9 @@ the calendar.
 | `watermark` | `Select a date` | grey text while the box is empty |
 | `name` | | adds a hidden input that posts the date as `yyyy-MM-dd` (binds to `DateTime` and `DateOnly`) |
 
-Choosing a date raises `jp-change` with a `Date` (or `null` when the box is emptied).
+Choosing a date raises `change` on the text box and `jp-change` with a `Date` (or `null` when the box
+is emptied), once per choice and only when the date changes, as `SelectedDateChanged` does in WPF. A
+typed date is read when the box loses the focus.
 `JetPack.formatDate(date)` and `JetPack.parseDate(text)` convert in the picker's format.
 
 ## TimePicker
