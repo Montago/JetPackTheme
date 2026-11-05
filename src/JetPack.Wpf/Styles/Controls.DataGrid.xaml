@@ -127,55 +127,89 @@
         </Style.Triggers>
     </Style>
 
+    <!-- A row without a row header (HeadersVisibility Column and None, the default): one element less per row
+         than a row header that is only collapsed. The row style switches to the template below for Row and All. -->
+    <ControlTemplate x:Key="JetPack.Templates.DataGridRow" TargetType="DataGridRow">
+        <Border x:Name="DGR_Border" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" SnapsToDevicePixels="True">
+            <SelectiveScrollingGrid>
+                <SelectiveScrollingGrid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
+                </SelectiveScrollingGrid.RowDefinitions>
+                <DataGridCellsPresenter x:Name="DGR_CellsPresenter" ItemsPanel="{TemplateBinding ItemsPanel}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                <DataGridDetailsPresenter x:Name="DGR_Details" Grid.Row="1" Visibility="{TemplateBinding DetailsVisibility}" />
+            </SelectiveScrollingGrid>
+        </Border>
+        <ControlTemplate.Triggers>
+            <Trigger Property="h:DataGridHelper.AreRowDetailsFrozen" Value="True">
+                <Setter TargetName="DGR_Details" Property="SelectiveScrollingGrid.SelectiveScrollingOrientation" Value="Vertical" />
+            </Trigger>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter TargetName="DGR_Border" Property="Background" Value="{DynamicResource JetPack.Brushes.Accent.Selection.MouseOver}" />
+            </Trigger>
+            <Trigger Property="IsSelected" Value="True">
+                <Setter TargetName="DGR_Border" Property="Background" Value="{DynamicResource JetPack.Brushes.Accent.Selection}" />
+                <Setter Property="Foreground" Value="White" />
+                <!-- JetPackGrid's search hits: white text on the selection, no grey cells -->
+                <Setter Property="c:JetPackGrid.HighlightForeground" Value="{x:Null}" />
+                <Setter Property="c:JetPackGrid.HighlightCellBackground" Value="{x:Null}" />
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Opacity" Value="0.5" />
+            </Trigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+
+    <!-- The same row with a row header in front, for HeadersVisibility Row and All; keep the two in step -->
+    <ControlTemplate x:Key="JetPack.Templates.DataGridRow.WithHeader" TargetType="DataGridRow">
+        <Border x:Name="DGR_Border" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" SnapsToDevicePixels="True">
+            <SelectiveScrollingGrid>
+                <SelectiveScrollingGrid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                </SelectiveScrollingGrid.ColumnDefinitions>
+                <SelectiveScrollingGrid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
+                </SelectiveScrollingGrid.RowDefinitions>
+                <DataGridCellsPresenter x:Name="DGR_CellsPresenter" Grid.Column="1" ItemsPanel="{TemplateBinding ItemsPanel}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                <DataGridDetailsPresenter x:Name="DGR_Details" Grid.Column="1" Grid.Row="1" Visibility="{TemplateBinding DetailsVisibility}" />
+                <DataGridRowHeader x:Name="DGR_RowHeader" Grid.RowSpan="2" SelectiveScrollingGrid.SelectiveScrollingOrientation="Vertical" />
+            </SelectiveScrollingGrid>
+        </Border>
+        <ControlTemplate.Triggers>
+            <Trigger Property="h:DataGridHelper.AreRowDetailsFrozen" Value="True">
+                <Setter TargetName="DGR_Details" Property="SelectiveScrollingGrid.SelectiveScrollingOrientation" Value="Vertical" />
+            </Trigger>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter TargetName="DGR_Border" Property="Background" Value="{DynamicResource JetPack.Brushes.Accent.Selection.MouseOver}" />
+            </Trigger>
+            <Trigger Property="IsSelected" Value="True">
+                <Setter TargetName="DGR_Border" Property="Background" Value="{DynamicResource JetPack.Brushes.Accent.Selection}" />
+                <Setter Property="Foreground" Value="White" />
+                <!-- JetPackGrid's search hits: white text on the selection, no grey cells -->
+                <Setter Property="c:JetPackGrid.HighlightForeground" Value="{x:Null}" />
+                <Setter Property="c:JetPackGrid.HighlightCellBackground" Value="{x:Null}" />
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Opacity" Value="0.5" />
+            </Trigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+
     <Style x:Key="JetPack.Styles.DataGridRow" TargetType="DataGridRow">
         <Setter Property="SnapsToDevicePixels" Value="True" />
         <Setter Property="FocusVisualStyle" Value="{x:Null}" />
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="DataGridRow">
-                    <Border x:Name="DGR_Border" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" SnapsToDevicePixels="True">
-                        <SelectiveScrollingGrid>
-                            <SelectiveScrollingGrid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition Width="*" />
-                            </SelectiveScrollingGrid.ColumnDefinitions>
-                            <SelectiveScrollingGrid.RowDefinitions>
-                                <RowDefinition Height="*" />
-                                <RowDefinition Height="Auto" />
-                            </SelectiveScrollingGrid.RowDefinitions>
-                            <DataGridCellsPresenter x:Name="DGR_CellsPresenter" Grid.Column="1" ItemsPanel="{TemplateBinding ItemsPanel}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
-                            <DataGridDetailsPresenter x:Name="DGR_Details" Grid.Column="1" Grid.Row="1" Visibility="{TemplateBinding DetailsVisibility}" />
-                            <DataGridRowHeader x:Name="DGR_RowHeader" Grid.RowSpan="2" SelectiveScrollingGrid.SelectiveScrollingOrientation="Vertical" />
-                        </SelectiveScrollingGrid>
-                    </Border>
-                    <ControlTemplate.Triggers>
-                        <!-- The row header shows for HeadersVisibility Row and All -->
-                        <Trigger Property="h:DataGridHelper.HeadersVisibility" Value="Column">
-                            <Setter TargetName="DGR_RowHeader" Property="Visibility" Value="Collapsed" />
-                        </Trigger>
-                        <Trigger Property="h:DataGridHelper.HeadersVisibility" Value="None">
-                            <Setter TargetName="DGR_RowHeader" Property="Visibility" Value="Collapsed" />
-                        </Trigger>
-                        <Trigger Property="h:DataGridHelper.AreRowDetailsFrozen" Value="True">
-                            <Setter TargetName="DGR_Details" Property="SelectiveScrollingGrid.SelectiveScrollingOrientation" Value="Vertical" />
-                        </Trigger>
-                        <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="DGR_Border" Property="Background" Value="{DynamicResource JetPack.Brushes.Accent.Selection.MouseOver}" />
-                        </Trigger>
-                        <Trigger Property="IsSelected" Value="True">
-                            <Setter TargetName="DGR_Border" Property="Background" Value="{DynamicResource JetPack.Brushes.Accent.Selection}" />
-                            <Setter Property="Foreground" Value="White" />
-                            <!-- JetPackGrid's search hits: white text on the selection, no grey cells -->
-                            <Setter Property="c:JetPackGrid.HighlightForeground" Value="{x:Null}" />
-                            <Setter Property="c:JetPackGrid.HighlightCellBackground" Value="{x:Null}" />
-                        </Trigger>
-                        <Trigger Property="IsEnabled" Value="False">
-                            <Setter Property="Opacity" Value="0.5" />
-                        </Trigger>
-                    </ControlTemplate.Triggers>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
+        <Setter Property="Template" Value="{StaticResource JetPack.Templates.DataGridRow}" />
+        <Style.Triggers>
+            <!-- The row header shows for HeadersVisibility Row and All -->
+            <Trigger Property="h:DataGridHelper.HeadersVisibility" Value="Row">
+                <Setter Property="Template" Value="{StaticResource JetPack.Templates.DataGridRow.WithHeader}" />
+            </Trigger>
+            <Trigger Property="h:DataGridHelper.HeadersVisibility" Value="All">
+                <Setter Property="Template" Value="{StaticResource JetPack.Templates.DataGridRow.WithHeader}" />
+            </Trigger>
+        </Style.Triggers>
     </Style>
 
     <Style x:Key="JetPack.Styles.DataGrid.SelectAll" TargetType="Button">
