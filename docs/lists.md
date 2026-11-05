@@ -81,6 +81,11 @@ Defaults set by the theme: `HeadersVisibility="Column"`, `GridLinesVisibility="A
 row headers are shown). With `SelectionUnit="Cell"` the selected cells get the accent instead of the
 row. Behaviour (sorting, editing, adding rows) is plain WPF.
 
+The row style `JetPack.Styles.DataGridRow` uses the template `JetPack.Templates.DataGridRow`, which has
+no row header, and switches to `JetPack.Templates.DataGridRow.WithHeader` when `HeadersVisibility` is
+`Row` or `All`. Rows without row headers therefore carry no hidden header either. A row style based on
+`JetPack.Styles.DataGridRow` keeps the switch.
+
 ### Check boxes and edit fields in cells
 
 `DataGridCheckBoxColumn` shows plain WPF check boxes, not the JetPack ones, and the text box and
@@ -351,6 +356,12 @@ Two things keep that low:
 
 A grouped grid works the same way. Its headers are rows in the list (see [Groups](#groups)), so the
 preview moves the rows to where the headers leave room for them, and draws the headers over them.
+For that, the panel must have realized as many data rows as the rows at the thumb need, also where
+the view has many headers and the thumb shows a stretch with few. A grouped grid therefore sets
+`VirtualizingPanel.CacheLength` (unit `Item`) to keep as many rows after the view as there can be
+headers among them: the most headers in any two pages of rows, at most a page. It works this out
+again after every page shown and when its height changes, and clears it when the grouping is turned
+off. A `CacheLength` that the app sets on the grid itself is left alone.
 
 Rows with details, pixel scrolling (`VirtualizingPanel.ScrollUnit="Pixel"`) and the groups of
 `Items.GroupDescriptions` have rows of different heights. There, dragging the thumb scrolls the

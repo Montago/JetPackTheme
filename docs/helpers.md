@@ -66,7 +66,7 @@ can do the same instead of binding with `RelativeSource AncestorType=DataGrid`.
 
 | Attached property | Type | Description |
 | --- | --- | --- |
-| `HeadersVisibility` | `DataGridHeadersVisibility` | The grid's `HeadersVisibility`. The row header shows for `Row` and `All`. |
+| `HeadersVisibility` | `DataGridHeadersVisibility` | The grid's `HeadersVisibility`. The row style switches to the template with a row header for `Row` and `All`. |
 | `AreRowDetailsFrozen` | `bool` | The grid's `AreRowDetailsFrozen`. When true, the details stay in view while the columns scroll sideways. |
 | `SelectionUnit` | `DataGridSelectionUnit` | The grid's `SelectionUnit`. Cells take the selected look when it is `Cell`. |
 
