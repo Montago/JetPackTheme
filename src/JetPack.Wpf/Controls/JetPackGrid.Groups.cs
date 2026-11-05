@@ -36,6 +36,8 @@ public partial class JetPackGrid
     private readonly List<SortDescription> groupSorts = [];
     private bool switchingGrouping;
     private bool regroupPending;
+    // True while UpdateRowCache has set the panel's CacheLength.
+    private bool rowCacheSet;
     private ControlTemplate? groupRowTemplate;
     private Binding? rowBackground;
     private Binding? alternatingBackground;
@@ -254,6 +256,76 @@ public partial class JetPackGrid
         if (grouped != null)
         {
             ShowPage(PageIndex, scrollToTop: false);
+        }
+    }
+
+    // Grouped, a thumb drag shows the rows at the thumb in the data rows the panel has realized
+    // (JetPackGrid.Scrolling.cs). The DataGrid realizes one row before and after the view (CacheLength 1,1 Item),
+    // so where the view had several group headers there were fewer data rows than a page with fewer headers
+    // needs, and the drag scrolled for real until enough rows were realized: every drag stuttered at its start.
+    // The panel therefore realizes as many rows after the view as there can be headers among the realized rows:
+    // the most headers in any two pages of rows, at most a page. That is a row or two with a few large groups;
+    // a page of cache for every grouped grid made grouping, folding and grouped searches slower (the panel
+    // builds the cache after the view is shown, but the UI thread is busy with it). An app's own CacheLength
+    // is left alone.
+    private void UpdateRowCache()
+    {
+        if (grouped == null)
+        {
+            if (rowCacheSet)
+            {
+                ClearValue(VirtualizingPanel.CacheLengthUnitProperty);
+                ClearValue(VirtualizingPanel.CacheLengthProperty);
+                rowCacheSet = false;
+            }
+            return;
+        }
+        if (!rowCacheSet && ReadLocalValue(VirtualizingPanel.CacheLengthProperty) != DependencyProperty.UnsetValue)
+        {
+            return;
+        }
+
+        // The viewport counts rows (ScrollUnit Item).
+        var viewport = (GetTemplateChild("DG_ScrollViewer") as ScrollViewer)?.ViewportHeight ?? 0;
+        var page = viewport > 0 ? (int)Math.Ceiling(viewport) : 40;
+        var window = 2 * page;
+        int headers = 0, most = 0;
+        for (var i = 0; i < grouped.Count; i++)
+        {
+            if (grouped[i] is GridGroupRow)
+            {
+                headers++;
+            }
+            if (i >= window && grouped[i - window] is GridGroupRow)
+            {
+                headers--;
+            }
+            if (headers > most)
+            {
+                most = headers;
+                if (most >= page)
+                {
+                    break;
+                }
+            }
+        }
+
+        var cache = new VirtualizationCacheLength(1, Math.Min(page, most) + 1);
+        if (!rowCacheSet || !Equals(GetValue(VirtualizingPanel.CacheLengthProperty), cache))
+        {
+            SetValue(VirtualizingPanel.CacheLengthUnitProperty, VirtualizationCacheLengthUnit.Item);
+            SetValue(VirtualizingPanel.CacheLengthProperty, cache);
+            rowCacheSet = true;
+        }
+    }
+
+    protected override void OnRenderSizeChanged(SizeChangedInfo sizeInfo)
+    {
+        base.OnRenderSizeChanged(sizeInfo);
+        // More rows in view can mean more headers among them.
+        if (grouped != null && sizeInfo.HeightChanged)
+        {
+            Dispatcher.BeginInvoke(DispatcherPriority.Background, UpdateRowCache);
         }
     }
 

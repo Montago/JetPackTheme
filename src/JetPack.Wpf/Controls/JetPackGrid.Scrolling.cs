@@ -308,7 +308,7 @@ public partial class JetPackGrid
             }
 
             // The row's triggers show the selection of its own item; the previewed item's is set here, as
-            // the row template (JetPack.Styles.DataGridRow) shows it. Ungrouped, the rows keep their
+            // the row templates (JetPack.Templates.DataGridRow) show it. Ungrouped, the rows keep their
             // alternating backgrounds: after a far jump WPF numbers them from the top row again, not by item
             // index. Grouped, the rows alternate within each group, so the previewed item's background is set.
             var isSelected = selected.Contains(item);
@@ -324,7 +324,7 @@ public partial class JetPackGrid
             }
             styled.Add(row);
             // Search hits as the previewed item's row shows them: a selected row takes the accent and the grey
-            // away (JetPack.Styles.DataGridRow), so a row that is selected but shows another item gets them
+            // away (JetPack.Templates.DataGridRow), so a row that is selected but shows another item gets them
             // back, and the other way round.
             row.SetValue(HighlightForegroundProperty, isSelected ? null : grid.HighlightForeground);
             row.SetValue(HighlightCellBackgroundProperty, isSelected ? null : grid.HighlightCellBackground);

@@ -773,6 +773,7 @@ public partial class JetPackGrid : DataGrid
                 Items.Filter = filter;
             }
         }
+        UpdateRowCache();
 
         showingPage = true;
         try
