@@ -275,7 +275,9 @@ Choosing an item raises `jp-change` with `{ selectedItem, selectedValue }`.
 ![DatePicker with its calendar open](../screenshots/web/controls/datepicker.png)
 
 `jp-date-picker` is a text box with a calendar button that opens a [Calendar](lists.md#calendar) below
-it. A typed date (M/d/yyyy, as in the WPF demo) is read when the box loses the focus; Alt+Down opens
+it. The date is shown in the short format of the browser's culture (M/d/yyyy in en-US, d.M.yyyy in
+da-DK), as a WPF app follows its own culture. A typed date is read in that culture's order with any
+separators (`23.10.2026`, `23-10-26`) or as `yyyy-MM-dd` when the box loses the focus; Alt+Down opens
 the calendar.
 
 ```cshtml
@@ -296,11 +298,15 @@ the calendar.
 | `selected-date` | | the date |
 | `watermark` | `Select a date` | grey text while the box is empty |
 | `name` | | adds a hidden input that posts the date as `yyyy-MM-dd` (binds to `DateTime` and `DateOnly`) |
+| `culture` | the browser's | the culture of the date format and the calendar (`"da-DK"`); `data-jp-culture` on a container does the same for every picker in it |
+| `first-day-of-week` | the culture's | a `DayOfWeek` for the calendar |
 
 Choosing a date raises `change` on the text box and `jp-change` with a `Date` (or `null` when the box
 is emptied), once per choice and only when the date changes, as `SelectedDateChanged` does in WPF. A
 typed date is read when the box loses the focus.
-`JetPack.formatDate(date)` and `JetPack.parseDate(text)` convert in the picker's format.
+`JetPack.formatDate(date, culture)` and `JetPack.parseDate(text, culture)` convert in the pickers'
+format; `culture` is a name or an element whose culture to use, and the browser's when left out. Dates
+always use the Gregorian calendar and Latin digits.
 
 ## TimePicker
 

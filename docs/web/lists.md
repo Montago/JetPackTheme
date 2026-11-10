@@ -651,7 +651,9 @@ groupBy.addEventListener('change', () => { cars.groupMemberPath = groupBy.value;
 
 `jp-calendar` is the month view with the year and decade views behind the header: click the title
 to go up a level, and the arrows to move a month (or a year, a decade). Today is marked grey and the
-selected date green. The arrow keys move between the days.
+selected date green. The arrow keys move between the days. Month and day names and the first day of
+the week follow the browser's culture, unless `culture` (or `data-jp-culture` on a container) names
+another one.
 
 ```cshtml
 <jp-calendar selected-date="@DateTime.Today" />
@@ -665,6 +667,8 @@ selected date green. The arrow keys move between the days.
 | --- | --- |
 | `selected-date` | the selected date |
 | `display-date` | the month shown first (default: the selected month, or this month) |
+| `culture` | the culture of the month and day names (`"da-DK"`; default: the browser's) |
+| `first-day-of-week` | a `DayOfWeek` (default: the culture's) |
 
 `jetpack.js` writes the header and the days. Choosing a day raises `jp-change` with a `Date`, and
 `data-selected-date` holds it as `yyyy-MM-dd`.

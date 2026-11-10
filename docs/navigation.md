@@ -115,6 +115,45 @@ selected item gets the accent gradient. The ☰ button collapses the pane to ico
 `HamburgerMenuItem` adds `Icon` (any element, 18×18; a `jp:JetPackIcon` there is drawn at 18×18, where its 24×24 grid scales by 3/4 and stays sharper than at 16). With `ItemsSource`, items are wrapped in
 `HamburgerMenuItem` containers automatically.
 
+### Groups
+
+![HamburgerMenu with an open group](screenshots/controls/hamburgermenu-groups.png)
+
+A `HamburgerMenuItem` with `Items` is a group: clicking it opens or closes its sub-items, and it is
+never selected itself. Sub-items show no icon and their text lines up with the group's; the group has
+the Expander's arrow (right when closed, down when open). There are two levels: sub-items of a
+sub-item are ignored.
+
+```xml
+<jp:HamburgerMenuItem Content="Planning" IsExpanded="True">
+    <jp:HamburgerMenuItem.Icon>
+        <jp:JetPackIcon Kind="Calendar" />
+    </jp:HamburgerMenuItem.Icon>
+    <jp:HamburgerMenuItem.Items>
+        <jp:HamburgerMenuItem Content="Week plan" Tag="{StaticResource WeekPlanPage}" />
+        <jp:HamburgerMenuItem Content="History" Tag="{StaticResource HistoryPage}" />
+    </jp:HamburgerMenuItem.Items>
+</jp:HamburgerMenuItem>
+```
+
+The menu keeps each group's sub-items right after it in its own `Items`, so `SelectedItem` is the
+selected page on either level and a binding such as `SelectedItem.Tag` keeps working. `SelectedIndex`
+or `IsSelected` on a group selects its first sub-item, and selecting a sub-item opens its group. A
+closed group, or any group while the pane shows only icons, gets the selected look when it holds the
+selected page; with the pane showing only icons, clicking a group opens the pane and the group.
+
+Up and Down move over the visible items and select pages but not groups; Right, Left and Enter open
+and close a group, and Left on a sub-item goes to its group. Groups need items declared as
+`HamburgerMenuItem`s; with `ItemsSource` the menu has one level.
+
+| `HamburgerMenuItem` property | Type | Description |
+| --- | --- | --- |
+| `Items` | `ObservableCollection<HamburgerMenuItem>` | the sub-items; any makes the item a group |
+| `IsExpanded` | `bool` | whether a group shows its sub-items (two-way bindable) |
+| `HasItems`, `IsSubItem` | `bool` | read-only: the item is a group, or a sub-item |
+| `IsChildSelected` | `bool` | read-only: one of the group's sub-items is selected |
+| `ShowsChildSelection` | `bool` | read-only: the group has the selected look in place of its sub-item |
+
 ## Expander
 
 ![Expanders](screenshots/controls/expander.png)
