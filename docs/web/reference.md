@@ -119,6 +119,7 @@ write them in your own markup:
 | `data-jp-palette="#… #…"` | `.jp-color-picker` | the colours of the palette |
 | `data-jp-culture="da-DK"` | a calendar, date picker or any container | the culture of their dates (default: the browser's) |
 | `data-jp-first-day-of-week="1"` | a calendar, date picker or any container | the first day of the week (0 = Sunday, as `DayOfWeek`) |
+| `data-jp-date-format="dd-MM-yyyy"` | a date picker or any container | a .NET custom date format in place of the short date |
 | `data-href="url"` | a `<tr>` | the row opens that page when clicked |
 | `data-jp-sort="false"`, `data-jp-resize="false"` | `table.jp-data-grid` or a `<th>` | the headers do not sort, the columns do not resize |
 | `data-sort-value="…"` | a cell of `.jp-data-grid` | the value the column sorts by |
@@ -143,7 +144,7 @@ write them in your own markup:
 | `JetPack.showMessage(title, message)` | a dialog with one OK button |
 | `JetPack.openFlyout(idOrElement)`, `JetPack.closeFlyout(idOrElement)` | open and close a flyout (or a `<dialog>`) |
 | `JetPack.init(element)` | sets up the controls inside `element` that a script added later |
-| `JetPack.formatDate(date, culture)`, `JetPack.parseDate(text, culture)` | dates in the pickers' short format; `culture` is a name or an element (default: the browser's culture) |
+| `JetPack.formatDate(date, culture, format)`, `JetPack.parseDate(text, culture, format)` | dates in the pickers' format; `culture` is a name or an element (default: the browser's culture), `format` a custom date format |
 | `element.jetpack.select(indexOrName)`, `element.jetpack.selectedIndex` | on a `.jp-tab-control` |
 | `JetPack.jetpackGrid(idOrElement)` | the API of a `.jp-jetpack-grid` (see [JetPackGrid](lists.md#script)) |
 

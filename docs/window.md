@@ -51,9 +51,26 @@ the system menu keep working.
 | `RightWindowCommands` | `object` | `null` | Content before the minimise button. |
 | `Flyouts` | `object` | `null` | A layer above the window content for `Flyout` panels; usually a `Grid`. |
 
-`Button` and `ToggleButton` inside the window-command areas automatically get the flat title-bar look
-(`JetPack.Styles.Button.WindowCommand`) and inherit the title text colour, which follows
+`Button`, `ToggleButton` and `RadioButton` inside the window-command areas automatically get the flat
+title-bar look (`JetPack.Styles.Button.WindowCommand`) and inherit the title text colour, which follows
 `TitleBarMode`.
+
+![Title bar buttons with East selected](screenshots/controls/window-commands.png)
+
+A checked `ToggleButton` or `RadioButton` shows that it is the selected one: a slightly lighter ground
+and a 2 px accent line along the bottom (`JetPack.Brushes.Accent.Highlight`, or
+`JetPack.Brushes.Accent.Solid` on the light title bar). Hover and pressed still change the ground; the
+line stays. Radio buttons fit a choice such as a region:
+
+```xml
+<jp:JetPackWindow.RightWindowCommands>
+    <StackPanel Orientation="Horizontal">
+        <RadioButton Content="East" GroupName="Region" IsChecked="True" />
+        <RadioButton Content="West" GroupName="Region" />
+        <Button Content="Settings" />
+    </StackPanel>
+</jp:JetPackWindow.RightWindowCommands>
+```
 
 ![Light title bar](screenshots/window-light.png)
 

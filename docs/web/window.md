@@ -67,6 +67,22 @@ example a [badged](buttons.md#badged) bell:
 </div>
 ```
 
+![Title bar buttons with East selected](../screenshots/web/controls/window-commands.png)
+
+A button or link with `aria-pressed="true"`, `aria-checked="true"`, `aria-selected="true"` or
+`aria-current` is the selected one, as a checked `ToggleButton` or `RadioButton` is in WPF: a slightly
+lighter ground and a 2 px accent line along the bottom (the solid accent on a light title bar).
+`jetpack.js` does not set these; the page does, for example `aria-current="page"` on the link of the
+page shown, or `aria-pressed` from a script.
+
+```html
+<div class="jp-window-commands">
+    <a href="/east" aria-current="page">East</a>
+    <a href="/west">West</a>
+    <button type="button" data-jp-open="settings">Settings</button>
+</div>
+```
+
 ### Vignette
 
 `<canvas class="jp-vignette">` draws the dark edges of the window. `jetpack.js` draws it as
