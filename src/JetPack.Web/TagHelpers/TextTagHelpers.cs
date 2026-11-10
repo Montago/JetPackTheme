@@ -329,7 +329,8 @@ public class ComboBoxTagHelper(IHtmlGenerator generator) : JetPackTagHelper
 /// <summary>
 /// <c>&lt;jp-date-picker selected-date="@DateTime.Today" watermark="Select a date" /&gt;</c>: the text box, the
 /// calendar button and a Calendar drop-down. With name, a hidden input posts the date as yyyy-MM-dd.
-/// The date is shown in the browser's culture unless culture (or data-jp-culture on a container) names one.
+/// The date is shown in the browser's culture unless culture (or data-jp-culture on a container) names one, as its
+/// short date unless date-format (or data-jp-date-format on a container) gives a custom format.
 /// </summary>
 [HtmlTargetElement("jp-date-picker", TagStructure = TagStructure.WithoutEndTag)]
 public class DatePickerTagHelper : JetPackTagHelper
@@ -346,6 +347,12 @@ public class DatePickerTagHelper : JetPackTagHelper
     /// <summary>The first day of the week in the calendar; the culture's when empty.</summary>
     public DayOfWeek? FirstDayOfWeek { get; set; }
 
+    /// <summary>
+    /// A .NET custom date format for the text ("dd-MM-yyyy", "d. MMMM yyyy"); the culture's short date when empty.
+    /// Typed dates are read in its order of day, month and year, with month names where it has them.
+    /// </summary>
+    public string? DateFormat { get; set; }
+
     public override void Process(TagHelperContext context, TagHelperOutput output)
     {
         output.TagName = "div";
@@ -354,14 +361,24 @@ public class DatePickerTagHelper : JetPackTagHelper
         var date = SelectedDate?.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture) ?? "";
         output.Attributes.SetAttribute("data-selected-date", date);
         DateCulture.Apply(output, Culture, FirstDayOfWeek);
+        var format = string.IsNullOrWhiteSpace(DateFormat) ? null : DateFormat;
+        if (format is not null)
+        {
+            output.Attributes.SetAttribute("data-jp-date-format", format);
+        }
         // jetpack.js writes the text again in the browser's culture; this is what shows without script
-        var text = SelectedDate?.ToString("d", DateCulture.Of(Culture)) ?? "";
+        var text = SelectedDate is { } selected ? Html.Attr(FormatDate(selected, format, DateCulture.Of(Culture))) : "";
         var disabled = IsEnabled ? "" : " disabled";
         output.Content.SetHtmlContent(
             $"<input class=\"jp-text-box\" value=\"{text}\" placeholder=\"{Html.Attr(Watermark)}\"{disabled}{CommonAttributes()}>" +
             $"<button type=\"button\" class=\"jp-text-box-button jp-text-box-button--calendar\" tabindex=\"-1\" aria-label=\"Show calendar\"{disabled}></button>" +
             (Name is null ? "" : $"<input type=\"hidden\" name=\"{Html.Attr(Name)}\" value=\"{date}\">"));
     }
+
+    // A one-letter format is a custom format here, as in jetpack.js ("d" is the day, not the short date)
+    private static string FormatDate(DateTime date, string? format, CultureInfo culture) =>
+        format is null ? date.ToString("d", culture)
+        : date.ToString(format.Length == 1 ? "%" + format : format, culture);
 }
 
 /// <summary><c>&lt;jp-time-picker selected-time="08:30" minute-step="30" watermark="Meeting time" /&gt;</c></summary>
