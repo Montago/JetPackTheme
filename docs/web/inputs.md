@@ -300,13 +300,38 @@ the calendar.
 | `name` | | adds a hidden input that posts the date as `yyyy-MM-dd` (binds to `DateTime` and `DateOnly`) |
 | `culture` | the browser's | the culture of the date format and the calendar (`"da-DK"`); `data-jp-culture` on a container does the same for every picker in it |
 | `first-day-of-week` | the culture's | a `DayOfWeek` for the calendar |
+| `date-format` | the culture's short date | a .NET custom date format (below); `data-jp-date-format` on a container does the same for every picker in it |
+
+**Date format.** `date-format` shows the date in a .NET custom format in place of the culture's short
+date, for example `dd-MM-yyyy` where .NET writes Danish dates that way and the browser writes
+`16.11.2026`. It knows `d`, `dd`, `ddd`, `dddd`, `M`, `MM`, `MMM`, `MMMM`, `yy`, `yyyy`, text in quotes,
+a character after a backslash, and `%`; month and day names come from the picker's culture. A
+one-letter format is a custom format too (`"d"` is the day, not the short date).
+
+```cshtml
+<jp-date-picker culture="da-DK" date-format="dd-MM-yyyy" />
+<jp-date-picker culture="da-DK" date-format="dddd 'den' d. MMMM yyyy" />
+```
+
+| Format | Culture | Shown |
+| --- | --- | --- |
+| `dd-MM-yyyy` | da-DK | 16-11-2026 |
+| `dd MMM yyyy` | da-DK | 16 nov. 2026 |
+| `dddd 'den' d. MMMM yyyy` | da-DK | mandag den 16. november 2026 |
+| `MMM d, yyyy` | en-US | Nov 16, 2026 |
+
+With a format, a typed date is read in the format's order of day, month and year with any separators.
+A month name (whole or abbreviated, any case, with or without its dot) is the month wherever it
+stands, day names are skipped, `yyyy-MM-dd` is still read, and impossible dates (`31-11-2026`) are
+refused.
 
 Choosing a date raises `change` on the text box and `jp-change` with a `Date` (or `null` when the box
 is emptied), once per choice and only when the date changes, as `SelectedDateChanged` does in WPF. A
 typed date is read when the box loses the focus.
-`JetPack.formatDate(date, culture)` and `JetPack.parseDate(text, culture)` convert in the pickers'
-format; `culture` is a name or an element whose culture to use, and the browser's when left out. Dates
-always use the Gregorian calendar and Latin digits.
+`JetPack.formatDate(date, culture, format)` and `JetPack.parseDate(text, culture, format)` convert in
+the pickers' format; `culture` is a name or an element whose culture (and `data-jp-date-format`) to
+use, the browser's when left out, and `format` a custom format as above. Dates always use the
+Gregorian calendar and Latin digits.
 
 ## TimePicker
 
