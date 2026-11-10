@@ -466,6 +466,23 @@ tools/web_snapshots.py can cut the picture out to docs/screenshots/web/controls/
         </div>
     </div>
 
+    <div class="gallery-sample" data-shot="hamburgermenu-groups">
+        <div class="w-[440px] h-[250px] rounded-[3px] overflow-hidden flex" style="border: 1px solid #3D3E42">
+            <jp-hamburger-menu class="flex-1">
+                <jp-hamburger-menu-item content="Overview" icon="Home"><div class="demo-ham-page"><h5>Overview</h5></div></jp-hamburger-menu-item>
+                <jp-hamburger-menu-item content="Planning" icon="Calendar" is-expanded="true">
+                    <jp-hamburger-menu-item content="Week plan" is-selected="true"><div class="demo-ham-page"><h5>Week plan</h5><p>Week 46: 38 shifts planned, 4 still open.</p></div></jp-hamburger-menu-item>
+                    <jp-hamburger-menu-item content="History"><div class="demo-ham-page"><h5>History</h5></div></jp-hamburger-menu-item>
+                </jp-hamburger-menu-item>
+                <jp-hamburger-menu-item content="Customers" icon="Domain">
+                    <jp-hamburger-menu-item content="Companies"><div class="demo-ham-page"><h5>Companies</h5></div></jp-hamburger-menu-item>
+                    <jp-hamburger-menu-item content="New company"><div class="demo-ham-page"><h5>New company</h5></div></jp-hamburger-menu-item>
+                </jp-hamburger-menu-item>
+                <jp-hamburger-menu-item content="Employees" icon="AccountMultiple"><div class="demo-ham-page"><h5>Employees</h5></div></jp-hamburger-menu-item>
+            </jp-hamburger-menu>
+        </div>
+    </div>
+
     <div class="gallery-sample" data-shot="expander">
         <div class="flex flex-col gap-2 w-[210px]">
             <jp-expander header="Billing address" is-expanded="true"><p class="m-0">120 Pine Street<br>Seattle, WA 98101</p></jp-expander>

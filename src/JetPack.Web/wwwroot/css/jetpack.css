@@ -2379,6 +2379,43 @@ Load this file before Tailwind: the first @layer statement fixes the order of th
   }
   .jp-hamburger-menu.is-collapsed .jp-hamburger-menu__label { opacity: 0; }
 
+  /*
+  Two levels: a group opens and closes its sub-items (HamburgerMenuItem.Items in WPF); it is never
+  the current page itself. Sub-items show no icon; their text lines up with the group's.
+  <div class="jp-hamburger-menu__group">
+    <button class="jp-hamburger-menu__item jp-hamburger-menu__group-header" data-jp-hamburger-group aria-expanded="true">
+      icon <span class="jp-hamburger-menu__label">Planning</span> <span class="jp-hamburger-menu__arrow"></span></button>
+    <div class="jp-hamburger-menu__sub-items" role="group"> <a class="jp-hamburger-menu__item jp-hamburger-menu__item--sub">..</a> </div>
+  </div>
+  */
+  .jp-hamburger-menu__group, .jp-hamburger-menu__sub-items {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    flex: none;
+  }
+  .jp-hamburger-menu__sub-items[hidden], .jp-hamburger-menu.is-collapsed .jp-hamburger-menu__sub-items { display: none; }
+  .jp-hamburger-menu__item--sub { height: 30px; padding-left: 40px; }
+  /* The Expander's arrow: right when closed, down when open */
+  .jp-hamburger-menu__arrow {
+    flex: none;
+    margin: 0 3px 0 auto;
+    border-top: 4px solid transparent;
+    border-bottom: 4px solid transparent;
+    border-left: 5px solid #fff;
+    opacity: 0.6;
+  }
+  .jp-hamburger-menu__group-header[aria-expanded="true"] .jp-hamburger-menu__arrow { transform: rotate(90deg); }
+  .jp-hamburger-menu.is-collapsed .jp-hamburger-menu__arrow { visibility: hidden; }
+  /* A closed group, or any group while the pane shows only icons, stands in for its selected sub-item */
+  .jp-hamburger-menu__group:has(> .jp-hamburger-menu__sub-items :is([aria-current="page"], [aria-selected="true"]))
+    > .jp-hamburger-menu__group-header:is([aria-expanded="false"], .jp-hamburger-menu.is-collapsed *) {
+    background: var(--jp-accent-selection);
+    color: #fff;
+    box-shadow: inset 0 1px 0 var(--jp-accent-highlight);
+    text-shadow: var(--jp-effect-accent-text-shadow);
+  }
+
   /* A HamburgerMenu with its own content, as the control in the demo: the items switch panels */
   .jp-hamburger-menu-host { display: flex; min-height: 0; overflow: hidden; }
   .jp-hamburger-menu-host > .jp-hamburger-menu { padding-bottom: 6px; }
