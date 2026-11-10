@@ -2,7 +2,11 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:c="clr-namespace:JetPack.Wpf.Controls">
 
-    <!-- Text buttons placed in the title bar (LeftWindowCommands / RightWindowCommands) -->
+    <!--
+    Text buttons placed in the title bar (LeftWindowCommands / RightWindowCommands). A checked
+    ToggleButton or RadioButton is the selected one: a lighter ground and an accent line along the
+    bottom edge of the title bar.
+    -->
     <Style x:Key="JetPack.Styles.Button.WindowCommand" TargetType="ButtonBase">
         <Setter Property="OverridesDefaultStyle" Value="True" />
         <Setter Property="Focusable" Value="False" />
@@ -15,17 +19,25 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="ButtonBase">
-                    <Border x:Name="Bd" Background="{TemplateBinding Background}">
-                        <ContentPresenter Margin="{TemplateBinding Padding}" VerticalAlignment="Center" HorizontalAlignment="Center" RecognizesAccessKey="True" />
-                    </Border>
+                    <Grid>
+                        <Border x:Name="Bd" Background="{TemplateBinding Background}">
+                            <ContentPresenter Margin="{TemplateBinding Padding}" VerticalAlignment="Center" HorizontalAlignment="Center" RecognizesAccessKey="True" />
+                        </Border>
+                        <Rectangle x:Name="SelectionLine" Height="2" VerticalAlignment="Bottom" Fill="{DynamicResource JetPack.Brushes.Accent.Highlight}" Visibility="Collapsed" />
+                    </Grid>
                     <ControlTemplate.Triggers>
+                        <Trigger Property="ToggleButton.IsChecked" Value="True">
+                            <Setter TargetName="Bd" Property="Background" Value="#14FFFFFF" />
+                            <Setter TargetName="SelectionLine" Property="Visibility" Value="Visible" />
+                        </Trigger>
+                        <!-- On the light title bar the pale highlight would vanish; the solid accent shows -->
+                        <DataTrigger Binding="{Binding TitleBarMode, RelativeSource={RelativeSource AncestorType=c:JetPackWindow}}" Value="Light">
+                            <Setter TargetName="SelectionLine" Property="Fill" Value="{DynamicResource JetPack.Brushes.Accent.Solid}" />
+                        </DataTrigger>
                         <Trigger Property="IsMouseOver" Value="True">
                             <Setter TargetName="Bd" Property="Background" Value="#24FFFFFF" />
                         </Trigger>
                         <Trigger Property="IsPressed" Value="True">
-                            <Setter TargetName="Bd" Property="Background" Value="#1F000000" />
-                        </Trigger>
-                        <Trigger Property="ToggleButton.IsChecked" Value="True">
                             <Setter TargetName="Bd" Property="Background" Value="#1F000000" />
                         </Trigger>
                     </ControlTemplate.Triggers>
@@ -135,6 +147,7 @@
                                             <ContentPresenter.Resources>
                                                 <Style TargetType="Button" BasedOn="{StaticResource JetPack.Styles.Button.WindowCommand}" />
                                                 <Style TargetType="ToggleButton" BasedOn="{StaticResource JetPack.Styles.Button.WindowCommand}" />
+                                                <Style TargetType="RadioButton" BasedOn="{StaticResource JetPack.Styles.Button.WindowCommand}" />
                                             </ContentPresenter.Resources>
                                         </ContentPresenter>
                                         <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
@@ -142,6 +155,7 @@
                                                 <ContentPresenter.Resources>
                                                     <Style TargetType="Button" BasedOn="{StaticResource JetPack.Styles.Button.WindowCommand}" />
                                                     <Style TargetType="ToggleButton" BasedOn="{StaticResource JetPack.Styles.Button.WindowCommand}" />
+                                                    <Style TargetType="RadioButton" BasedOn="{StaticResource JetPack.Styles.Button.WindowCommand}" />
                                                 </ContentPresenter.Resources>
                                             </ContentPresenter>
                                             <Button x:Name="MinButton" Style="{StaticResource JetPack.Styles.Button.WindowCaption}" Command="{x:Static SystemCommands.MinimizeWindowCommand}" ToolTip="Minimize">

@@ -805,6 +805,21 @@
         </ContentControl>
 
         <!-- Window -->
+        <ContentControl Style="{StaticResource Demo.Sample}" Tag="window-commands">
+            <Grid Width="420" Height="30" TextElement.Foreground="White">
+                <Border Background="{DynamicResource JetPack.Brushes.Window.Title.Dark}" />
+                <Border BorderBrush="#24FFFFFF" BorderThickness="0,1,0,0" />
+                <DockPanel>
+                    <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
+                        <RadioButton Style="{StaticResource JetPack.Styles.Button.WindowCommand}" GroupName="GalleryRegion" Content="East" IsChecked="True" />
+                        <RadioButton Style="{StaticResource JetPack.Styles.Button.WindowCommand}" GroupName="GalleryRegion" Content="West" />
+                        <Button Style="{StaticResource JetPack.Styles.Button.WindowCommand}" Content="Settings" />
+                    </StackPanel>
+                    <TextBlock Margin="9,0" VerticalAlignment="Center" FontWeight="Bold" FontSize="12" Text="Consultant planning" />
+                </DockPanel>
+            </Grid>
+        </ContentControl>
+
         <ContentControl Style="{StaticResource Demo.Sample}" Tag="flyout">
             <Grid Width="340" Height="200" ClipToBounds="True">
                 <Border BorderBrush="#FF3D3E42" BorderThickness="1" CornerRadius="3" Background="{DynamicResource JetPack.Brushes.Window.Background}" />

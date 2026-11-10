@@ -78,6 +78,11 @@
     text-decoration: none;
     cursor: pointer;
   }
+  /* The selected one (a checked ToggleButton or RadioButton in WPF): a lighter ground and an accent line along the bottom */
+  .jp-window-commands > :is(button, a):is([aria-pressed="true"], [aria-checked="true"], [aria-selected="true"], [aria-current]:not([aria-current="false"])) {
+    background: rgb(255 255 255 / 0.08);
+    box-shadow: inset 0 -2px 0 var(--jp-accent-highlight);
+  }
   .jp-window-commands > :is(button, a):hover { background: rgb(255 255 255 / 0.12); }
   /* The accent swatches of the demo's title bar */
   .jp-window-commands__swatch {
@@ -93,6 +98,9 @@
     box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.7), 0 1px 0 rgb(0 0 0 / 0.25);
     color: var(--jp-header-foreground);
     text-shadow: var(--jp-emboss);
+  }
+  .jp-window[data-title-bar="light"] .jp-window-commands > :is(button, a):is([aria-pressed="true"], [aria-checked="true"], [aria-selected="true"], [aria-current]:not([aria-current="false"])) {
+    box-shadow: inset 0 -2px 0 var(--jp-accent-solid);
   }
   .jp-window[data-title-bar="light"] .jp-window-commands > :is(button, a):hover { background: rgb(0 0 0 / 0.08); }
   /* Texture: the ground and the vignette run under the title; the title gets the soft glow of TextGlow */
