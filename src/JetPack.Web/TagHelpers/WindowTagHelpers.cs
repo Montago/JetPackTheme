@@ -95,9 +95,11 @@ public class StatusBarItemTagHelper : TagHelper
 
 /// <summary>
 /// <c>&lt;jp-hamburger-menu-item content="Overview" icon="Home" href="…" /&gt;</c>. In a menu with its own
-/// content the element's content is the page the item shows.
+/// content the element's content is the page the item shows. Items nested in an item make it a group
+/// that opens and closes (<c>is-expanded</c>); sub-items show no icon, and there are two levels.
 /// </summary>
 [HtmlTargetElement("jp-hamburger-menu-item", ParentTag = "jp-hamburger-menu")]
+[HtmlTargetElement("jp-hamburger-menu-item", ParentTag = "jp-hamburger-menu-item")]
 public class HamburgerMenuItemTagHelper : TagHelper
 {
     public string Content { get; set; } = "";
@@ -108,12 +110,20 @@ public class HamburgerMenuItemTagHelper : TagHelper
 
     public bool IsSelected { get; set; }
 
+    /// <summary>Whether a group shows its sub-items; a group with the selected page opens by itself.</summary>
+    public bool IsExpanded { get; set; }
+
     internal string Html { get; private set; } = "";
+
+    internal List<HamburgerMenuItemTagHelper> Items { get; private set; } = [];
 
     public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
     {
+        var parent = ChildList<HamburgerMenuItemTagHelper>.Of(context);
+        var children = ChildList<HamburgerMenuItemTagHelper>.Start(context);
         Html = (await output.GetChildContentAsync()).GetContent();
-        ChildList<HamburgerMenuItemTagHelper>.Of(context)?.Items.Add(this);
+        Items = children.Items;
+        parent?.Items.Add(this);
         output.SuppressOutput();
     }
 }
@@ -121,7 +131,8 @@ public class HamburgerMenuItemTagHelper : TagHelper
 /// <summary>
 /// <c>&lt;jp-hamburger-menu selected-index="0"&gt;&lt;jp-hamburger-menu-item …&gt;page&lt;/jp-hamburger-menu-item&gt;&lt;/jp-hamburger-menu&gt;</c>:
 /// the dark navigation pane. Items with href are links (the window's navigation); items with content
-/// switch the panel at the right, as the control in a window.
+/// switch the panel at the right, as the control in a window. As in WPF, <c>selected-index</c> counts
+/// groups and their sub-items in order, and a group (never selected itself) passes it to its first sub-item.
 /// </summary>
 [HtmlTargetElement("jp-hamburger-menu")]
 public class HamburgerMenuTagHelper : JetPackTagHelper
@@ -139,22 +150,42 @@ public class HamburgerMenuTagHelper : JetPackTagHelper
     {
         var items = ChildList<HamburgerMenuItemTagHelper>.Start(context);
         await output.GetChildContentAsync();
-        var hosted = items.Items.Any(i => i.Href is null && i.Html.Trim().Length > 0);
+
+        // Groups followed by their sub-items, as the WPF menu keeps them in Items
+        var flat = items.Items.SelectMany(i => i.Items.Count > 0 ? [i, .. i.Items] : new[] { i }).ToList();
+        var pages = flat.Where(i => i.Items.Count == 0 || !items.Items.Contains(i)).ToList();
+        var hosted = pages.Any(i => i.Href is null && i.Html.Trim().Length > 0);
         var id = Html.NewId("jp-ham");
-        var selected = items.Items.FindIndex(i => i.IsSelected);
-        if (selected < 0) selected = SelectedIndex;
+        var selectedItem = flat.FirstOrDefault(i => i.IsSelected)
+            ?? (SelectedIndex >= 0 && SelectedIndex < flat.Count ? flat[SelectedIndex] : null);
+        if (selectedItem is { Items.Count: > 0 } && items.Items.Contains(selectedItem))
+        {
+            selectedItem = selectedItem.Items[0];
+        }
 
         string Icon(JetPackIconKind k) => Html.Icon(ViewContext, k);
+        string Item(HamburgerMenuItemTagHelper item, bool sub)
+        {
+            var current = item == selectedItem ? " aria-current=\"page\"" : "";
+            var css = sub ? "jp-hamburger-menu__item jp-hamburger-menu__item--sub" : "jp-hamburger-menu__item";
+            var body = (sub ? "" : Icon(item.Icon)) + $"<span class=\"jp-hamburger-menu__label\">{Html.Text(item.Content)}</span>";
+            return item.Href is not null
+                ? $"<a class=\"{css}\" href=\"{Html.Attr(item.Href)}\" title=\"{Html.Attr(item.Content)}\"{current}>{body}</a>"
+                : $"<button type=\"button\" class=\"{css}\" aria-controls=\"{id}-{pages.IndexOf(item)}\" title=\"{Html.Attr(item.Content)}\"{current}>{body}</button>";
+        }
+        string Group(HamburgerMenuItemTagHelper group)
+        {
+            var expanded = group.IsExpanded || (selectedItem is not null && group.Items.Contains(selectedItem));
+            return "<div class=\"jp-hamburger-menu__group\">" +
+                $"<button type=\"button\" class=\"jp-hamburger-menu__item jp-hamburger-menu__group-header\" data-jp-hamburger-group aria-expanded=\"{(expanded ? "true" : "false")}\" title=\"{Html.Attr(group.Content)}\">" +
+                Icon(group.Icon) + $"<span class=\"jp-hamburger-menu__label\">{Html.Text(group.Content)}</span><span class=\"jp-hamburger-menu__arrow\"></span></button>" +
+                $"<div class=\"jp-hamburger-menu__sub-items\" role=\"group\"{(expanded ? "" : " hidden")}>" +
+                string.Concat(group.Items.Select(sub => Item(sub, true))) + "</div></div>";
+        }
+
         var nav = $"<nav class=\"jp-hamburger-menu{(IsPaneOpen ? "" : " is-collapsed")}\"{(PaneWidth is { } w ? $" style=\"--pane-width:{Html.Num(w)}px\"" : "")} aria-label=\"Pages\">" +
             "<button type=\"button\" class=\"jp-hamburger-menu__toggle\" data-jp-toggle-pane aria-expanded=\"true\" aria-label=\"Show page names\">" + Icon(JetPackIconKind.Menu) + "</button>" +
-            string.Concat(items.Items.Select((item, i) =>
-            {
-                var current = i == selected ? " aria-current=\"page\"" : "";
-                var body = Icon(item.Icon) + $"<span class=\"jp-hamburger-menu__label\">{Html.Text(item.Content)}</span>";
-                return item.Href is not null
-                    ? $"<a class=\"jp-hamburger-menu__item\" href=\"{Html.Attr(item.Href)}\" title=\"{Html.Attr(item.Content)}\"{current}>{body}</a>"
-                    : $"<button type=\"button\" class=\"jp-hamburger-menu__item\" aria-controls=\"{id}-{i}\" title=\"{Html.Attr(item.Content)}\"{current}>{body}</button>";
-            })) + "</nav>";
+            string.Concat(items.Items.Select(item => item.Items.Count > 0 ? Group(item) : Item(item, false))) + "</nav>";
 
         output.TagMode = TagMode.StartTagAndEndTag;
         if (!hosted)
@@ -166,7 +197,7 @@ public class HamburgerMenuTagHelper : JetPackTagHelper
         output.TagName = "div";
         AddClasses(output, "jp-hamburger-menu-host");
         ApplyCommon(output);
-        var panels = string.Concat(items.Items.Select((item, i) => $"<div id=\"{id}-{i}\" role=\"tabpanel\"{(i == selected ? "" : " hidden")}>{item.Html}</div>"));
+        var panels = string.Concat(pages.Select((item, i) => $"<div id=\"{id}-{i}\" role=\"tabpanel\"{(item == selectedItem ? "" : " hidden")}>{item.Html}</div>"));
         output.Content.SetHtmlContent(nav + $"<div class=\"jp-hamburger-menu__content\">{panels}</div>");
     }
 }

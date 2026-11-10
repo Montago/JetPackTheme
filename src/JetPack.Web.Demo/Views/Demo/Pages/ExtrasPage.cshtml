@@ -124,10 +124,13 @@
 
     <div class="demo-row">
         <demo-column header="HamburgerMenu" tag="jp:HamburgerMenu">
-            <div class="w-[440px] h-[200px] rounded-[3px] overflow-hidden flex" style="border: 1px solid #3D3E42">
+            <div class="w-[440px] h-[250px] rounded-[3px] overflow-hidden flex" style="border: 1px solid #3D3E42">
                 <jp-hamburger-menu selected-index="0" class="flex-1">
                     <jp-hamburger-menu-item content="Overview" icon="Home"><div class="demo-ham-page"><h5>Overview</h5><p>The selected item gets the accent gradient, as the selected tab does.</p></div></jp-hamburger-menu-item>
-                    <jp-hamburger-menu-item content="Orders" icon="FormatListBulleted"><div class="demo-ham-page"><h5>Orders</h5><p>14 open orders, 3 due this week.</p></div></jp-hamburger-menu-item>
+                    <jp-hamburger-menu-item content="Orders" icon="FormatListBulleted" is-expanded="true">
+                        <jp-hamburger-menu-item content="Open orders"><div class="demo-ham-page"><h5>Open orders</h5><p>14 open orders, 3 due this week.</p></div></jp-hamburger-menu-item>
+                        <jp-hamburger-menu-item content="Deliveries"><div class="demo-ham-page"><h5>Deliveries</h5><p>5 deliveries on their way, 1 delayed.</p></div></jp-hamburger-menu-item>
+                    </jp-hamburger-menu-item>
                     <jp-hamburger-menu-item content="Employees" icon="AccountMultiple"><div class="demo-ham-page"><h5>Employees</h5><p>23 employees in 5 departments.</p></div></jp-hamburger-menu-item>
                     <jp-hamburger-menu-item content="Settings" icon="Cog"><div class="demo-ham-page"><h5>Settings</h5><p>Language, accent colour and syncing.</p></div></jp-hamburger-menu-item>
                 </jp-hamburger-menu>

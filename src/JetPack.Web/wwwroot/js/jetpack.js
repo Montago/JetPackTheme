@@ -10,7 +10,7 @@ sets up controls added later.
   InfoBar           data-jp-dismiss
   TextBoxHelper     data-jp-clear (ClearTextButton)
   NumericUpDown     data-jp-step="1" / "-1"
-  HamburgerMenu     data-jp-toggle-pane, data-jp-pane-switch
+  HamburgerMenu     data-jp-toggle-pane, data-jp-pane-switch, data-jp-hamburger-group (a group header)
   Accents           data-jp-accent (radio), data-jp-accent-button="green", data-jp-focus-visuals (check box)
   ToolTip           data-jp-tool-tip="text"
   Validation        aria-invalid="true" + data-jp-error="message" shows the red call-out
@@ -2718,6 +2718,25 @@ also raise "jp-change" with the new value in event.detail. A data grid raises "j
     save(PANE_KEY, open ? 'open' : 'closed');
   }
 
+  /* A group opens and closes its sub-items. With the pane showing only icons it opens the pane
+     instead, since sub-items have no icons (as HamburgerMenuItem in WPF). */
+  function toggleHamburgerGroup(header) {
+    const menu = header.closest('.jp-hamburger-menu');
+    let open = header.getAttribute('aria-expanded') !== 'true';
+    if (menu?.classList.contains('is-collapsed')) {
+      open = true;
+      if (menu.closest('.jp-hamburger-menu-host')) {
+        menu.classList.remove('is-collapsed');
+        menu.querySelector('[data-jp-toggle-pane]')?.setAttribute('aria-expanded', 'true');
+      } else {
+        setPaneOpen(true);
+      }
+    }
+    header.setAttribute('aria-expanded', String(open));
+    const subItems = header.nextElementSibling;
+    if (subItems) subItems.hidden = !open;
+  }
+
   /* A HamburgerMenu with its own content (jp-hamburger-menu-host): the items switch the panels */
   function setUpHamburgerHost(host) {
     const items = [...host.querySelectorAll('.jp-hamburger-menu__item[aria-controls]')];
@@ -2786,6 +2805,10 @@ also raise "jp-change" with the new value in event.detail. A data grid raises "j
     if ((el = closestIn(event, '[data-jp-step]')) && event.detail === 0) {
       /* keyboard click; the mouse steps through the repeat handler below */
       stepNumeric(el);
+      return;
+    }
+    if ((el = closestIn(event, '[data-jp-hamburger-group]'))) {
+      toggleHamburgerGroup(el);
       return;
     }
     if ((el = closestIn(event, '[data-jp-toggle-pane]'))) {

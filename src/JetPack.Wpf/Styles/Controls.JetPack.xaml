@@ -697,7 +697,7 @@
                         <Border x:Name="Bd" BorderBrush="Transparent" BorderThickness="0,1,0,0" />
                         <DockPanel>
                             <!-- 18×18: MDI's 24 grid scales by 3/4 there, and the icons fill about as much as 16px drawings did -->
-                            <ContentPresenter DockPanel.Dock="Left" Width="18" Height="18" Margin="11,0" VerticalAlignment="Center" Content="{TemplateBinding Icon}">
+                            <ContentPresenter x:Name="Icon" DockPanel.Dock="Left" Width="18" Height="18" Margin="11,0" VerticalAlignment="Center" Content="{TemplateBinding Icon}">
                                 <ContentPresenter.Resources>
                                     <Style TargetType="c:JetPackIcon" BasedOn="{StaticResource {x:Type c:JetPackIcon}}">
                                         <Setter Property="Width" Value="18" />
@@ -705,15 +705,44 @@
                                     </Style>
                                 </ContentPresenter.Resources>
                             </ContentPresenter>
-                            <ContentPresenter VerticalAlignment="Center" />
+                            <!-- A group's arrow, as on the Expander: right when closed, down when open -->
+                            <Path x:Name="Arrow" DockPanel.Dock="Right" Width="5" Height="8" Margin="8,0,14,0" Stretch="Fill" Data="{DynamicResource JetPack.Geometry.ArrowRight}"
+                                  Fill="White" Opacity="0.6" RenderTransformOrigin="0.5,0.5" Visibility="Collapsed" />
+                            <ContentPresenter x:Name="Label" VerticalAlignment="Center" />
                         </DockPanel>
                         <Border x:Name="Focus" BorderBrush="{DynamicResource JetPack.Brushes.Focus}" BorderThickness="1" Margin="2" Visibility="Collapsed" />
                     </Grid>
                     <ControlTemplate.Triggers>
+                        <Trigger Property="HasItems" Value="True">
+                            <Setter TargetName="Arrow" Property="Visibility" Value="Visible" />
+                        </Trigger>
+                        <Trigger Property="IsExpanded" Value="True">
+                            <Setter TargetName="Arrow" Property="RenderTransform">
+                                <Setter.Value>
+                                    <RotateTransform Angle="90" />
+                                </Setter.Value>
+                            </Setter>
+                        </Trigger>
+                        <DataTrigger Binding="{Binding IsPaneOpen, RelativeSource={RelativeSource AncestorType=c:HamburgerMenu}}" Value="False">
+                            <Setter TargetName="Arrow" Property="Visibility" Value="Collapsed" />
+                        </DataTrigger>
+                        <!-- Sub-items: no icon, the text lines up with the group's -->
+                        <Trigger Property="IsSubItem" Value="True">
+                            <Setter Property="Height" Value="30" />
+                            <Setter TargetName="Icon" Property="Visibility" Value="Collapsed" />
+                            <Setter TargetName="Arrow" Property="Visibility" Value="Collapsed" />
+                            <Setter TargetName="Label" Property="Margin" Value="40,0,0,0" />
+                        </Trigger>
                         <Trigger Property="IsMouseOver" Value="True">
                             <Setter TargetName="Bd" Property="Background" Value="#14FFFFFF" />
                         </Trigger>
                         <Trigger Property="IsSelected" Value="True">
+                            <Setter TargetName="Bd" Property="Background" Value="{DynamicResource JetPack.Brushes.Accent.Selection}" />
+                            <Setter TargetName="Bd" Property="BorderBrush" Value="{DynamicResource JetPack.Brushes.Accent.Highlight}" />
+                            <Setter Property="Foreground" Value="White" />
+                        </Trigger>
+                        <!-- A closed group (or any group while the pane shows only icons) stands in for its selected sub-item -->
+                        <Trigger Property="ShowsChildSelection" Value="True">
                             <Setter TargetName="Bd" Property="Background" Value="{DynamicResource JetPack.Brushes.Accent.Selection}" />
                             <Setter TargetName="Bd" Property="BorderBrush" Value="{DynamicResource JetPack.Brushes.Accent.Highlight}" />
                             <Setter Property="Foreground" Value="White" />

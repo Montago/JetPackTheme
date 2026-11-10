@@ -559,6 +559,50 @@
             </Border>
         </ContentControl>
 
+        <ContentControl Style="{StaticResource Demo.Sample}" Tag="hamburgermenu-groups">
+            <Border Width="440" Height="250" BorderBrush="#FF3D3E42" BorderThickness="1" CornerRadius="3" ClipToBounds="True">
+                <jp:HamburgerMenu>
+                    <jp:HamburgerMenu.Content>
+                        <Border Background="{DynamicResource JetPack.Brushes.Window.Background}" Padding="14,10">
+                            <StackPanel>
+                                <TextBlock Style="{StaticResource JetPack.Styles.TextBlock.Heading5}" Text="Week plan" />
+                                <TextBlock Margin="0,4,0,0" FontSize="11" TextWrapping="Wrap" Foreground="{DynamicResource JetPack.Brushes.Text.Soft}"
+                                           Text="Week 46: 38 shifts planned, 4 still open." />
+                            </StackPanel>
+                        </Border>
+                    </jp:HamburgerMenu.Content>
+                    <jp:HamburgerMenuItem Content="Overview">
+                        <jp:HamburgerMenuItem.Icon>
+                            <jp:JetPackIcon Kind="Home" />
+                        </jp:HamburgerMenuItem.Icon>
+                    </jp:HamburgerMenuItem>
+                    <jp:HamburgerMenuItem Content="Planning" IsExpanded="True">
+                        <jp:HamburgerMenuItem.Icon>
+                            <jp:JetPackIcon Kind="Calendar" />
+                        </jp:HamburgerMenuItem.Icon>
+                        <jp:HamburgerMenuItem.Items>
+                            <jp:HamburgerMenuItem Content="Week plan" IsSelected="True" />
+                            <jp:HamburgerMenuItem Content="History" />
+                        </jp:HamburgerMenuItem.Items>
+                    </jp:HamburgerMenuItem>
+                    <jp:HamburgerMenuItem Content="Customers">
+                        <jp:HamburgerMenuItem.Icon>
+                            <jp:JetPackIcon Kind="Domain" />
+                        </jp:HamburgerMenuItem.Icon>
+                        <jp:HamburgerMenuItem.Items>
+                            <jp:HamburgerMenuItem Content="Companies" />
+                            <jp:HamburgerMenuItem Content="New company" />
+                        </jp:HamburgerMenuItem.Items>
+                    </jp:HamburgerMenuItem>
+                    <jp:HamburgerMenuItem Content="Employees">
+                        <jp:HamburgerMenuItem.Icon>
+                            <jp:JetPackIcon Kind="AccountMultiple" />
+                        </jp:HamburgerMenuItem.Icon>
+                    </jp:HamburgerMenuItem>
+                </jp:HamburgerMenu>
+            </Border>
+        </ContentControl>
+
         <ContentControl Style="{StaticResource Demo.Sample}" Tag="expander">
             <StackPanel Width="210" d:Demo.Spacing="8">
                 <Expander Header="Billing address" IsExpanded="True">

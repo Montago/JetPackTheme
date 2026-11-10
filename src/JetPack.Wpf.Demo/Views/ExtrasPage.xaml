@@ -141,7 +141,7 @@
 
             <WrapPanel>
                 <HeaderedContentControl Style="{StaticResource Demo.Column}" Header="HamburgerMenu" Tag="jp:HamburgerMenu">
-                    <Border Width="440" Height="200" BorderBrush="#FF3D3E42" BorderThickness="1" CornerRadius="3" ClipToBounds="True">
+                    <Border Width="440" Height="250" BorderBrush="#FF3D3E42" BorderThickness="1" CornerRadius="3" ClipToBounds="True">
                         <jp:HamburgerMenu x:Name="Ham" SelectedIndex="0" Content="{Binding SelectedItem.Tag, RelativeSource={RelativeSource Self}}">
                             <jp:HamburgerMenu.ContentTemplate>
                                 <DataTemplate>
@@ -158,10 +158,15 @@
                                     <jp:JetPackIcon Kind="Home" />
                                 </jp:HamburgerMenuItem.Icon>
                             </jp:HamburgerMenuItem>
-                            <jp:HamburgerMenuItem Content="Orders" x:Name="HamOrders">
+                            <!-- A group: it opens and closes, and its sub-items are the pages -->
+                            <jp:HamburgerMenuItem Content="Orders" IsExpanded="True">
                                 <jp:HamburgerMenuItem.Icon>
                                     <jp:JetPackIcon Kind="FormatListBulleted" />
                                 </jp:HamburgerMenuItem.Icon>
+                                <jp:HamburgerMenuItem.Items>
+                                    <jp:HamburgerMenuItem Content="Open orders" x:Name="HamOrders" />
+                                    <jp:HamburgerMenuItem Content="Deliveries" x:Name="HamDeliveries" />
+                                </jp:HamburgerMenuItem.Items>
                             </jp:HamburgerMenuItem>
                             <jp:HamburgerMenuItem Content="Employees" x:Name="HamPeople">
                                 <jp:HamburgerMenuItem.Icon>
