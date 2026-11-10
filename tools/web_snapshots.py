@@ -67,7 +67,9 @@ def edge_shot(browser, scratch, url, raw, size='1280,900'):
     if os.path.exists(raw):
         os.remove(raw)
     profile = tempfile.mkdtemp(prefix='edge-profile-', dir=scratch)
-    subprocess.run([browser, '--headless=new', '--disable-gpu', '--force-device-scale-factor=1', '--user-data-dir=' + profile,
+    # --lang: the calendars and date pickers follow the browser's culture; the pictures stay en-US
+    subprocess.run([browser, '--headless=new', '--disable-gpu', '--force-device-scale-factor=1', '--lang=en-US',
+                    '--user-data-dir=' + profile,
                     '--window-size=' + size, '--virtual-time-budget=5000', '--screenshot=' + raw, url],
                    capture_output=True, timeout=120)
     wait_for_file(raw)

@@ -306,13 +306,22 @@ public class ListViewTagHelper : DataGridTagHelper
     }
 }
 
-/// <summary><c>&lt;jp-calendar selected-date="@DateTime.Today" /&gt;</c>: the month view with the year and decade views behind the header.</summary>
+/// <summary>
+/// <c>&lt;jp-calendar selected-date="@DateTime.Today" /&gt;</c>: the month view with the year and decade views behind the
+/// header, with month and day names in the browser's culture unless culture (or data-jp-culture on a container) names one.
+/// </summary>
 [HtmlTargetElement("jp-calendar", TagStructure = TagStructure.WithoutEndTag)]
 public class CalendarTagHelper : JetPackTagHelper
 {
     public DateTime? SelectedDate { get; set; }
 
     public DateTime? DisplayDate { get; set; }
+
+    /// <summary>The culture of the month and day names ("da-DK"); the browser's when empty.</summary>
+    public string? Culture { get; set; }
+
+    /// <summary>The first day of the week; the culture's when empty.</summary>
+    public DayOfWeek? FirstDayOfWeek { get; set; }
 
     public override void Process(TagHelperContext context, TagHelperOutput output)
     {
@@ -321,6 +330,7 @@ public class CalendarTagHelper : JetPackTagHelper
         AddClasses(output, "jp-calendar");
         if (SelectedDate is { } s) output.Attributes.SetAttribute("data-selected-date", s.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture));
         if (DisplayDate is { } d) output.Attributes.SetAttribute("data-display-date", d.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture));
+        DateCulture.Apply(output, Culture, FirstDayOfWeek);
         ApplyCommon(output);
     }
 }

@@ -111,6 +111,38 @@ internal static class Html
         : $"<svg class=\"jp-icon\" aria-hidden=\"true\"><use href=\"{Attr(IconHref(view, kind))}\"></use></svg>";
 }
 
+/// <summary>The culture attributes of Calendar and DatePicker (data-jp-culture, data-jp-first-day-of-week).</summary>
+internal static class DateCulture
+{
+    public static void Apply(TagHelperOutput output, string? culture, DayOfWeek? firstDayOfWeek)
+    {
+        if (!string.IsNullOrWhiteSpace(culture))
+        {
+            output.Attributes.SetAttribute("data-jp-culture", culture);
+        }
+        if (firstDayOfWeek is { } day)
+        {
+            output.Attributes.SetAttribute("data-jp-first-day-of-week", ((int)day).ToString(CultureInfo.InvariantCulture));
+        }
+    }
+
+    /// <summary>The named culture, or the request's when the name is empty or unknown.</summary>
+    public static CultureInfo Of(string? name)
+    {
+        if (!string.IsNullOrWhiteSpace(name))
+        {
+            try
+            {
+                return CultureInfo.GetCultureInfo(name);
+            }
+            catch (CultureNotFoundException)
+            {
+            }
+        }
+        return CultureInfo.CurrentCulture;
+    }
+}
+
 /// <summary>
 /// <c>jp-tool-tip="Saves the changes"</c> on any element: the JetPack tool tip under the pointer.
 /// </summary>
