@@ -2056,21 +2056,72 @@ also raise "jp-change" with the new value in event.detail. A data grid raises "j
   }
 
   /* =============================================================== calendar */
-  const MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-  const DAYS = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
   const iso = d => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
   const parseIso = s => {
     const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(s || '');
     return m ? new Date(Number(m[1]), Number(m[2]) - 1, Number(m[3])) : null;
   };
   const sameDay = (a, b) => a && b && a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth() && a.getDate() === b.getDate();
-  /* en-US short date, as WPF shows it in the demo: 10/23/2026 */
-  const formatDate = d => `${d.getMonth() + 1}/${d.getDate()}/${d.getFullYear()}`;
-  const parseDate = s => {
-    const m = /^\s*(\d{1,2})\/(\d{1,2})\/(\d{4})\s*$/.exec(s || '');
-    if (!m) return null;
-    const d = new Date(Number(m[3]), Number(m[1]) - 1, Number(m[2]));
-    return d.getMonth() === Number(m[1]) - 1 ? d : null;
+
+  /* Regions whose week starts on Sunday, for browsers without Intl.Locale's week info */
+  const SUNDAY_FIRST = new Set(['US', 'CA', 'MX', 'BR', 'JP', 'KR', 'TW', 'HK', 'IL', 'IN', 'PH', 'ZA', 'SA', 'PE', 'CO', 'VE', 'GT', 'PR']);
+  const dateCultures = new Map();
+  /* Names, short date and first day of the week of a culture, as WPF takes them from Language.
+     The culture comes from data-jp-culture on the element or a container (tag helper: culture="da-DK"),
+     otherwise from the browser. Dates use the Gregorian calendar and Latin digits in every culture. */
+  function dateCulture(name) {
+    let locale;
+    try { locale = Intl.getCanonicalLocales(name || [])[0]; } catch { locale = undefined; }
+    const key = locale ?? '';
+    if (dateCultures.has(key)) return dateCultures.get(key);
+    const opts = { calendar: 'gregory', numberingSystem: 'latn', timeZone: 'UTC' };
+    const at = (y, m, d) => Date.UTC(y, m, d);
+    const short = new Intl.DateTimeFormat(locale, { ...opts, year: 'numeric', month: 'numeric', day: 'numeric' });
+    const resolved = short.resolvedOptions().locale;
+    const order = short.formatToParts(at(2001, 1, 3))
+      .filter(p => p.type === 'day' || p.type === 'month' || p.type === 'year').map(p => p.type[0]).join('');
+    let first = 0;
+    try {
+      const l = new Intl.Locale(resolved);
+      const info = typeof l.getWeekInfo === 'function' ? l.getWeekInfo() : l.weekInfo;
+      first = info ? info.firstDay % 7 : (SUNDAY_FIRST.has(l.maximize().region) ? 0 : 1);
+    } catch { first = 0; }
+    const capital = s => s.charAt(0).toLocaleUpperCase(resolved) + s.slice(1);
+    const monthYear = new Intl.DateTimeFormat(locale, { ...opts, year: 'numeric', month: 'long' });
+    const monthShort = new Intl.DateTimeFormat(locale, { ...opts, month: 'short' });
+    const weekday = new Intl.DateTimeFormat(locale, { ...opts, weekday: 'narrow' });
+    const c = {
+      locale: resolved,
+      order: order.length === 3 ? order : 'mdy',
+      firstDayOfWeek: first,
+      /* 2001-01-07 was a Sunday */
+      dayNames: Array.from({ length: 7 }, (_, i) => weekday.format(at(2001, 0, 7 + i))),
+      monthNames: Array.from({ length: 12 }, (_, i) => capital(monthShort.format(at(2001, i, 1)).replace(/\.$/, ''))),
+      monthYear: d => capital(monthYear.format(at(d.getFullYear(), d.getMonth(), 1))),
+      format: d => short.format(at(d.getFullYear(), d.getMonth(), d.getDate())),
+      /* a typed date in the culture's order with any separators (23.10.2026, 23/10/26), or 2026-10-23 */
+      parse(s) {
+        const text = (s || '').trim();
+        const isoDate = /^(\d{4})-(\d{1,2})-(\d{1,2})$/.exec(text);
+        const m = isoDate ? null : /^(\d{1,4})\D+(\d{1,2})\D+(\d{1,4})\D*$/.exec(text);
+        if (!isoDate && !m) return null;
+        const part = {};
+        if (isoDate) [part.y, part.m, part.d] = isoDate.slice(1).map(Number);
+        else [...this.order].forEach((k, i) => { part[k] = Number(m[i + 1]); });
+        if (part.y < 100) part.y += 2000;
+        const d = new Date(part.y, part.m - 1, part.d);
+        d.setFullYear(part.y);
+        return d.getMonth() === part.m - 1 && d.getDate() === part.d ? d : null;
+      },
+    };
+    dateCultures.set(key, c);
+    return c;
+  }
+  const cultureOf = el => el.closest('[data-jp-culture]')?.dataset.jpCulture;
+  /* data-jp-first-day-of-week="1" (0 = Sunday, as DayOfWeek) overrides the culture's */
+  const firstDayOf = (el, c) => {
+    const n = Number(el.closest('[data-jp-first-day-of-week]')?.dataset.jpFirstDayOfWeek);
+    return Number.isInteger(n) && n >= 0 && n <= 6 ? n : c.firstDayOfWeek;
   };
 
   /*
@@ -2107,11 +2158,14 @@ also raise "jp-change" with the new value in event.detail. A data grid raises "j
       const today = new Date();
       grid.dataset.mode = state.mode;
       const y = state.display.getFullYear(), m = state.display.getMonth();
+      const c = dateCulture(cultureOf(cal));
       if (state.mode === 'month') {
-        title.textContent = `${MONTHS[m]} ${y}`;
-        const first = new Date(y, m, 1);
-        const start = new Date(y, m, 1 - first.getDay() - (first.getDay() === 0 ? 7 : 0));
-        const cells = DAYS.map(d => Object.assign(document.createElement('span'), { className: 'jp-calendar__day-name', textContent: d }));
+        title.textContent = c.monthYear(state.display);
+        const firstDay = firstDayOf(cal, c);
+        /* as in WPF, a month that starts on the first day of the week still shows a week before it */
+        const start = new Date(y, m, 1 - ((new Date(y, m, 1).getDay() - firstDay + 7) % 7 || 7));
+        const cells = Array.from({ length: 7 }, (_, i) => Object.assign(document.createElement('span'),
+          { className: 'jp-calendar__day-name', textContent: c.dayNames[(firstDay + i) % 7] }));
         for (let i = 0; i < 42; i++) {
           const d = new Date(start.getFullYear(), start.getMonth(), start.getDate() + i);
           const classes = [d.getMonth() !== m ? 'is-other-month' : '', sameDay(d, today) ? 'is-today' : '', sameDay(d, state.selected) ? 'is-selected' : ''].join(' ');
@@ -2123,7 +2177,7 @@ also raise "jp-change" with the new value in event.detail. A data grid raises "j
         grid.replaceChildren(...cells);
       } else if (state.mode === 'year') {
         title.textContent = String(y);
-        grid.replaceChildren(...MONTHS.map((name, i) => cell(name.slice(0, 3),
+        grid.replaceChildren(...c.monthNames.map((name, i) => cell(name,
           state.selected && state.selected.getFullYear() === y && state.selected.getMonth() === i ? 'is-selected' : '',
           () => { state.display = new Date(y, i, 1); state.mode = 'month'; render(); })));
       } else {
@@ -2191,6 +2245,16 @@ also raise "jp-change" with the new value in event.detail. A data grid raises "j
     const popup = createPopup('jp-popup--calendar');
     const cal = document.createElement('div');
     cal.className = 'jp-calendar';
+    /* the popup sits outside the page, so it gets the picker's culture and first day of the week */
+    const culture = () => dateCulture(cultureOf(host));
+    const formatDate = d => culture().format(d);
+    const parseDate = s => culture().parse(s);
+    const syncCulture = () => {
+      const name = cultureOf(host);
+      if (name) cal.dataset.jpCulture = name; else delete cal.dataset.jpCulture;
+      cal.dataset.jpFirstDayOfWeek = firstDayOf(host, culture());
+    };
+    syncCulture();
     const initial = parseIso(host.dataset.selectedDate) || parseDate(input.value);
     host.dataset.selectedDate = initial ? iso(initial) : '';
     if (initial) {
@@ -2217,6 +2281,7 @@ also raise "jp-change" with the new value in event.detail. A data grid raises "j
       input.focus();
     });
     const open = () => {
+      syncCulture();
       cal.jetpack.selectedDate = parseDate(input.value);
       openPopup(popup, host, { offsetY: 1 });
       cal.jetpack.focus();
@@ -3054,8 +3119,9 @@ also raise "jp-change" with the new value in event.detail. A data grid raises "j
     showMessage,
     openFlyout: el => openFlyout(typeof el === 'string' ? document.getElementById(el) : el),
     closeFlyout: el => closeFlyout(typeof el === 'string' ? document.getElementById(el) : el),
-    formatDate,
-    parseDate,
+    /* in the pickers' format: the culture given ("da-DK", or an element whose culture to use), else the browser's */
+    formatDate: (date, culture) => dateCulture(culture instanceof Element ? cultureOf(culture) : culture).format(date),
+    parseDate: (text, culture) => dateCulture(culture instanceof Element ? cultureOf(culture) : culture).parse(text),
     /* the API of a .jp-jetpack-grid; sets the grid up first when the page asks before DOMContentLoaded */
     jetpackGrid(el) {
       el = typeof el === 'string' ? document.getElementById(el) : el;

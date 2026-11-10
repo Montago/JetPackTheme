@@ -329,6 +329,7 @@ public class ComboBoxTagHelper(IHtmlGenerator generator) : JetPackTagHelper
 /// <summary>
 /// <c>&lt;jp-date-picker selected-date="@DateTime.Today" watermark="Select a date" /&gt;</c>: the text box, the
 /// calendar button and a Calendar drop-down. With name, a hidden input posts the date as yyyy-MM-dd.
+/// The date is shown in the browser's culture unless culture (or data-jp-culture on a container) names one.
 /// </summary>
 [HtmlTargetElement("jp-date-picker", TagStructure = TagStructure.WithoutEndTag)]
 public class DatePickerTagHelper : JetPackTagHelper
@@ -339,6 +340,12 @@ public class DatePickerTagHelper : JetPackTagHelper
 
     public string? Name { get; set; }
 
+    /// <summary>The culture of the text and the calendar ("da-DK"); the browser's when empty.</summary>
+    public string? Culture { get; set; }
+
+    /// <summary>The first day of the week in the calendar; the culture's when empty.</summary>
+    public DayOfWeek? FirstDayOfWeek { get; set; }
+
     public override void Process(TagHelperContext context, TagHelperOutput output)
     {
         output.TagName = "div";
@@ -346,7 +353,9 @@ public class DatePickerTagHelper : JetPackTagHelper
         AddClasses(output, "jp-date-picker");
         var date = SelectedDate?.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture) ?? "";
         output.Attributes.SetAttribute("data-selected-date", date);
-        var text = SelectedDate?.ToString("M/d/yyyy", CultureInfo.InvariantCulture) ?? "";
+        DateCulture.Apply(output, Culture, FirstDayOfWeek);
+        // jetpack.js writes the text again in the browser's culture; this is what shows without script
+        var text = SelectedDate?.ToString("d", DateCulture.Of(Culture)) ?? "";
         var disabled = IsEnabled ? "" : " disabled";
         output.Content.SetHtmlContent(
             $"<input class=\"jp-text-box\" value=\"{text}\" placeholder=\"{Html.Attr(Watermark)}\"{disabled}{CommonAttributes()}>" +
