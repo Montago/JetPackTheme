@@ -151,6 +151,35 @@ a WPF window. Give it a size.
 | `icon` | a `JetPackIconKind` |
 | `href` | makes the item a link |
 | `is-selected` | the selected item |
+| `is-expanded` | a group shows its sub-items (below) |
+
+![HamburgerMenu with an open group](../screenshots/web/controls/hamburgermenu-groups.png)
+
+**Groups.** Items nested in an item make it a group that opens and closes, as `HamburgerMenuItem.Items`
+does in WPF. The group is never selected itself; its sub-items show no icon, and there are two levels.
+A group that holds the selected page opens by itself, and while it is closed (or the pane is folded) it
+gets the selected look in its place. `selected-index` counts groups and their sub-items in order, and a
+group passes it to its first sub-item. Sub-items can be links or hold their own content.
+
+```cshtml
+<jp-hamburger-menu-item content="Planning" icon="Calendar" is-expanded="true">
+    <jp-hamburger-menu-item content="Week plan" href="/plan/week" />
+    <jp-hamburger-menu-item content="History" href="/plan/history" />
+</jp-hamburger-menu-item>
+```
+
+```html
+<div class="jp-hamburger-menu__group">
+    <button type="button" class="jp-hamburger-menu__item jp-hamburger-menu__group-header" data-jp-hamburger-group aria-expanded="true" title="Planning"><svg class="jp-icon" …></svg><span class="jp-hamburger-menu__label">Planning</span><span class="jp-hamburger-menu__arrow"></span></button>
+    <div class="jp-hamburger-menu__sub-items" role="group">
+        <a class="jp-hamburger-menu__item jp-hamburger-menu__item--sub" href="/plan/week" title="Week plan"><span class="jp-hamburger-menu__label">Week plan</span></a>
+        …
+    </div>
+</div>
+```
+
+`jetpack.js` opens and closes the group on a click (`data-jp-hamburger-group`, `aria-expanded`, and
+`hidden` on the sub-items); in a folded pane the click opens the pane and the group.
 
 A check box or toggle switch with `data-jp-pane-switch` folds and opens the window's pane as well
 (the demo's Settings flyout has one). To fold a pane that is not directly in `.jp-window__body`, mark
