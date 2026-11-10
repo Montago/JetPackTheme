@@ -11,6 +11,8 @@ sets up controls added later.
   TextBoxHelper     data-jp-clear (ClearTextButton)
   NumericUpDown     data-jp-step="1" / "-1"
   HamburgerMenu     data-jp-toggle-pane, data-jp-pane-switch, data-jp-hamburger-group (a group header)
+  Dates             data-jp-culture, data-jp-first-day-of-week (a calendar, date picker or container),
+                    data-jp-date-format="dd-MM-yyyy" (a date picker or container)
   Accents           data-jp-accent (radio), data-jp-accent-button="green", data-jp-focus-visuals (check box)
   ToolTip           data-jp-tool-tip="text"
   Validation        aria-invalid="true" + data-jp-error="message" shows the red call-out
@@ -2066,6 +2068,66 @@ also raise "jp-change" with the new value in event.detail. A data grid raises "j
   /* Regions whose week starts on Sunday, for browsers without Intl.Locale's week info */
   const SUNDAY_FIRST = new Set(['US', 'CA', 'MX', 'BR', 'JP', 'KR', 'TW', 'HK', 'IL', 'IN', 'PH', 'ZA', 'SA', 'PE', 'CO', 'VE', 'GT', 'PR']);
   const dateCultures = new Map();
+
+  /* The parts of a .NET custom date format: d dd ddd dddd, M MM MMM MMMM, y yy yyy yyyy, text in quotes,
+     a character after a backslash, and % (which only marks a one-letter format such as "%d") */
+  const DATE_TOKENS = /'[^']*'?|"[^"]*"?|\\.?|%|d+|M+|y+|[^dMy'"\\%]+/g;
+  function formatDatePattern(d, pattern, names) {
+    const pad = (n, width) => String(n).padStart(width, '0');
+    return (pattern.match(DATE_TOKENS) || []).map(t => {
+      const n = t.length;
+      switch (t[0]) {
+        case 'd': return n === 1 ? String(d.getDate()) : n === 2 ? pad(d.getDate(), 2) : names[n === 3 ? 'ddd' : 'dddd'][d.getDay()];
+        case 'M': return n === 1 ? String(d.getMonth() + 1) : n === 2 ? pad(d.getMonth() + 1, 2) : names[n === 3 ? 'MMM' : 'MMMM'][d.getMonth()];
+        case 'y': return n === 1 ? String(d.getFullYear() % 100) : n === 2 ? pad(d.getFullYear() % 100, 2) : pad(d.getFullYear(), n);
+        case "'": case '"': return t.slice(1, n > 1 && t.endsWith(t[0]) ? -1 : undefined);
+        case '\\': return t.slice(1);
+        case '%': return '';
+        default: return t;
+      }
+    }).join('');
+  }
+  /* "dmy", "mdy" or "ymd" from a format with a day, a month and a year; '' when one is missing */
+  function patternOrder(pattern) {
+    const order = (pattern.match(DATE_TOKENS) || [])
+      .filter(t => (t[0] === 'd' && t.length <= 2) || t[0] === 'M' || t[0] === 'y')
+      .map(t => t[0].toLowerCase()).join('');
+    return order.length === 3 && new Set(order).size === 3 ? order : '';
+  }
+  /* A typed date in the given order with any separators, or yyyy-MM-dd. With names, a month name (whole
+     or abbreviated, any case, with or without its dot) is the month wherever it stands, the two numbers
+     left are the day and the year in the given order, and day names are skipped. */
+  function parseDateText(s, order, names) {
+    let text = (s || '').trim();
+    const part = {};
+    const isoDate = /^(\d{4})-(\d{1,2})-(\d{1,2})$/.exec(text);
+    if (isoDate) {
+      [part.y, part.m, part.d] = isoDate.slice(1).map(Number);
+    } else {
+      if (names && /\p{L}/u.test(text)) {
+        const lower = text.toLocaleLowerCase();
+        let found = null;
+        [names.MMMM, names.MMM].forEach(list => list.forEach((name, i) => {
+          const key = name.toLocaleLowerCase().replace(/\.$/, '');
+          const at = key ? lower.indexOf(key) : -1;
+          if (at >= 0 && (!found || key.length > found.key.length)) found = { key, i, at };
+        }));
+        if (found) {
+          part.m = found.i + 1;
+          text = `${text.slice(0, found.at)} ${text.slice(found.at + found.key.length).replace(/^\p{L}*\.?/u, '')}`;
+        }
+        text = text.replace(/\p{L}+\.?/gu, ' ').trim();
+      }
+      const keys = part.m ? [...order].filter(k => k !== 'm') : [...order];
+      const m = (part.m ? /^\D*(\d{1,4})\D+(\d{1,4})\D*$/ : /^(\d{1,4})\D+(\d{1,2})\D+(\d{1,4})\D*$/).exec(text);
+      if (!m) return null;
+      keys.forEach((k, i) => { part[k] = Number(m[i + 1]); });
+    }
+    if (part.y < 100) part.y += 2000;
+    const d = new Date(part.y, part.m - 1, part.d);
+    d.setFullYear(part.y);
+    return d.getMonth() === part.m - 1 && d.getDate() === part.d ? d : null;
+  }
   /* Names, short date and first day of the week of a culture, as WPF takes them from Language.
      The culture comes from data-jp-culture on the element or a container (tag helper: culture="da-DK"),
      otherwise from the browser. Dates use the Gregorian calendar and Latin digits in every culture. */
@@ -2090,6 +2152,10 @@ also raise "jp-change" with the new value in event.detail. A data grid raises "j
     const monthYear = new Intl.DateTimeFormat(locale, { ...opts, year: 'numeric', month: 'long' });
     const monthShort = new Intl.DateTimeFormat(locale, { ...opts, month: 'short' });
     const weekday = new Intl.DateTimeFormat(locale, { ...opts, weekday: 'narrow' });
+    const names = (options, count, date) => {
+      const f = new Intl.DateTimeFormat(locale, { ...opts, ...options });
+      return Array.from({ length: count }, (_, i) => f.format(date(i)));
+    };
     const c = {
       locale: resolved,
       order: order.length === 3 ? order : 'mdy',
@@ -2100,24 +2166,31 @@ also raise "jp-change" with the new value in event.detail. A data grid raises "j
       monthYear: d => capital(monthYear.format(at(d.getFullYear(), d.getMonth(), 1))),
       format: d => short.format(at(d.getFullYear(), d.getMonth(), d.getDate())),
       /* a typed date in the culture's order with any separators (23.10.2026, 23/10/26), or 2026-10-23 */
-      parse(s) {
-        const text = (s || '').trim();
-        const isoDate = /^(\d{4})-(\d{1,2})-(\d{1,2})$/.exec(text);
-        const m = isoDate ? null : /^(\d{1,4})\D+(\d{1,2})\D+(\d{1,4})\D*$/.exec(text);
-        if (!isoDate && !m) return null;
-        const part = {};
-        if (isoDate) [part.y, part.m, part.d] = isoDate.slice(1).map(Number);
-        else [...this.order].forEach((k, i) => { part[k] = Number(m[i + 1]); });
-        if (part.y < 100) part.y += 2000;
-        const d = new Date(part.y, part.m - 1, part.d);
-        d.setFullYear(part.y);
-        return d.getMonth() === part.m - 1 && d.getDate() === part.d ? d : null;
+      parse(s) { return parseDateText(s, this.order, null); },
+      /* the names behind MMM, MMMM, ddd and dddd, made when a custom format first needs them */
+      get names() {
+        const value = {
+          MMM: names({ month: 'short' }, 12, i => at(2001, i, 1)),
+          MMMM: names({ month: 'long' }, 12, i => at(2001, i, 1)),
+          ddd: names({ weekday: 'short' }, 7, i => at(2001, 0, 7 + i)),
+          dddd: names({ weekday: 'long' }, 7, i => at(2001, 0, 7 + i)),
+        };
+        Object.defineProperty(this, 'names', { value });
+        return value;
       },
+      /* a .NET custom date format ("dd-MM-yyyy", "d. MMMM yyyy") in place of the short date */
+      formatAs(d, pattern) { return formatDatePattern(d, pattern, this.names); },
+      /* a typed date in the format's order (or the culture's), with the month by number or by name */
+      parseAs(s, pattern) { return parseDateText(s, patternOrder(pattern) || this.order, this.names); },
     };
     dateCultures.set(key, c);
     return c;
   }
   const cultureOf = el => el.closest('[data-jp-culture]')?.dataset.jpCulture;
+  /* data-jp-date-format="dd-MM-yyyy" on a date picker or a container: a .NET custom format in place of the short date */
+  const dateFormatOf = el => el.closest('[data-jp-date-format]')?.dataset.jpDateFormat || '';
+  const formatDateIn = (d, culture, format) => (format ? culture.formatAs(d, format) : culture.format(d));
+  const parseDateIn = (s, culture, format) => (format ? culture.parseAs(s, format) : culture.parse(s));
   /* data-jp-first-day-of-week="1" (0 = Sunday, as DayOfWeek) overrides the culture's */
   const firstDayOf = (el, c) => {
     const n = Number(el.closest('[data-jp-first-day-of-week]')?.dataset.jpFirstDayOfWeek);
@@ -2247,8 +2320,8 @@ also raise "jp-change" with the new value in event.detail. A data grid raises "j
     cal.className = 'jp-calendar';
     /* the popup sits outside the page, so it gets the picker's culture and first day of the week */
     const culture = () => dateCulture(cultureOf(host));
-    const formatDate = d => culture().format(d);
-    const parseDate = s => culture().parse(s);
+    const formatDate = d => formatDateIn(d, culture(), dateFormatOf(host));
+    const parseDate = s => parseDateIn(s, culture(), dateFormatOf(host));
     const syncCulture = () => {
       const name = cultureOf(host);
       if (name) cal.dataset.jpCulture = name; else delete cal.dataset.jpCulture;
@@ -3119,9 +3192,16 @@ also raise "jp-change" with the new value in event.detail. A data grid raises "j
     showMessage,
     openFlyout: el => openFlyout(typeof el === 'string' ? document.getElementById(el) : el),
     closeFlyout: el => closeFlyout(typeof el === 'string' ? document.getElementById(el) : el),
-    /* in the pickers' format: the culture given ("da-DK", or an element whose culture to use), else the browser's */
-    formatDate: (date, culture) => dateCulture(culture instanceof Element ? cultureOf(culture) : culture).format(date),
-    parseDate: (text, culture) => dateCulture(culture instanceof Element ? cultureOf(culture) : culture).parse(text),
+    /* in the pickers' format: the culture given ("da-DK", or an element whose culture and date format to use),
+       else the browser's; format is a .NET custom date format ("dd-MM-yyyy"), else the element's or the short date */
+    formatDate(date, culture, format) {
+      const el = culture instanceof Element ? culture : null;
+      return formatDateIn(date, dateCulture(el ? cultureOf(el) : culture), format ?? (el ? dateFormatOf(el) : ''));
+    },
+    parseDate(text, culture, format) {
+      const el = culture instanceof Element ? culture : null;
+      return parseDateIn(text, dateCulture(el ? cultureOf(el) : culture), format ?? (el ? dateFormatOf(el) : ''));
+    },
     /* the API of a .jp-jetpack-grid; sets the grid up first when the page asks before DOMContentLoaded */
     jetpackGrid(el) {
       el = typeof el === 'string' ? document.getElementById(el) : el;
