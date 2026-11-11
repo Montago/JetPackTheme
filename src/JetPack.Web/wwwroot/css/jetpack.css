@@ -136,6 +136,11 @@ Load this file before Tailwind: the first @layer statement fixes the order of th
   --jp-chart-4: radial-gradient(105% 90% at 7.5% 1.5%, #FF9600 0%, #942B00 100%);
   --jp-chart-5: radial-gradient(105% 90% at 7.5% 1.5%, #EE6028 0%, #8B0000 100%);
   --jp-chart-6: radial-gradient(105% 90% at 7.5% 1.5%, #FFC12B 0%, #FF7600 100%);
+  --jp-chart-7: radial-gradient(105% 90% at 7.5% 1.5%, #E94780 0%, #A4023B 100%);
+  --jp-chart-8: radial-gradient(105% 90% at 7.5% 1.5%, #4C7AC0 0%, #07357B 100%);
+  --jp-chart-9: radial-gradient(105% 90% at 7.5% 1.5%, #40ABCA 0%, #1E505F 100%);
+  --jp-chart-10: radial-gradient(105% 90% at 7.5% 1.5%, #9A5AA6 0%, #482A4E 100%);
+  --jp-chart-11: radial-gradient(105% 90% at 7.5% 1.5%, #775931 0%, #210000 100%);
 }
 
 :root {

@@ -264,7 +264,8 @@
     <SolidColorBrush x:Key="JetPack.Brushes.Success" Color="#FF75A20A" />
     <SolidColorBrush x:Key="JetPack.Brushes.Warning" Color="#FFFE770A" />
 
-    <!-- Chart palette (Silverlight Toolkit chart, first six of eleven) -->
+    <!-- Chart palette (the eleven series colours of the Silverlight Toolkit chart, in its order:
+         green, blue, grey, orange, red, yellow, pink, royal blue, cyan, purple, brown) -->
     <RadialGradientBrush x:Key="JetPack.Brushes.Chart.1" Center="0.075,0.015" GradientOrigin="-0.1,-0.1" RadiusX="1.05" RadiusY="0.9">
         <GradientStop Color="#FFB2C60D" /><GradientStop Color="#FF4C7B00" Offset="1" />
     </RadialGradientBrush>
@@ -282,6 +283,21 @@
     </RadialGradientBrush>
     <RadialGradientBrush x:Key="JetPack.Brushes.Chart.6" Center="0.075,0.015" GradientOrigin="-0.1,-0.1" RadiusX="1.05" RadiusY="0.9">
         <GradientStop Color="#FFFFC12B" /><GradientStop Color="#FFFF7600" Offset="1" />
+    </RadialGradientBrush>
+    <RadialGradientBrush x:Key="JetPack.Brushes.Chart.7" Center="0.075,0.015" GradientOrigin="-0.1,-0.1" RadiusX="1.05" RadiusY="0.9">
+        <GradientStop Color="#FFE94780" /><GradientStop Color="#FFA4023B" Offset="1" />
+    </RadialGradientBrush>
+    <RadialGradientBrush x:Key="JetPack.Brushes.Chart.8" Center="0.075,0.015" GradientOrigin="-0.1,-0.1" RadiusX="1.05" RadiusY="0.9">
+        <GradientStop Color="#FF4C7AC0" /><GradientStop Color="#FF07357B" Offset="1" />
+    </RadialGradientBrush>
+    <RadialGradientBrush x:Key="JetPack.Brushes.Chart.9" Center="0.075,0.015" GradientOrigin="-0.1,-0.1" RadiusX="1.05" RadiusY="0.9">
+        <GradientStop Color="#FF40ABCA" /><GradientStop Color="#FF1E505F" Offset="1" />
+    </RadialGradientBrush>
+    <RadialGradientBrush x:Key="JetPack.Brushes.Chart.10" Center="0.075,0.015" GradientOrigin="-0.1,-0.1" RadiusX="1.05" RadiusY="0.9">
+        <GradientStop Color="#FF9A5AA6" /><GradientStop Color="#FF482A4E" Offset="1" />
+    </RadialGradientBrush>
+    <RadialGradientBrush x:Key="JetPack.Brushes.Chart.11" Center="0.075,0.015" GradientOrigin="-0.1,-0.1" RadiusX="1.05" RadiusY="0.9">
+        <GradientStop Color="#FF775931" /><GradientStop Color="#FF210000" Offset="1" />
     </RadialGradientBrush>
 
 </ResourceDictionary>

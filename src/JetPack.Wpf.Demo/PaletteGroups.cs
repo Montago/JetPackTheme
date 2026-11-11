@@ -44,12 +44,16 @@ public static class PaletteGroups
         {
             var members = all.Where(k => parts.Contains(Name(k).Split('.')[0]))
                 .OrderBy(k => Array.IndexOf(parts, Name(k).Split('.')[0]))
-                .ThenBy(Name, StringComparer.Ordinal).ThenBy(k => k, StringComparer.Ordinal).ToArray();
+                .ThenBy(SortName, StringComparer.Ordinal).ThenBy(k => k, StringComparer.Ordinal).ToArray();
             rest.ExceptWith(members);
             if (members.Length > 0)
                 yield return (title, members);
         }
         if (rest.Count > 0)
-            yield return ("Other", rest.OrderBy(Name, StringComparer.Ordinal).ToArray());
+            yield return ("Other", rest.OrderBy(SortName, StringComparer.Ordinal).ToArray());
     }
+
+    /// <summary>The name with its numbers padded, so Chart.2 comes before Chart.10.</summary>
+    private static string SortName(string key) =>
+        System.Text.RegularExpressions.Regex.Replace(Name(key), @"\d+", m => m.Value.PadLeft(4, '0'));
 }
