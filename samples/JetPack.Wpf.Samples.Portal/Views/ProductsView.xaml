@@ -60,30 +60,20 @@
 
             <GroupBox Header="Product">
                 <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="16" />
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="16" />
-                        <ColumnDefinition Width="*" />
-                    </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
-                    <StackPanel>
-                        <Label Style="{StaticResource Form.Label}" Content="_Price" Target="{Binding ElementName=PriceBox}" Margin="0" />
-                        <jp:NumericUpDown x:Name="PriceBox" Value="{Binding Price, Mode=OneWay}" Minimum="0" Interval="0.5" StringFormat="C" />
+                    <!-- Labels on the left of short number fields -->
+                    <StackPanel Orientation="Horizontal">
+                        <Label Style="{StaticResource Form.Label}" Content="_Price" Target="{Binding ElementName=PriceBox}" Margin="0,0,10,0" />
+                        <jp:NumericUpDown x:Name="PriceBox" Width="110" Value="{Binding Price, Mode=OneWay}" Minimum="0" Interval="0.5" StringFormat="C" />
+                        <Label Style="{StaticResource Form.Label}" Content="Units in _stock" Target="{Binding ElementName=StockBox}" Margin="28,0,10,0" />
+                        <jp:NumericUpDown x:Name="StockBox" Width="80" Value="{Binding InStock, Mode=OneWay}" Minimum="0" />
+                        <Label Style="{StaticResource Form.Label}" Content="_Reorder level" Target="{Binding ElementName=ReorderBox}" Margin="28,0,10,0" />
+                        <jp:NumericUpDown x:Name="ReorderBox" Width="80" Value="{Binding ReorderLevel, Mode=OneWay}" Minimum="0" />
                     </StackPanel>
-                    <StackPanel Grid.Column="2">
-                        <Label Style="{StaticResource Form.Label}" Content="Units in _stock" Target="{Binding ElementName=StockBox}" Margin="0" />
-                        <jp:NumericUpDown x:Name="StockBox" Value="{Binding InStock, Mode=OneWay}" Minimum="0" />
-                    </StackPanel>
-                    <StackPanel Grid.Column="4">
-                        <Label Style="{StaticResource Form.Label}" Content="_Reorder level" Target="{Binding ElementName=ReorderBox}" Margin="0" />
-                        <jp:NumericUpDown x:Name="ReorderBox" Value="{Binding ReorderLevel, Mode=OneWay}" Minimum="0" />
-                    </StackPanel>
-                    <StackPanel Grid.Row="1" Grid.ColumnSpan="5" Orientation="Horizontal" Margin="0,14,0,2">
+                    <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,12,0,2">
                         <TextBlock Style="{StaticResource Page.Caption}" Text="Customer rating" Margin="0,0,10,0" />
                         <jp:Rating Value="{Binding Rating, Mode=OneWay}" VerticalAlignment="Center" />
                         <CheckBox Content="Discontinued" IsChecked="{Binding Discontinued, Mode=OneWay}" Margin="28,0,0,0" VerticalAlignment="Center" />
