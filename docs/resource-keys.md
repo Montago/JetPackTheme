@@ -156,6 +156,11 @@ Shared by every accent.
 | `JetPack.Brushes.Chart.4` | RadialGradientBrush | `#FFFF9600` 0 → `#FF942B00` 1 |
 | `JetPack.Brushes.Chart.5` | RadialGradientBrush | `#FFEE6028` 0 → `#FF8B0000` 1 |
 | `JetPack.Brushes.Chart.6` | RadialGradientBrush | `#FFFFC12B` 0 → `#FFFF7600` 1 |
+| `JetPack.Brushes.Chart.7` | RadialGradientBrush | `#FFE94780` 0 → `#FFA4023B` 1 |
+| `JetPack.Brushes.Chart.8` | RadialGradientBrush | `#FF4C7AC0` 0 → `#FF07357B` 1 |
+| `JetPack.Brushes.Chart.9` | RadialGradientBrush | `#FF40ABCA` 0 → `#FF1E505F` 1 |
+| `JetPack.Brushes.Chart.10` | RadialGradientBrush | `#FF9A5AA6` 0 → `#FF482A4E` 1 |
+| `JetPack.Brushes.Chart.11` | RadialGradientBrush | `#FF775931` 0 → `#FF210000` 1 |
 
 ## Fonts
 

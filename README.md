@@ -323,4 +323,4 @@ MIT License (see [LICENSE](LICENSE)), except the icons, which are [Material Desi
 
 - TabControl only supports tabs at the top.
 - The DatePicker watermark ("Select a date") comes from WPF's own resources and does not follow the app language.
-- There is no built-in chart; the theme provides the `JetPack.Brushes.Chart.1–6` palette for a charting library.
+- There is no built-in chart; the theme provides the `JetPack.Brushes.Chart.1–11` palette (the eleven series colours of the Silverlight chart) for a charting library.

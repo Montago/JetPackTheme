@@ -56,7 +56,8 @@ with project budgets (`ProgressBar`) and recent activity.
 ![Dashboard](screenshots/samples/admin-dashboard.png)
 
 **Employees**: a filter bar (`TextBox` with watermark and clear button, `ComboBox`, `ToggleSwitch`)
-over a `DataGrid`; the details form beside it binds to the selected row (`Label`, `TextBox`,
+over a `DataGrid`; the details form beside it, with right-aligned labels to the left of the fields,
+binds to the selected row (`Label`, `TextBox`,
 `ComboBox`, `DatePicker`, `NumericUpDown`, `ToggleSwitch`). The filter is a plain `ICollectionView`
 filter in the code-behind.
 
