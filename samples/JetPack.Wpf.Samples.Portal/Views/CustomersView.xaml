@@ -48,29 +48,37 @@
 
         <TabControl Grid.Row="1" Grid.Column="2" DataContext="{Binding SelectedItem, ElementName=Tree}">
             <TabItem Header="Contact">
+                <!-- Two columns of fields, each with its labels on the left; the phone number gets a short field -->
                 <Grid Margin="4">
                     <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
                         <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="16" />
+                        <ColumnDefinition Width="24" />
+                        <ColumnDefinition Width="Auto" />
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
-                    <StackPanel>
-                        <Label Style="{StaticResource Form.Label}" Content="_Company" Target="{Binding ElementName=CompanyBox}" Margin="0" />
-                        <TextBox x:Name="CompanyBox" Style="{StaticResource JetPack.Styles.TextBox.Dark}" Text="{Binding Company, Mode=OneWay}" />
-                        <Label Style="{StaticResource Form.Label}" Content="C_ontact" Target="{Binding ElementName=ContactBox}" />
-                        <TextBox x:Name="ContactBox" Style="{StaticResource JetPack.Styles.TextBox.Dark}" Text="{Binding Contact, Mode=OneWay}" />
-                        <Label Style="{StaticResource Form.Label}" Content="_Title" Target="{Binding ElementName=TitleBox}" />
-                        <TextBox x:Name="TitleBox" Style="{StaticResource JetPack.Styles.TextBox.Dark}" Text="{Binding Title, Mode=OneWay}" />
-                    </StackPanel>
-                    <StackPanel Grid.Column="2">
-                        <Label Style="{StaticResource Form.Label}" Content="_Phone" Target="{Binding ElementName=PhoneBox}" Margin="0" />
-                        <TextBox x:Name="PhoneBox" Style="{StaticResource JetPack.Styles.TextBox.Dark}" Text="{Binding Phone, Mode=OneWay}" />
-                        <Label Style="{StaticResource Form.Label}" Content="_Email" Target="{Binding ElementName=EmailBox}" />
-                        <TextBox x:Name="EmailBox" Style="{StaticResource JetPack.Styles.TextBox.Dark}" Text="{Binding Email, Mode=OneWay}" />
-                        <Label Style="{StaticResource Form.Label}" Content="C_ity" Target="{Binding ElementName=CityBox}" />
-                        <TextBox x:Name="CityBox" Style="{StaticResource JetPack.Styles.TextBox.Dark}" Text="{Binding City, Mode=OneWay}" />
-                    </StackPanel>
-                    <StackPanel Grid.ColumnSpan="3" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,0,2">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+
+                    <Label Style="{StaticResource Form.Label}" Content="_Company" Target="{Binding ElementName=CompanyBox}" />
+                    <TextBox x:Name="CompanyBox" Grid.Column="1" Margin="0,0,0,8" Style="{StaticResource JetPack.Styles.TextBox.Dark}" Text="{Binding Company, Mode=OneWay}" />
+                    <Label Grid.Row="1" Style="{StaticResource Form.Label}" Content="C_ontact" Target="{Binding ElementName=ContactBox}" />
+                    <TextBox x:Name="ContactBox" Grid.Row="1" Grid.Column="1" Margin="0,0,0,8" Style="{StaticResource JetPack.Styles.TextBox.Dark}" Text="{Binding Contact, Mode=OneWay}" />
+                    <Label Grid.Row="2" Style="{StaticResource Form.Label}" Content="_Title" Target="{Binding ElementName=TitleBox}" />
+                    <TextBox x:Name="TitleBox" Grid.Row="2" Grid.Column="1" Margin="0,0,0,8" Style="{StaticResource JetPack.Styles.TextBox.Dark}" Text="{Binding Title, Mode=OneWay}" />
+
+                    <Label Grid.Column="3" Style="{StaticResource Form.Label}" Content="_Phone" Target="{Binding ElementName=PhoneBox}" />
+                    <TextBox x:Name="PhoneBox" Grid.Column="4" Width="140" HorizontalAlignment="Left" Margin="0,0,0,8" Style="{StaticResource JetPack.Styles.TextBox.Dark}" Text="{Binding Phone, Mode=OneWay}" />
+                    <Label Grid.Row="1" Grid.Column="3" Style="{StaticResource Form.Label}" Content="_Email" Target="{Binding ElementName=EmailBox}" />
+                    <TextBox x:Name="EmailBox" Grid.Row="1" Grid.Column="4" Margin="0,0,0,8" Style="{StaticResource JetPack.Styles.TextBox.Dark}" Text="{Binding Email, Mode=OneWay}" />
+                    <Label Grid.Row="2" Grid.Column="3" Style="{StaticResource Form.Label}" Content="C_ity" Target="{Binding ElementName=CityBox}" />
+                    <TextBox x:Name="CityBox" Grid.Row="2" Grid.Column="4" Margin="0,0,0,8" Style="{StaticResource JetPack.Styles.TextBox.Dark}" Text="{Binding City, Mode=OneWay}" />
+
+                    <StackPanel Grid.Row="3" Grid.ColumnSpan="5" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,0,2">
                         <Button Content="Save" Style="{StaticResource JetPack.Styles.Button.Accent}" MinWidth="70" />
                         <Button Content="New order" MinWidth="70" Margin="8,0,0,0" />
                     </StackPanel>

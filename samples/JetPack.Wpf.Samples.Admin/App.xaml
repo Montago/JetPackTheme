@@ -19,9 +19,12 @@
             <Style x:Key="Page.Caption" TargetType="TextBlock" BasedOn="{StaticResource JetPack.Styles.TextBlock.Caption}">
                 <Setter Property="VerticalAlignment" Value="Center" />
             </Style>
+            <!-- Form labels sit to the left of their fields, right-aligned so each one ends next to its field -->
             <Style x:Key="Form.Label" TargetType="Label" BasedOn="{StaticResource {x:Type Label}}">
-                <Setter Property="Padding" Value="0,0,0,3" />
-                <Setter Property="Margin" Value="0,8,0,0" />
+                <Setter Property="Padding" Value="0" />
+                <Setter Property="Margin" Value="0,0,12,8" />
+                <Setter Property="HorizontalAlignment" Value="Right" />
+                <Setter Property="VerticalAlignment" Value="Center" />
             </Style>
         </ResourceDictionary>
     </Application.Resources>

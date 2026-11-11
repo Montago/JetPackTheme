@@ -29,7 +29,7 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="20" />
-                <ColumnDefinition Width="300" />
+                <ColumnDefinition Width="360" />
             </Grid.ColumnDefinitions>
 
             <DataGrid x:Name="List" AutoGenerateColumns="False" IsReadOnly="True" SelectionMode="Single" SelectedIndex="3">
@@ -44,41 +44,47 @@
 
             <!-- The details follow the selected row -->
             <GroupBox Grid.Column="2" Header="Details" VerticalAlignment="Top" DataContext="{Binding SelectedItem, ElementName=List}">
-                <StackPanel>
-                    <jp:InfoBar x:Name="Saved" Severity="Success" Title="Saved." Message="The changes are stored." IsOpen="False" Margin="0,0,0,4" />
+                <!-- Labels on the left; short values (date, hours) get short fields -->
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
 
-                    <Label Style="{StaticResource Form.Label}" Content="_Name" Target="{Binding ElementName=NameBox}" Margin="0" />
-                    <TextBox x:Name="NameBox" Text="{Binding Name, Mode=OneWay}" />
-                    <Label Style="{StaticResource Form.Label}" Content="_Title" Target="{Binding ElementName=TitleBox}" />
-                    <TextBox x:Name="TitleBox" Text="{Binding Title, Mode=OneWay}" />
-                    <Label Style="{StaticResource Form.Label}" Content="_Department" Target="{Binding ElementName=DepartmentBox}" />
-                    <ComboBox x:Name="DepartmentBox" ItemsSource="{x:Static local:SampleData.Departments}" SelectedItem="{Binding Department, Mode=OneWay}" />
-                    <Label Style="{StaticResource Form.Label}" Content="_Email" Target="{Binding ElementName=EmailBox}" />
-                    <TextBox x:Name="EmailBox" Text="{Binding Email, Mode=OneWay}" />
+                    <jp:InfoBar x:Name="Saved" Grid.ColumnSpan="2" Severity="Success" Title="Saved." Message="The changes are stored." IsOpen="False" Margin="0,0,0,4" />
 
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="10" />
-                            <ColumnDefinition Width="*" />
-                        </Grid.ColumnDefinitions>
-                        <StackPanel>
-                            <Label Style="{StaticResource Form.Label}" Content="_Start date" Target="{Binding ElementName=StartBox}" />
-                            <DatePicker x:Name="StartBox" SelectedDate="{Binding StartDate, Mode=OneWay}" />
-                        </StackPanel>
-                        <StackPanel Grid.Column="2">
-                            <Label Style="{StaticResource Form.Label}" Content="_Hours per week" Target="{Binding ElementName=HoursBox}" />
-                            <jp:NumericUpDown x:Name="HoursBox" Value="{Binding HoursPerWeek, Mode=OneWay}" Minimum="0" Maximum="40" Interval="0.5" StringFormat="N1" />
-                        </StackPanel>
-                    </Grid>
+                    <Label Grid.Row="1" Style="{StaticResource Form.Label}" Content="_Name" Target="{Binding ElementName=NameBox}" />
+                    <TextBox x:Name="NameBox" Grid.Row="1" Grid.Column="1" Margin="0,0,0,8" Text="{Binding Name, Mode=OneWay}" />
+                    <Label Grid.Row="2" Style="{StaticResource Form.Label}" Content="_Title" Target="{Binding ElementName=TitleBox}" />
+                    <TextBox x:Name="TitleBox" Grid.Row="2" Grid.Column="1" Margin="0,0,0,8" Text="{Binding Title, Mode=OneWay}" />
+                    <Label Grid.Row="3" Style="{StaticResource Form.Label}" Content="_Department" Target="{Binding ElementName=DepartmentBox}" />
+                    <ComboBox x:Name="DepartmentBox" Grid.Row="3" Grid.Column="1" Margin="0,0,0,8" ItemsSource="{x:Static local:SampleData.Departments}" SelectedItem="{Binding Department, Mode=OneWay}" />
+                    <Label Grid.Row="4" Style="{StaticResource Form.Label}" Content="_Email" Target="{Binding ElementName=EmailBox}" />
+                    <TextBox x:Name="EmailBox" Grid.Row="4" Grid.Column="1" Margin="0,0,0,8" Text="{Binding Email, Mode=OneWay}" />
+                    <Label Grid.Row="5" Style="{StaticResource Form.Label}" Content="_Start date" Target="{Binding ElementName=StartBox}" />
+                    <DatePicker x:Name="StartBox" Grid.Row="5" Grid.Column="1" Width="130" HorizontalAlignment="Left" Margin="0,0,0,8" SelectedDate="{Binding StartDate, Mode=OneWay}" />
+                    <Label Grid.Row="6" Style="{StaticResource Form.Label}" Content="_Hours per week" Target="{Binding ElementName=HoursBox}" />
+                    <jp:NumericUpDown x:Name="HoursBox" Grid.Row="6" Grid.Column="1" Width="80" HorizontalAlignment="Left" Margin="0,0,0,8"
+                                      Value="{Binding HoursPerWeek, Mode=OneWay}" Minimum="0" Maximum="40" Interval="0.5" StringFormat="N1" />
 
-                    <jp:ToggleSwitch Content="Active" Margin="0,14,0,0" IsChecked="{Binding IsActive, Mode=OneWay}" />
+                    <jp:ToggleSwitch Grid.Row="7" Grid.Column="1" Content="Active" Margin="0,4,0,0" HorizontalAlignment="Left" IsChecked="{Binding IsActive, Mode=OneWay}" />
 
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,16,0,0">
+                    <StackPanel Grid.Row="8" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,16,0,0">
                         <Button Content="Save" Style="{StaticResource JetPack.Styles.Button.Accent}" MinWidth="70" Click="OnSave" />
                         <Button Content="Cancel" MinWidth="70" Margin="8,0,0,0" />
                     </StackPanel>
-                </StackPanel>
+                </Grid>
             </GroupBox>
         </Grid>
     </Grid>
