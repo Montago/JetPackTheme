@@ -81,7 +81,7 @@
                     </Border>
                 </HeaderedContentControl>
 
-                <HeaderedContentControl Style="{StaticResource Demo.Column}" Header="Chart palette" Tag="JetPack.Brushes.Chart.1–6">
+                <HeaderedContentControl Style="{StaticResource Demo.Column}" Header="Chart palette" Tag="JetPack.Brushes.Chart.1–11">
                     <Border Width="340" Background="White" CornerRadius="2.5" Padding="10,8" Effect="{DynamicResource JetPack.Effects.LightControlShadow}">
                         <StackPanel>
                             <TextBlock HorizontalAlignment="Center" Margin="0,0,0,6" FontWeight="Bold" Foreground="#FF303030" Text="Hours per quarter" />
