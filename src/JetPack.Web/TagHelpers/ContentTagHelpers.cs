@@ -78,6 +78,9 @@ public enum TileStyle
     Green,
     Orange,
     Blue,
+
+    /// <summary>Dark grey with light text, for dark panels.</summary>
+    Dark,
 }
 
 /// <summary>

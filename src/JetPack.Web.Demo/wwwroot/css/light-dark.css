@@ -1,0 +1,142 @@
+/* Views/Demo/LightDark.cshtml: every control twice on the texture, as it is on the left, dark version on the right */
+@layer components {
+  /* the page keeps the window texture of jetpack.css; only a line marks the middle */
+  body.ld { min-width: 1100px; }
+  .ld-split {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    z-index: 0;
+    width: 1px;
+    background: rgb(0 0 0 / 0.55);
+    box-shadow: 1px 0 0 rgb(255 255 255 / 0.12);
+  }
+
+  /* ------------------------------------------------------------ top bar */
+  .ld-top {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px 22px;
+    padding: 8px 16px;
+    background: rgb(28 29 32 / 0.94);
+    box-shadow: 0 1px 6px rgb(0 0 0 / 0.5);
+    font-size: 12px;
+  }
+  .ld-top__title { display: flex; align-items: baseline; gap: 12px; }
+  .ld-top__title b { font-size: 15px; }
+  .ld-top__counts { color: var(--jp-text-soft); }
+  .ld-top__group { display: flex; align-items: center; gap: 4px; }
+  .ld-top__label { margin-right: 4px; color: var(--jp-text-dim); text-transform: uppercase; font-size: 10px; letter-spacing: 0.06em; }
+  .ld-seg {
+    padding: 3px 9px;
+    border: 1px solid rgb(255 255 255 / 0.18);
+    border-radius: 3px;
+    background: transparent;
+    color: #fff;
+    font: inherit;
+    cursor: pointer;
+  }
+  .ld-seg:hover { background: rgb(255 255 255 / 0.08); }
+  .ld-seg[aria-pressed="true"] { border-color: transparent; background: var(--jp-accent-solid); }
+
+  .ld-heads { position: relative; z-index: 1; display: grid; grid-template-columns: 1fr 1fr; }
+  .ld-heads > div { padding: 18px 24px 4px; font-size: 28px; font-weight: bold; }
+  .ld-heads > div { color: #fff; text-shadow: var(--jp-effect-text-glow); }
+
+  /* --------------------------------------------------------------- rows */
+  .ld-rows { position: relative; z-index: 1; padding-bottom: 60px; }
+  .ld-group {
+    margin: 26px 0 0;
+    padding: 6px 16px;
+    background: rgb(0 0 0 / 0.62);
+    color: #fff;
+    font-size: 13px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  body.ld:not([data-filter="all"]) .ld-group { display: none; }
+
+  .ld-row { display: grid; grid-template-columns: 1fr 1fr; }
+  .ld-row__bar {
+    grid-column: 1 / -1;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-height: 34px;
+    padding: 3px 16px;
+    background: rgb(20 21 24 / 0.72);
+    border-top: 1px solid rgb(255 255 255 / 0.07);
+    color: #fff;
+    font-size: 12px;
+  }
+  .ld-row__name { font-size: 14px; font-weight: bold; white-space: nowrap; }
+  .ld-row__note { color: var(--jp-text-soft); min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .ld-row__decide { display: flex; align-items: center; gap: 6px; margin-left: auto; flex: none; }
+  .ld-row__decide .jp-combo-box { width: 180px; }
+  .ld-row__decide .jp-text-box { width: 260px; }
+  .ld-row.is-decided .ld-row__bar { box-shadow: inset 3px 0 0 var(--jp-accent-solid); }
+
+  .ld-chip {
+    flex: none;
+    padding: 1px 7px 2px;
+    border-radius: 9px;
+    font-size: 11px;
+    font-weight: bold;
+    color: #fff;
+  }
+  .ld-chip--exists  { background: #3E7F3A; }
+  .ld-chip--missing { background: #A8322A; }
+  .ld-chip--dark    { background: #3A62A0; }
+  .ld-chip--neutral { background: #6B6C71; }
+
+  body.ld[data-filter="missing"] .ld-row:not([data-status="missing"]),
+  body.ld[data-filter="exists"]  .ld-row:not([data-status="exists"]),
+  body.ld[data-filter="dark"]    .ld-row:not([data-status="dark"]),
+  body.ld[data-filter="neutral"] .ld-row:not([data-status="neutral"]),
+  body.ld[data-filter="open"]    .ld-row.is-decided { display: none; }
+
+  .ld-cell { min-width: 0; padding: 10px 24px 26px; }
+  .ld-cell__caption { margin-bottom: 12px; font-size: 11px; color: rgb(255 255 255 / 0.75); }
+  .ld-cell__caption code { font: 11px/1 Consolas, "Cascadia Mono", monospace; }
+  .ld-cell__hint { opacity: 0.85; }
+  .ld-missing {
+    padding: 1px 6px 2px;
+    border-radius: 3px;
+    background: #A8322A;
+    color: #fff;
+    font-weight: bold;
+  }
+  .ld-same {
+    padding: 1px 6px 2px;
+    border-radius: 3px;
+    background: rgb(0 0 0 / 0.35);
+    color: #fff;
+    font-weight: bold;
+  }
+  .ld-cell.is-missing .ld-cell__sample {
+    outline: 1px dashed rgb(200 60 50 / 0.8);
+    outline-offset: 8px;
+  }
+  .ld-cell__sample { display: inline-block; max-width: 100%; }
+
+  /* ------------------------------------------------- sample helpers */
+  .ld-host {
+    position: relative;
+    box-sizing: border-box;
+    overflow: hidden;
+    border: 1px solid #3D3E42;
+    border-radius: 3px;
+  }
+  .ld-outline { border: 1px dashed currentColor; }
+  .ld-window { width: 460px; height: auto; overflow: visible; border: 1px solid #3D3E42; }
+  .ld-dialog { position: static; width: 340px; margin: 0; }
+  .ld-static-tip { display: inline-block; }
+
+  .ld-export { width: min(560px, calc(100vw - 32px)); }
+  .ld-export textarea { width: 100%; height: 260px; box-sizing: border-box; font: 12px/1.4 Consolas, monospace; }
+}

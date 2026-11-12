@@ -139,12 +139,15 @@ public class ExpanderTagHelper : JetPackTagHelper
 
     public bool IsExpanded { get; set; }
 
+    /// <summary>The header in the dark grey of Button.Dark.</summary>
+    public bool Dark { get; set; }
+
     public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
     {
         var content = (await output.GetChildContentAsync()).GetContent();
         output.TagName = "details";
         output.TagMode = TagMode.StartTagAndEndTag;
-        AddClasses(output, "jp-expander");
+        AddClasses(output, "jp-expander", Dark ? "jp-expander--dark" : null);
         if (IsExpanded) output.Attributes.SetAttribute("open", "open");
         if (context.Items.TryGetValue(typeof(AccordionTagHelper), out var group)) output.Attributes.SetAttribute("name", (string)group);
         ApplyCommon(output);
@@ -156,13 +159,16 @@ public class ExpanderTagHelper : JetPackTagHelper
 [HtmlTargetElement("jp-accordion")]
 public class AccordionTagHelper : JetPackTagHelper
 {
+    /// <summary>Every header in the dark grey of Button.Dark.</summary>
+    public bool Dark { get; set; }
+
     public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
     {
         context.Items[typeof(AccordionTagHelper)] = Html.NewId("jp-accordion");
         var content = (await output.GetChildContentAsync()).GetContent();
         output.TagName = "div";
         output.TagMode = TagMode.StartTagAndEndTag;
-        AddClasses(output, "jp-accordion");
+        AddClasses(output, "jp-accordion", Dark ? "jp-accordion--dark" : null);
         ApplyCommon(output);
         output.Content.SetHtmlContent(content);
     }

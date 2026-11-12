@@ -249,6 +249,9 @@ public class ComboBoxTagHelper(IHtmlGenerator generator) : JetPackTagHelper
     /// <summary>The text of an editable combo box.</summary>
     public string? Text { get; set; }
 
+    /// <summary>The dark field of TextBox.Dark and a dark list, for dark panels.</summary>
+    public bool Dark { get; set; }
+
     public string? Watermark { get; set; }
 
     public string? Name { get; set; }
@@ -275,13 +278,13 @@ public class ComboBoxTagHelper(IHtmlGenerator generator) : JetPackTagHelper
             var id = Id is null ? "" : $" id=\"{Html.Attr(Id)}\"";
             var watermark = Watermark is null ? "" : $" placeholder=\"{Html.Attr(Watermark)}\"";
             output.Content.SetHtmlContent(
-                $"<input class=\"jp-text-box\" list=\"{listId}\" value=\"{Html.Attr(Text)}\"{name}{id}{watermark}{disabled}{CommonAttributes()}>" +
+                $"<input class=\"{TextBoxClass(Dark)}\" list=\"{listId}\" value=\"{Html.Attr(Text)}\"{name}{id}{watermark}{disabled}{CommonAttributes()}>" +
                 $"<button type=\"button\" class=\"jp-text-box-button jp-text-box-button--drop-down\" tabindex=\"-1\" aria-label=\"Open\"{disabled}></button>" +
                 $"<datalist id=\"{listId}\">" + string.Concat(items.Select(i => $"<option value=\"{Html.Attr(i.Content)}\"></option>")) + "</datalist>");
             return;
         }
 
-        var attributes = new Dictionary<string, object?> { ["class"] = "jp-combo-box" };
+        var attributes = new Dictionary<string, object?> { ["class"] = Dark ? "jp-combo-box jp-combo-box--dark" : "jp-combo-box" };
         if (!IsEnabled) attributes["disabled"] = "disabled";
         if (Id is not null) attributes["id"] = Id;
         if (Watermark is not null) attributes["data-jp-watermark"] = Watermark;
@@ -353,6 +356,9 @@ public class DatePickerTagHelper : JetPackTagHelper
     /// </summary>
     public string? DateFormat { get; set; }
 
+    /// <summary>The dark field of TextBox.Dark.</summary>
+    public bool Dark { get; set; }
+
     public override void Process(TagHelperContext context, TagHelperOutput output)
     {
         output.TagName = "div";
@@ -370,7 +376,7 @@ public class DatePickerTagHelper : JetPackTagHelper
         var text = SelectedDate is { } selected ? Html.Attr(FormatDate(selected, format, DateCulture.Of(Culture))) : "";
         var disabled = IsEnabled ? "" : " disabled";
         output.Content.SetHtmlContent(
-            $"<input class=\"jp-text-box\" value=\"{text}\" placeholder=\"{Html.Attr(Watermark)}\"{disabled}{CommonAttributes()}>" +
+            $"<input class=\"{TextBoxClass(Dark)}\" value=\"{text}\" placeholder=\"{Html.Attr(Watermark)}\"{disabled}{CommonAttributes()}>" +
             $"<button type=\"button\" class=\"jp-text-box-button jp-text-box-button--calendar\" tabindex=\"-1\" aria-label=\"Show calendar\"{disabled}></button>" +
             (Name is null ? "" : $"<input type=\"hidden\" name=\"{Html.Attr(Name)}\" value=\"{date}\">"));
     }
@@ -393,6 +399,9 @@ public class TimePickerTagHelper : JetPackTagHelper
 
     public string? Name { get; set; }
 
+    /// <summary>The dark field (ControlHelper.InputStyle = TextBox.Dark in WPF).</summary>
+    public bool Dark { get; set; }
+
     public override void Process(TagHelperContext context, TagHelperOutput output)
     {
         output.TagName = "div";
@@ -404,7 +413,7 @@ public class TimePickerTagHelper : JetPackTagHelper
         var name = Name is null ? "" : $" name=\"{Html.Attr(Name)}\"";
         var disabled = IsEnabled ? "" : " disabled";
         output.Content.SetHtmlContent(
-            $"<input class=\"jp-text-box\" value=\"{text}\"{watermark}{name}{disabled}{CommonAttributes()}>" +
+            $"<input class=\"{TextBoxClass(Dark)}\" value=\"{text}\"{watermark}{name}{disabled}{CommonAttributes()}>" +
             $"<button type=\"button\" class=\"jp-text-box-button jp-text-box-button--clock\" tabindex=\"-1\" aria-label=\"Choose a time\"{disabled}></button>");
     }
 }
@@ -424,6 +433,9 @@ public class AutoSuggestBoxTagHelper : JetPackTagHelper
 
     public string? Name { get; set; }
 
+    /// <summary>The dark field (ControlHelper.InputStyle = TextBox.Dark in WPF).</summary>
+    public bool Dark { get; set; }
+
     public override void Process(TagHelperContext context, TagHelperOutput output)
     {
         output.TagName = "div";
@@ -433,7 +445,7 @@ public class AutoSuggestBoxTagHelper : JetPackTagHelper
         var name = Name is null ? "" : $" name=\"{Html.Attr(Name)}\"";
         var disabled = IsEnabled ? "" : " disabled";
         output.Content.SetHtmlContent(
-            $"<input class=\"jp-text-box\" type=\"search\" autocomplete=\"off\" value=\"{Html.Attr(Text)}\"{watermark}{name}{disabled}{CommonAttributes()}>" +
+            $"<input class=\"{TextBoxClass(Dark)}\" type=\"search\" autocomplete=\"off\" value=\"{Html.Attr(Text)}\"{watermark}{name}{disabled}{CommonAttributes()}>" +
             $"<script type=\"application/json\">{Json(Items)}</script>");
     }
 
@@ -474,6 +486,9 @@ public class SearchComboBoxTagHelper : JetPackTagHelper
 
     public string? Id { get; set; }
 
+    /// <summary>The dark field of TextBox.Dark and a dark list.</summary>
+    public bool Dark { get; set; }
+
     public override void Process(TagHelperContext context, TagHelperOutput output)
     {
         output.TagName = "div";
@@ -488,7 +503,7 @@ public class SearchComboBoxTagHelper : JetPackTagHelper
         var watermark = Watermark is null ? "" : $" placeholder=\"{Html.Attr(Watermark)}\"";
         var disabled = IsEnabled ? "" : " disabled";
         output.Content.SetHtmlContent(
-            $"<input class=\"jp-text-box\" autocomplete=\"off\" role=\"combobox\"{watermark}{disabled}{CommonAttributes()}>" +
+            $"<input class=\"{TextBoxClass(Dark)}\" autocomplete=\"off\" role=\"combobox\"{watermark}{disabled}{CommonAttributes()}>" +
             $"<button type=\"button\" class=\"jp-text-box-button jp-text-box-button--drop-down\" tabindex=\"-1\" aria-label=\"Open\"{disabled}></button>" +
             (Name is null ? "" : $"<input type=\"hidden\" name=\"{Html.Attr(Name)}\">") +
             $"<script type=\"application/json\">{AutoSuggestBoxTagHelper.Json(Items)}</script>");
@@ -503,12 +518,15 @@ public class ColorPickerTagHelper : JetPackTagHelper
 
     public string? Id { get; set; }
 
+    /// <summary>The dark field of TextBox.Dark and a dark palette.</summary>
+    public bool Dark { get; set; }
+
     public override void Process(TagHelperContext context, TagHelperOutput output)
     {
         output.TagName = "button";
         output.TagMode = TagMode.StartTagAndEndTag;
         output.Attributes.SetAttribute("type", "button");
-        AddClasses(output, "jp-color-picker");
+        AddClasses(output, "jp-color-picker", Dark ? "jp-color-picker--dark" : null);
         if (Id is not null) output.Attributes.SetAttribute("id", Id);
         output.Attributes.SetAttribute("data-selected-color", SelectedColor);
         output.Attributes.SetAttribute("aria-haspopup", "dialog");

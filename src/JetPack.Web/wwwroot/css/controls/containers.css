@@ -50,6 +50,15 @@
     transition: transform 0.15s;
   }
   .jp-expander[open] > summary::before { transform: rotate(90deg); }
+  /* Expander.Dark (and every Expander of Accordion.Dark): the header in the dark grey of Button.Dark */
+  :is(.jp-expander--dark, .jp-accordion--dark > .jp-expander) > summary {
+    background: var(--jp-dark-control-background);
+    color: #fff;
+    text-shadow: var(--jp-dark-emboss);
+  }
+  :is(.jp-expander--dark, .jp-accordion--dark > .jp-expander) > summary:hover { background: var(--jp-dark-control-background-mouse-over); }
+  :is(.jp-expander--dark, .jp-accordion--dark > .jp-expander) > summary:active { background: var(--jp-dark-control-background-pressed); }
+  :is(.jp-expander--dark, .jp-accordion--dark > .jp-expander) > summary::before { border-left-color: var(--jp-dark-control-glyph); }
   .jp-expander__content {
     margin-top: 2px;
     padding: 8px 10px;

@@ -24,6 +24,9 @@ public class ButtonTagHelper : JetPackTagHelper
 {
     public ButtonStyle ButtonStyle { get; set; }
 
+    /// <summary>Button.Dark: dark grey with light text and glyphs, for dark panels. Coloured styles stay coloured.</summary>
+    public bool Dark { get; set; }
+
     public string? Content { get; set; }
 
     public string? Href { get; set; }
@@ -53,7 +56,7 @@ public class ButtonTagHelper : JetPackTagHelper
                 output.Attributes.SetAttribute("disabled", "disabled");
             }
         }
-        AddClasses(output, "jp-button", ButtonStyle == ButtonStyle.Default ? null : "jp-button--" + ButtonStyle.ToString().ToLowerInvariant());
+        AddClasses(output, "jp-button", ButtonStyle == ButtonStyle.Default ? null : "jp-button--" + ButtonStyle.ToString().ToLowerInvariant(), Dark ? "jp-button--dark" : null);
         ApplyCommon(output);
         Extra(output);
         output.Content.SetHtmlContent(Content is null ? inner : Html.Text(Content));
@@ -118,6 +121,9 @@ public class SplitButtonTagHelper : JetPackTagHelper
     /// <summary>Default or Accent (JetPack.Styles.SplitButton.Accent).</summary>
     public ButtonStyle ButtonStyle { get; set; }
 
+    /// <summary>The dark grey of Button.Dark.</summary>
+    public bool Dark { get; set; }
+
     public string? Id { get; set; }
 
     protected virtual bool Split => true;
@@ -127,7 +133,7 @@ public class SplitButtonTagHelper : JetPackTagHelper
         context.Items[typeof(MenuScope)] = new MenuScope();
         var menu = (await output.GetChildContentAsync()).GetContent();
         var menuId = (Id ?? Html.NewId("jp-menu")) + "-menu";
-        var style = ButtonStyle == ButtonStyle.Default ? "" : " jp-button--" + ButtonStyle.ToString().ToLowerInvariant();
+        var style = (ButtonStyle == ButtonStyle.Default ? "" : " jp-button--" + ButtonStyle.ToString().ToLowerInvariant()) + (Dark ? " jp-button--dark" : "");
         var disabled = IsEnabled ? "" : " disabled";
         var popup = $"<div class=\"jp-context-menu\" popover id=\"{menuId}\" role=\"menu\">{menu}</div>";
         output.TagMode = TagMode.StartTagAndEndTag;

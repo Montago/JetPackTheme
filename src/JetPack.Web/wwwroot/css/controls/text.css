@@ -257,6 +257,32 @@
     color: var(--jp-input-foreground);
     text-shadow: none;
   }
+  /* ComboBox.Dark: the field of TextBox.Dark with the caret and divider; its list is dark too */
+  select.jp-combo-box--dark {
+    --jp-combo-surface: var(--jp-dark-input-background);
+    --jp-combo-glyph: rgb(255 255 255 / 0.85);
+    padding: 2px 31px 2px 9px;
+    border: 1px solid var(--jp-dark-input-border);
+    background:
+      linear-gradient(45deg, transparent 50%, var(--jp-combo-glyph) 50%) right 12px top 50% / 4px 4px no-repeat,
+      linear-gradient(-45deg, transparent 50%, var(--jp-combo-glyph) 50%) right 8px top 50% / 4px 4px no-repeat,
+      linear-gradient(rgb(0 0 0 / 0), rgb(0 0 0 / 0.35) 30%, rgb(0 0 0 / 0.35) 70%, rgb(0 0 0 / 0)) right 25px top 50% / 1px 70% no-repeat,
+      linear-gradient(rgb(255 255 255 / 0), rgb(255 255 255 / 0.14) 30%, rgb(255 255 255 / 0.14) 70%, rgb(255 255 255 / 0)) right 24px top 50% / 1px 70% no-repeat,
+      var(--jp-combo-surface);
+    color: var(--jp-dark-input-foreground);
+    box-shadow: inset 1px 1px 0 var(--jp-control-dark-edge), inset 2px 2px 0 rgb(48 48 48 / 0.31), var(--jp-outer-highlight);
+    text-shadow: none;
+  }
+  select.jp-combo-box--dark:hover { --jp-combo-surface: linear-gradient(rgb(255 255 255 / 0.07), rgb(255 255 255 / 0.07)), var(--jp-dark-input-background); }
+  select.jp-combo-box--dark[aria-expanded="true"] { --jp-combo-surface: linear-gradient(rgb(0 0 0 / 0.1), rgb(0 0 0 / 0.1)), var(--jp-dark-input-background); }
+  select.jp-combo-box--dark:disabled {
+    --jp-combo-surface: linear-gradient(var(--jp-dark-input-disabled), var(--jp-dark-input-disabled)), var(--jp-dark-input-background);
+    --jp-combo-glyph: rgb(255 255 255 / 0.4);
+    box-shadow: var(--jp-outer-highlight);
+    color: rgb(255 255 255 / 0.4);
+  }
+  select.jp-combo-box--dark.is-watermark { color: var(--jp-dark-input-watermark); }
+  select.jp-combo-box--dark option { background: #505054; color: #fff; }
 
   .jp-combo-box--editable,
   .jp-date-picker,
@@ -328,6 +354,15 @@
     overscroll-behavior: contain;
   }
   .jp-popup.jp-popup--calendar, .jp-popup.jp-popup--palette { padding: 0; background: transparent; box-shadow: none; overflow: visible; }
+  /* The list of a dark field (jetpack.js adds jp-popup--dark): ListBox.Dark */
+  .jp-popup.jp-popup--dark.jp-popup--list {
+    background: var(--jp-dark-input-background);
+    box-shadow: var(--jp-effect-popup-shadow), 0 0 0 1px var(--jp-dark-input-border);
+    color: #fff;
+  }
+  .jp-popup--dark .jp-list-box-item:hover { background: rgb(255 255 255 / 0.08); }
+  .jp-popup--dark .jp-list-box-item[aria-selected="true"] { background: var(--jp-accent-selection); }
+  .jp-popup--dark .jp-list-box-item[aria-disabled="true"] { color: rgb(255 255 255 / 0.4); background: transparent; }
 
   /* --------------------------------------------------------- validation tip */
   /* The red call-out jetpack.js shows beside an invalid control (Validation.ErrorTemplate) */

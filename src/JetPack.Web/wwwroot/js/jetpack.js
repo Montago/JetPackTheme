@@ -317,7 +317,16 @@ also raise "jp-change" with the new value in event.detail. A data grid raises "j
     popup.style.top = Math.round(Math.max(4, top)) + 'px';
   }
 
+  /* A drop-down follows the field it belongs to: a dark field (.jp-text-box--dark inside the
+     picker, .jp-combo-box--dark, .jp-color-picker--dark) gets the dark list (ListBox.Dark) */
+  function isDarkField(anchor) {
+    const owner = anchor.closest('.jp-combo-box, .jp-date-picker, .jp-time-picker, .jp-search-combo-box, .jp-auto-suggest-box, .jp-color-picker') || anchor;
+    return owner.matches('.jp-combo-box--dark, .jp-color-picker--dark, .jp-text-box--dark') ||
+      owner.querySelector(':scope > .jp-text-box--dark') !== null;
+  }
+
   function openPopup(popup, anchor, options) {
+    popup.classList.toggle('jp-popup--dark', isDarkField(anchor));
     if (!popup.matches(':popover-open')) {
       popup.showPopover();
     }

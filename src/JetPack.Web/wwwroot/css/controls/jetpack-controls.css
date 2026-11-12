@@ -77,6 +77,14 @@
   }
   .jp-tile:hover { background: var(--jp-control-background-mouse-over); }
   .jp-tile:active { background: var(--jp-control-background-pressed); }
+  /* Tile.Dark: the dark grey of Button.Dark */
+  .jp-tile--dark {
+    background: var(--jp-dark-control-background);
+    color: #fff;
+    text-shadow: var(--jp-dark-emboss);
+  }
+  .jp-tile--dark:hover { background: var(--jp-dark-control-background-mouse-over); }
+  .jp-tile--dark:active { background: var(--jp-dark-control-background-pressed); }
   .jp-tile__title { grid-area: title; font-size: 12px; font-weight: 700; }
   .jp-tile__count { grid-area: count; justify-self: end; font-size: 24px; font-weight: 700; line-height: 1; }
   .jp-tile--accent { --jp-b-normal: var(--jp-accent-button-normal); --jp-b-over: var(--jp-accent-button-mouse-over); --jp-b-pressed: var(--jp-accent-button-pressed); --jp-b-highlight: var(--jp-accent-button-highlight); }
@@ -165,6 +173,24 @@
     background: var(--jp-control-glyph);
     clip-path: polygon(0 0, 100% 0, 50% 100%);
   }
+  /* ColorPicker.Dark: the field of TextBox.Dark; the palette drop-down is dark too */
+  .jp-color-picker--dark {
+    --jp-cp-surface: var(--jp-dark-input-background);
+    padding: 2px 31px 2px 5px;
+    border: 1px solid var(--jp-dark-input-border);
+    background:
+      linear-gradient(rgb(0 0 0 / 0), rgb(0 0 0 / 0.35) 30%, rgb(0 0 0 / 0.35) 70%, rgb(0 0 0 / 0)) right 25px top 50% / 1px 70% no-repeat,
+      linear-gradient(rgb(255 255 255 / 0), rgb(255 255 255 / 0.14) 30%, rgb(255 255 255 / 0.14) 70%, rgb(255 255 255 / 0)) right 24px top 50% / 1px 70% no-repeat,
+      var(--jp-cp-surface);
+    box-shadow: inset 1px 1px 0 var(--jp-control-dark-edge), inset 2px 2px 0 rgb(48 48 48 / 0.31), var(--jp-outer-highlight);
+    color: var(--jp-dark-input-foreground);
+    text-shadow: none;
+  }
+  .jp-color-picker--dark:hover { --jp-cp-surface: linear-gradient(rgb(255 255 255 / 0.07), rgb(255 255 255 / 0.07)), var(--jp-dark-input-background); }
+  .jp-color-picker--dark[aria-expanded="true"] { --jp-cp-surface: linear-gradient(rgb(0 0 0 / 0.1), rgb(0 0 0 / 0.1)), var(--jp-dark-input-background); }
+  .jp-color-picker--dark::after { right: 8px; background: rgb(255 255 255 / 0.85); }
+  .jp-color-picker--dark .jp-color-picker__swatch { border-color: rgb(255 255 255 / 0.4); }
+  .jp-popup--dark .jp-color-picker__palette { background: var(--jp-dark-input-background); }
   .jp-color-picker__swatch {
     flex: none;
     width: 12px;

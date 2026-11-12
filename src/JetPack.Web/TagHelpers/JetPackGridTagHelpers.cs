@@ -130,6 +130,9 @@ public class JetPackGridTagHelper : JetPackTagHelper
 {
     public IEnumerable Items { get; set; } = Array.Empty<object>();
 
+    /// <summary>White text on dark grey rows below the usual header, for dark panels.</summary>
+    public bool Dark { get; set; }
+
     /// <summary>
     /// Server mode: the address the grid posts a <see cref="JetPackGridRequest"/> to for each page (and for the
     /// values of a header filter); it answers with a <see cref="JetPackGridResponse"/>, for instance from
@@ -192,7 +195,7 @@ public class JetPackGridTagHelper : JetPackTagHelper
 
         output.TagName = "div";
         output.TagMode = TagMode.StartTagAndEndTag;
-        AddClasses(output, "jp-jetpack-grid");
+        AddClasses(output, "jp-jetpack-grid", Dark ? "jp-jetpack-grid--dark" : null);
         var style = (Height is { } h ? $"height:{Html.Num(h)}px;" : "") +
             (HighlightForeground is null ? "" : $"--jp-jetpack-grid-highlight-foreground:{(HighlightForeground == "none" ? "inherit" : HighlightForeground)};") +
             (HighlightCellBackground is null ? "" : $"--jp-jetpack-grid-highlight-cell-background:{(HighlightCellBackground == "none" ? "transparent" : HighlightCellBackground)};");
