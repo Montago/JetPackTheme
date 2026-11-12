@@ -12,6 +12,8 @@
 
     <!-- Embossed text on light surfaces: white, 1px down -->
     <DropShadowEffect x:Key="JetPack.Effects.TextEmboss" BlurRadius="0" Color="#FFFFFFFF" Direction="270" Opacity="0.5" ShadowDepth="1" />
+    <!-- The same on the light navigation bar, which stays light in the dark version -->
+    <DropShadowEffect x:Key="JetPack.Effects.Navigation.TextEmboss" BlurRadius="0" Color="#FFFFFFFF" Direction="270" Opacity="0.5" ShadowDepth="1" />
     <!-- Soft glow behind white text on the texture -->
     <DropShadowEffect x:Key="JetPack.Effects.TextGlow" BlurRadius="5" Color="#FF000000" Direction="293" Opacity="0.25" ShadowDepth="0" />
 

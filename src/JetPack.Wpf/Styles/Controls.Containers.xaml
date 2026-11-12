@@ -267,7 +267,7 @@
         <Setter Property="FontFamily" Value="{DynamicResource JetPack.Fonts.Family}" />
         <Setter Property="h:ControlHelper.HeaderForeground" Value="{DynamicResource JetPack.Brushes.Navigation.Inactive}" />
         <Setter Property="h:ControlHelper.MouseOverBackground" Value="{DynamicResource JetPack.Brushes.Navigation.Background.MouseOver}" />
-        <Setter Property="h:ControlHelper.ContentEffect" Value="{DynamicResource JetPack.Effects.TextEmboss}" />
+        <Setter Property="h:ControlHelper.ContentEffect" Value="{DynamicResource JetPack.Effects.Navigation.TextEmboss}" />
         <Setter Property="Padding" Value="20,0" />
         <Setter Property="Height" Value="47" />
         <Setter Property="Template">

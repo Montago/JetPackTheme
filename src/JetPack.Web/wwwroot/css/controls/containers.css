@@ -213,7 +213,7 @@
   .jp-tab-control--navigation > .jp-tab-control__header > .jp-tab-control__strip > .jp-tab-item {
     padding: 0 20px;
     color: var(--jp-navigation-inactive);
-    text-shadow: var(--jp-effect-text-emboss);
+    text-shadow: var(--jp-effect-navigation-text-emboss);
   }
   .jp-tab-control--navigation > .jp-tab-control__header > .jp-tab-control__strip > .jp-tab-item:hover:not(:disabled, [aria-selected="true"]) { background: var(--jp-navigation-background-mouse-over); }
   .jp-tab-control--navigation > .jp-tab-control__header > .jp-tab-control__tag {
