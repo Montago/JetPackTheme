@@ -78,6 +78,9 @@ doc = ["---", "title: Resource keys", "parent: Reference", "grand_parent: JetPac
 doc.append(table(styles + 'Accents/Green.xaml', 'Accent (changes with ThemeManager.ChangeAccent)',
                  'Values shown are the default green accent. `Accents/Orange.xaml` and `Accents/Blue.xaml` define the same keys.'))
 doc.append(table(styles + 'Brushes.xaml', 'Neutral brushes', 'Shared by every accent.'))
+doc.append(table(styles + 'Brushes.Dark.xaml', 'Dark brushes',
+                 'The values of the dark version. `ThemeManager.ChangeTheme(JetPackTheme.Dark)` and the '
+                 '`JetPack.Styles.*.Dark` styles map the neutral keys onto these (see `Theming/DarkResources.cs`).'))
 doc.append(table(styles + 'Fonts.xaml', 'Fonts', '`JetPack.Font.Size.Control` is what `ThemeManager.ControlFontSize` overrides.'))
 doc.append(table(styles + 'Effects.xaml', 'Effects', 'Drop shadows and text effects used by the templates.'))
 doc.append("## Named styles\n\nEvery standard control also gets an implicit style (no key needed). These keyed styles are the\n"

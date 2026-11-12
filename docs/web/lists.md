@@ -43,6 +43,11 @@ item's `value` (or its text).
 
 `jp-list-box-item` takes `content` (or the element's content), `value` and `is-enabled`.
 
+![ListBox, dark](../screenshots/web/controls/listbox-dark.png)
+
+`dark="true"` (`jp-list-box--dark`) is `ListBox.Dark`: the dark field with light text, for dark
+panels. (The whole page: [Light and dark](theming.md#light-and-dark).)
+
 ## ListView with GridView
 
 ![ListView with GridView columns](../screenshots/web/controls/listview.png)
@@ -72,6 +77,11 @@ item's `value` (or its text).
 
 It takes the attributes of `jp-data-grid` below; the column takes `display-member-binding` in place
 of `binding`.
+
+![ListView, dark](../screenshots/web/controls/listview-dark.png)
+
+`dark="true"` (`jp-list-view--dark`) is `ListView.Dark`: dark rows with light text below the usual
+header. (The whole page: [Light and dark](theming.md#light-and-dark).)
 
 ## TreeView
 
@@ -156,6 +166,7 @@ click on a column header sorts the rows and the columns can be resized; see
 | `selection-mode` | `Single` | `Single` or `None` |
 | `can-user-sort-columns` | `true` | `false`: a header click does not sort (`data-jp-sort="false"`) |
 | `can-user-resize-columns` | `true` | `false`: the columns keep their widths (`data-jp-resize="false"`) |
+| `dark` | `false` | `JetPack.Styles.DataGrid.Dark` |
 
 | Column attribute | Description |
 | --- | --- |
@@ -168,6 +179,11 @@ click on a column header sorts the rows and the columns can be resized; see
 | `sort-member-path` | the property to sort by, when it is not `binding` |
 | `can-user-sort` | `false`: this header does not sort |
 | `can-user-resize` | `false`: this column keeps its width |
+
+![DataGrid, dark](../screenshots/web/controls/datagrid-dark.png)
+
+`dark="true"` (`jp-data-grid--dark`) is `DataGrid.Dark`: white text on dark grey rows below the
+usual header. (The whole page: [Light and dark](theming.md#light-and-dark).)
 
 ### Sorting and resizing
 
@@ -277,6 +293,11 @@ Its columns scroll sideways inside it, so a wide grid never widens the page. The
 column filtered to `estate suv`:
 
 ![The JetPackGrid tab of the web demo](../screenshots/web/jetpackgrid.png)
+
+![JetPackGrid, dark](../screenshots/web/controls/jetpackgrid-dark.png)
+
+`dark="true"` (`jp-jetpack-grid--dark`) is `JetPackGrid.Dark`: dark rows, group headers and paging
+bar below the usual header. (The whole page: [Light and dark](theming.md#light-and-dark).)
 
 ### Search hits
 
@@ -669,9 +690,15 @@ another one.
 | `display-date` | the month shown first (default: the selected month, or this month) |
 | `culture` | the culture of the month and day names (`"da-DK"`; default: the browser's) |
 | `first-day-of-week` | a `DayOfWeek` (default: the culture's) |
+| `dark` | `true`: `JetPack.Styles.Calendar.Dark` |
 
 `jetpack.js` writes the header and the days. Choosing a day raises `jp-change` with a `Date`, and
 `data-selected-date` holds it as `yyyy-MM-dd`.
+
+![Calendar, dark](../screenshots/web/controls/calendar-dark.png)
+
+`dark="true"` (`jp-calendar--dark`) is `Calendar.Dark`: the dark header of `Button.Dark` over the
+dark field of `ListBox.Dark`. (The whole page: [Light and dark](theming.md#light-and-dark).)
 
 ## ScrollViewer and ScrollBar
 
@@ -694,8 +721,15 @@ scrolling box with WPF's scroll bar settings:
 | `horizontal-scroll-bar-visibility` | `Disabled` | `Auto`, `Visible`, `Hidden` or `Disabled` |
 | `vertical-scroll-bar-visibility` | `Auto` | the same |
 | `thin` | `false` | `JetPack.Styles.ScrollViewer.Thin`, below |
+| `dark` | `false` | `JetPack.Styles.ScrollViewer.Dark` |
 
 ![The thin scroll bar](../screenshots/web/controls/scrollviewer-thin.png)
 
 `thin="true"` gives the thin accent bar of `JetPack.Styles.ScrollViewer.Thin`: it shows while the box
 scrolls or the mouse is near its edge, and hides 1.5 s later.
+
+![ScrollViewer, dark](../screenshots/web/controls/scrollviewer-dark.png)
+
+`dark="true"` (`jp-scroll-viewer--dark`) is `ScrollViewer.Dark`: a dark track and thumb with light
+arrows; the thin bars look the same on any ground. (The whole page: [Light and
+dark](theming.md#light-and-dark).)

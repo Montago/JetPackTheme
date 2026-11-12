@@ -171,9 +171,15 @@ still a working select. With `is-editable="true"` it is a text box with the item
 | `is-editable` | `false` | a text box with the items as suggestions |
 | `text` | | the text of an editable combo box |
 | `name`, `id` | | without `asp-for` |
+| `dark` | `false` | `JetPack.Styles.ComboBox.Dark` |
 
 `jp-combo-box-item` takes `content`, `value` (the posted value; the content when left out) and
 `is-enabled`. Choosing an item raises `input`, `change` and `jp-change` (the value).
+
+![ComboBox, dark](../screenshots/web/controls/combobox-dark.png)
+
+`dark="true"` (`jp-combo-box--dark`) is `ComboBox.Dark`: the dark field of `TextBox.Dark` and a dark
+drop-down list. (The whole page: [Light and dark](theming.md#light-and-dark).)
 
 ## NumericUpDown
 
@@ -231,9 +237,15 @@ puts it in the box and raises `jp-change` with the text. The items go to the pag
 | `items` | the suggestions, any `IEnumerable<string>` |
 | `text` | the text in the box |
 | `watermark`, `name` | as on `jp-text-box` |
+| `dark` | `true`: `JetPack.Styles.AutoSuggestBox.Dark` |
 
 For suggestions from the server, listen for `input` on the box and replace the JSON (or fill the
 list yourself).
+
+![AutoSuggestBox, dark](../screenshots/web/controls/autosuggestbox-dark.png)
+
+`dark="true"` is `AutoSuggestBox.Dark`: the dark field (`jp-text-box--dark`) and a dark suggestion
+list. (The whole page: [Light and dark](theming.md#light-and-dark).)
 
 ## SearchComboBox
 
@@ -267,8 +279,14 @@ matches). The items can be objects: `display-member-path` names the property to 
 | `selected-item` | | the selected item itself, for lists of strings |
 | `filter-mode` | `Contains` | `Contains` or `StartsWith` |
 | `watermark`, `name`, `id` | | `name` adds a hidden input with the selected value |
+| `dark` | `false` | `JetPack.Styles.SearchComboBox.Dark` |
 
 Choosing an item raises `jp-change` with `{ selectedItem, selectedValue }`.
+
+![SearchComboBox filtering a long list, dark](../screenshots/web/controls/searchcombobox-dark.png)
+
+`dark="true"` is `SearchComboBox.Dark`: the dark field (`jp-text-box--dark`) and a dark list. (The
+whole page: [Light and dark](theming.md#light-and-dark).)
 
 ## DatePicker
 
@@ -301,6 +319,7 @@ the calendar.
 | `culture` | the browser's | the culture of the date format and the calendar (`"da-DK"`); `data-jp-culture` on a container does the same for every picker in it |
 | `first-day-of-week` | the culture's | a `DayOfWeek` for the calendar |
 | `date-format` | the culture's short date | a .NET custom date format (below); `data-jp-date-format` on a container does the same for every picker in it |
+| `dark` | `false` | `JetPack.Styles.DatePicker.Dark` |
 
 **Date format.** `date-format` shows the date in a .NET custom format in place of the culture's short
 date, for example `dd-MM-yyyy` where .NET writes Danish dates that way and the browser writes
@@ -333,6 +352,11 @@ the pickers' format; `culture` is a name or an element whose culture (and `data-
 use, the browser's when left out, and `format` a custom format as above. Dates always use the
 Gregorian calendar and Latin digits.
 
+![DatePicker, dark](../screenshots/web/controls/datepicker-dark.png)
+
+`dark="true"` is `DatePicker.Dark`: the dark field (`jp-text-box--dark`) and a dark calendar. (The
+whole page: [Light and dark](theming.md#light-and-dark).)
+
 ## TimePicker
 
 ![TimePicker with its list open](../screenshots/web/controls/timepicker.png)
@@ -357,8 +381,14 @@ Gregorian calendar and Latin digits.
 | `selected-time` | | the time (`TimeSpan`) |
 | `minute-step` | 15 | minutes between the times in the list |
 | `watermark`, `name` | | the input posts the time as `HH:mm` (binds to `TimeSpan` and `TimeOnly`) |
+| `dark` | `false` | `JetPack.Styles.TimePicker.Dark` |
 
 Choosing a time raises `jp-change` with the text, such as `"08:30"`.
+
+![TimePicker, dark](../screenshots/web/controls/timepicker-dark.png)
+
+`dark="true"` is `TimePicker.Dark`: the dark field (`jp-text-box--dark`) and a dark list. (The whole
+page: [Light and dark](theming.md#light-and-dark).)
 
 ## ColorPicker
 
@@ -382,6 +412,7 @@ palette. Choosing a colour raises `change` and `jp-change` with the colour, and 
 | --- | --- | --- |
 | `selected-color` | `#75A20A` | the colour, as `#RRGGBB` |
 | `id` | | |
+| `dark` | `false` | `JetPack.Styles.ColorPicker.Dark` |
 
 `data-jp-palette="#75A20A #FE770A #148CD1"` on the button replaces the 24 colours of the palette.
 To let users pick their own accent:
@@ -389,3 +420,8 @@ To let users pick their own accent:
 ```js
 document.getElementById('ChartColor').addEventListener('jp-change', e => JetPack.ThemeManager.changeAccent(e.detail));
 ```
+
+![ColorPicker, dark](../screenshots/web/controls/colorpicker-dark.png)
+
+`dark="true"` (`jp-color-picker--dark`) is `ColorPicker.Dark`: the dark field and a dark palette.
+(The whole page: [Light and dark](theming.md#light-and-dark).)

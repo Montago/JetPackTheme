@@ -112,6 +112,11 @@ with the accent on the selected item.
 - `jp:TextBoxHelper.Watermark` shows a hint while nothing is selected.
 - `MaxDropDownHeight` defaults to 260.
 
+![ComboBox, dark](screenshots/controls/combobox-dark.png)
+
+`JetPack.Styles.ComboBox.Dark` has the dark field of `TextBox.Dark` and a dark drop-down list,
+editable or not. (The whole app: [Light and dark](theming.md#light-and-dark).)
+
 ## NumericUpDown
 
 ![NumericUpDown](screenshots/controls/numericupdown.png)
@@ -155,6 +160,11 @@ insensitive). Down/Up move through the suggestions, Enter or a click picks one, 
 | `MaxSuggestions` | `int` | 8 | |
 
 Event: `SuggestionChosen`; `e.OriginalSource` is the chosen item.
+
+![AutoSuggestBox, dark](screenshots/controls/autosuggestbox-dark.png)
+
+`JetPack.Styles.AutoSuggestBox.Dark` has the dark field of `TextBox.Dark` and a dark suggestion
+list. (The whole app: [Light and dark](theming.md#light-and-dark).)
 
 ## SearchComboBox
 
@@ -203,6 +213,11 @@ drop-down is virtualized, so lists with thousands of items stay fast.
 Display texts are read once when `ItemsSource` or `DisplayMemberPath` changes (or the collection
 raises `CollectionChanged`), so filtering only compares strings.
 
+![SearchComboBox filtering 2,000 companies, dark](screenshots/controls/searchcombobox-dark.png)
+
+`JetPack.Styles.SearchComboBox.Dark` has the dark field of `TextBox.Dark` and a dark list. (The
+whole app: [Light and dark](theming.md#light-and-dark).)
+
 ## DatePicker
 
 ![DatePicker with its calendar open](screenshots/controls/datepicker.png)
@@ -214,6 +229,11 @@ Date format, month names and the first day of the week follow the app's culture.
 ```xml
 <DatePicker SelectedDate="{Binding StartDate}" />
 ```
+
+![DatePicker, dark](screenshots/controls/datepicker-dark.png)
+
+`JetPack.Styles.DatePicker.Dark` has the dark field of `TextBox.Dark` and the dark calendar of
+`Calendar.Dark`. (The whole app: [Light and dark](theming.md#light-and-dark).)
 
 ## TimePicker
 
@@ -231,6 +251,11 @@ Date format, month names and the first day of the week follow the app's culture.
 | `SelectedTime` | `TimeSpan?` | `null` |
 | `MinuteStep` | `int` | 15 |
 | `IsDropDownOpen` | `bool` | `false` |
+
+![TimePicker, dark](screenshots/controls/timepicker-dark.png)
+
+`JetPack.Styles.TimePicker.Dark` has the dark field of `TextBox.Dark` and a dark list. (The whole
+app: [Light and dark](theming.md#light-and-dark).)
 
 ## ColorPicker
 
@@ -251,6 +276,11 @@ of swatches.
 
 Combined with `ThemeManager.ChangeAccent(color)` it lets users pick their own accent (the demo does
 this under *Settings*).
+
+![ColorPicker, dark](screenshots/controls/colorpicker-dark.png)
+
+`JetPack.Styles.ColorPicker.Dark` has the dark field of `TextBox.Dark` and a dark palette. (The
+whole app: [Light and dark](theming.md#light-and-dark).)
 
 ## Composite inputs and dark styles
 

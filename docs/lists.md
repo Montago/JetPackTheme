@@ -21,6 +21,11 @@ selected item gets the accent selection gradient with white text.
 Items have `Padding="6,3"` and stretch horizontally. Virtualisation is on (`CanContentScroll`), except
 while grouping.
 
+![ListBox, dark](screenshots/controls/listbox-dark.png)
+
+`JetPack.Styles.ListBox.Dark` is the dark field of `TextBox.Dark` with light text, for dark panels.
+(The whole app: [Light and dark](theming.md#light-and-dark).)
+
 ## ListView with GridView
 
 ![ListView with GridView](screenshots/controls/listview.png)
@@ -38,6 +43,11 @@ gradient.
     </ListView.View>
 </ListView>
 ```
+
+![ListView, dark](screenshots/controls/listview-dark.png)
+
+`JetPack.Styles.ListView.Dark` is the same dark list; with a `GridView`, dark rows below the usual
+header. (The whole app: [Light and dark](theming.md#light-and-dark).)
 
 ## TreeView
 
@@ -85,6 +95,11 @@ The row style `JetPack.Styles.DataGridRow` uses the template `JetPack.Templates.
 no row header, and switches to `JetPack.Templates.DataGridRow.WithHeader` when `HeadersVisibility` is
 `Row` or `All`. Rows without row headers therefore carry no hidden header either. A row style based on
 `JetPack.Styles.DataGridRow` keeps the switch.
+
+![DataGrid, dark](screenshots/controls/datagrid-dark.png)
+
+`JetPack.Styles.DataGrid.Dark` has white text on dark grey rows below the usual header, for dark
+panels. (The whole app: [Light and dark](theming.md#light-and-dark).)
 
 ### Check boxes and edit fields in cells
 
@@ -164,6 +179,11 @@ The demo's *JetPackGrid* page shows 3,000 cars in 21 columns, searched for `volv
 *Body* column filtered to `estate suv`:
 
 ![The JetPackGrid page of the demo](screenshots/jetpackgrid.png)
+
+![JetPackGrid, dark](screenshots/controls/jetpackgrid-dark.png)
+
+`JetPack.Styles.JetPackGrid.Dark` does the same as `DataGrid.Dark`, group headers, search hits and
+paging bar included. (The whole app: [Light and dark](theming.md#light-and-dark).)
 
 ### Search hits
 
@@ -473,6 +493,11 @@ FrameworkElement.LanguageProperty.OverrideMetadata(typeof(FrameworkElement),
     new FrameworkPropertyMetadata(XmlLanguage.GetLanguage(CultureInfo.CurrentCulture.IetfLanguageTag)));
 ```
 
+![Calendar, dark](screenshots/controls/calendar-dark.png)
+
+`JetPack.Styles.Calendar.Dark` has the dark header of `Button.Dark` over the dark field of
+`ListBox.Dark`. (The whole app: [Light and dark](theming.md#light-and-dark).)
+
 ## ScrollViewer and ScrollBar
 
 ![Scroll bars](screenshots/controls/scrollviewer.png)
@@ -480,6 +505,11 @@ FrameworkElement.LanguageProperty.OverrideMetadata(typeof(FrameworkElement),
 Scroll bars are 16px with a light grey track, small grey arrows and the light gradient thumb with a
 white top edge from the original theme. All `ScrollViewer`s, including the ones inside text boxes and
 lists, use them.
+
+![Scroll bars, dark](screenshots/controls/scrollviewer-dark.png)
+
+`JetPack.Styles.ScrollViewer.Dark` has a dark track and thumb with light arrows; the thin bars look
+the same on any ground. (The whole app: [Light and dark](theming.md#light-and-dark).)
 
 ### Thin scroll bars
 

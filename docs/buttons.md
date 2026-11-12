@@ -20,6 +20,13 @@ flat grey.
 <Button Content="Save" IsEnabled="False" />
 ```
 
+![Buttons, dark](screenshots/controls/button-dark.png)
+
+`JetPack.Styles.Button.Dark` is dark grey with light text and glyphs, for dark panels;
+`Button.Square.Dark`, `RepeatButton.Dark`, `ToggleButton.Dark`, `DropDownButton.Dark` and
+`SplitButton.Dark` match it. The coloured styles (Accent, Green, Orange, Blue) have no dark variant:
+they look the same on either ground. (The whole app: [Light and dark](theming.md#light-and-dark).)
+
 ### Variants
 
 | Style | Look |
@@ -132,6 +139,11 @@ Content, if any, is centred.
 | `Count` | `object` | Large top-right value. |
 
 Styles: `JetPack.Styles.Tile` (light, the default), `.Accent`, `.Green`, `.Orange`, `.Blue`.
+
+![Tiles, dark](screenshots/controls/tile-dark.png)
+
+`JetPack.Styles.Tile.Dark` is a dark grey tile with light text, for dark panels. (The whole app:
+[Light and dark](theming.md#light-and-dark).)
 
 ## Badged
 

@@ -166,6 +166,7 @@ change that and add a cross-fade between pages.
 ```csharp
 using JetPack.Wpf.Theming;
 
+ThemeManager.ChangeTheme(JetPackTheme.Dark);                // Light (default, the original look) or Dark
 ThemeManager.ChangeAccent(JetPackAccent.Orange);            // Green (default), Orange, Blue
 ThemeManager.ChangeAccent(Color.FromRgb(0x8E, 0x44, 0xAD)); // generate a full accent from one colour
 ThemeManager.ShowFocusVisuals = false;                      // the original's invisible focus

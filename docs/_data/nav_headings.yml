@@ -116,6 +116,8 @@ resource-keys.md:
     title: "Accent (changes with ThemeManager.ChangeAccent)"
   - id: "neutral-brushes"
     title: "Neutral brushes"
+  - id: "dark-brushes"
+    title: "Dark brushes"
   - id: "fonts"
     title: "Fonts"
   - id: "effects"
@@ -150,6 +152,8 @@ status.md:
   - id: "infobar"
     title: "InfoBar"
 theming.md:
+  - id: "light-and-dark"
+    title: "Light and dark"
   - id: "accents"
     title: "Accents"
   - id: "focus-visuals"
@@ -315,6 +319,8 @@ web/status.md:
   - id: "infobar"
     title: "InfoBar"
 web/theming.md:
+  - id: "light-and-dark"
+    title: "Light and dark"
   - id: "accents"
     title: "Accents"
   - id: "focus-visuals"

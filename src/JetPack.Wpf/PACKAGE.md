@@ -77,9 +77,10 @@ Derive your window from `JetPackWindow`:
 public partial class MainWindow : JetPack.Wpf.Controls.JetPackWindow { ... }
 ```
 
-Switch accent at runtime:
+Switch to the dark version or another accent at runtime:
 
 ```csharp
+JetPack.Wpf.Theming.ThemeManager.ChangeTheme(JetPack.Wpf.Theming.JetPackTheme.Dark);
 JetPack.Wpf.Theming.ThemeManager.ChangeAccent(JetPack.Wpf.Theming.JetPackAccent.Orange);
 ```
 

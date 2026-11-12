@@ -35,6 +35,25 @@ dotnet run --project src/JetPack.Web.Demo
 
 ![Icons](../screenshots/web/icons.png)
 
+With *Dark* in the title bar (or `?theme=dark` in the address) the same tabs show the
+[dark version](theming.md#light-and-dark):
+
+![Core, dark](../screenshots/web/dark-core.png)
+
+![SDK, dark](../screenshots/web/dark-sdk.png)
+
+![Toolkit, dark](../screenshots/web/dark-toolkit.png)
+
+![Extras, dark](../screenshots/web/dark-extras.png)
+
+![JetPackGrid, dark](../screenshots/web/dark-jetpackgrid.png)
+
+![Window, dark](../screenshots/web/dark-window.png)
+
+![Palette, dark](../screenshots/web/dark-palette.png)
+
+![Icons, dark](../screenshots/web/dark-icons.png)
+
 What the browser cannot do the same way: the Window tab's corner style and resize grip, and Mica in
 Settings, belong to the desktop window; they are shown disabled. Dates are shown as en-US (M/d/yyyy).
 

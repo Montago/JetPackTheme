@@ -49,9 +49,11 @@ Then write the controls as you would in XAML:
 </jp-tab-control>
 ```
 
-Switch the accent from script:
+Switch to the dark version or another accent from script (or set `data-theme="dark"` and
+`data-accent` on `<html>`):
 
 ```js
+JetPack.ThemeManager.changeTheme('dark');      // light (the original look) or dark
 JetPack.ThemeManager.changeAccent('orange');   // green, orange, blue or any #hex colour
 ```
 

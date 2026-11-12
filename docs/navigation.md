@@ -170,6 +170,12 @@ a dark panel with a soft shadow.
 `JetPack.Styles.Expander.Accordion` is a flush variant (square header, no gap) used by `Accordion`.
 Only `ExpandDirection="Down"` is styled.
 
+![Expanders, dark](screenshots/controls/expander-dark.png)
+
+`JetPack.Styles.Expander.Dark` draws the header in the dark grey of `Button.Dark`;
+`JetPack.Styles.Accordion.Dark` does that for every section of an accordion. (The whole app: [Light
+and dark](theming.md#light-and-dark).)
+
 ## Accordion
 
 ![Accordion](screenshots/controls/accordion.png)
@@ -235,6 +241,21 @@ A dark panel with a dark gradient header strip and bold white header text.
     </ToolBar>
 </ToolBarTray>
 ```
+
+![Menu, dark](screenshots/controls/menu-dark.png)
+
+`JetPack.Styles.Menu.Dark` is the bar in the dark grey of `Button.Dark`, with dark drop-downs and
+white text. (The whole app: [Light and dark](theming.md#light-and-dark).)
+
+![ContextMenu, dark](screenshots/controls/contextmenu-dark.png)
+
+`JetPack.Styles.ContextMenu.Dark` is a dark grey panel with white text; its submenus too. (The whole
+app: [Light and dark](theming.md#light-and-dark).)
+
+![ToolBar, dark](screenshots/controls/toolbar-dark.png)
+
+`JetPack.Styles.ToolBar.Dark` is the dark grey of `Button.Dark` with light glyphs and labels. (The
+whole app: [Light and dark](theming.md#light-and-dark).)
 
 ## StatusBar
 

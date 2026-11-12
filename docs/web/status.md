@@ -81,6 +81,7 @@ progress bar over it. While it is busy, the content cannot be clicked.
 | --- | --- | --- |
 | `is-busy` | `false` | busy when the page loads |
 | `busy-content` | `Please wait…` | the message on the card |
+| `dark` | `false` | `JetPack.Styles.BusyIndicator.Dark` |
 
 There is no script behind it; switch it with the two attributes:
 
@@ -90,6 +91,11 @@ busy.dataset.busy = 'true';  busy.ariaBusy = 'true';
 const orders = await fetch('/api/orders').then(r => r.json());
 busy.dataset.busy = 'false'; busy.ariaBusy = 'false';
 ```
+
+![BusyIndicator, dark](../screenshots/web/controls/busyindicator-dark.png)
+
+`dark="true"` (`jp-busy-indicator--dark`) is `BusyIndicator.Dark`: a dark card and a dark veil over
+the content. (The whole page: [Light and dark](theming.md#light-and-dark).)
 
 ## InfoBar
 

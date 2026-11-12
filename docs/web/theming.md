@@ -8,6 +8,37 @@ nav_order: 2
 
 ![The Palette tab of the web demo: the custom properties and the WPF keys they come from](../screenshots/web/palette.png)
 
+## Light and dark
+
+![The Core tab of the web demo in the dark version](../screenshots/web/dark-core.png)
+
+As in WPF there is a light version (the original look, the default) and a dark one, where buttons,
+inputs, lists, grids, menus, tool bars, calendars, dialogs and the busy indicator turn dark grey with
+light text. The window texture and the coloured styles stay as they are. It is the `data-theme`
+attribute of `<html>`:
+
+```html
+<html lang="en" data-theme="dark">
+```
+
+From script, as `ThemeManager.ChangeTheme` in WPF:
+
+```js
+JetPack.ThemeManager.changeTheme('dark');
+JetPack.ThemeManager.currentTheme;             // 'dark'
+JetPack.ThemeManager.onThemeChanged(theme => { /* redraw a chart */ });
+document.addEventListener('jp-theme-changed', e => console.log(e.detail));
+```
+
+`changeTheme` remembers the choice in the browser (`localStorage`), and `jetpack.js` sets it again
+before the next page is drawn. Without script, radio buttons with `data-jp-theme` (value `light` or
+`dark`) switch when checked, and a button with `data-jp-theme-toggle` switches back and forth.
+
+For one control on a dark panel in a light page, give its tag helper `dark="true"` (the
+`jp-<control>--dark` class, as `JetPack.Styles.<Control>.Dark` in WPF); each control page shows its
+dark variant. The dark values are the `--jp-dark-*` custom properties, generated from the WPF
+`JetPack.Brushes.Dark.*` keys.
+
 ## Accents
 
 The three accents of the original theme are `green` (the default), `orange` and `blue`. The accent
