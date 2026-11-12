@@ -11,19 +11,55 @@ public enum JetPackAccent
     Blue,
 }
 
+/// <summary>The two versions of JetPack: the light one (the original look) and the dark one.</summary>
+public enum JetPackTheme
+{
+    Light,
+    Dark,
+}
+
 /// <summary>
-/// Switches accent, focus visuals and control font size at runtime by adding
+/// Switches theme, accent, focus visuals and control font size at runtime by adding
 /// dictionaries at the end of <see cref="Application.Resources"/>, where they
 /// override the defaults merged from <c>JetPack.xaml</c>.
 /// </summary>
 public static class ThemeManager
 {
     private static ResourceDictionary? accentDictionary;
+    private static ResourceDictionary? themeDictionary;
     private static ResourceDictionary? overrideDictionary;
     private static bool showFocusVisuals = true;
     private static double controlFontSize = 12;
 
     public static event EventHandler? AccentChanged;
+
+    public static event EventHandler? ThemeChanged;
+
+    /// <summary>The active theme: <see cref="JetPackTheme.Light"/> unless <see cref="ChangeTheme"/> said otherwise.</summary>
+    public static JetPackTheme CurrentTheme { get; private set; } = JetPackTheme.Light;
+
+    /// <summary>
+    /// Switches between the light version and the dark one. Dark adds <see cref="DarkResources"/> to
+    /// the application, so every control takes the colours of its <c>JetPack.Styles.*.Dark</c> style;
+    /// the window texture and the coloured styles stay as they are.
+    /// </summary>
+    public static void ChangeTheme(JetPackTheme theme)
+    {
+        var resources = AppResources ?? throw new InvalidOperationException("ThemeManager needs an Application instance.");
+        if (themeDictionary != null)
+        {
+            resources.MergedDictionaries.Remove(themeDictionary);
+            themeDictionary = null;
+        }
+        if (theme == JetPackTheme.Dark)
+        {
+            themeDictionary = new DarkResources();
+            resources.MergedDictionaries.Add(themeDictionary);
+        }
+        CurrentTheme = theme;
+        ApplyOverrides();
+        ThemeChanged?.Invoke(null, EventArgs.Empty);
+    }
 
     /// <summary>Name of the active accent ("Green", "Orange", "Blue" or a generated colour).</summary>
     public static string CurrentAccent { get; private set; } = nameof(JetPackAccent.Green);

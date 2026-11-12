@@ -1,5 +1,6 @@
 <ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:t="clr-namespace:JetPack.Wpf.Theming"
                     xmlns:h="clr-namespace:JetPack.Wpf.Helpers">
 
     <!-- ===================== ScrollBar ===================== -->
@@ -28,7 +29,7 @@
     </Style>
 
     <ControlTemplate x:Key="JetPack.Templates.ScrollBar.Thumb.Vertical" TargetType="Thumb">
-        <Border Margin="1" CornerRadius="1,4,2,2" BorderBrush="White" BorderThickness="1,1,0,0" Background="{DynamicResource JetPack.Brushes.ScrollBar.Thumb.Vertical}">
+        <Border Margin="1" CornerRadius="1,4,2,2" BorderBrush="{DynamicResource JetPack.Brushes.ScrollBar.Thumb.Highlight}" BorderThickness="1,1,0,0" Background="{DynamicResource JetPack.Brushes.ScrollBar.Thumb.Vertical}">
             <Border.Effect>
                 <DropShadowEffect ShadowDepth="0" Opacity="0.3" BlurRadius="4" />
             </Border.Effect>
@@ -36,7 +37,7 @@
         </Border>
     </ControlTemplate>
     <ControlTemplate x:Key="JetPack.Templates.ScrollBar.Thumb.Horizontal" TargetType="Thumb">
-        <Border Margin="1" CornerRadius="1,4,2,2" BorderBrush="White" BorderThickness="1,1,0,0" Background="{DynamicResource JetPack.Brushes.ScrollBar.Thumb}">
+        <Border Margin="1" CornerRadius="1,4,2,2" BorderBrush="{DynamicResource JetPack.Brushes.ScrollBar.Thumb.Highlight}" BorderThickness="1,1,0,0" Background="{DynamicResource JetPack.Brushes.ScrollBar.Thumb}">
             <Border.Effect>
                 <DropShadowEffect ShadowDepth="0" Opacity="0.3" BlurRadius="4" />
             </Border.Effect>
@@ -139,7 +140,7 @@
                         <ScrollBar x:Name="PART_HorizontalScrollBar" Grid.Row="1" Cursor="Arrow" Orientation="Horizontal" Maximum="{TemplateBinding ScrollableWidth}" Minimum="0"
                                    ViewportSize="{TemplateBinding ViewportWidth}" Value="{Binding HorizontalOffset, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}"
                                    Visibility="{TemplateBinding ComputedHorizontalScrollBarVisibility}" AutomationProperties.AutomationId="HorizontalScrollBar" />
-                        <Rectangle Grid.Row="1" Grid.Column="1" Fill="{DynamicResource JetPack.Brushes.ScrollBar.Track}" />
+                        <Rectangle Grid.Row="1" Grid.Column="1" Fill="{Binding Background, ElementName=PART_VerticalScrollBar}" />
                     </Grid>
                 </ControlTemplate>
             </Setter.Value>
@@ -429,8 +430,8 @@
                 <ControlTemplate TargetType="ToggleButton">
                     <Grid SnapsToDevicePixels="True" Background="Transparent">
                         <Border x:Name="Normal" Background="{TemplateBinding Background}" CornerRadius="2" Effect="{DynamicResource JetPack.Effects.ControlShadow}" />
-                        <Border x:Name="MouseOver" Background="{DynamicResource JetPack.Brushes.Control.Background.MouseOver}" CornerRadius="2" Opacity="0" />
-                        <Border x:Name="Pressed" Background="{DynamicResource JetPack.Brushes.Control.Background.Pressed}" CornerRadius="2" Opacity="0" />
+                        <Border x:Name="MouseOver" Background="{DynamicResource JetPack.Brushes.ComboBox.Background.MouseOver}" CornerRadius="2" Opacity="0" />
+                        <Border x:Name="Pressed" Background="{DynamicResource JetPack.Brushes.ComboBox.Background.Pressed}" CornerRadius="2" Opacity="0" />
                         <Border x:Name="Highlight" BorderBrush="{DynamicResource JetPack.Brushes.Control.Highlight}" BorderThickness="1,1,0,0" CornerRadius="2" />
                         <Border x:Name="Disabled" Background="{DynamicResource JetPack.Brushes.Disabled}" BorderBrush="{DynamicResource JetPack.Brushes.Disabled.Border}" BorderThickness="0,0,1,1" CornerRadius="2" Visibility="Collapsed" />
                         <Rectangle Width="1" HorizontalAlignment="Right" Margin="0,2,26,2">
@@ -488,15 +489,15 @@
                 <ControlTemplate TargetType="ToggleButton">
                     <Grid Background="Transparent">
                         <Grid Width="20" Margin="2" HorizontalAlignment="Right" SnapsToDevicePixels="True">
-                            <Border x:Name="Normal" Background="{DynamicResource JetPack.Brushes.Control.Background}" CornerRadius="1.5">
+                            <Border x:Name="Normal" Background="{DynamicResource JetPack.Brushes.InlineButton.Background}" CornerRadius="1.5">
                                 <Border.Effect>
                                     <DropShadowEffect BlurRadius="2" ShadowDepth="1" Direction="270" Opacity="0.35" />
                                 </Border.Effect>
                             </Border>
-                            <Border x:Name="MouseOver" Background="{DynamicResource JetPack.Brushes.Control.Background.MouseOver}" CornerRadius="1.5" Opacity="0" />
-                            <Border x:Name="Pressed" Background="{DynamicResource JetPack.Brushes.Control.Background.Pressed}" CornerRadius="1.5" Opacity="0" />
+                            <Border x:Name="MouseOver" Background="{DynamicResource JetPack.Brushes.InlineButton.Background.MouseOver}" CornerRadius="1.5" Opacity="0" />
+                            <Border x:Name="Pressed" Background="{DynamicResource JetPack.Brushes.InlineButton.Background.Pressed}" CornerRadius="1.5" Opacity="0" />
                             <Border BorderBrush="{DynamicResource JetPack.Brushes.Control.Highlight}" BorderThickness="1,1,0,0" CornerRadius="1.5" />
-                            <Path x:Name="Arrow" Width="7" Height="4" Stretch="Fill" Data="{DynamicResource JetPack.Geometry.ArrowDown}" Fill="{DynamicResource JetPack.Brushes.Control.Glyph}" />
+                            <Path x:Name="Arrow" Width="7" Height="4" Stretch="Fill" Data="{DynamicResource JetPack.Geometry.ArrowDown}" Fill="{DynamicResource JetPack.Brushes.InlineButton.Glyph}" />
                         </Grid>
                     </Grid>
                     <ControlTemplate.Triggers>
@@ -538,7 +539,7 @@
         <Setter Property="FontFamily" Value="{DynamicResource JetPack.Fonts.Family}" />
         <Setter Property="FontSize" Value="{DynamicResource JetPack.Font.Size.Control}" />
         <Setter Property="Foreground" Value="{DynamicResource JetPack.Brushes.Control.Foreground}" />
-        <Setter Property="Background" Value="{DynamicResource JetPack.Brushes.Control.Background}" />
+        <Setter Property="Background" Value="{DynamicResource JetPack.Brushes.ComboBox.Background}" />
         <Setter Property="Padding" Value="10,3,32,3" />
         <Setter Property="MinHeight" Value="22" />
         <Setter Property="MaxDropDownHeight" Value="260" />
@@ -894,5 +895,35 @@
     <Style TargetType="GridViewColumnHeader" BasedOn="{StaticResource JetPack.Styles.GridViewColumnHeader}" />
     <Style TargetType="TreeViewItem" BasedOn="{StaticResource JetPack.Styles.TreeViewItem}" />
     <Style TargetType="TreeView" BasedOn="{StaticResource JetPack.Styles.TreeView}" />
+
+    <!-- ===================== The dark version =====================
+         The closed ComboBox becomes the dark field of TextBox.Dark.
+         Each is the normal style with Theming.DarkResources in its resources: the control, what it
+         holds and its drop-downs take the dark colours (ThemeManager.ChangeTheme does it for all). -->
+    <Style x:Key="JetPack.Styles.ListBox.Dark" TargetType="ListBox" BasedOn="{StaticResource JetPack.Styles.ListBox}">
+        <Style.Resources>
+            <t:DarkResources />
+        </Style.Resources>
+    </Style>
+    <Style x:Key="JetPack.Styles.ComboBox.Dark" TargetType="ComboBox" BasedOn="{StaticResource JetPack.Styles.ComboBox}">
+        <Style.Resources>
+            <t:DarkResources />
+        </Style.Resources>
+    </Style>
+    <Style x:Key="JetPack.Styles.ListView.Dark" TargetType="ListView" BasedOn="{StaticResource JetPack.Styles.ListView}">
+        <Style.Resources>
+            <t:DarkResources />
+        </Style.Resources>
+    </Style>
+    <!-- Only the bars turn dark, not the content -->
+    <Style x:Key="JetPack.Styles.ScrollViewer.Dark" TargetType="ScrollViewer" BasedOn="{StaticResource JetPack.Styles.ScrollViewer}">
+        <Style.Resources>
+            <Style TargetType="ScrollBar" BasedOn="{StaticResource JetPack.Styles.ScrollBar}">
+                <Style.Resources>
+                    <t:DarkResources />
+                </Style.Resources>
+            </Style>
+        </Style.Resources>
+    </Style>
 
 </ResourceDictionary>

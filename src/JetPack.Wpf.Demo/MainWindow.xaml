@@ -26,6 +26,7 @@
             <Button Click="OnAccentClick" Tag="Blue" ToolTip="Blue accent">
                 <Border Width="14" Height="12" CornerRadius="1.5" Background="{DynamicResource JetPack.Brushes.Button.Blue.Normal}" />
             </Button>
+            <ToggleButton x:Name="DarkToggle" Content="Dark" ToolTip="The dark version (ThemeManager.ChangeTheme)" Click="OnDarkToggleClick" />
             <Button Content="Settings" Click="OnSettingsClick" />
         </StackPanel>
     </jp:JetPackWindow.RightWindowCommands>
@@ -34,6 +35,11 @@
         <Grid>
             <jp:Flyout x:Name="SettingsFlyout" Header="Settings" Width="300">
                 <StackPanel>
+                    <TextBlock Style="{StaticResource Demo.State}" HorizontalAlignment="Left" Text="Theme" Margin="0,0,0,6" />
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,16">
+                        <RadioButton x:Name="ThemeLight" Content="Light (original)" GroupName="Theme" IsChecked="True" Margin="0,0,14,0" Checked="OnThemeRadio" Tag="Light" />
+                        <RadioButton x:Name="ThemeDark" Content="Dark" GroupName="Theme" Checked="OnThemeRadio" Tag="Dark" />
+                    </StackPanel>
                     <TextBlock Style="{StaticResource Demo.State}" HorizontalAlignment="Left" Text="Accent" Margin="0,0,0,6" />
                     <StackPanel Orientation="Horizontal" Margin="0,0,0,16">
                         <RadioButton x:Name="AccentGreen" Content="Green" GroupName="Accent" IsChecked="True" Margin="0,0,14,0" Checked="OnAccentRadio" Tag="Green" />

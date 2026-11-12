@@ -42,14 +42,6 @@
   --jp-input-inner-shadow-dark: #50505050;
   --jp-input-inner-shadow-light: #20202020;
   --jp-input-selection-foreground: #FFFFFF;
-  --jp-dark-input-background: linear-gradient(#57575F 30%, #505054 100%);
-  --jp-dark-input-border: #505050D0;
-  --jp-dark-input-foreground: #FFFFFF;
-  --jp-dark-input-watermark: #FFFFFF73;
-  --jp-dark-input-inner-shadow-dark: #30303050;
-  --jp-dark-input-inner-shadow-light: #30303020;
-  --jp-dark-input-read-only: #FFFFFF20;
-  --jp-dark-input-disabled: #FFFFFF33;
   --jp-error: #EF0A0A;
   --jp-error-tip: #DC000C;
   --jp-error-header: linear-gradient(#F04A4A 0%, #C41212 100%);
@@ -91,6 +83,26 @@
   --jp-menu-disabled: #9A9A9A;
   --jp-dialog-background: #E0E0E0;
   --jp-dialog-overlay: #0000007F;
+  --jp-dialog-close: #505050;
+  --jp-menu-gesture: #707070;
+  --jp-separator-light: #FFFFFF;
+  --jp-scroll-bar-thumb-highlight: #FFFFFF;
+  --jp-busy-indicator-overlay: #FFFFFF59;
+  --jp-calendar-background: #FFFFFF;
+  --jp-calendar-foreground: #333333;
+  --jp-calendar-day-name: #8A8A8A;
+  --jp-calendar-today: #AAAAAA;
+  --jp-calendar-mouse-over: #00000020;
+  --jp-combo-box-background: linear-gradient(#F7F7F7 16.4%, #C6C6C6 80.2%, #C6C6C6 95.3%);
+  --jp-combo-box-background-mouse-over: linear-gradient(#FFFFFF 21.1%, #DEDEDE 78.4%);
+  --jp-combo-box-background-pressed: linear-gradient(#CECECE 20.4%, #AFAFAF 86.4%);
+  --jp-inline-button-background: linear-gradient(#F7F7F7 16.4%, #C6C6C6 80.2%, #C6C6C6 95.3%);
+  --jp-inline-button-background-mouse-over: linear-gradient(#FFFFFF 21.1%, #DEDEDE 78.4%);
+  --jp-inline-button-background-pressed: linear-gradient(#CECECE 20.4%, #AFAFAF 86.4%);
+  --jp-inline-button-glyph: #606060;
+  --jp-inline-button-glyph-dark: #404040;
+  --jp-navigation-background: linear-gradient(#E2E2E2 0%, #C6C6C6 100%);
+  --jp-navigation-background-mouse-over: linear-gradient(#F8F8F8 0%, #D0D0D0 100%);
   --jp-overlay: linear-gradient(#FFFFFF4C 0%, #0000004C 100%);
   --jp-close-mouse-over: linear-gradient(#E84B4B 0%, #B71C1C 100%);
   --jp-button-green-normal: linear-gradient(#A0BB0E 17.6%, #6D9700 89.4%);
@@ -122,6 +134,45 @@
   --jp-chart-9: radial-gradient(105% 90% at 7.5% 1.5%, #40ABCA 0%, #1E505F 100%);
   --jp-chart-10: radial-gradient(105% 90% at 7.5% 1.5%, #9A5AA6 0%, #482A4E 100%);
   --jp-chart-11: radial-gradient(105% 90% at 7.5% 1.5%, #775931 0%, #210000 100%);
+}
+
+:root {
+  --jp-dark-input-background: linear-gradient(#57575F 30%, #505054 100%);
+  --jp-dark-input-border: #505050D0;
+  --jp-dark-input-foreground: #FFFFFF;
+  --jp-dark-input-watermark: #FFFFFF73;
+  --jp-dark-input-inner-shadow-dark: #30303050;
+  --jp-dark-input-inner-shadow-light: #30303020;
+  --jp-dark-input-read-only: #FFFFFF20;
+  --jp-dark-input-disabled: #FFFFFF33;
+  --jp-dark-control-background: linear-gradient(#6B6C71 16.4%, #4C4D52 80.2%, #48494E 95.3%);
+  --jp-dark-control-background-mouse-over: linear-gradient(#7A7B80 21.1%, #57585D 78.4%);
+  --jp-dark-control-background-pressed: linear-gradient(#3F4044 20.4%, #4A4B50 86.4%);
+  --jp-dark-control-background-checked: linear-gradient(#3C3D41 10%, #48494D 90%);
+  --jp-dark-disabled: linear-gradient(#636468 0%, #5A5B5F 100%);
+  --jp-dark-control-foreground: #FFFFFF;
+  --jp-dark-control-foreground-disabled: #FFFFFF59;
+  --jp-dark-control-glyph: #FFFFFFE6;
+  --jp-dark-panel-background: #4A4B50;
+  --jp-dark-data-grid-background: #3D3E42;
+  --jp-dark-data-grid-alternating-row: #46474B;
+  --jp-dark-data-grid-grid-lines: #FFFFFF12;
+  --jp-dark-data-grid-search-hit: #FFFFFF24;
+  --jp-dark-selection-mouse-over: #FFFFFF14;
+  --jp-dark-scroll-bar-track: #45464A;
+  --jp-dark-scroll-bar-thumb: linear-gradient(#7A7B80 10%, #5C5D62 100%);
+  --jp-dark-scroll-bar-thumb-vertical: linear-gradient(to right, #7A7B80 10%, #5C5D62 100%);
+  --jp-dark-scroll-bar-glyph: #D0D0D0;
+  --jp-dark-input-background-mouse-over: linear-gradient(#616169 30%, #5A5A5E 100%);
+  --jp-dark-input-background-pressed: linear-gradient(#4C4C53 30%, #46464A 100%);
+  --jp-dark-text-dim: #FFFFFF8C;
+  --jp-dark-calendar-today: #FFFFFF40;
+  --jp-dark-calendar-mouse-over: #FFFFFF1A;
+  --jp-dark-separator-light: #FFFFFF1A;
+  --jp-dark-scroll-bar-thumb-highlight: #FFFFFF40;
+  --jp-dark-busy-indicator-overlay: #00000040;
+  --jp-dark-dialog-close: #FFFFFFCC;
+  --jp-effect-dark-text-emboss: 0 -1px 0 rgb(0 0 0 / 0.45);
 }
 
 :root {
@@ -219,4 +270,54 @@
   --jp-effect-accent-text-shadow: 0 -1px 0 rgb(0 83 142 / 0.5);
   --jp-focus: #8DDBFF;
   --jp-focus-border: #148CD1;
+}
+
+/* The dark version: set data-theme="dark" on <html> (or any element); Theming/DarkResources.cs */
+
+[data-theme="dark"] {
+  --jp-control-foreground: var(--jp-dark-control-foreground);
+  --jp-control-foreground-disabled: var(--jp-dark-control-foreground-disabled);
+  --jp-control-background: var(--jp-dark-control-background);
+  --jp-control-background-mouse-over: var(--jp-dark-control-background-mouse-over);
+  --jp-control-background-pressed: var(--jp-dark-control-background-pressed);
+  --jp-control-background-checked: var(--jp-dark-control-background-checked);
+  --jp-control-border: var(--jp-dark-input-border);
+  --jp-control-glyph: var(--jp-dark-control-glyph);
+  --jp-control-glyph-dark: var(--jp-dark-control-glyph);
+  --jp-header-foreground: var(--jp-dark-control-foreground);
+  --jp-static-background: var(--jp-dark-control-background);
+  --jp-static-background-mouse-over: var(--jp-dark-control-background-mouse-over);
+  --jp-disabled: var(--jp-dark-disabled);
+  --jp-effect-text-emboss: var(--jp-effect-dark-text-emboss);
+  --jp-input-background: var(--jp-dark-input-background);
+  --jp-input-foreground: var(--jp-dark-input-foreground);
+  --jp-input-watermark: var(--jp-dark-input-watermark);
+  --jp-input-read-only: var(--jp-dark-input-read-only);
+  --jp-input-disabled: var(--jp-dark-input-disabled);
+  --jp-input-inner-shadow-dark: var(--jp-dark-input-inner-shadow-dark);
+  --jp-input-inner-shadow-light: var(--jp-dark-input-inner-shadow-light);
+  --jp-combo-box-background: var(--jp-dark-input-background);
+  --jp-combo-box-background-mouse-over: var(--jp-dark-input-background-mouse-over);
+  --jp-combo-box-background-pressed: var(--jp-dark-input-background-pressed);
+  --jp-selection-mouse-over: var(--jp-dark-selection-mouse-over);
+  --jp-data-grid-background: var(--jp-dark-data-grid-background);
+  --jp-data-grid-alternating-row: var(--jp-dark-data-grid-alternating-row);
+  --jp-data-grid-grid-lines: var(--jp-dark-data-grid-grid-lines);
+  --jp-data-grid-search-hit: var(--jp-dark-data-grid-search-hit);
+  --jp-scroll-bar-track: var(--jp-dark-scroll-bar-track);
+  --jp-scroll-bar-thumb: var(--jp-dark-scroll-bar-thumb);
+  --jp-scroll-bar-thumb-vertical: var(--jp-dark-scroll-bar-thumb-vertical);
+  --jp-scroll-bar-thumb-highlight: var(--jp-dark-scroll-bar-thumb-highlight);
+  --jp-calendar-background: var(--jp-dark-input-background);
+  --jp-calendar-foreground: var(--jp-dark-control-foreground);
+  --jp-calendar-day-name: var(--jp-dark-text-dim);
+  --jp-calendar-today: var(--jp-dark-calendar-today);
+  --jp-calendar-mouse-over: var(--jp-dark-calendar-mouse-over);
+  --jp-menu-background: var(--jp-dark-panel-background);
+  --jp-menu-disabled: var(--jp-dark-control-foreground-disabled);
+  --jp-menu-gesture: var(--jp-dark-text-dim);
+  --jp-separator-light: var(--jp-dark-separator-light);
+  --jp-dialog-background: var(--jp-dark-panel-background);
+  --jp-dialog-close: var(--jp-dark-dialog-close);
+  --jp-busy-indicator-overlay: var(--jp-dark-busy-indicator-overlay);
 }

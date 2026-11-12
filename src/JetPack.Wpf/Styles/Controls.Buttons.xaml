@@ -1,5 +1,6 @@
 <ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:t="clr-namespace:JetPack.Wpf.Theming"
                     xmlns:h="clr-namespace:JetPack.Wpf.Helpers">
 
     <!--
@@ -237,5 +238,30 @@
     <Style TargetType="RepeatButton" BasedOn="{StaticResource JetPack.Styles.RepeatButton}" />
     <Style TargetType="ToggleButton" BasedOn="{StaticResource JetPack.Styles.ToggleButton}" />
     <Style TargetType="Hyperlink" BasedOn="{StaticResource JetPack.Styles.Hyperlink}" />
+
+    <!-- ===================== The dark version =====================
+         Dark grey buttons with the shadow and highlight of the light ones, light text and glyphs.
+         Each is the normal style with Theming.DarkResources in its resources: the control, what it
+         holds and its drop-downs take the dark colours (ThemeManager.ChangeTheme does it for all). -->
+    <Style x:Key="JetPack.Styles.Button.Dark" TargetType="Button" BasedOn="{StaticResource JetPack.Styles.Button}">
+        <Style.Resources>
+            <t:DarkResources />
+        </Style.Resources>
+    </Style>
+    <Style x:Key="JetPack.Styles.Button.Square.Dark" TargetType="Button" BasedOn="{StaticResource JetPack.Styles.Button.Square}">
+        <Style.Resources>
+            <t:DarkResources />
+        </Style.Resources>
+    </Style>
+    <Style x:Key="JetPack.Styles.RepeatButton.Dark" TargetType="RepeatButton" BasedOn="{StaticResource JetPack.Styles.RepeatButton}">
+        <Style.Resources>
+            <t:DarkResources />
+        </Style.Resources>
+    </Style>
+    <Style x:Key="JetPack.Styles.ToggleButton.Dark" TargetType="ToggleButton" BasedOn="{StaticResource JetPack.Styles.ToggleButton}">
+        <Style.Resources>
+            <t:DarkResources />
+        </Style.Resources>
+    </Style>
 
 </ResourceDictionary>

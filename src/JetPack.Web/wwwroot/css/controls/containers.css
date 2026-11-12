@@ -51,14 +51,14 @@
   }
   .jp-expander[open] > summary::before { transform: rotate(90deg); }
   /* Expander.Dark (and every Expander of Accordion.Dark): the header in the dark grey of Button.Dark */
-  :is(.jp-expander--dark, .jp-accordion--dark > .jp-expander) > summary {
+  :is(.jp-expander--dark, .jp-accordion--dark > .jp-expander) > summary, :where([data-theme="dark"]) :is(.jp-expander, .jp-accordion > .jp-expander) > summary {
     background: var(--jp-dark-control-background);
     color: #fff;
-    text-shadow: var(--jp-dark-emboss);
+    text-shadow: var(--jp-effect-dark-text-emboss);
   }
-  :is(.jp-expander--dark, .jp-accordion--dark > .jp-expander) > summary:hover { background: var(--jp-dark-control-background-mouse-over); }
-  :is(.jp-expander--dark, .jp-accordion--dark > .jp-expander) > summary:active { background: var(--jp-dark-control-background-pressed); }
-  :is(.jp-expander--dark, .jp-accordion--dark > .jp-expander) > summary::before { border-left-color: var(--jp-dark-control-glyph); }
+  :is(.jp-expander--dark, .jp-accordion--dark > .jp-expander) > summary:hover, :where([data-theme="dark"]) :is(.jp-expander, .jp-accordion > .jp-expander) > summary:hover { background: var(--jp-dark-control-background-mouse-over); }
+  :is(.jp-expander--dark, .jp-accordion--dark > .jp-expander) > summary:active, :where([data-theme="dark"]) :is(.jp-expander, .jp-accordion > .jp-expander) > summary:active { background: var(--jp-dark-control-background-pressed); }
+  :is(.jp-expander--dark, .jp-accordion--dark > .jp-expander) > summary::before, :where([data-theme="dark"]) :is(.jp-expander, .jp-accordion > .jp-expander) > summary::before { border-left-color: var(--jp-dark-control-glyph); }
   .jp-expander__content {
     margin-top: 2px;
     padding: 8px 10px;
@@ -207,7 +207,7 @@
     position: absolute;
     inset: 0 0 auto;
     height: 38px;
-    background: var(--jp-static-background);
+    background: var(--jp-navigation-background);
     box-shadow: var(--jp-effect-control-shadow);
   }
   .jp-tab-control--navigation > .jp-tab-control__header > .jp-tab-control__strip > .jp-tab-item {
@@ -215,7 +215,7 @@
     color: var(--jp-navigation-inactive);
     text-shadow: var(--jp-effect-text-emboss);
   }
-  .jp-tab-control--navigation > .jp-tab-control__header > .jp-tab-control__strip > .jp-tab-item:hover:not(:disabled, [aria-selected="true"]) { background: var(--jp-static-background-mouse-over); }
+  .jp-tab-control--navigation > .jp-tab-control__header > .jp-tab-control__strip > .jp-tab-item:hover:not(:disabled, [aria-selected="true"]) { background: var(--jp-navigation-background-mouse-over); }
   .jp-tab-control--navigation > .jp-tab-control__header > .jp-tab-control__tag {
     position: relative;
     display: flex;
@@ -262,7 +262,7 @@
   .jp-busy-indicator[data-busy="true"]::after {
     content: "";
     grid-area: 1 / 1;
-    background: rgb(255 255 255 / 0.35);
+    background: var(--jp-busy-indicator-overlay);
   }
   .jp-busy-indicator[data-busy="true"] > .jp-busy-indicator__card {
     position: relative;
@@ -283,12 +283,12 @@
   }
   .jp-busy-indicator__card > .jp-progress-bar { width: 120px; }
   /* BusyIndicator.Dark: the card in the dark grey of Button.Dark, and a dark veil instead of the light one */
-  .jp-busy-indicator--dark[data-busy="true"]::after { background: rgb(0 0 0 / 0.25); }
-  .jp-busy-indicator--dark[data-busy="true"] > .jp-busy-indicator__card {
+  .jp-busy-indicator--dark[data-busy="true"]::after, :where([data-theme="dark"]) .jp-busy-indicator[data-busy="true"]::after { background: rgb(0 0 0 / 0.25); }
+  .jp-busy-indicator--dark[data-busy="true"] > .jp-busy-indicator__card, :where([data-theme="dark"]) .jp-busy-indicator[data-busy="true"] > .jp-busy-indicator__card {
     background: var(--jp-dark-control-background);
     box-shadow: var(--jp-shadow), var(--jp-highlight);
     color: #fff;
-    text-shadow: var(--jp-dark-emboss);
+    text-shadow: var(--jp-effect-dark-text-emboss);
   }
 
   /* ----------------------------------------------------------- grid splitter */

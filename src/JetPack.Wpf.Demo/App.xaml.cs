@@ -83,6 +83,16 @@ public partial class App : Application
             window.UseNavigationBar(true);
             await SaveAsync(window, Path.Combine(folder, "23-navigation-bar.png"));
             window.UseNavigationBar(false);
+
+            // The dark version of every page
+            window.ApplyTheme(JetPackTheme.Dark);
+            for (var i = 0; i < pages.Items.Count; i++)
+            {
+                pages.SelectedIndex = i;
+                var name = ((TabItem)pages.Items[i]).Header?.ToString()?.ToLowerInvariant() ?? i.ToString();
+                await SaveAsync(window, Path.Combine(folder, $"dark-{i + 1:00}-{name}.png"));
+            }
+            window.ApplyTheme(JetPackTheme.Light);
             pages.SelectedIndex = windowPage;
 
             var dialog = window.ShowMessageAsync("Delete company?",

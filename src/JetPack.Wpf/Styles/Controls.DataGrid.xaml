@@ -1,5 +1,6 @@
 <ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:t="clr-namespace:JetPack.Wpf.Theming"
                     xmlns:c="clr-namespace:JetPack.Wpf.Controls"
                     xmlns:h="clr-namespace:JetPack.Wpf.Helpers"
                     xmlns:jp="urn:jetpack-wpf">
@@ -620,5 +621,20 @@
     <Style TargetType="DataGridRow" BasedOn="{StaticResource JetPack.Styles.DataGridRow}" />
     <Style TargetType="DataGrid" BasedOn="{StaticResource JetPack.Styles.DataGrid}" />
     <Style TargetType="c:JetPackGrid" BasedOn="{StaticResource JetPack.Styles.JetPackGrid}" />
+
+    <!-- ===================== The dark version =====================
+         White text on dark grey rows below the usual header.
+         Each is the normal style with Theming.DarkResources in its resources: the control, what it
+         holds and its drop-downs take the dark colours (ThemeManager.ChangeTheme does it for all). -->
+    <Style x:Key="JetPack.Styles.DataGrid.Dark" TargetType="DataGrid" BasedOn="{StaticResource JetPack.Styles.DataGrid}">
+        <Style.Resources>
+            <t:DarkResources />
+        </Style.Resources>
+    </Style>
+    <Style x:Key="JetPack.Styles.JetPackGrid.Dark" TargetType="c:JetPackGrid" BasedOn="{StaticResource JetPack.Styles.JetPackGrid}">
+        <Style.Resources>
+            <t:DarkResources />
+        </Style.Resources>
+    </Style>
 
 </ResourceDictionary>

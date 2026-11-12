@@ -95,6 +95,30 @@ public partial class MainWindow : JetPackWindow
 
     private static void ApplyAccent(string name) => ThemeManager.ChangeAccent(Enum.Parse<JetPackAccent>(name));
 
+    /// <summary>Switches the whole demo between the light version and the dark one.</summary>
+    public void ApplyTheme(JetPackTheme theme)
+    {
+        ThemeManager.ChangeTheme(theme);
+        DarkToggle.IsChecked = theme == JetPackTheme.Dark;
+        (theme == JetPackTheme.Dark ? ThemeDark : ThemeLight).IsChecked = true;
+    }
+
+    private void OnDarkToggleClick(object sender, RoutedEventArgs e) =>
+        ApplyTheme(DarkToggle.IsChecked == true ? JetPackTheme.Dark : JetPackTheme.Light);
+
+    private void OnThemeRadio(object sender, RoutedEventArgs e)
+    {
+        if (!IsLoaded)
+        {
+            return;
+        }
+        var theme = Enum.Parse<JetPackTheme>((string)((FrameworkElement)sender).Tag);
+        if (theme != ThemeManager.CurrentTheme)
+        {
+            ApplyTheme(theme);
+        }
+    }
+
     private void OnNavigationRadio(object sender, RoutedEventArgs e)
     {
         if (IsLoaded)

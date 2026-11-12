@@ -48,7 +48,7 @@
   }
   .jp-menu-item > .jp-icon { grid-column: 1; justify-self: center; }
   .jp-menu-item__header { grid-column: 2; margin: 0 12px 0 4px; }
-  .jp-menu-item__gesture { grid-column: 3; margin-left: 12px; color: #707070; }
+  .jp-menu-item__gesture { grid-column: 3; margin-left: 12px; color: var(--jp-menu-gesture); }
   /* a plain label without the header span */
   .jp-menu-item:not(:has(.jp-menu-item__header)) { padding-left: 30px; display: flex; }
   .jp-menu-item:is(:hover, :focus-visible, .is-highlighted):not(:disabled) {
@@ -85,7 +85,7 @@
     margin: 4px 6px 4px 30px;
     border: 0;
     border-top: 1px solid rgb(0 0 0 / 0.16);
-    border-bottom: 1px solid #fff;
+    border-bottom: 1px solid var(--jp-separator-light);
   }
 
   /* Menu: the light bar with the top-level headers; the open one gets the accent */
@@ -113,20 +113,20 @@
   context menu and their submenus on a dark grey panel with white text. The menus of SplitButton and
   DropDownButton stay light grey.
   */
-  .jp-menu--dark {
+  .jp-menu--dark, :where([data-theme="dark"]) .jp-menu {
     background: var(--jp-dark-control-background);
     box-shadow: var(--jp-shadow), var(--jp-highlight);
     color: #fff;
   }
-  .jp-menu--dark > .jp-menu-item { text-shadow: var(--jp-dark-emboss); }
-  :is(.jp-context-menu--dark, .jp-menu--dark .jp-context-menu, .jp-context-menu--dark .jp-context-menu) {
+  .jp-menu--dark > .jp-menu-item, :where([data-theme="dark"]) .jp-menu > .jp-menu-item { text-shadow: var(--jp-effect-dark-text-emboss); }
+  :is(.jp-context-menu--dark, .jp-menu--dark .jp-context-menu, .jp-context-menu--dark .jp-context-menu), :where([data-theme="dark"]) :is(.jp-context-menu, .jp-menu .jp-context-menu, .jp-context-menu .jp-context-menu) {
     border-color: var(--jp-control-dark-edge);
-    background: #4A4B50;
+    background: var(--jp-dark-panel-background);
     color: #fff;
   }
-  :is(.jp-context-menu--dark, .jp-menu--dark .jp-context-menu, .jp-context-menu--dark .jp-context-menu) .jp-menu-item__gesture { color: rgb(255 255 255 / 0.55); }
-  :is(.jp-context-menu--dark, .jp-menu--dark .jp-context-menu, .jp-context-menu--dark .jp-context-menu) .jp-menu-item:disabled { color: rgb(255 255 255 / 0.35); }
-  :is(.jp-context-menu--dark, .jp-menu--dark .jp-context-menu, .jp-context-menu--dark .jp-context-menu) .jp-menu-separator {
+  :is(.jp-context-menu--dark, .jp-menu--dark .jp-context-menu, .jp-context-menu--dark .jp-context-menu) .jp-menu-item__gesture, :where([data-theme="dark"]) :is(.jp-context-menu, .jp-menu .jp-context-menu, .jp-context-menu .jp-context-menu) .jp-menu-item__gesture { color: rgb(255 255 255 / 0.55); }
+  :is(.jp-context-menu--dark, .jp-menu--dark .jp-context-menu, .jp-context-menu--dark .jp-context-menu) .jp-menu-item:disabled, :where([data-theme="dark"]) :is(.jp-context-menu, .jp-menu .jp-context-menu, .jp-context-menu .jp-context-menu) .jp-menu-item:disabled { color: rgb(255 255 255 / 0.35); }
+  :is(.jp-context-menu--dark, .jp-menu--dark .jp-context-menu, .jp-context-menu--dark .jp-context-menu) .jp-menu-separator, :where([data-theme="dark"]) :is(.jp-context-menu, .jp-menu .jp-context-menu, .jp-context-menu .jp-context-menu) .jp-menu-separator {
     border-top-color: rgb(0 0 0 / 0.4);
     border-bottom-color: rgb(255 255 255 / 0.1);
   }
@@ -165,7 +165,7 @@
     width: 1px;
     margin: 2px 4px;
     background: rgb(0 0 0 / 0.2);
-    box-shadow: 1px 0 0 #fff;
+    box-shadow: 1px 0 0 var(--jp-separator-light);
   }
   /* Buttons in a ToolBar (ToolBar.ButtonStyleKey): flat until the mouse is over them */
   .jp-tool-bar > :is(.jp-button, button:not([class])) {
@@ -189,23 +189,23 @@
   .jp-tool-bar > .jp-check-box { margin: 0 4px; color: var(--jp-control-foreground); }
 
   /* ToolBar.Dark: the dark grey of Button.Dark; glyphs and labels turn light, the buttons stay flat */
-  .jp-tool-bar--dark {
+  .jp-tool-bar--dark, :where([data-theme="dark"]) .jp-tool-bar {
     --jp-control-glyph-dark: var(--jp-dark-control-glyph);
     background: var(--jp-dark-control-background);
     box-shadow: var(--jp-shadow), var(--jp-highlight);
     color: #fff;
   }
-  .jp-tool-bar--dark > .jp-tool-bar__thumb {
+  .jp-tool-bar--dark > .jp-tool-bar__thumb, :where([data-theme="dark"]) .jp-tool-bar > .jp-tool-bar__thumb {
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4'%3E%3Crect x='1' y='1' width='2' height='2' fill='%23888'/%3E%3Crect width='2' height='2' fill='%23222'/%3E%3C/svg%3E");
   }
-  .jp-tool-bar--dark > .jp-tool-bar__separator { background: rgb(0 0 0 / 0.45); box-shadow: 1px 0 0 rgb(255 255 255 / 0.12); }
-  .jp-tool-bar--dark > :is(.jp-button, button:not([class])):hover { background: var(--jp-dark-control-background-mouse-over); border-color: rgb(0 0 0 / 0.4); }
-  .jp-tool-bar--dark > .jp-button[aria-pressed="true"], .jp-tool-bar--dark > .jp-button:active {
+  .jp-tool-bar--dark > .jp-tool-bar__separator, :where([data-theme="dark"]) .jp-tool-bar > .jp-tool-bar__separator { background: rgb(0 0 0 / 0.45); box-shadow: 1px 0 0 rgb(255 255 255 / 0.12); }
+  .jp-tool-bar--dark > :is(.jp-button, button:not([class])):hover, :where([data-theme="dark"]) .jp-tool-bar > :is(.jp-button, button:not([class])):hover { background: var(--jp-dark-control-background-mouse-over); border-color: rgb(0 0 0 / 0.4); }
+  .jp-tool-bar--dark > .jp-button[aria-pressed="true"], .jp-tool-bar--dark > .jp-button:active, :where([data-theme="dark"]) .jp-tool-bar > .jp-button[aria-pressed="true"], :where([data-theme="dark"]) .jp-tool-bar > .jp-button:active {
     background: var(--jp-dark-control-background-pressed);
     border-color: rgb(0 0 0 / 0.5);
     box-shadow: inset 1px 1px 0 rgb(0 0 0 / 0.3);
   }
-  .jp-tool-bar--dark > .jp-check-box { color: #fff; }
+  .jp-tool-bar--dark > .jp-check-box, :where([data-theme="dark"]) .jp-tool-bar > .jp-check-box { color: #fff; }
 
   /* ---------------------------------------------------------------- tooltip */
   /*

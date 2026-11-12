@@ -80,15 +80,15 @@
     border-color: var(--jp-control-border);
     box-shadow: var(--jp-inner-shadow), var(--jp-outer-highlight);
   }
-  .jp-text-box--dark {
+  .jp-text-box--dark, :where([data-theme="dark"]) .jp-text-box {
     --jp-tb-surface: var(--jp-dark-input-background);
     border-color: var(--jp-dark-input-border);
     color: var(--jp-dark-input-foreground);
     box-shadow: inset 1px 1px 0 var(--jp-control-dark-edge), inset 2px 2px 0 rgb(48 48 48 / 0.31), var(--jp-outer-highlight);
   }
-  .jp-text-box--dark::placeholder { color: var(--jp-dark-input-watermark); }
-  .jp-text-box--dark:read-only:not(select) { --jp-tb-surface: linear-gradient(var(--jp-dark-input-read-only), var(--jp-dark-input-read-only)), var(--jp-dark-input-background); }
-  .jp-text-box--dark:disabled {
+  .jp-text-box--dark::placeholder, :where([data-theme="dark"]) .jp-text-box::placeholder { color: var(--jp-dark-input-watermark); }
+  .jp-text-box--dark:read-only:not(select), :where([data-theme="dark"]) .jp-text-box:read-only:not(select) { --jp-tb-surface: linear-gradient(var(--jp-dark-input-read-only), var(--jp-dark-input-read-only)), var(--jp-dark-input-background); }
+  .jp-text-box--dark:disabled, :where([data-theme="dark"]) .jp-text-box:disabled {
     --jp-tb-surface: linear-gradient(var(--jp-dark-input-disabled), var(--jp-dark-input-disabled)), var(--jp-dark-input-background);
     color: rgb(255 255 255 / 0.4);
     border-color: var(--jp-dark-input-border);
@@ -195,19 +195,19 @@
     padding: 0;
     border: 0;
     border-radius: 1.5px;
-    background: var(--jp-control-background);
+    background: var(--jp-inline-button-background);
     box-shadow: 0 1px 1px rgb(0 0 0 / 0.35), var(--jp-highlight);
     cursor: pointer;
   }
-  .jp-numeric-up-down__spin > button:hover { background: var(--jp-control-background-mouse-over); }
-  .jp-numeric-up-down__spin > button:active { background: var(--jp-control-background-pressed); }
+  .jp-numeric-up-down__spin > button:hover { background: var(--jp-inline-button-background-mouse-over); }
+  .jp-numeric-up-down__spin > button:active { background: var(--jp-inline-button-background-pressed); }
   .jp-numeric-up-down__spin > button::after {
     content: "";
     border-left: 3.5px solid transparent;
     border-right: 3.5px solid transparent;
   }
-  .jp-numeric-up-down__spin > button:first-child::after { border-bottom: 4px solid var(--jp-control-glyph); }
-  .jp-numeric-up-down__spin > button:last-child::after { border-top: 4px solid var(--jp-control-glyph); }
+  .jp-numeric-up-down__spin > button:first-child::after { border-bottom: 4px solid var(--jp-inline-button-glyph); }
+  .jp-numeric-up-down__spin > button:last-child::after { border-top: 4px solid var(--jp-inline-button-glyph); }
 
   /* ------------------------------------------------------------ combo box */
   /*
@@ -258,7 +258,7 @@
     text-shadow: none;
   }
   /* ComboBox.Dark: the field of TextBox.Dark with the caret and divider; its list is dark too */
-  select.jp-combo-box--dark {
+  select.jp-combo-box--dark, :where([data-theme="dark"]) select.jp-combo-box {
     --jp-combo-surface: var(--jp-dark-input-background);
     --jp-combo-glyph: rgb(255 255 255 / 0.85);
     padding: 2px 31px 2px 9px;
@@ -273,16 +273,16 @@
     box-shadow: inset 1px 1px 0 var(--jp-control-dark-edge), inset 2px 2px 0 rgb(48 48 48 / 0.31), var(--jp-outer-highlight);
     text-shadow: none;
   }
-  select.jp-combo-box--dark:hover { --jp-combo-surface: linear-gradient(rgb(255 255 255 / 0.07), rgb(255 255 255 / 0.07)), var(--jp-dark-input-background); }
-  select.jp-combo-box--dark[aria-expanded="true"] { --jp-combo-surface: linear-gradient(rgb(0 0 0 / 0.1), rgb(0 0 0 / 0.1)), var(--jp-dark-input-background); }
-  select.jp-combo-box--dark:disabled {
+  select.jp-combo-box--dark:hover, :where([data-theme="dark"]) select.jp-combo-box:hover { --jp-combo-surface: linear-gradient(rgb(255 255 255 / 0.07), rgb(255 255 255 / 0.07)), var(--jp-dark-input-background); }
+  select.jp-combo-box--dark[aria-expanded="true"], :where([data-theme="dark"]) select.jp-combo-box[aria-expanded="true"] { --jp-combo-surface: linear-gradient(rgb(0 0 0 / 0.1), rgb(0 0 0 / 0.1)), var(--jp-dark-input-background); }
+  select.jp-combo-box--dark:disabled, :where([data-theme="dark"]) select.jp-combo-box:disabled {
     --jp-combo-surface: linear-gradient(var(--jp-dark-input-disabled), var(--jp-dark-input-disabled)), var(--jp-dark-input-background);
     --jp-combo-glyph: rgb(255 255 255 / 0.4);
     box-shadow: var(--jp-outer-highlight);
     color: rgb(255 255 255 / 0.4);
   }
-  select.jp-combo-box--dark.is-watermark { color: var(--jp-dark-input-watermark); }
-  select.jp-combo-box--dark option { background: #505054; color: #fff; }
+  select.jp-combo-box--dark.is-watermark, :where([data-theme="dark"]) select.jp-combo-box.is-watermark { color: var(--jp-dark-input-watermark); }
+  select.jp-combo-box--dark option, :where([data-theme="dark"]) select.jp-combo-box option { background: #505054; color: #fff; }
 
   .jp-combo-box--editable,
   .jp-date-picker,
@@ -304,24 +304,24 @@
     padding: 0;
     border: 0;
     border-radius: 1.5px;
-    background: var(--jp-control-background);
+    background: var(--jp-inline-button-background);
     box-shadow: 0 1px 1px rgb(0 0 0 / 0.35), var(--jp-highlight);
     cursor: pointer;
   }
-  .jp-text-box-button:hover { background: var(--jp-control-background-mouse-over); }
-  .jp-text-box-button:active, .jp-text-box-button[aria-expanded="true"] { background: var(--jp-control-background-pressed); }
+  .jp-text-box-button:hover { background: var(--jp-inline-button-background-mouse-over); }
+  .jp-text-box-button:active, .jp-text-box-button[aria-expanded="true"] { background: var(--jp-inline-button-background-pressed); }
   .jp-text-box-button::after {
     content: "";
     position: absolute;
     inset: 0;
     margin: auto;
-    background: var(--jp-control-glyph-dark);
+    background: var(--jp-inline-button-glyph-dark);
   }
   .jp-text-box-button--drop-down::after {
     width: 8px;
     height: 4px;
     clip-path: polygon(0 0, 100% 0, 50% 100%);
-    background: var(--jp-control-glyph);
+    background: var(--jp-inline-button-glyph);
   }
   .jp-text-box-button--calendar::after {
     width: 11px;
@@ -355,14 +355,14 @@
   }
   .jp-popup.jp-popup--calendar, .jp-popup.jp-popup--palette { padding: 0; background: transparent; box-shadow: none; overflow: visible; }
   /* The list of a dark field (jetpack.js adds jp-popup--dark): ListBox.Dark */
-  .jp-popup.jp-popup--dark.jp-popup--list {
+  .jp-popup.jp-popup--dark.jp-popup--list, :where([data-theme="dark"]) .jp-popup.jp-popup--list {
     background: var(--jp-dark-input-background);
     box-shadow: var(--jp-effect-popup-shadow), 0 0 0 1px var(--jp-dark-input-border);
     color: #fff;
   }
-  .jp-popup--dark .jp-list-box-item:hover { background: rgb(255 255 255 / 0.08); }
-  .jp-popup--dark .jp-list-box-item[aria-selected="true"] { background: var(--jp-accent-selection); }
-  .jp-popup--dark .jp-list-box-item[aria-disabled="true"] { color: rgb(255 255 255 / 0.4); background: transparent; }
+  .jp-popup--dark .jp-list-box-item:hover, :where([data-theme="dark"]) .jp-popup .jp-list-box-item:hover { background: rgb(255 255 255 / 0.08); }
+  .jp-popup--dark .jp-list-box-item[aria-selected="true"], :where([data-theme="dark"]) .jp-popup .jp-list-box-item[aria-selected="true"] { background: var(--jp-accent-selection); }
+  .jp-popup--dark .jp-list-box-item[aria-disabled="true"], :where([data-theme="dark"]) .jp-popup .jp-list-box-item[aria-disabled="true"] { color: rgb(255 255 255 / 0.4); background: transparent; }
 
   /* --------------------------------------------------------- validation tip */
   /* The red call-out jetpack.js shows beside an invalid control (Validation.ErrorTemplate) */

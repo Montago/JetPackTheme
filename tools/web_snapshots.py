@@ -34,7 +34,8 @@ EDGE = [r'C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe', r'C:\Pr
 
 SITES = [
     ('src/JetPack.Web.Demo', 'JetPack.Web.Demo', 5291,
-     [(f'?snapshot#{tab}', os.path.join('web', tab + '.png')) for tab in ('core', 'sdk', 'toolkit', 'extras', 'jetpackgrid', 'window', 'palette', 'icons')]),
+     [(f'?snapshot#{tab}', os.path.join('web', tab + '.png')) for tab in ('core', 'sdk', 'toolkit', 'extras', 'jetpackgrid', 'window', 'palette', 'icons')]
+     + [(f'?snapshot&theme=dark#{tab}', os.path.join('web', 'dark-' + tab + '.png')) for tab in ('core', 'sdk', 'toolkit', 'extras', 'jetpackgrid', 'window', 'palette', 'icons')]),
     ('samples/JetPack.Web.Samples.Mvc', 'JetPack.Web.Samples.Mvc', 5292,
      [(path, os.path.join('samples', 'web-' + name + '.png')) for name, path in
       (('dashboard', ''), ('employees', 'Employees'), ('timesheets', 'Timesheets'), ('projects', 'Projects'))]),

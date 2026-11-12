@@ -343,7 +343,7 @@
     border: 0;
     border-radius: var(--jp-radius);
     background: transparent;
-    color: #505050;
+    color: var(--jp-dialog-close);
     font-size: 14px;
     cursor: pointer;
   }
@@ -352,14 +352,14 @@
   .jp-dialog__buttons { display: flex; justify-content: flex-end; gap: 8px; margin-top: 14px; }
   /* Dialog.Dark (JetPack.showDialog({ dark: true, … })): the header in the dark grey of Button.Dark
      over a dark grey body with white text; its plain buttons are Button.Dark */
-  .jp-dialog--dark {
-    background: #4A4B50;
+  .jp-dialog--dark, :where([data-theme="dark"]) .jp-dialog {
+    background: var(--jp-dark-panel-background);
     color: #fff;
   }
-  .jp-dialog--dark .jp-dialog__header {
+  .jp-dialog--dark .jp-dialog__header, :where([data-theme="dark"]) .jp-dialog .jp-dialog__header {
     background: var(--jp-dark-control-background);
     box-shadow: inset 0 -1px 0 rgb(0 0 0 / 0.4), var(--jp-highlight);
-    text-shadow: var(--jp-dark-emboss);
+    text-shadow: var(--jp-effect-dark-text-emboss);
   }
-  .jp-dialog--dark .jp-dialog__header > button { color: rgb(255 255 255 / 0.8); }
+  .jp-dialog--dark .jp-dialog__header > button, :where([data-theme="dark"]) .jp-dialog .jp-dialog__header > button { color: rgb(255 255 255 / 0.8); }
 }

@@ -1,8 +1,9 @@
 @* MainWindow.xaml: the JetPackWindow with the accent buttons, the flyouts and the status bar *@
 <!DOCTYPE html>
 @* ?snapshot (tools/web_snapshots.py): endless animations stand still, so pictures only change with the look.
+   ?theme=dark starts in the dark version (a choice made with the Dark button is remembered and wins).
    Razor writes a data-* attribute even when its value is null, so the whole attribute is the expression. *@
-<html lang="en" @(Context.Request.Query.ContainsKey("snapshot") ? "data-snapshot" : null)>
+<html lang="en" @(Context.Request.Query.ContainsKey("snapshot") ? "data-snapshot" : null) @(Context.Request.Query["theme"] == "dark" ? Html.Raw("data-theme=\"dark\"") : null)>
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -22,6 +23,7 @@
             <button type="button" data-jp-accent-button="green" jp-tool-tip="Green accent"><span class="jp-window-commands__swatch" style="background: var(--jp-button-green-normal)"></span></button>
             <button type="button" data-jp-accent-button="orange" jp-tool-tip="Orange accent"><span class="jp-window-commands__swatch" style="background: var(--jp-button-orange-normal)"></span></button>
             <button type="button" data-jp-accent-button="blue" jp-tool-tip="Blue accent"><span class="jp-window-commands__swatch" style="background: var(--jp-button-blue-normal)"></span></button>
+            <button type="button" data-jp-theme-toggle aria-pressed="false" jp-tool-tip="The dark version (ThemeManager.changeTheme)">Dark</button>
             <button type="button" data-jp-open="SettingsFlyout">Settings</button>
         </div>
     </header>
@@ -40,6 +42,11 @@
 
     <jp-flyout id="SettingsFlyout" header="Settings" width="300">
         <div class="flex flex-col">
+            <span class="demo-state demo-state--left mb-1.5">Theme</span>
+            <div class="flex gap-3.5 mb-4">
+                <label class="jp-radio-button"><input type="radio" name="Theme" value="light" data-jp-theme checked> Light (original)</label>
+                <label class="jp-radio-button"><input type="radio" name="Theme" value="dark" data-jp-theme> Dark</label>
+            </div>
             <span class="demo-state demo-state--left mb-1.5">Accent</span>
             <div class="flex gap-3.5 mb-4">
                 <label class="jp-radio-button"><input type="radio" name="Accent" value="green" data-jp-accent checked> Green</label>
