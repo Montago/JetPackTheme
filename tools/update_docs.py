@@ -57,6 +57,15 @@ DEMO_PAGES = {
     '23-navigation-bar.png': 'navigation-bar.png',
     '24-dialog.png': 'dialog.png',
     '25-flyout.png': 'flyout.png',
+    # The dark version of every page (ThemeManager.ChangeTheme(JetPackTheme.Dark))
+    'dark-01-core.png': 'dark-core.png',
+    'dark-02-sdk.png': 'dark-sdk.png',
+    'dark-03-toolkit.png': 'dark-toolkit.png',
+    'dark-04-extras.png': 'dark-extras.png',
+    'dark-05-jetpackgrid.png': 'dark-jetpackgrid.png',
+    'dark-06-window.png': 'dark-window.png',
+    'dark-07-palette.png': 'dark-palette.png',
+    'dark-08-icons.png': 'dark-icons.png',
 }
 
 

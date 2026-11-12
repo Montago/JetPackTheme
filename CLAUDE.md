@@ -118,8 +118,9 @@ src/JetPack.Wpf.Demo/bin/Debug/net8.0-windows/JetPack.Wpf.Demo.exe --snapshot <f
   not when `--check` warns about a control no page mentions yet). It renders the demo pages, the gallery and the
   sample apps with endless animations frozen, so pictures only change when the look does.
   Exceptions: the calendars mark today, so `calendar`, `datepicker`, `sdk`, `window`, `window-light`,
-  `dialog` and `flyout` change every day, and on the web `web/sdk`, `web/controls/calendar` and
-  `web/controls/datepicker`; revert them when only the date moved. PNGs are also
+  `dialog` and `flyout` change every day (and their `-dark` / `dark-` twins), and on the web
+  `web/sdk`, `web/dark-sdk`, `web/controls/calendar(-dark)` and `web/controls/datepicker(-dark)`;
+  revert them when only the date moved. PNGs are also
   re-encoded on every run, so compare pixels (RGB and alpha; `Image.getbbox()` on an RGBA
   difference looks at alpha only) rather than bytes.
 

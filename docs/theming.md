@@ -8,6 +8,33 @@ nav_order: 2
 
 ![Orange accent](screenshots/core-orange.png)
 
+## Light and dark
+
+![The Core page in the dark version](screenshots/dark-core.png)
+
+JetPack has two versions: the light one (the original look, the default) and a dark one, where
+buttons, inputs, lists, grids, menus, tool bars, calendars, dialogs and the busy indicator turn dark
+grey with light text. The window texture and the coloured styles (Accent, Green, Orange, Blue) stay
+as they are.
+
+```csharp
+using JetPack.Wpf.Theming;
+
+ThemeManager.ChangeTheme(JetPackTheme.Dark);
+JetPackTheme current = ThemeManager.CurrentTheme;   // Dark
+ThemeManager.ThemeChanged += (_, _) => { /* refresh anything you cache */ };
+```
+
+`ChangeTheme(JetPackTheme.Dark)` adds a `DarkResources` dictionary at the end of
+`Application.Resources`; it maps the neutral brush keys onto the dark values of `Brushes.Dark.xaml`
+(the `JetPack.Brushes.Dark.*` keys in [Resource keys](resource-keys.md#dark-brushes)). As with
+accents, your own XAML must use `DynamicResource` for JetPack brushes to follow the switch.
+
+For one control on a dark panel in a light app, use its `JetPack.Styles.<Control>.Dark` style
+(`Button.Dark`, `ComboBox.Dark`, `DataGrid.Dark`, `Menu.Dark`, ...); each control page shows its
+dark variant. Such a style carries `DarkResources` in its `Style.Resources`, so the control and what
+it holds, its drop-down included, turn dark.
+
 ## Accents
 
 JetPack ships the three accents of the original theme: green (default), orange and blue. The accent

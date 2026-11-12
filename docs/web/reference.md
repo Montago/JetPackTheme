@@ -110,6 +110,8 @@ write them in your own markup:
 | `data-jp-accent` | a radio button | switches to its `value` when checked |
 | `data-jp-accent-button="green"` | a button | switches the accent when clicked |
 | `data-jp-focus-visuals` | a check box | turns the focus ring on and off |
+| `data-jp-theme="light"` / `"dark"` | a radio button | switches to that theme when checked |
+| `data-jp-theme-toggle` | a button | switches between light and dark |
 | `data-jp-tool-tip="text"` | any element | the JetPack tool tip |
 | `aria-invalid="true"` + `data-jp-error="message"` | a field | the error look and the red call-out |
 | `data-jp-context-menu="id"` | any element | opens that `.jp-context-menu` on a right-click |
@@ -127,6 +129,7 @@ write them in your own markup:
 | `data-busy="true"` | `.jp-busy-indicator` | busy |
 | `data-title-bar="light"` / `"texture"` | `.jp-window` | the title bar mode |
 | `data-accent="orange"` | `<html>` or any element | the accent |
+| `data-theme="dark"` | `<html>` or any element | the dark version (see [Light and dark](theming.md#light-and-dark)) |
 
 ## Script API
 
@@ -134,6 +137,9 @@ write them in your own markup:
 
 | Member | Description |
 | --- | --- |
+| `JetPack.ThemeManager.changeTheme(theme)` | `'light'` or `'dark'`; remembered in the browser |
+| `JetPack.ThemeManager.currentTheme` | `'light'` or `'dark'` |
+| `JetPack.ThemeManager.onThemeChanged(fn)` | calls `fn(theme)` after each change |
 | `JetPack.ThemeManager.changeAccent(nameOrColor)` | `'green'`, `'orange'`, `'blue'` or a `#RRGGBB` colour; remembered in the browser |
 | `JetPack.ThemeManager.currentAccent` | the accent name, or the colour of a generated accent |
 | `JetPack.ThemeManager.accents` | `['green', 'orange', 'blue']` |
@@ -148,7 +154,7 @@ write them in your own markup:
 | `element.jetpack.select(indexOrName)`, `element.jetpack.selectedIndex` | on a `.jp-tab-control` |
 | `JetPack.jetpackGrid(idOrElement)` | the API of a `.jp-jetpack-grid` (see [JetPackGrid](lists.md#script)) |
 
-The stored choices are kept in `localStorage` under `jetpack.accent`, `jetpack.focusVisuals`,
+The stored choices are kept in `localStorage` under `jetpack.theme`, `jetpack.accent`, `jetpack.focusVisuals`,
 `jetpack.controlFontSize` and `jetpack.paneOpen`.
 
 ## Events
@@ -180,6 +186,7 @@ Other events:
 | `jp-open`, `jp-close` | `.jp-flyout` | the flyout opens or closes |
 | `jp-close` | `.jp-info-bar` | the bar is closed |
 | `jp-accent-changed` | `document` | the accent changes; `event.detail` is the accent |
+| `jp-theme-changed` | `document` | the theme changes; `event.detail` is `'light'` or `'dark'` |
 | `jp-sorting` | `table.jp-data-grid` | before a header click sorts; cancelable; `{ column, header, direction }` |
 | `jp-sorted` | `table.jp-data-grid` | after it sorted; a list of `{ column, header, direction }` |
 | `jp-filtered`, `jp-page-changed`, `jp-selected-item-changed`, `jp-sorting`, `jp-sorted`, `jp-load-failed` | `.jp-jetpack-grid` | see [JetPackGrid](lists.md#script) |

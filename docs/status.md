@@ -59,6 +59,11 @@ it takes no input, and shows a small light card with `BusyContent` and an indete
 
 The blur is only applied while busy, so the content keeps ClearType text the rest of the time.
 
+![BusyIndicator, dark](screenshots/controls/busyindicator-dark.png)
+
+`JetPack.Styles.BusyIndicator.Dark` has a dark card and a dark veil over the content. (The whole
+app: [Light and dark](theming.md#light-and-dark).)
+
 ## InfoBar
 
 ![InfoBars](screenshots/controls/infobar.png)

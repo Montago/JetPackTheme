@@ -210,6 +210,12 @@ below it. It folds without script.
 
 Use the `toggle` event of `<details>` to react to it.
 
+![Expanders, dark](../screenshots/web/controls/expander-dark.png)
+
+`dark="true"` on `jp-expander` (`jp-expander--dark`) or `jp-accordion` (`jp-accordion--dark`) draws
+the headers in the dark grey of `Button.Dark`. (The whole page: [Light and
+dark](theming.md#light-and-dark).)
+
 ## Accordion
 
 ![Accordion](../screenshots/web/controls/accordion.png)
@@ -303,6 +309,11 @@ it, and Esc closes the menu.
 
 A click on an item closes the menu; listen for `click` on the items (or use `href`).
 
+![Menu, dark](../screenshots/web/controls/menu-dark.png)
+
+`dark="true"` (`jp-menu--dark`) is `Menu.Dark`: the bar in the dark grey of `Button.Dark`, with dark
+drop-downs. (The whole page: [Light and dark](theming.md#light-and-dark).)
+
 ### ContextMenu
 
 ![ContextMenu](../screenshots/web/controls/contextmenu.png)
@@ -325,6 +336,11 @@ A click on an item closes the menu; listen for `click` on the items (or use `hre
 ```
 
 The same `.jp-context-menu` is the menu of [SplitButton and DropDownButton](buttons.md#splitbutton).
+
+![ContextMenu, dark](../screenshots/web/controls/contextmenu-dark.png)
+
+`dark="true"` (`jp-context-menu--dark`) is `ContextMenu.Dark`: a dark grey panel with white text;
+its submenus too. (The whole page: [Light and dark](theming.md#light-and-dark).)
 
 ### ToolBar
 
@@ -355,6 +371,11 @@ pressed toggle buttons look pressed in, and a `jp-separator` is the vertical sep
     </div>
 </div>
 ```
+
+![ToolBar, dark](../screenshots/web/controls/toolbar-dark.png)
+
+`dark="true"` (`jp-tool-bar--dark`) is `ToolBar.Dark`: the dark grey of `Button.Dark` with light
+glyphs and labels. (The whole page: [Light and dark](theming.md#light-and-dark).)
 
 ## StatusBar
 

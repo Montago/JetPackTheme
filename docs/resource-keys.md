@@ -81,14 +81,6 @@ Shared by every accent.
 | `JetPack.Brushes.Input.InnerShadowDark` | SolidColorBrush | `#50505050` |
 | `JetPack.Brushes.Input.InnerShadowLight` | SolidColorBrush | `#20202020` |
 | `JetPack.Brushes.Input.SelectionForeground` | SolidColorBrush | `#FFFFFFFF` |
-| `JetPack.Brushes.Dark.Input.Background` | LinearGradientBrush | `#FF57575F` 0.3 → `#FF505054` 1.0 |
-| `JetPack.Brushes.Dark.Input.Border` | SolidColorBrush | `#D0505050` |
-| `JetPack.Brushes.Dark.Input.Foreground` | SolidColorBrush | `#FFFFFFFF` |
-| `JetPack.Brushes.Dark.Input.Watermark` | SolidColorBrush | `#73FFFFFF` |
-| `JetPack.Brushes.Dark.Input.InnerShadowDark` | SolidColorBrush | `#50303030` |
-| `JetPack.Brushes.Dark.Input.InnerShadowLight` | SolidColorBrush | `#20303030` |
-| `JetPack.Brushes.Dark.Input.ReadOnly` | SolidColorBrush | `#20FFFFFF` |
-| `JetPack.Brushes.Dark.Input.Disabled` | SolidColorBrush | `#33FFFFFF` |
 | `JetPack.Brushes.Error` | SolidColorBrush | `#FFEF0A0A` |
 | `JetPack.Brushes.Error.Tip` | SolidColorBrush | `#FFDC000C` |
 | `JetPack.Brushes.Error.Header` | LinearGradientBrush | `#FFF04A4A` 0 → `#FFC41212` 1 |
@@ -130,6 +122,26 @@ Shared by every accent.
 | `JetPack.Brushes.Menu.Disabled` | SolidColorBrush | `#FF9A9A9A` |
 | `JetPack.Brushes.Dialog.Background` | SolidColorBrush | `#FFE0E0E0` |
 | `JetPack.Brushes.Dialog.Overlay` | SolidColorBrush | `#7F000000` |
+| `JetPack.Brushes.Dialog.Close` | SolidColorBrush | `#FF505050` |
+| `JetPack.Brushes.Menu.Gesture` | SolidColorBrush | `#FF707070` |
+| `JetPack.Brushes.Separator.Light` | SolidColorBrush | `#FFFFFFFF` |
+| `JetPack.Brushes.ScrollBar.Thumb.Highlight` | SolidColorBrush | `#FFFFFFFF` |
+| `JetPack.Brushes.BusyIndicator.Overlay` | SolidColorBrush | `#59FFFFFF` |
+| `JetPack.Brushes.Calendar.Background` | SolidColorBrush | `#FFFFFFFF` |
+| `JetPack.Brushes.Calendar.Foreground` | SolidColorBrush | `#FF333333` |
+| `JetPack.Brushes.Calendar.DayName` | SolidColorBrush | `#FF8A8A8A` |
+| `JetPack.Brushes.Calendar.Today` | SolidColorBrush | `#FFAAAAAA` |
+| `JetPack.Brushes.Calendar.MouseOver` | SolidColorBrush | `#20000000` |
+| `JetPack.Brushes.ComboBox.Background` | LinearGradientBrush | `#FFF7F7F7` 0.164 → `#FFC6C6C6` 0.802 → `#FFC6C6C6` 0.953 |
+| `JetPack.Brushes.ComboBox.Background.MouseOver` | LinearGradientBrush | `#FFFFFFFF` 0.211 → `#FFDEDEDE` 0.784 |
+| `JetPack.Brushes.ComboBox.Background.Pressed` | LinearGradientBrush | `#FFCECECE` 0.204 → `#FFAFAFAF` 0.864 |
+| `JetPack.Brushes.InlineButton.Background` | LinearGradientBrush | `#FFF7F7F7` 0.164 → `#FFC6C6C6` 0.802 → `#FFC6C6C6` 0.953 |
+| `JetPack.Brushes.InlineButton.Background.MouseOver` | LinearGradientBrush | `#FFFFFFFF` 0.211 → `#FFDEDEDE` 0.784 |
+| `JetPack.Brushes.InlineButton.Background.Pressed` | LinearGradientBrush | `#FFCECECE` 0.204 → `#FFAFAFAF` 0.864 |
+| `JetPack.Brushes.InlineButton.Glyph` | SolidColorBrush | `#FF606060` |
+| `JetPack.Brushes.InlineButton.Glyph.Dark` | SolidColorBrush | `#FF404040` |
+| `JetPack.Brushes.Navigation.Background` | LinearGradientBrush | `#FFE2E2E2` 0 → `#FFC6C6C6` 1 |
+| `JetPack.Brushes.Navigation.Background.MouseOver` | LinearGradientBrush | `#FFF8F8F8` 0 → `#FFD0D0D0` 1 |
 | `JetPack.Brushes.Overlay` | LinearGradientBrush | `#4CFFFFFF` 0 → `#4C000000` 1 |
 | `JetPack.Brushes.Close.MouseOver` | LinearGradientBrush | `#FFE84B4B` 0 → `#FFB71C1C` 1 |
 | `JetPack.Brushes.Button.Green.Normal` | LinearGradientBrush | `#FFA0BB0E` 0.176 → `#FF6D9700` 0.894 |
@@ -161,6 +173,49 @@ Shared by every accent.
 | `JetPack.Brushes.Chart.9` | RadialGradientBrush | `#FF40ABCA` 0 → `#FF1E505F` 1 |
 | `JetPack.Brushes.Chart.10` | RadialGradientBrush | `#FF9A5AA6` 0 → `#FF482A4E` 1 |
 | `JetPack.Brushes.Chart.11` | RadialGradientBrush | `#FF775931` 0 → `#FF210000` 1 |
+
+## Dark brushes
+
+The values of the dark version. `ThemeManager.ChangeTheme(JetPackTheme.Dark)` and the `JetPack.Styles.*.Dark` styles map the neutral keys onto these (see `Theming/DarkResources.cs`).
+
+| Key | Type | Value |
+| --- | --- | --- |
+| `JetPack.Brushes.Dark.Input.Background` | LinearGradientBrush | `#FF57575F` 0.3 → `#FF505054` 1.0 |
+| `JetPack.Brushes.Dark.Input.Border` | SolidColorBrush | `#D0505050` |
+| `JetPack.Brushes.Dark.Input.Foreground` | SolidColorBrush | `#FFFFFFFF` |
+| `JetPack.Brushes.Dark.Input.Watermark` | SolidColorBrush | `#73FFFFFF` |
+| `JetPack.Brushes.Dark.Input.InnerShadowDark` | SolidColorBrush | `#50303030` |
+| `JetPack.Brushes.Dark.Input.InnerShadowLight` | SolidColorBrush | `#20303030` |
+| `JetPack.Brushes.Dark.Input.ReadOnly` | SolidColorBrush | `#20FFFFFF` |
+| `JetPack.Brushes.Dark.Input.Disabled` | SolidColorBrush | `#33FFFFFF` |
+| `JetPack.Brushes.Dark.Control.Background` | LinearGradientBrush | `#FF6B6C71` 0.164 → `#FF4C4D52` 0.802 → `#FF48494E` 0.953 |
+| `JetPack.Brushes.Dark.Control.Background.MouseOver` | LinearGradientBrush | `#FF7A7B80` 0.211 → `#FF57585D` 0.784 |
+| `JetPack.Brushes.Dark.Control.Background.Pressed` | LinearGradientBrush | `#FF3F4044` 0.204 → `#FF4A4B50` 0.864 |
+| `JetPack.Brushes.Dark.Control.Background.Checked` | LinearGradientBrush | `#FF3C3D41` 0.1 → `#FF48494D` 0.9 |
+| `JetPack.Brushes.Dark.Disabled` | LinearGradientBrush | `#FF636468` 0 → `#FF5A5B5F` 1 |
+| `JetPack.Brushes.Dark.Control.Foreground` | SolidColorBrush | `#FFFFFFFF` |
+| `JetPack.Brushes.Dark.Control.Foreground.Disabled` | SolidColorBrush | `#59FFFFFF` |
+| `JetPack.Brushes.Dark.Control.Glyph` | SolidColorBrush | `#E6FFFFFF` |
+| `JetPack.Brushes.Dark.Panel.Background` | SolidColorBrush | `#FF4A4B50` |
+| `JetPack.Brushes.Dark.DataGrid.Background` | SolidColorBrush | `#FF3D3E42` |
+| `JetPack.Brushes.Dark.DataGrid.AlternatingRow` | SolidColorBrush | `#FF46474B` |
+| `JetPack.Brushes.Dark.DataGrid.GridLines` | SolidColorBrush | `#12FFFFFF` |
+| `JetPack.Brushes.Dark.DataGrid.SearchHit` | SolidColorBrush | `#24FFFFFF` |
+| `JetPack.Brushes.Dark.Selection.MouseOver` | SolidColorBrush | `#14FFFFFF` |
+| `JetPack.Brushes.Dark.ScrollBar.Track` | SolidColorBrush | `#FF45464A` |
+| `JetPack.Brushes.Dark.ScrollBar.Thumb` | LinearGradientBrush | `#FF7A7B80` 0.1 → `#FF5C5D62` 1.0 |
+| `JetPack.Brushes.Dark.ScrollBar.Thumb.Vertical` | LinearGradientBrush | `#FF7A7B80` 0.1 → `#FF5C5D62` 1.0 |
+| `JetPack.Brushes.Dark.ScrollBar.Glyph` | SolidColorBrush | `#FFD0D0D0` |
+| `JetPack.Brushes.Dark.Input.Background.MouseOver` | LinearGradientBrush | `#FF616169` 0.3 → `#FF5A5A5E` 1.0 |
+| `JetPack.Brushes.Dark.Input.Background.Pressed` | LinearGradientBrush | `#FF4C4C53` 0.3 → `#FF46464A` 1.0 |
+| `JetPack.Brushes.Dark.Text.Dim` | SolidColorBrush | `#8CFFFFFF` |
+| `JetPack.Brushes.Dark.Calendar.Today` | SolidColorBrush | `#40FFFFFF` |
+| `JetPack.Brushes.Dark.Calendar.MouseOver` | SolidColorBrush | `#1AFFFFFF` |
+| `JetPack.Brushes.Dark.Separator.Light` | SolidColorBrush | `#1AFFFFFF` |
+| `JetPack.Brushes.Dark.ScrollBar.Thumb.Highlight` | SolidColorBrush | `#40FFFFFF` |
+| `JetPack.Brushes.Dark.BusyIndicator.Overlay` | SolidColorBrush | `#40000000` |
+| `JetPack.Brushes.Dark.Dialog.Close` | SolidColorBrush | `#CCFFFFFF` |
+| `JetPack.Effects.Dark.TextEmboss` | DropShadowEffect | Color #FF000000, BlurRadius 0, ShadowDepth 1, Direction 90, Opacity 0.45 |
 
 ## Fonts
 
@@ -194,6 +249,7 @@ Drop shadows and text effects used by the templates.
 | `JetPack.Effects.PopupShadow` | DropShadowEffect | Color #FF000000, BlurRadius 5, ShadowDepth 2, Direction 270, Opacity 0.45 |
 | `JetPack.Effects.DialogShadow` | DropShadowEffect | Color #FF000000, BlurRadius 24, ShadowDepth 6, Direction 270, Opacity 0.5 |
 | `JetPack.Effects.TextEmboss` | DropShadowEffect | Color #FFFFFFFF, BlurRadius 0, ShadowDepth 1, Direction 270, Opacity 0.5 |
+| `JetPack.Effects.Navigation.TextEmboss` | DropShadowEffect | Color #FFFFFFFF, BlurRadius 0, ShadowDepth 1, Direction 270, Opacity 0.5 |
 | `JetPack.Effects.TextGlow` | DropShadowEffect | Color #FF000000, BlurRadius 5, ShadowDepth 0, Direction 293, Opacity 0.25 |
 | `JetPack.Effects.Button.Green.TextShadow` | DropShadowEffect | Color #FF2B3D00, BlurRadius 0, ShadowDepth 1, Direction 90, Opacity 0.5 |
 | `JetPack.Effects.Button.Orange.TextShadow` | DropShadowEffect | Color #FFB62F00, BlurRadius 0, ShadowDepth 1, Direction 90, Opacity 0.5 |
@@ -209,16 +265,21 @@ variants and building blocks; use them with `Style="{StaticResource ...}"` or as
 | `JetPack.Styles.Button` | `Button` | Controls.Buttons.xaml |
 | `JetPack.Styles.Button.Accent` | `Button` | Controls.Buttons.xaml |
 | `JetPack.Styles.Button.Blue` | `Button` | Controls.Buttons.xaml |
+| `JetPack.Styles.Button.Dark` | `Button` | Controls.Buttons.xaml |
 | `JetPack.Styles.Button.Flat` | `ButtonBase` | Controls.Buttons.xaml |
 | `JetPack.Styles.Button.Green` | `Button` | Controls.Buttons.xaml |
 | `JetPack.Styles.Button.Link` | `Button` | Controls.Buttons.xaml |
 | `JetPack.Styles.Button.Orange` | `Button` | Controls.Buttons.xaml |
 | `JetPack.Styles.Button.Square` | `Button` | Controls.Buttons.xaml |
+| `JetPack.Styles.Button.Square.Dark` | `Button` | Controls.Buttons.xaml |
 | `JetPack.Styles.ButtonBase` | `ButtonBase` | Controls.Buttons.xaml |
 | `JetPack.Styles.Hyperlink` | `Hyperlink` | Controls.Buttons.xaml |
 | `JetPack.Styles.RepeatButton` | `RepeatButton` | Controls.Buttons.xaml |
+| `JetPack.Styles.RepeatButton.Dark` | `RepeatButton` | Controls.Buttons.xaml |
 | `JetPack.Styles.ToggleButton` | `ToggleButton` | Controls.Buttons.xaml |
+| `JetPack.Styles.ToggleButton.Dark` | `ToggleButton` | Controls.Buttons.xaml |
 | `JetPack.Styles.Calendar` | `Calendar` | Controls.Calendar.xaml |
+| `JetPack.Styles.Calendar.Dark` | `Calendar` | Controls.Calendar.xaml |
 | `JetPack.Styles.Calendar.HeaderButton` | `Button` | Controls.Calendar.xaml |
 | `JetPack.Styles.Calendar.NavButton` | `Button` | Controls.Calendar.xaml |
 | `JetPack.Styles.CalendarButton` | `CalendarButton` | Controls.Calendar.xaml |
@@ -226,9 +287,11 @@ variants and building blocks; use them with `Style="{StaticResource ...}"` or as
 | `JetPack.Styles.CalendarItem` | `CalendarItem` | Controls.Calendar.xaml |
 | `JetPack.Styles.DatePicker` | `DatePicker` | Controls.Calendar.xaml |
 | `JetPack.Styles.DatePicker.Button` | `Button` | Controls.Calendar.xaml |
+| `JetPack.Styles.DatePicker.Dark` | `DatePicker` | Controls.Calendar.xaml |
 | `JetPack.Styles.DatePickerTextBox` | `DatePickerTextBox` | Controls.Calendar.xaml |
 | `JetPack.Styles.Expander` | `Expander` | Controls.Containers.xaml |
 | `JetPack.Styles.Expander.Accordion` | `Expander` | Controls.Containers.xaml |
+| `JetPack.Styles.Expander.Dark` | `Expander` | Controls.Containers.xaml |
 | `JetPack.Styles.Expander.Header` | `ToggleButton` | Controls.Containers.xaml |
 | `JetPack.Styles.GridSplitter` | `GridSplitter` | Controls.Containers.xaml |
 | `JetPack.Styles.GroupBox` | `GroupBox` | Controls.Containers.xaml |
@@ -243,6 +306,7 @@ variants and building blocks; use them with `Style="{StaticResource ...}"` or as
 | `JetPack.Styles.TabItem.Strip` | `TabItem` | Controls.Containers.xaml |
 | `JetPack.Styles.ToolTip` | `ToolTip` | Controls.Containers.xaml |
 | `JetPack.Styles.DataGrid` | `DataGrid` | Controls.DataGrid.xaml |
+| `JetPack.Styles.DataGrid.Dark` | `DataGrid` | Controls.DataGrid.xaml |
 | `JetPack.Styles.DataGrid.Gripper` | `Thumb` | Controls.DataGrid.xaml |
 | `JetPack.Styles.DataGrid.SelectAll` | `Button` | Controls.DataGrid.xaml |
 | `JetPack.Styles.DataGridCell` | `DataGridCell` | Controls.DataGrid.xaml |
@@ -251,25 +315,36 @@ variants and building blocks; use them with `Style="{StaticResource ...}"` or as
 | `JetPack.Styles.DataGridRowHeader` | `DataGridRowHeader` | Controls.DataGrid.xaml |
 | `JetPack.Styles.JetPackGrid` | `c:JetPackGrid` | Controls.DataGrid.xaml |
 | `JetPack.Styles.JetPackGrid.ColumnHeader` | `DataGridColumnHeader` | Controls.DataGrid.xaml |
+| `JetPack.Styles.JetPackGrid.Dark` | `c:JetPackGrid` | Controls.DataGrid.xaml |
 | `JetPack.Styles.JetPackGrid.FilterButton` | `ToggleButton` | Controls.DataGrid.xaml |
 | `JetPack.Styles.JetPackGrid.GroupHeader` | `ToggleButton` | Controls.DataGrid.xaml |
 | `JetPack.Styles.JetPackGrid.PagerButton` | `Button` | Controls.DataGrid.xaml |
+| `JetPack.Styles.Accordion.Dark` | `c:Accordion` | Controls.JetPack.xaml |
+| `JetPack.Styles.AutoSuggestBox.Dark` | `c:AutoSuggestBox` | Controls.JetPack.xaml |
+| `JetPack.Styles.BusyIndicator.Dark` | `c:BusyIndicator` | Controls.JetPack.xaml |
 | `JetPack.Styles.Button.Inline` | `ButtonBase` | Controls.JetPack.xaml |
+| `JetPack.Styles.ColorPicker.Dark` | `c:ColorPicker` | Controls.JetPack.xaml |
 | `JetPack.Styles.ColorPicker.Swatch` | `ListBoxItem` | Controls.JetPack.xaml |
 | `JetPack.Styles.DropDownButton.Accent` | `c:DropDownButton` | Controls.JetPack.xaml |
+| `JetPack.Styles.DropDownButton.Dark` | `c:DropDownButton` | Controls.JetPack.xaml |
 | `JetPack.Styles.Flyout.Close` | `Button` | Controls.JetPack.xaml |
 | `JetPack.Styles.HamburgerMenu.Toggle` | `ToggleButton` | Controls.JetPack.xaml |
 | `JetPack.Styles.ListBox.Popup` | `ListBox` | Controls.JetPack.xaml |
 | `JetPack.Styles.MenuButtonBase` | `ButtonBase` | Controls.JetPack.xaml |
 | `JetPack.Styles.NumericUpDown.Dark` | `c:NumericUpDown` | Controls.JetPack.xaml |
+| `JetPack.Styles.SearchComboBox.Dark` | `c:SearchComboBox` | Controls.JetPack.xaml |
 | `JetPack.Styles.SplitButton.Accent` | `c:SplitButton` | Controls.JetPack.xaml |
 | `JetPack.Styles.SplitButton.Arrow` | `ToggleButton` | Controls.JetPack.xaml |
+| `JetPack.Styles.SplitButton.Dark` | `c:SplitButton` | Controls.JetPack.xaml |
 | `JetPack.Styles.Tile` | `c:Tile` | Controls.JetPack.xaml |
 | `JetPack.Styles.Tile.Accent` | `c:Tile` | Controls.JetPack.xaml |
 | `JetPack.Styles.Tile.Blue` | `c:Tile` | Controls.JetPack.xaml |
+| `JetPack.Styles.Tile.Dark` | `c:Tile` | Controls.JetPack.xaml |
 | `JetPack.Styles.Tile.Green` | `c:Tile` | Controls.JetPack.xaml |
 | `JetPack.Styles.Tile.Orange` | `c:Tile` | Controls.JetPack.xaml |
+| `JetPack.Styles.TimePicker.Dark` | `c:TimePicker` | Controls.JetPack.xaml |
 | `JetPack.Styles.ComboBox` | `ComboBox` | Controls.Lists.xaml |
+| `JetPack.Styles.ComboBox.Dark` | `ComboBox` | Controls.Lists.xaml |
 | `JetPack.Styles.ComboBox.EditableTextBox` | `TextBox` | Controls.Lists.xaml |
 | `JetPack.Styles.ComboBox.Toggle` | `ToggleButton` | Controls.Lists.xaml |
 | `JetPack.Styles.ComboBox.Toggle.Editable` | `ToggleButton` | Controls.Lists.xaml |
@@ -277,23 +352,29 @@ variants and building blocks; use them with `Style="{StaticResource ...}"` or as
 | `JetPack.Styles.GridViewColumnHeader` | `GridViewColumnHeader` | Controls.Lists.xaml |
 | `JetPack.Styles.JetPackGrid.DateFilterItem` | `TreeViewItem` | Controls.Lists.xaml |
 | `JetPack.Styles.ListBox` | `ListBox` | Controls.Lists.xaml |
+| `JetPack.Styles.ListBox.Dark` | `ListBox` | Controls.Lists.xaml |
 | `JetPack.Styles.ListBoxItem` | `ListBoxItem` | Controls.Lists.xaml |
 | `JetPack.Styles.ListView` | `ListView` | Controls.Lists.xaml |
+| `JetPack.Styles.ListView.Dark` | `ListView` | Controls.Lists.xaml |
 | `JetPack.Styles.ListViewItem` | `ListViewItem` | Controls.Lists.xaml |
 | `JetPack.Styles.ScrollBar` | `ScrollBar` | Controls.Lists.xaml |
 | `JetPack.Styles.ScrollBar.Arrow` | `RepeatButton` | Controls.Lists.xaml |
 | `JetPack.Styles.ScrollBar.Thin` | `ScrollBar` | Controls.Lists.xaml |
 | `JetPack.Styles.ScrollBar.Thin.Thumb` | `Thumb` | Controls.Lists.xaml |
 | `JetPack.Styles.ScrollViewer` | `ScrollViewer` | Controls.Lists.xaml |
+| `JetPack.Styles.ScrollViewer.Dark` | `ScrollViewer` | Controls.Lists.xaml |
 | `JetPack.Styles.ScrollViewer.GridView` | `ScrollViewer` | Controls.Lists.xaml |
 | `JetPack.Styles.ScrollViewer.Thin` | `ScrollViewer` | Controls.Lists.xaml |
 | `JetPack.Styles.TreeView` | `TreeView` | Controls.Lists.xaml |
 | `JetPack.Styles.TreeViewItem` | `TreeViewItem` | Controls.Lists.xaml |
 | `JetPack.Styles.TreeViewItem.Expander` | `ToggleButton` | Controls.Lists.xaml |
 | `JetPack.Styles.ContextMenu` | `ContextMenu` | Controls.Menu.xaml |
+| `JetPack.Styles.ContextMenu.Dark` | `ContextMenu` | Controls.Menu.xaml |
 | `JetPack.Styles.Menu` | `Menu` | Controls.Menu.xaml |
+| `JetPack.Styles.Menu.Dark` | `Menu` | Controls.Menu.xaml |
 | `JetPack.Styles.MenuItem` | `MenuItem` | Controls.Menu.xaml |
 | `JetPack.Styles.ToolBar` | `ToolBar` | Controls.Menu.xaml |
+| `JetPack.Styles.ToolBar.Dark` | `ToolBar` | Controls.Menu.xaml |
 | `JetPack.Styles.ToolBar.Overflow` | `ToggleButton` | Controls.Menu.xaml |
 | `JetPack.Styles.ToolBar.Thumb` | `Thumb` | Controls.Menu.xaml |
 | `JetPack.Styles.ToolBarTray` | `ToolBarTray` | Controls.Menu.xaml |

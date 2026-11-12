@@ -19,7 +19,7 @@ write the markup itself.
 ## Start here
 
 - [Getting started](web/getting-started.md): install, tag helpers, layout, the window frame, Tailwind.
-- [Theme and accent](web/theming.md): accents, generated accents, focus visuals, font size, overriding colours.
+- [Theme and accent](web/theming.md): light and dark, accents, generated accents, focus visuals, font size, overriding colours.
 - [Typography](web/typography.md): fonts, heading styles, icons.
 
 ## Controls

@@ -167,6 +167,7 @@ if (result === 'affirmative') { … }
 | `affirmativeText` | `OK` | the text of the main button |
 | `negativeText` | | a second button; without it the dialog has one button |
 | `affirmativeStyle` | `accent` | the main button's variant: `accent`, `green`, `orange` or `blue` |
+| `dark` | `false` | the dark dialog (`jp-dialog--dark`) with `Button.Dark` for the plain buttons; with `data-theme="dark"` on the page every dialog is dark |
 
 The promise resolves to `'affirmative'` or `'negative'` (the second button, the × and Esc). The main
 button has the focus when the dialog opens.

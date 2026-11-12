@@ -37,6 +37,14 @@ flat grey.
 | `content` | | the text; without it the element's content is used (icons, markup) |
 | `type` | `button` | `button`, `submit` or `reset` |
 | `href` | | makes it a link that looks like a button (a disabled one stays a `<button>`) |
+| `dark` | `false` | `JetPack.Styles.Button.Dark` |
+
+![Buttons, dark](../screenshots/web/controls/button-dark.png)
+
+`dark="true"` (`jp-button--dark`) is `Button.Dark`: dark grey with light text and glyphs, for dark
+panels. It works on `jp-button`, `jp-toggle-button`, `jp-repeat-button`, `jp-drop-down-button` and
+`jp-split-button`, also together with `button-style="Square"`; the coloured styles stay coloured.
+(The whole page: [Light and dark](theming.md#light-and-dark).)
 
 ### Variants
 
@@ -199,6 +207,11 @@ the width it is given (a grid column, or a width class); the WPF tile is 110×84
 | `href` | | makes it a link; without it a `<button>` |
 
 Content inside the tag helper goes in the row between the count and the title.
+
+![Tiles, dark](../screenshots/web/controls/tile-dark.png)
+
+`tile-style="Dark"` (`jp-tile--dark`) is `Tile.Dark`: a dark grey tile with light text, for dark
+panels. (The whole page: [Light and dark](theming.md#light-and-dark).)
 
 ## Badged
 
