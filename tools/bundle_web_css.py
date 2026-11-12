@@ -43,7 +43,8 @@ def main():
             print('jetpack.css is out of date; run python tools/bundle_web_css.py')
             sys.exit(1)
         return
-    with open(OUT, 'w', encoding='utf-8', newline='\n') as f:
+    # CRLF, as Git checks text files out on Windows (core.autocrlf), so a run leaves no diff
+    with open(OUT, 'w', encoding='utf-8', newline='\r\n') as f:
         f.write(css)
     print(f'wrote {os.path.relpath(OUT, ROOT)}')
 

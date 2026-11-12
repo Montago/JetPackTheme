@@ -115,7 +115,8 @@ def main():
         return
     for path, text in files.items():
         os.makedirs(os.path.dirname(path), exist_ok=True)
-        with open(path, 'w', encoding='utf-8', newline='\n') as f:
+        # CRLF, as Git checks text files out on Windows (core.autocrlf), so a run leaves no diff
+        with open(path, 'w', encoding='utf-8', newline='\r\n') as f:
             f.write(text)
         print('wrote', os.path.relpath(path, ROOT))
 

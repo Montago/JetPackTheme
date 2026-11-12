@@ -194,7 +194,8 @@ def main():
         return
     os.makedirs(os.path.dirname(OUT_CSS), exist_ok=True)
     os.makedirs(os.path.dirname(OUT_TEXTURE), exist_ok=True)
-    with open(OUT_CSS, 'w', encoding='utf-8', newline='\n') as f:
+    # CRLF, as Git checks text files out on Windows (core.autocrlf), so a run leaves no diff
+    with open(OUT_CSS, 'w', encoding='utf-8', newline='\r\n') as f:
         f.write(css)
     shutil.copyfile(TEXTURE, OUT_TEXTURE)
     print(f'wrote {os.path.relpath(OUT_CSS, ROOT)} and {os.path.relpath(OUT_TEXTURE, ROOT)}')

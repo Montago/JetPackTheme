@@ -71,7 +71,8 @@ def main():
                 lines.append(f'  - id: {quote(anchor)}')
                 lines.append(f'    title: {quote(title)}')
     os.makedirs(os.path.dirname(out), exist_ok=True)
-    with open(out, 'w', encoding='utf-8', newline='\n') as f:
+    # CRLF, as Git checks text files out on Windows (core.autocrlf), so a run leaves no diff
+    with open(out, 'w', encoding='utf-8', newline='\r\n') as f:
         f.write('\n'.join(lines) + '\n')
     print('Wrote', os.path.relpath(out, root))
 

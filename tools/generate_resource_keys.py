@@ -86,5 +86,6 @@ doc.append(table(styles + 'Effects.xaml', 'Effects', 'Drop shadows and text effe
 doc.append("## Named styles\n\nEvery standard control also gets an implicit style (no key needed). These keyed styles are the\n"
            "variants and building blocks; use them with `Style=\"{StaticResource ...}\"` or as `BasedOn`.\n\n"
            "| Key | Target type | File |\n| --- | --- | --- |\n" + '\n'.join(style_keys()) + '\n')
-open(root + '/docs/resource-keys.md', 'w', encoding='utf-8').write('\n'.join(doc))
+# CRLF, as Git checks text files out on Windows (core.autocrlf), so a run leaves no diff
+open(root + '/docs/resource-keys.md', 'w', encoding='utf-8', newline='\r\n').write('\n'.join(doc))
 print('ok')
