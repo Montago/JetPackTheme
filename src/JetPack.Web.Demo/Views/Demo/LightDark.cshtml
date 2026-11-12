@@ -319,14 +319,14 @@ decision and a note (kept in the browser), and "Copy decisions" puts them on the
 
     @{ Row("calendar", "Calendar", "exists", ".jp-calendar", ".jp-calendar--dark (dark=true)", @<jp-calendar selected-date="@(DateTime.Today.AddDays(DateTime.Today.Day > 20 ? -5 : 5))" dark="item.Dark" />, "The selected date is the accent colour; today is marked grey."); }
 
-    @{ Row("scrollviewer", "ScrollViewer", "missing", ".jp-scroll-viewer", null, @<div class="flex gap-6">
-        <jp-scroll-viewer horizontal-scroll-bar-visibility="Visible" vertical-scroll-bar-visibility="Visible" class="demo-scroll-sample !w-[180px] !h-[110px]">
+    @{ Row("scrollviewer", "ScrollViewer", "exists", ".jp-scroll-viewer", ".jp-scroll-viewer--dark (dark=true)", @<div class="flex gap-6">
+        <jp-scroll-viewer horizontal-scroll-bar-visibility="Visible" vertical-scroll-bar-visibility="Visible" dark="item.Dark" class="demo-scroll-sample !w-[180px] !h-[110px]" style="@(item.Dark ? "background: #3D3E42" : null)">
             <div class="demo-scroll-sample__content !w-[400px] !h-[300px]"></div>
         </jp-scroll-viewer>
-        <jp-scroll-viewer thin="true" horizontal-scroll-bar-visibility="Visible" vertical-scroll-bar-visibility="Visible" class="demo-scroll-sample !w-[180px] !h-[110px]">
+        <jp-scroll-viewer thin="true" horizontal-scroll-bar-visibility="Visible" vertical-scroll-bar-visibility="Visible" class="demo-scroll-sample !w-[180px] !h-[110px]" style="@(item.Dark ? "background: #3D3E42" : null)">
             <div class="demo-scroll-sample__content !w-[400px] !h-[300px]"></div>
         </jp-scroll-viewer>
-    </div>, "Normal and thin scroll bars."); }
+    </div>, "Normal and thin bars; the thin accent bar is the same on both. Dark lists and grids get the dark bars too."); }
 
     @* ------------------------------------------------ Navigation and layout *@
     <h2 class="ld-group">Navigation and layout</h2>
@@ -378,39 +378,51 @@ decision and a note (kept in the browser), and "Copy decisions" puts them on the
         <jp-text-box id="@("GroupPhone" + item.Id)" text="(555) 555-1234" />
     </jp-group-box>); }
 
-    @{ Row("menu", "Menu · ContextMenu", "missing", ".jp-menu · .jp-context-menu", null, @<div class="flex items-start gap-4">
-        <jp-menu class="w-[260px]">
+    @{ Row("menu", "Menu · ContextMenu", "exists", ".jp-menu · .jp-context-menu", ".jp-menu--dark · .jp-context-menu--dark (dark=true)", @<div class="flex items-start gap-4">
+        <jp-menu class="w-[260px]" dark="item.Dark">
             <jp-menu-item header="_File">
                 <jp-menu-item header="_New customer" input-gesture-text="Ctrl+N" />
                 <jp-separator />
                 <jp-menu-item header="Status bar" is-checkable="true" is-checked="true" />
+                <jp-menu-item header="Recent">
+                    <jp-menu-item header="Contoso Corporation" />
+                    <jp-menu-item header="Fabrikam, Inc." />
+                </jp-menu-item>
+                <jp-menu-item header="Print" is-enabled="false" />
+                <jp-separator />
                 <jp-menu-item header="E_xit" />
             </jp-menu-item>
             <jp-menu-item header="_Edit" />
             <jp-menu-item header="_View" />
         </jp-menu>
         <div class="grid place-items-center w-[150px] h-[60px] rounded-[2.5px] ld-outline" data-jp-context-menu="@("LdContextMenu" + item.Id)">Right-click here</div>
-        <jp-context-menu id="@("LdContextMenu" + item.Id)">
+        <jp-context-menu id="@("LdContextMenu" + item.Id)" dark="item.Dark">
             <jp-menu-item header="Cut" input-gesture-text="Ctrl+X" />
             <jp-menu-item header="Copy" input-gesture-text="Ctrl+C" />
             <jp-menu-item header="Paste" input-gesture-text="Ctrl+V" is-enabled="false" />
+            <jp-separator />
+            <jp-menu-item header="Export">
+                <jp-menu-item header="PDF" />
+                <jp-menu-item header="Excel" />
+            </jp-menu-item>
         </jp-context-menu>
-    </div>, "Click File, or right-click the box, to see the drop-downs (light grey)."); }
+    </div>, "Click File, or right-click the box, to see the drop-downs and submenus."); }
 
-    @{ Row("toolbar", "ToolBar", "missing", ".jp-tool-bar", null, @<jp-tool-bar-tray>
-        <jp-tool-bar>
+    @{ Row("toolbar", "ToolBar", "exists", ".jp-tool-bar", ".jp-tool-bar--dark (dark=true)", @<jp-tool-bar-tray>
+        <jp-tool-bar dark="item.Dark">
             <jp-button><jp-icon kind="FilePlus" /></jp-button>
             <jp-button><jp-icon kind="ContentSave" /></jp-button>
             <jp-separator />
             <jp-toggle-button is-checked="true"><b>B</b></jp-toggle-button>
             <jp-toggle-button><i style="font-family: Georgia">I</i></jp-toggle-button>
             <jp-separator />
-            <jp-combo-box selected-index="0" class="!w-[110px]">
+            <jp-combo-box selected-index="0" class="!w-[110px]" dark="item.Dark">
                 <jp-combo-box-item content="Trebuchet MS" />
+                <jp-combo-box-item content="Georgia" />
             </jp-combo-box>
-            <jp-check-box content="Spelling" is-checked="true" on-light="true" />
+            <jp-check-box content="Spelling" is-checked="true" on-light="!item.Dark" />
         </jp-tool-bar>
-    </jp-tool-bar-tray>); }
+    </jp-tool-bar-tray>, "The combo box and check box in it take their own dark styles."); }
 
     @{ Row("statusbar", "StatusBar", "dark", ".jp-status-bar", null, @<jp-status-bar class="w-[460px]">
         <jp-status-bar-item>Ready</jp-status-bar-item>
@@ -442,11 +454,11 @@ decision and a note (kept in the browser), and "Copy decisions" puts them on the
         <jp-progress-ring />
     </div>, "Dark recessed track."); }
 
-    @{ Row("busyindicator", "BusyIndicator", "missing", ".jp-busy-indicator", null, @<jp-busy-indicator is-busy="true" busy-content="Loading orders…" class="w-[240px] h-[120px]">
+    @{ Row("busyindicator", "BusyIndicator", "exists", ".jp-busy-indicator", ".jp-busy-indicator--dark (dark=true)", @<jp-busy-indicator is-busy="true" busy-content="Loading orders…" dark="item.Dark" class="w-[240px] h-[120px]">
         <div class="h-full p-2.5 rounded-[2.5px] box-border" style="background: var(--jp-panel-background)">
             <p class="m-0 text-[11px]">Customer: Fabrikam<br>Contact: Ida Kragh<br>Orders: 14</p>
         </div>
-    </jp-busy-indicator>); }
+    </jp-busy-indicator>, "Dark card and a dark veil instead of the light one."); }
 
     @{ Row("infobar", "InfoBar", "missing", ".jp-info-bar", null, @<div class="flex flex-col gap-2 w-[380px]">
         <jp-info-bar severity="Info" message="Version 2.4 is ready to install." />
@@ -482,16 +494,19 @@ decision and a note (kept in the browser), and "Copy decisions" puts them on the
         </jp-flyout>
     </div>); }
 
-    @{ Row("dialog", "Dialog", "missing", ".jp-dialog", null, @<dialog class="jp-dialog ld-dialog" open>
-        <header class="jp-dialog__header"><span>Delete company?</span><button type="button" aria-label="Close">×</button></header>
-        <div class="jp-dialog__content">
-            <p class="m-0">Fabrikam, Inc. and its 14 orders will be deleted.</p>
-            <div class="jp-dialog__buttons">
-                <button type="button" class="jp-button" style="min-width: 80px">Cancel</button>
-                <button type="button" class="jp-button jp-button--orange" style="min-width: 80px">Delete</button>
+    @{ Row("dialog", "Dialog", "exists", ".jp-dialog", ".jp-dialog--dark (showDialog({ dark: true }))", @<div class="flex items-start gap-4">
+        <dialog class="jp-dialog ld-dialog@(item.Dark ? " jp-dialog--dark" : "")" open>
+            <header class="jp-dialog__header"><span>Delete company?</span><button type="button" aria-label="Close">×</button></header>
+            <div class="jp-dialog__content">
+                <p class="m-0">Fabrikam, Inc. and its 14 orders will be deleted.</p>
+                <div class="jp-dialog__buttons">
+                    <button type="button" class="jp-button@(item.Dark ? " jp-button--dark" : "")" style="min-width: 80px">Cancel</button>
+                    <button type="button" class="jp-button jp-button--orange" style="min-width: 80px">Delete</button>
+                </div>
             </div>
-        </div>
-    </dialog>, "Light grey body (#E0E0E0) with an accent header."); }
+        </dialog>
+        <jp-button dark="item.Dark" onclick="@($"JetPack.showDialog({{ title: 'Delete company?', content: 'Fabrikam, Inc. and its 14 orders will be deleted.', negativeText: 'Cancel', affirmativeText: 'Delete', affirmativeStyle: 'orange', dark: {(item.Dark ? "true" : "false")} }})")">Open</jp-button>
+    </div>, "Open shows the real dialog over the page."); }
 
     @* --------------------------------------------------------- Typography *@
     <h2 class="ld-group">Typography</h2>

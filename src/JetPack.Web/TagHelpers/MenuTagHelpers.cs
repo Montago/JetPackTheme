@@ -85,13 +85,16 @@ public class MenuItemTagHelper : JetPackTagHelper
 [HtmlTargetElement("jp-menu")]
 public class MenuTagHelper : JetPackTagHelper
 {
+    /// <summary>The bar in the dark grey of Button.Dark, with dark drop-downs.</summary>
+    public bool Dark { get; set; }
+
     public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
     {
         context.Items[typeof(MenuTagHelper)] = this;
         var content = (await output.GetChildContentAsync()).GetContent();
         output.TagName = "nav";
         output.TagMode = TagMode.StartTagAndEndTag;
-        AddClasses(output, "jp-menu");
+        AddClasses(output, "jp-menu", Dark ? "jp-menu--dark" : null);
         output.Attributes.SetAttribute("role", "menubar");
         ApplyCommon(output);
         output.Content.SetHtmlContent(content);
@@ -107,6 +110,9 @@ public class ContextMenuTagHelper : TagHelper
 {
     public string Id { get; set; } = "";
 
+    /// <summary>A dark grey panel with white text; its submenus too.</summary>
+    public bool Dark { get; set; }
+
     public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
     {
         context.Items[typeof(MenuScope)] = new MenuScope();
@@ -114,6 +120,7 @@ public class ContextMenuTagHelper : TagHelper
         output.TagName = "div";
         output.TagMode = TagMode.StartTagAndEndTag;
         output.AddClass("jp-context-menu", Html.Encoder);
+        if (Dark) output.AddClass("jp-context-menu--dark", Html.Encoder);
         output.Attributes.SetAttribute("id", Id);
         output.Attributes.SetAttribute("popover", "");
         output.Attributes.SetAttribute("role", "menu");
@@ -139,6 +146,9 @@ public class ToolBarTrayTagHelper : TagHelper
 [HtmlTargetElement("jp-tool-bar")]
 public class ToolBarTagHelper : TagHelper
 {
+    /// <summary>The dark grey of Button.Dark with light glyphs and labels.</summary>
+    public bool Dark { get; set; }
+
     public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
     {
         context.Items[typeof(ToolBarTagHelper)] = this;
@@ -146,6 +156,7 @@ public class ToolBarTagHelper : TagHelper
         output.TagName = "div";
         output.TagMode = TagMode.StartTagAndEndTag;
         output.AddClass("jp-tool-bar", Html.Encoder);
+        if (Dark) output.AddClass("jp-tool-bar--dark", Html.Encoder);
         output.Attributes.SetAttribute("role", "toolbar");
         // a jp-separator in here writes the vertical tool bar separator itself
         output.Content.SetHtmlContent("<span class=\"jp-tool-bar__thumb\" aria-hidden=\"true\"></span>" + content);

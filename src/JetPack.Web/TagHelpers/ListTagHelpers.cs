@@ -82,6 +82,9 @@ public class ScrollViewerTagHelper : JetPackTagHelper
 {
     public bool Thin { get; set; }
 
+    /// <summary>Dark track and thumb with light arrows (the thin bars are the same on any ground).</summary>
+    public bool Dark { get; set; }
+
     public ScrollBarVisibility HorizontalScrollBarVisibility { get; set; } = ScrollBarVisibility.Disabled;
 
     public ScrollBarVisibility VerticalScrollBarVisibility { get; set; } = ScrollBarVisibility.Auto;
@@ -96,7 +99,7 @@ public class ScrollViewerTagHelper : JetPackTagHelper
     public override void Process(TagHelperContext context, TagHelperOutput output)
     {
         output.TagName = "div";
-        AddClasses(output, "jp-scroll-viewer", Thin ? "jp-scroll-viewer--thin" : null);
+        AddClasses(output, "jp-scroll-viewer", Thin ? "jp-scroll-viewer--thin" : null, Dark ? "jp-scroll-viewer--dark" : null);
         output.Attributes.SetAttribute("style", $"overflow-x:{Css(HorizontalScrollBarVisibility)};overflow-y:{Css(VerticalScrollBarVisibility)};" + (output.Attributes["style"]?.Value ?? ""));
         output.Attributes.SetAttribute("tabindex", "-1");
         ApplyCommon(output);

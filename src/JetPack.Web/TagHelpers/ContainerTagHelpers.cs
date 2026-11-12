@@ -185,12 +185,15 @@ public class BusyIndicatorTagHelper : JetPackTagHelper
 
     public string BusyContent { get; set; } = "Please wait…";
 
+    /// <summary>A dark card and a dark veil over the content.</summary>
+    public bool Dark { get; set; }
+
     public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
     {
         var content = (await output.GetChildContentAsync()).GetContent();
         output.TagName = "div";
         output.TagMode = TagMode.StartTagAndEndTag;
-        AddClasses(output, "jp-busy-indicator");
+        AddClasses(output, "jp-busy-indicator", Dark ? "jp-busy-indicator--dark" : null);
         output.Attributes.SetAttribute("data-busy", IsBusy ? "true" : "false");
         output.Attributes.SetAttribute("aria-busy", IsBusy ? "true" : "false");
         ApplyCommon(output);

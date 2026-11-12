@@ -282,6 +282,14 @@
     text-shadow: 0 1px 0 rgb(255 255 255 / 0.5);
   }
   .jp-busy-indicator__card > .jp-progress-bar { width: 120px; }
+  /* BusyIndicator.Dark: the card in the dark grey of Button.Dark, and a dark veil instead of the light one */
+  .jp-busy-indicator--dark[data-busy="true"]::after { background: rgb(0 0 0 / 0.25); }
+  .jp-busy-indicator--dark[data-busy="true"] > .jp-busy-indicator__card {
+    background: var(--jp-dark-control-background);
+    box-shadow: var(--jp-shadow), var(--jp-highlight);
+    color: #fff;
+    text-shadow: var(--jp-dark-emboss);
+  }
 
   /* ----------------------------------------------------------- grid splitter */
   /* Between two panes in a flex row; jetpack.js drags the pane before it */

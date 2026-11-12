@@ -573,6 +573,35 @@
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 4 7'%3E%3Cpath d='M0 0v7l4-3.5z' fill='%23606060'/%3E%3C/svg%3E");
   }
 
+  /*
+  ScrollViewer.Dark: a dark track with a dark grey thumb and light arrows. The dark ListBox, ListView,
+  DataGrid, JetPackGrid, drop-downs and multi-line TextBox use the same bars.
+  */
+  :is(.jp-scroll-viewer--dark:not(.jp-scroll-viewer--thin), .jp-list-box--dark, .jp-list-view--dark, .jp-data-grid-host.jp-data-grid--dark, .jp-jetpack-grid--dark .jp-jetpack-grid__viewport, .jp-popup--dark, textarea.jp-text-box--dark) {
+    --jp-scroll-bar-track: #45464A;
+    --jp-scroll-bar-thumb: linear-gradient(#7A7B80 10%, #5C5D62 100%);
+    --jp-scroll-bar-thumb-vertical: linear-gradient(to right, #7A7B80 10%, #5C5D62 100%);
+    scrollbar-color: #6A6B70 var(--jp-scroll-bar-track);
+  }
+  @supports selector(::-webkit-scrollbar) {
+    :is(.jp-scroll-viewer--dark:not(.jp-scroll-viewer--thin), .jp-list-box--dark, .jp-list-view--dark, .jp-data-grid-host.jp-data-grid--dark, .jp-jetpack-grid--dark .jp-jetpack-grid__viewport, .jp-popup--dark, textarea.jp-text-box--dark) { scrollbar-color: auto; }
+  }
+  :is(.jp-scroll-viewer--dark:not(.jp-scroll-viewer--thin), .jp-list-box--dark, .jp-list-view--dark, .jp-data-grid-host.jp-data-grid--dark, .jp-jetpack-grid--dark .jp-jetpack-grid__viewport, .jp-popup--dark, textarea.jp-text-box--dark)::-webkit-scrollbar-thumb {
+    box-shadow: inset 1px 1px 0 rgb(255 255 255 / 0.25), inset -1px -1px 0 rgb(0 0 0 / 0.35);
+  }
+  :is(.jp-scroll-viewer--dark:not(.jp-scroll-viewer--thin), .jp-list-box--dark, .jp-list-view--dark, .jp-data-grid-host.jp-data-grid--dark, .jp-jetpack-grid--dark .jp-jetpack-grid__viewport, .jp-popup--dark, textarea.jp-text-box--dark)::-webkit-scrollbar-button:single-button:vertical:decrement {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 7 4'%3E%3Cpath d='M0 4h7L3.5 0z' fill='%23D0D0D0'/%3E%3C/svg%3E");
+  }
+  :is(.jp-scroll-viewer--dark:not(.jp-scroll-viewer--thin), .jp-list-box--dark, .jp-list-view--dark, .jp-data-grid-host.jp-data-grid--dark, .jp-jetpack-grid--dark .jp-jetpack-grid__viewport, .jp-popup--dark, textarea.jp-text-box--dark)::-webkit-scrollbar-button:single-button:vertical:increment {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 7 4'%3E%3Cpath d='M0 0h7L3.5 4z' fill='%23D0D0D0'/%3E%3C/svg%3E");
+  }
+  :is(.jp-scroll-viewer--dark:not(.jp-scroll-viewer--thin), .jp-list-box--dark, .jp-list-view--dark, .jp-data-grid-host.jp-data-grid--dark, .jp-jetpack-grid--dark .jp-jetpack-grid__viewport, .jp-popup--dark, textarea.jp-text-box--dark)::-webkit-scrollbar-button:single-button:horizontal:decrement {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 4 7'%3E%3Cpath d='M4 0v7L0 3.5z' fill='%23D0D0D0'/%3E%3C/svg%3E");
+  }
+  :is(.jp-scroll-viewer--dark:not(.jp-scroll-viewer--thin), .jp-list-box--dark, .jp-list-view--dark, .jp-data-grid-host.jp-data-grid--dark, .jp-jetpack-grid--dark .jp-jetpack-grid__viewport, .jp-popup--dark, textarea.jp-text-box--dark)::-webkit-scrollbar-button:single-button:horizontal:increment {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 4 7'%3E%3Cpath d='M0 0v7l4-3.5z' fill='%23D0D0D0'/%3E%3C/svg%3E");
+  }
+
   /* JetPack.Styles.ScrollViewer.Thin: a slim accent thumb over the content that jetpack.js shows
      while you scroll or point at it and hides 1.5 s later (ScrollViewerHelper.AutoHide) */
   .jp-scroll-viewer--thin { scrollbar-width: thin; scrollbar-color: transparent transparent; }

@@ -1405,6 +1405,14 @@ Load this file before Tailwind: the first @layer statement fixes the order of th
     text-shadow: 0 1px 0 rgb(255 255 255 / 0.5);
   }
   .jp-busy-indicator__card > .jp-progress-bar { width: 120px; }
+  /* BusyIndicator.Dark: the card in the dark grey of Button.Dark, and a dark veil instead of the light one */
+  .jp-busy-indicator--dark[data-busy="true"]::after { background: rgb(0 0 0 / 0.25); }
+  .jp-busy-indicator--dark[data-busy="true"] > .jp-busy-indicator__card {
+    background: var(--jp-dark-control-background);
+    box-shadow: var(--jp-shadow), var(--jp-highlight);
+    color: #fff;
+    text-shadow: var(--jp-dark-emboss);
+  }
 
   /* ----------------------------------------------------------- grid splitter */
   /* Between two panes in a flex row; jetpack.js drags the pane before it */
@@ -2017,6 +2025,35 @@ Load this file before Tailwind: the first @layer statement fixes the order of th
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 4 7'%3E%3Cpath d='M0 0v7l4-3.5z' fill='%23606060'/%3E%3C/svg%3E");
   }
 
+  /*
+  ScrollViewer.Dark: a dark track with a dark grey thumb and light arrows. The dark ListBox, ListView,
+  DataGrid, JetPackGrid, drop-downs and multi-line TextBox use the same bars.
+  */
+  :is(.jp-scroll-viewer--dark:not(.jp-scroll-viewer--thin), .jp-list-box--dark, .jp-list-view--dark, .jp-data-grid-host.jp-data-grid--dark, .jp-jetpack-grid--dark .jp-jetpack-grid__viewport, .jp-popup--dark, textarea.jp-text-box--dark) {
+    --jp-scroll-bar-track: #45464A;
+    --jp-scroll-bar-thumb: linear-gradient(#7A7B80 10%, #5C5D62 100%);
+    --jp-scroll-bar-thumb-vertical: linear-gradient(to right, #7A7B80 10%, #5C5D62 100%);
+    scrollbar-color: #6A6B70 var(--jp-scroll-bar-track);
+  }
+  @supports selector(::-webkit-scrollbar) {
+    :is(.jp-scroll-viewer--dark:not(.jp-scroll-viewer--thin), .jp-list-box--dark, .jp-list-view--dark, .jp-data-grid-host.jp-data-grid--dark, .jp-jetpack-grid--dark .jp-jetpack-grid__viewport, .jp-popup--dark, textarea.jp-text-box--dark) { scrollbar-color: auto; }
+  }
+  :is(.jp-scroll-viewer--dark:not(.jp-scroll-viewer--thin), .jp-list-box--dark, .jp-list-view--dark, .jp-data-grid-host.jp-data-grid--dark, .jp-jetpack-grid--dark .jp-jetpack-grid__viewport, .jp-popup--dark, textarea.jp-text-box--dark)::-webkit-scrollbar-thumb {
+    box-shadow: inset 1px 1px 0 rgb(255 255 255 / 0.25), inset -1px -1px 0 rgb(0 0 0 / 0.35);
+  }
+  :is(.jp-scroll-viewer--dark:not(.jp-scroll-viewer--thin), .jp-list-box--dark, .jp-list-view--dark, .jp-data-grid-host.jp-data-grid--dark, .jp-jetpack-grid--dark .jp-jetpack-grid__viewport, .jp-popup--dark, textarea.jp-text-box--dark)::-webkit-scrollbar-button:single-button:vertical:decrement {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 7 4'%3E%3Cpath d='M0 4h7L3.5 0z' fill='%23D0D0D0'/%3E%3C/svg%3E");
+  }
+  :is(.jp-scroll-viewer--dark:not(.jp-scroll-viewer--thin), .jp-list-box--dark, .jp-list-view--dark, .jp-data-grid-host.jp-data-grid--dark, .jp-jetpack-grid--dark .jp-jetpack-grid__viewport, .jp-popup--dark, textarea.jp-text-box--dark)::-webkit-scrollbar-button:single-button:vertical:increment {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 7 4'%3E%3Cpath d='M0 0h7L3.5 4z' fill='%23D0D0D0'/%3E%3C/svg%3E");
+  }
+  :is(.jp-scroll-viewer--dark:not(.jp-scroll-viewer--thin), .jp-list-box--dark, .jp-list-view--dark, .jp-data-grid-host.jp-data-grid--dark, .jp-jetpack-grid--dark .jp-jetpack-grid__viewport, .jp-popup--dark, textarea.jp-text-box--dark)::-webkit-scrollbar-button:single-button:horizontal:decrement {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 4 7'%3E%3Cpath d='M4 0v7L0 3.5z' fill='%23D0D0D0'/%3E%3C/svg%3E");
+  }
+  :is(.jp-scroll-viewer--dark:not(.jp-scroll-viewer--thin), .jp-list-box--dark, .jp-list-view--dark, .jp-data-grid-host.jp-data-grid--dark, .jp-jetpack-grid--dark .jp-jetpack-grid__viewport, .jp-popup--dark, textarea.jp-text-box--dark)::-webkit-scrollbar-button:single-button:horizontal:increment {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 4 7'%3E%3Cpath d='M0 0v7l4-3.5z' fill='%23D0D0D0'/%3E%3C/svg%3E");
+  }
+
   /* JetPack.Styles.ScrollViewer.Thin: a slim accent thumb over the content that jetpack.js shows
      while you scroll or point at it and hides 1.5 s later (ScrollViewerHelper.AutoHide) */
   .jp-scroll-viewer--thin { scrollbar-width: thin; scrollbar-color: transparent transparent; }
@@ -2265,6 +2302,29 @@ Load this file before Tailwind: the first @layer statement fixes the order of th
   .jp-menu > .jp-menu-item:is(:hover, .is-open, :focus-visible) { text-shadow: none; }
   .jp-menu > .jp-menu-item.is-open { background: var(--jp-accent-selection); color: #fff; }
 
+  /*
+  Menu.Dark and ContextMenu.Dark: the bar in the dark grey of Button.Dark; its drop-downs, the
+  context menu and their submenus on a dark grey panel with white text. The menus of SplitButton and
+  DropDownButton stay light grey.
+  */
+  .jp-menu--dark {
+    background: var(--jp-dark-control-background);
+    box-shadow: var(--jp-shadow), var(--jp-highlight);
+    color: #fff;
+  }
+  .jp-menu--dark > .jp-menu-item { text-shadow: var(--jp-dark-emboss); }
+  :is(.jp-context-menu--dark, .jp-menu--dark .jp-context-menu, .jp-context-menu--dark .jp-context-menu) {
+    border-color: var(--jp-control-dark-edge);
+    background: #4A4B50;
+    color: #fff;
+  }
+  :is(.jp-context-menu--dark, .jp-menu--dark .jp-context-menu, .jp-context-menu--dark .jp-context-menu) .jp-menu-item__gesture { color: rgb(255 255 255 / 0.55); }
+  :is(.jp-context-menu--dark, .jp-menu--dark .jp-context-menu, .jp-context-menu--dark .jp-context-menu) .jp-menu-item:disabled { color: rgb(255 255 255 / 0.35); }
+  :is(.jp-context-menu--dark, .jp-menu--dark .jp-context-menu, .jp-context-menu--dark .jp-context-menu) .jp-menu-separator {
+    border-top-color: rgb(0 0 0 / 0.4);
+    border-bottom-color: rgb(255 255 255 / 0.1);
+  }
+
   /* ----------------------------------------------------------------- toolbar */
   /*
   <div class="jp-tool-bar-tray"><div class="jp-tool-bar" role="toolbar">
@@ -2321,6 +2381,25 @@ Load this file before Tailwind: the first @layer statement fixes the order of th
   }
   .jp-tool-bar > select.jp-combo-box { width: auto; margin: 0 4px; }
   .jp-tool-bar > .jp-check-box { margin: 0 4px; color: var(--jp-control-foreground); }
+
+  /* ToolBar.Dark: the dark grey of Button.Dark; glyphs and labels turn light, the buttons stay flat */
+  .jp-tool-bar--dark {
+    --jp-control-glyph-dark: var(--jp-dark-control-glyph);
+    background: var(--jp-dark-control-background);
+    box-shadow: var(--jp-shadow), var(--jp-highlight);
+    color: #fff;
+  }
+  .jp-tool-bar--dark > .jp-tool-bar__thumb {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4'%3E%3Crect x='1' y='1' width='2' height='2' fill='%23888'/%3E%3Crect width='2' height='2' fill='%23222'/%3E%3C/svg%3E");
+  }
+  .jp-tool-bar--dark > .jp-tool-bar__separator { background: rgb(0 0 0 / 0.45); box-shadow: 1px 0 0 rgb(255 255 255 / 0.12); }
+  .jp-tool-bar--dark > :is(.jp-button, button:not([class])):hover { background: var(--jp-dark-control-background-mouse-over); border-color: rgb(0 0 0 / 0.4); }
+  .jp-tool-bar--dark > .jp-button[aria-pressed="true"], .jp-tool-bar--dark > .jp-button:active {
+    background: var(--jp-dark-control-background-pressed);
+    border-color: rgb(0 0 0 / 0.5);
+    box-shadow: inset 1px 1px 0 rgb(0 0 0 / 0.3);
+  }
+  .jp-tool-bar--dark > .jp-check-box { color: #fff; }
 
   /* ---------------------------------------------------------------- tooltip */
   /*
@@ -2707,6 +2786,18 @@ Load this file before Tailwind: the first @layer statement fixes the order of th
   .jp-dialog__header > button:hover { background: var(--jp-close-mouse-over); color: #fff; }
   .jp-dialog__content { padding: 14px 14px 12px; }
   .jp-dialog__buttons { display: flex; justify-content: flex-end; gap: 8px; margin-top: 14px; }
+  /* Dialog.Dark (JetPack.showDialog({ dark: true, … })): the header in the dark grey of Button.Dark
+     over a dark grey body with white text; its plain buttons are Button.Dark */
+  .jp-dialog--dark {
+    background: #4A4B50;
+    color: #fff;
+  }
+  .jp-dialog--dark .jp-dialog__header {
+    background: var(--jp-dark-control-background);
+    box-shadow: inset 0 -1px 0 rgb(0 0 0 / 0.4), var(--jp-highlight);
+    text-shadow: var(--jp-dark-emboss);
+  }
+  .jp-dialog--dark .jp-dialog__header > button { color: rgb(255 255 255 / 0.8); }
 }
 
 /* ---------------------------------------------------------------- controls/jetpack-controls.css */

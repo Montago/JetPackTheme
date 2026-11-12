@@ -2804,12 +2804,13 @@ also raise "jp-change" with the new value in event.detail. A data grid raises "j
   }
 
   /* ================================================================ dialogs */
-  /* JetPackDialog: JetPack.showDialog({ title, content, affirmativeText, negativeText, affirmativeStyle })
-     resolves to 'affirmative' or 'negative'; showMessage(title, message) has a single OK button. */
+  /* JetPackDialog: JetPack.showDialog({ title, content, affirmativeText, negativeText, affirmativeStyle, dark })
+     resolves to 'affirmative' or 'negative'; showMessage(title, message) has a single OK button.
+     dark: Dialog.Dark, with Button.Dark for the plain buttons. */
   function showDialog(options) {
     return new Promise(resolve => {
       const dialog = document.createElement('dialog');
-      dialog.className = 'jp-dialog';
+      dialog.className = 'jp-dialog' + (options.dark ? ' jp-dialog--dark' : '');
       const header = document.createElement('header');
       header.className = 'jp-dialog__header';
       const title = document.createElement('span');
@@ -2827,7 +2828,7 @@ also raise "jp-change" with the new value in event.detail. A data grid raises "j
       buttons.className = 'jp-dialog__buttons';
       const button = (label, value, style) => {
         const b = Object.assign(document.createElement('button'), { type: 'button', textContent: label, value });
-        b.className = 'jp-button' + (style ? ' jp-button--' + style : '');
+        b.className = 'jp-button' + (style ? ' jp-button--' + style : '') + (options.dark ? ' jp-button--dark' : '');
         b.style.minWidth = '80px';
         return b;
       };

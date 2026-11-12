@@ -350,4 +350,16 @@
   .jp-dialog__header > button:hover { background: var(--jp-close-mouse-over); color: #fff; }
   .jp-dialog__content { padding: 14px 14px 12px; }
   .jp-dialog__buttons { display: flex; justify-content: flex-end; gap: 8px; margin-top: 14px; }
+  /* Dialog.Dark (JetPack.showDialog({ dark: true, … })): the header in the dark grey of Button.Dark
+     over a dark grey body with white text; its plain buttons are Button.Dark */
+  .jp-dialog--dark {
+    background: #4A4B50;
+    color: #fff;
+  }
+  .jp-dialog--dark .jp-dialog__header {
+    background: var(--jp-dark-control-background);
+    box-shadow: inset 0 -1px 0 rgb(0 0 0 / 0.4), var(--jp-highlight);
+    text-shadow: var(--jp-dark-emboss);
+  }
+  .jp-dialog--dark .jp-dialog__header > button { color: rgb(255 255 255 / 0.8); }
 }
