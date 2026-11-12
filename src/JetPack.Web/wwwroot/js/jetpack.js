@@ -236,9 +236,10 @@ also raise "jp-change" with the new value in event.detail. A data grid raises "j
     const dpr = window.devicePixelRatio || 1;
     const w = Math.round(canvas.clientWidth * dpr);
     const h = Math.round(canvas.clientHeight * dpr);
-    if (w === 0 || h === 0) {
+    if (w === 0 || h === 0 || (canvas.width === w && canvas.height === h && canvas.jpDrawn)) {
       return;
     }
+    canvas.jpDrawn = true;
     const reach = Math.round((Number(canvas.dataset.reach) || 180) * dpr);
     const strength = canvas.dataset.strength ? Number(canvas.dataset.strength) : 0.3;
     canvas.width = w;
@@ -272,19 +273,18 @@ also raise "jp-change" with the new value in event.detail. A data grid raises "j
 
   let vignetteObserver = null;
   const vignettes = new Set();
+  /* Drawn at once and in the observer callback (before the frame is painted), never a frame later:
+     a page that shows without its vignette flashes on every navigation. */
   function setUpVignette(canvas) {
-    let pending = 0;
     if (!vignetteObserver) {
-      const redraw = () => {
-        cancelAnimationFrame(pending);
-        pending = requestAnimationFrame(() => vignettes.forEach(drawVignette));
-      };
+      const redraw = () => vignettes.forEach(drawVignette);
       vignetteObserver = new ResizeObserver(redraw);
       /* a new device pixel ratio (zoom, another screen) does not resize the element */
       window.addEventListener('resize', redraw);
     }
     vignettes.add(canvas);
     vignetteObserver.observe(canvas);
+    drawVignette(canvas);
   }
 
   /* ================================================================= popups */
