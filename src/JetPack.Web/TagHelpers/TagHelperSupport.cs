@@ -53,6 +53,9 @@ public abstract class JetPackTagHelper : TagHelper
         return s;
     }
 
+    /// <summary>The class of the text box inside a picker: the dark field (TextBox.Dark) when dark.</summary>
+    protected static string TextBoxClass(bool dark) => dark ? "jp-text-box jp-text-box--dark" : "jp-text-box";
+
     /// <summary>Keeps class, style, id and other plain attributes the page wrote on the tag helper.</summary>
     protected static void AddClasses(TagHelperOutput output, params string?[] classes)
     {

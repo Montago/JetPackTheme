@@ -4,7 +4,8 @@ Load it in <head> without defer, so the stored accent is set before the page is 
 else starts on DOMContentLoaded and works from classes and data attributes. JetPack.init(element)
 sets up controls added later.
 
-  ThemeManager      JetPack.ThemeManager.changeAccent('orange' | '#75A20A'), .controlFontSize, .showFocusVisuals
+  ThemeManager      JetPack.ThemeManager.changeTheme('dark' | 'light'), .changeAccent('orange' | '#75A20A'),
+                    .controlFontSize, .showFocusVisuals
   Dialogs           JetPack.showMessage(title, message), JetPack.showDialog({ title, content, … }) → Promise
   Flyouts           data-jp-open="id", data-jp-close, data-jp-auto-close="ms"
   InfoBar           data-jp-dismiss
@@ -14,6 +15,7 @@ sets up controls added later.
   Dates             data-jp-culture, data-jp-first-day-of-week (a calendar, date picker or container),
                     data-jp-date-format="dd-MM-yyyy" (a date picker or container)
   Accents           data-jp-accent (radio), data-jp-accent-button="green", data-jp-focus-visuals (check box)
+  Theme             data-jp-theme="light" | "dark" (radio), data-jp-theme-toggle (button: light <-> dark)
   ToolTip           data-jp-tool-tip="text"
   Validation        aria-invalid="true" + data-jp-error="message" shows the red call-out
   ContextMenu       data-jp-context-menu="id" opens that menu on right-click
@@ -40,6 +42,7 @@ also raise "jp-change" with the new value in event.detail. A data grid raises "j
 
   const root = document.documentElement;
   const ACCENT_KEY = 'jetpack.accent';
+  const THEME_KEY = 'jetpack.theme';
   const FOCUS_KEY = 'jetpack.focusVisuals';
   const PANE_KEY = 'jetpack.paneOpen';
   const FONT_KEY = 'jetpack.controlFontSize';
@@ -137,10 +140,37 @@ also raise "jp-change" with the new value in event.detail. A data grid raises "j
 
   /* =========================================================== ThemeManager */
   const accentListeners = [];
+  const themeListeners = [];
   let customAccentProps = [];
 
   const ThemeManager = {
     accents: ['green', 'orange', 'blue'],
+
+    /* 'light' (the original look) or 'dark' */
+    get currentTheme() {
+      return root.dataset.theme === 'dark' ? 'dark' : 'light';
+    },
+
+    /* Same as ThemeManager.ChangeTheme in JetPack.Wpf: data-theme="dark" on <html> gives every control the
+       colours of its dark variant (jetpack.tokens.css); remembered in this browser */
+    changeTheme(theme) {
+      const value = String(theme).trim().toLowerCase();
+      if (value !== 'light' && value !== 'dark') {
+        throw new Error('Unknown JetPack theme: ' + theme);
+      }
+      if (value === 'dark') {
+        root.dataset.theme = 'dark';
+      } else {
+        delete root.dataset.theme;
+      }
+      save(THEME_KEY, value);
+      themeListeners.forEach(fn => fn(value));
+      fire(document, 'jp-theme-changed', value);
+    },
+
+    onThemeChanged(fn) {
+      themeListeners.push(fn);
+    },
 
     /* the accent name, or the colour of a generated accent */
     get currentAccent() {
@@ -197,7 +227,13 @@ also raise "jp-change" with the new value in event.detail. A data grid raises "j
     },
   };
 
-  /* Before the first paint: the stored choices win over the page's data-accent */
+  /* Before the first paint: the stored choices win over the page's data-accent and data-theme */
+  const storedTheme = load(THEME_KEY);
+  if (storedTheme === 'dark') {
+    root.dataset.theme = 'dark';
+  } else if (storedTheme === 'light') {
+    delete root.dataset.theme;
+  }
   const storedAccent = load(ACCENT_KEY);
   if (storedAccent) {
     try { ThemeManager.changeAccent(storedAccent); } catch { /* an old value */ }
@@ -317,7 +353,16 @@ also raise "jp-change" with the new value in event.detail. A data grid raises "j
     popup.style.top = Math.round(Math.max(4, top)) + 'px';
   }
 
+  /* A drop-down follows the field it belongs to: a dark field (.jp-text-box--dark inside the
+     picker, .jp-combo-box--dark, .jp-color-picker--dark) gets the dark list (ListBox.Dark) */
+  function isDarkField(anchor) {
+    const owner = anchor.closest('.jp-combo-box, .jp-date-picker, .jp-time-picker, .jp-search-combo-box, .jp-auto-suggest-box, .jp-color-picker') || anchor;
+    return owner.matches('.jp-combo-box--dark, .jp-color-picker--dark, .jp-text-box--dark') ||
+      owner.querySelector(':scope > .jp-text-box--dark') !== null;
+  }
+
   function openPopup(popup, anchor, options) {
+    popup.classList.toggle('jp-popup--dark', isDarkField(anchor));
     if (!popup.matches(':popover-open')) {
       popup.showPopover();
     }
@@ -2795,12 +2840,13 @@ also raise "jp-change" with the new value in event.detail. A data grid raises "j
   }
 
   /* ================================================================ dialogs */
-  /* JetPackDialog: JetPack.showDialog({ title, content, affirmativeText, negativeText, affirmativeStyle })
-     resolves to 'affirmative' or 'negative'; showMessage(title, message) has a single OK button. */
+  /* JetPackDialog: JetPack.showDialog({ title, content, affirmativeText, negativeText, affirmativeStyle, dark })
+     resolves to 'affirmative' or 'negative'; showMessage(title, message) has a single OK button.
+     dark: Dialog.Dark, with Button.Dark for the plain buttons. */
   function showDialog(options) {
     return new Promise(resolve => {
       const dialog = document.createElement('dialog');
-      dialog.className = 'jp-dialog';
+      dialog.className = 'jp-dialog' + (options.dark ? ' jp-dialog--dark' : '');
       const header = document.createElement('header');
       header.className = 'jp-dialog__header';
       const title = document.createElement('span');
@@ -2818,7 +2864,7 @@ also raise "jp-change" with the new value in event.detail. A data grid raises "j
       buttons.className = 'jp-dialog__buttons';
       const button = (label, value, style) => {
         const b = Object.assign(document.createElement('button'), { type: 'button', textContent: label, value });
-        b.className = 'jp-button' + (style ? ' jp-button--' + style : '');
+        b.className = 'jp-button' + (style ? ' jp-button--' + style : '') + (options.dark ? ' jp-button--dark' : '');
         b.style.minWidth = '80px';
         return b;
       };
@@ -2971,6 +3017,11 @@ also raise "jp-change" with the new value in event.detail. A data grid raises "j
       syncInputs();
       return;
     }
+    if ((el = closestIn(event, '[data-jp-theme-toggle]'))) {
+      ThemeManager.changeTheme(ThemeManager.currentTheme === 'dark' ? 'light' : 'dark');
+      syncInputs();
+      return;
+    }
     if ((el = closestIn(event, '.jp-context-menu .jp-menu-item'))) {
       if (el.getAttribute('aria-haspopup') === 'menu') {
         openSubmenu(el);
@@ -3081,6 +3132,9 @@ also raise "jp-change" with the new value in event.detail. A data grid raises "j
     const el = event.target;
     if (el.matches('[data-jp-accent]') && el.checked) {
       ThemeManager.changeAccent(el.value);
+    } else if (el.matches('[data-jp-theme]') && el.checked) {
+      ThemeManager.changeTheme(el.value);
+      syncInputs();
     } else if (el.matches('[data-jp-focus-visuals]')) {
       ThemeManager.showFocusVisuals = el.checked;
     } else if (el.matches('[data-jp-pane-switch]')) {
@@ -3132,6 +3186,8 @@ also raise "jp-change" with the new value in event.detail. A data grid raises "j
   function syncInputs() {
     document.querySelectorAll('[data-jp-accent]').forEach(r => { r.checked = r.value === ThemeManager.currentAccent; });
     document.querySelectorAll('[data-jp-focus-visuals]').forEach(c => { c.checked = ThemeManager.showFocusVisuals; });
+    document.querySelectorAll('[data-jp-theme]').forEach(r => { r.checked = r.value === ThemeManager.currentTheme; });
+    document.querySelectorAll('[data-jp-theme-toggle]').forEach(b => b.setAttribute('aria-pressed', String(ThemeManager.currentTheme === 'dark')));
   }
 
   const controls = [

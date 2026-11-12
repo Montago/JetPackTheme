@@ -9,7 +9,7 @@ tools/web_snapshots.py can cut the picture out to docs/screenshots/web/controls/
     string? shot = Context.Request.Query["shot"];
 }
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" @(Context.Request.Query["theme"] == "dark" ? Html.Raw("data-theme=\"dark\"") : null)>
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -741,6 +741,200 @@ tools/web_snapshots.py can cut the picture out to docs/screenshots/web/controls/
             <jp-text-block text-block-style="Content" class="mt-2" text="Content · 13 px body text that wraps across the width of its container." />
             <jp-text-block text-block-style="Caption" class="mt-1" text="Caption · 11 px, 80% white" />
         </div>
+    </div>
+
+    @* ---------------------------------------------- The dark version (dark="true") *@
+    <div class="gallery-sample" data-shot="button-dark">
+        <div class="flex flex-col gap-2.5">
+            <div class="flex gap-2.5">
+                <jp-button dark="true">Normal</jp-button>
+                <jp-button is-enabled="false" dark="true">Disabled</jp-button>
+                <jp-toggle-button is-checked="true" dark="true">Toggle checked</jp-toggle-button>
+                <jp-repeat-button dark="true">Repeat</jp-repeat-button>
+                <jp-button button-style="Accent">Accent</jp-button>
+            </div>
+            <div class="flex items-center gap-2.5">
+                <jp-button button-style="Square" dark="true"><jp-icon kind="Bell" /></jp-button>
+                <jp-badged badge="12"><jp-button dark="true">Inbox</jp-button></jp-badged>
+                <jp-split-button content="Save" dark="true">
+                    <jp-menu-item header="Save as draft" />
+                </jp-split-button>
+                <jp-drop-down-button content="Export" dark="true">
+                    <jp-menu-item header="PDF" />
+                </jp-drop-down-button>
+            </div>
+        </div>
+    </div>
+
+    <div class="gallery-sample" data-shot="tile-dark">
+        <div class="flex gap-2">
+            <jp-tile title="Available" class="w-[110px]" count="14" tile-style="Green" />
+            <jp-tile title="Archive" class="w-[110px]" count="148" tile-style="Dark" />
+        </div>
+    </div>
+
+    <div class="gallery-sample" data-shot="combobox-dark">
+        <div class="flex items-start gap-3">
+            <jp-combo-box selected-index="1" class="!w-[150px]" dark="true" data-demo-open>
+                <jp-combo-box-item content="Seattle" />
+                <jp-combo-box-item content="Portland" />
+                <jp-combo-box-item content="Denver" />
+                <jp-combo-box-item content="Boston" />
+            </jp-combo-box>
+            <div class="flex flex-col gap-2.5 w-[150px]">
+                <jp-combo-box is-editable="true" text="Denver" dark="true">
+                    <jp-combo-box-item content="Seattle" />
+                    <jp-combo-box-item content="Denver" />
+                </jp-combo-box>
+                <jp-combo-box watermark="Choose week" dark="true">
+                    <jp-combo-box-item content="Week 42" />
+                </jp-combo-box>
+                <jp-combo-box selected-index="0" is-enabled="false" dark="true">
+                    <jp-combo-box-item content="Disabled" />
+                </jp-combo-box>
+            </div>
+        </div>
+    </div>
+
+    <div class="gallery-sample" data-shot="autosuggestbox-dark">
+        <jp-auto-suggest-box items="DemoData.SuggestCompanies" watermark="Search companies…" class="w-[200px]" dark="true" data-demo-open="fa" />
+    </div>
+
+    <div class="gallery-sample" data-shot="searchcombobox-dark">
+        <jp-search-combo-box items="DemoData.Companies" display-member-path="Name" selected-value-path="Id" watermark="Search companies…" class="w-[220px]" dark="true" data-demo-open />
+    </div>
+
+    <div class="gallery-sample" data-shot="datepicker-dark">
+        <jp-date-picker class="w-[170px]" dark="true" data-demo-open />
+    </div>
+
+    <div class="gallery-sample" data-shot="timepicker-dark">
+        <jp-time-picker selected-time="@(new TimeSpan(8, 30, 0))" class="w-[150px]" dark="true" data-demo-open />
+    </div>
+
+    <div class="gallery-sample" data-shot="colorpicker-dark">
+        <jp-color-picker class="w-[160px]" dark="true" data-demo-open />
+    </div>
+
+    <div class="gallery-sample" data-shot="calendar-dark">
+        <jp-calendar dark="true" />
+    </div>
+
+    <div class="gallery-sample" data-shot="listbox-dark">
+        <jp-list-box selected-index="1" class="w-[170px] h-[130px]" dark="true">
+            <jp-list-box-item content="Lindsey Ballard" />
+            <jp-list-box-item content="Charles Hoyle" />
+            <jp-list-box-item content="Daniel Tiedemann" />
+            <jp-list-box-item content="David Ritter" />
+            <jp-list-box-item content="Vivian Smail" />
+            <jp-list-box-item content="Ida Kragh" />
+            <jp-list-box-item content="Mads Lund" />
+        </jp-list-box>
+    </div>
+
+    <div class="gallery-sample" data-shot="listview-dark">
+        <jp-list-view items="DemoData.Timesheets" selected-index="2" height="150" class="w-[360px]" dark="true">
+            <jp-grid-view-column header="Employee" display-member-binding="Employee" width="150" />
+            <jp-grid-view-column header="Department" display-member-binding="Department" width="110" />
+            <jp-grid-view-column header="Hours" display-member-binding="Hours" width="70" />
+        </jp-list-view>
+    </div>
+
+    <div class="gallery-sample" data-shot="datagrid-dark">
+        <jp-data-grid items="DemoData.Timesheets" selected-index="1" height="190" class="w-[520px]" dark="true">
+            <jp-data-grid-text-column header="Employee" binding="Employee" sort-direction="Ascending" />
+            <jp-data-grid-text-column header="Department" binding="Department" width="110" />
+            <jp-data-grid-text-column header="Hours" binding="Hours" string-format="N1" width="60" horizontal-alignment="Right" />
+            <jp-data-grid-text-column header="Week" binding="Week" width="50" />
+            <jp-data-grid-text-column header="Status" binding="Status" width="90" />
+        </jp-data-grid>
+    </div>
+
+    <div class="gallery-sample" data-shot="jetpackgrid-dark">
+        <jp-jetpack-grid items='CarData.Cars.Where((c, i) => c.IsSold || i % 4 == 0).Take(16).OrderBy(c => c.Make)' group-member-path="Make" search-text="auto" search-delay="0" selected-index="1" page-size="10" height="230" class="w-[560px]" dark="true">
+            <jp-jetpack-grid-column header="Make" binding="Make" width="110" />
+            <jp-jetpack-grid-column header="Model" binding="Model" width="100" />
+            <jp-jetpack-grid-column header="Gearbox" binding="Gearbox" width="80" />
+            <jp-jetpack-grid-check-box-column header="Sold" binding="IsSold" width="56" />
+            <jp-jetpack-grid-column header="Price" binding="Price" string-format="N0" width="*" />
+        </jp-jetpack-grid>
+    </div>
+
+    <div class="gallery-sample" data-shot="expander-dark">
+        <div class="flex items-start gap-4">
+            <div class="flex flex-col gap-2 w-[210px]">
+                <jp-expander header="Billing address" is-expanded="true" dark="true"><p class="m-0">120 Pine Street<br>Seattle, WA 98101</p></jp-expander>
+                <jp-expander header="Shipping address" dark="true"><p class="m-0">Same as billing</p></jp-expander>
+            </div>
+            <jp-accordion class="w-[210px] h-[170px]" dark="true">
+                <jp-expander header="Need Placement" is-expanded="true"><p class="m-0">5 consultants without an assignment in week 44.</p></jp-expander>
+                <jp-expander header="Renewal Pending"><p class="m-0">2 contracts expire on 31 December.</p></jp-expander>
+                <jp-expander header="Archive"><p class="m-0">148 completed placements.</p></jp-expander>
+            </jp-accordion>
+        </div>
+    </div>
+
+    <div class="gallery-sample" data-shot="menu-dark">
+        <jp-menu class="w-[420px]" dark="true" data-demo-open>
+            <jp-menu-item header="_File">
+                <jp-menu-item header="_New customer" input-gesture-text="Ctrl+N" />
+                <jp-menu-item header="_Open…" input-gesture-text="Ctrl+O" />
+                <jp-separator />
+                <jp-menu-item header="Status bar" is-checkable="true" is-checked="true" />
+                <jp-menu-item header="Print" is-enabled="false" />
+                <jp-separator />
+                <jp-menu-item header="E_xit" />
+            </jp-menu-item>
+            <jp-menu-item header="_Edit" />
+            <jp-menu-item header="_View" />
+            <jp-menu-item header="_Help" />
+        </jp-menu>
+    </div>
+
+    <div class="gallery-sample" data-shot="contextmenu-dark">
+        <div class="grid place-items-center w-[200px] h-[70px] rounded-[2.5px]" data-jp-context-menu="GalleryContextMenuDark" data-demo-open
+             style="background: var(--jp-panel-background); border: 1px solid var(--jp-panel-border)">Right-click here</div>
+        <jp-context-menu id="GalleryContextMenuDark" dark="true">
+            <jp-menu-item header="Cut" input-gesture-text="Ctrl+X" />
+            <jp-menu-item header="Copy" input-gesture-text="Ctrl+C" />
+            <jp-menu-item header="Paste" input-gesture-text="Ctrl+V" is-enabled="false" />
+            <jp-separator />
+            <jp-menu-item header="Show grid lines" is-checkable="true" is-checked="true" />
+            <jp-menu-item header="Export">
+                <jp-menu-item header="PDF" />
+            </jp-menu-item>
+        </jp-context-menu>
+    </div>
+
+    <div class="gallery-sample" data-shot="toolbar-dark">
+        <jp-tool-bar-tray>
+            <jp-tool-bar dark="true">
+                <jp-button><jp-icon kind="FilePlus" /></jp-button>
+                <jp-button><jp-icon kind="ContentSave" /></jp-button>
+                <jp-separator />
+                <jp-toggle-button is-checked="true"><b>B</b></jp-toggle-button>
+                <jp-toggle-button><i style="font-family: Georgia">I</i></jp-toggle-button>
+                <jp-separator />
+                <jp-combo-box selected-index="0" class="!w-[110px]" dark="true">
+                    <jp-combo-box-item content="Trebuchet MS" />
+                </jp-combo-box>
+                <jp-check-box content="Spelling" is-checked="true" />
+            </jp-tool-bar>
+        </jp-tool-bar-tray>
+    </div>
+
+    <div class="gallery-sample" data-shot="busyindicator-dark">
+        <jp-busy-indicator is-busy="true" busy-content="Loading orders…" class="w-[240px] h-[128px]" dark="true">
+            <div class="h-full p-2.5 rounded-[2.5px] box-border" style="background: var(--jp-panel-background)">
+                <p class="m-0 text-[11px]">Customer: Fabrikam<br>Contact: Ida Kragh<br>Orders: 14<br>Latest: 10/12/2026</p>
+            </div>
+        </jp-busy-indicator>
+    </div>
+
+    <div class="gallery-sample" data-shot="scrollviewer-dark">
+        <jp-scroll-viewer horizontal-scroll-bar-visibility="Visible" vertical-scroll-bar-visibility="Visible" dark="true" class="demo-scroll-sample !w-[200px] !h-[120px]" style="background: var(--jp-dark-data-grid-background)">
+            <div class="demo-scroll-sample__content !w-[400px] !h-[300px]"></div>
+        </jp-scroll-viewer>
     </div>
 </main>
 <script src="~/js/gallery.js" asp-append-version="true"></script>

@@ -61,14 +61,6 @@ Load this file before Tailwind: the first @layer statement fixes the order of th
   --jp-input-inner-shadow-dark: #50505050;
   --jp-input-inner-shadow-light: #20202020;
   --jp-input-selection-foreground: #FFFFFF;
-  --jp-dark-input-background: linear-gradient(#57575F 30%, #505054 100%);
-  --jp-dark-input-border: #505050D0;
-  --jp-dark-input-foreground: #FFFFFF;
-  --jp-dark-input-watermark: #FFFFFF73;
-  --jp-dark-input-inner-shadow-dark: #30303050;
-  --jp-dark-input-inner-shadow-light: #30303020;
-  --jp-dark-input-read-only: #FFFFFF20;
-  --jp-dark-input-disabled: #FFFFFF33;
   --jp-error: #EF0A0A;
   --jp-error-tip: #DC000C;
   --jp-error-header: linear-gradient(#F04A4A 0%, #C41212 100%);
@@ -110,6 +102,26 @@ Load this file before Tailwind: the first @layer statement fixes the order of th
   --jp-menu-disabled: #9A9A9A;
   --jp-dialog-background: #E0E0E0;
   --jp-dialog-overlay: #0000007F;
+  --jp-dialog-close: #505050;
+  --jp-menu-gesture: #707070;
+  --jp-separator-light: #FFFFFF;
+  --jp-scroll-bar-thumb-highlight: #FFFFFF;
+  --jp-busy-indicator-overlay: #FFFFFF59;
+  --jp-calendar-background: #FFFFFF;
+  --jp-calendar-foreground: #333333;
+  --jp-calendar-day-name: #8A8A8A;
+  --jp-calendar-today: #AAAAAA;
+  --jp-calendar-mouse-over: #00000020;
+  --jp-combo-box-background: linear-gradient(#F7F7F7 16.4%, #C6C6C6 80.2%, #C6C6C6 95.3%);
+  --jp-combo-box-background-mouse-over: linear-gradient(#FFFFFF 21.1%, #DEDEDE 78.4%);
+  --jp-combo-box-background-pressed: linear-gradient(#CECECE 20.4%, #AFAFAF 86.4%);
+  --jp-inline-button-background: linear-gradient(#F7F7F7 16.4%, #C6C6C6 80.2%, #C6C6C6 95.3%);
+  --jp-inline-button-background-mouse-over: linear-gradient(#FFFFFF 21.1%, #DEDEDE 78.4%);
+  --jp-inline-button-background-pressed: linear-gradient(#CECECE 20.4%, #AFAFAF 86.4%);
+  --jp-inline-button-glyph: #606060;
+  --jp-inline-button-glyph-dark: #404040;
+  --jp-navigation-background: linear-gradient(#E2E2E2 0%, #C6C6C6 100%);
+  --jp-navigation-background-mouse-over: linear-gradient(#F8F8F8 0%, #D0D0D0 100%);
   --jp-overlay: linear-gradient(#FFFFFF4C 0%, #0000004C 100%);
   --jp-close-mouse-over: linear-gradient(#E84B4B 0%, #B71C1C 100%);
   --jp-button-green-normal: linear-gradient(#A0BB0E 17.6%, #6D9700 89.4%);
@@ -144,6 +156,45 @@ Load this file before Tailwind: the first @layer statement fixes the order of th
 }
 
 :root {
+  --jp-dark-input-background: linear-gradient(#57575F 30%, #505054 100%);
+  --jp-dark-input-border: #505050D0;
+  --jp-dark-input-foreground: #FFFFFF;
+  --jp-dark-input-watermark: #FFFFFF73;
+  --jp-dark-input-inner-shadow-dark: #30303050;
+  --jp-dark-input-inner-shadow-light: #30303020;
+  --jp-dark-input-read-only: #FFFFFF20;
+  --jp-dark-input-disabled: #FFFFFF33;
+  --jp-dark-control-background: linear-gradient(#6B6C71 16.4%, #4C4D52 80.2%, #48494E 95.3%);
+  --jp-dark-control-background-mouse-over: linear-gradient(#7A7B80 21.1%, #57585D 78.4%);
+  --jp-dark-control-background-pressed: linear-gradient(#3F4044 20.4%, #4A4B50 86.4%);
+  --jp-dark-control-background-checked: linear-gradient(#3C3D41 10%, #48494D 90%);
+  --jp-dark-disabled: linear-gradient(#636468 0%, #5A5B5F 100%);
+  --jp-dark-control-foreground: #FFFFFF;
+  --jp-dark-control-foreground-disabled: #FFFFFF59;
+  --jp-dark-control-glyph: #FFFFFFE6;
+  --jp-dark-panel-background: #4A4B50;
+  --jp-dark-data-grid-background: #3D3E42;
+  --jp-dark-data-grid-alternating-row: #46474B;
+  --jp-dark-data-grid-grid-lines: #FFFFFF12;
+  --jp-dark-data-grid-search-hit: #FFFFFF24;
+  --jp-dark-selection-mouse-over: #FFFFFF14;
+  --jp-dark-scroll-bar-track: #45464A;
+  --jp-dark-scroll-bar-thumb: linear-gradient(#7A7B80 10%, #5C5D62 100%);
+  --jp-dark-scroll-bar-thumb-vertical: linear-gradient(to right, #7A7B80 10%, #5C5D62 100%);
+  --jp-dark-scroll-bar-glyph: #D0D0D0;
+  --jp-dark-input-background-mouse-over: linear-gradient(#616169 30%, #5A5A5E 100%);
+  --jp-dark-input-background-pressed: linear-gradient(#4C4C53 30%, #46464A 100%);
+  --jp-dark-text-dim: #FFFFFF8C;
+  --jp-dark-calendar-today: #FFFFFF40;
+  --jp-dark-calendar-mouse-over: #FFFFFF1A;
+  --jp-dark-separator-light: #FFFFFF1A;
+  --jp-dark-scroll-bar-thumb-highlight: #FFFFFF40;
+  --jp-dark-busy-indicator-overlay: #00000040;
+  --jp-dark-dialog-close: #FFFFFFCC;
+  --jp-effect-dark-text-emboss: 0 -1px 0 rgb(0 0 0 / 0.45);
+}
+
+:root {
   --jp-font-family: "Trebuchet MS", "Segoe UI", sans-serif;
   --jp-font-family-heading: "Trebuchet MS", "Segoe UI", sans-serif;
   --jp-font-family-mono: Consolas, "Cascadia Mono", "Courier New", monospace;
@@ -166,6 +217,7 @@ Load this file before Tailwind: the first @layer statement fixes the order of th
   --jp-effect-popup-shadow: 0 2px 2.5px rgb(0 0 0 / 0.45);
   --jp-effect-dialog-shadow: 0 6px 12px rgb(0 0 0 / 0.5);
   --jp-effect-text-emboss: 0 1px 0 rgb(255 255 255 / 0.5);
+  --jp-effect-navigation-text-emboss: 0 1px 0 rgb(255 255 255 / 0.5);
   --jp-effect-text-glow: 0 0 2.5px rgb(0 0 0 / 0.25);
   --jp-effect-button-green-text-shadow: 0 -1px 0 rgb(43 61 0 / 0.5);
   --jp-effect-button-orange-text-shadow: 0 -1px 0 rgb(182 47 0 / 0.5);
@@ -238,6 +290,56 @@ Load this file before Tailwind: the first @layer statement fixes the order of th
   --jp-effect-accent-text-shadow: 0 -1px 0 rgb(0 83 142 / 0.5);
   --jp-focus: #8DDBFF;
   --jp-focus-border: #148CD1;
+}
+
+/* The dark version: set data-theme="dark" on <html> (or any element); Theming/DarkResources.cs */
+
+[data-theme="dark"] {
+  --jp-control-foreground: var(--jp-dark-control-foreground);
+  --jp-control-foreground-disabled: var(--jp-dark-control-foreground-disabled);
+  --jp-control-background: var(--jp-dark-control-background);
+  --jp-control-background-mouse-over: var(--jp-dark-control-background-mouse-over);
+  --jp-control-background-pressed: var(--jp-dark-control-background-pressed);
+  --jp-control-background-checked: var(--jp-dark-control-background-checked);
+  --jp-control-border: var(--jp-dark-input-border);
+  --jp-control-glyph: var(--jp-dark-control-glyph);
+  --jp-control-glyph-dark: var(--jp-dark-control-glyph);
+  --jp-header-foreground: var(--jp-dark-control-foreground);
+  --jp-static-background: var(--jp-dark-control-background);
+  --jp-static-background-mouse-over: var(--jp-dark-control-background-mouse-over);
+  --jp-disabled: var(--jp-dark-disabled);
+  --jp-effect-text-emboss: var(--jp-effect-dark-text-emboss);
+  --jp-input-background: var(--jp-dark-input-background);
+  --jp-input-foreground: var(--jp-dark-input-foreground);
+  --jp-input-watermark: var(--jp-dark-input-watermark);
+  --jp-input-read-only: var(--jp-dark-input-read-only);
+  --jp-input-disabled: var(--jp-dark-input-disabled);
+  --jp-input-inner-shadow-dark: var(--jp-dark-input-inner-shadow-dark);
+  --jp-input-inner-shadow-light: var(--jp-dark-input-inner-shadow-light);
+  --jp-combo-box-background: var(--jp-dark-input-background);
+  --jp-combo-box-background-mouse-over: var(--jp-dark-input-background-mouse-over);
+  --jp-combo-box-background-pressed: var(--jp-dark-input-background-pressed);
+  --jp-selection-mouse-over: var(--jp-dark-selection-mouse-over);
+  --jp-data-grid-background: var(--jp-dark-data-grid-background);
+  --jp-data-grid-alternating-row: var(--jp-dark-data-grid-alternating-row);
+  --jp-data-grid-grid-lines: var(--jp-dark-data-grid-grid-lines);
+  --jp-data-grid-search-hit: var(--jp-dark-data-grid-search-hit);
+  --jp-scroll-bar-track: var(--jp-dark-scroll-bar-track);
+  --jp-scroll-bar-thumb: var(--jp-dark-scroll-bar-thumb);
+  --jp-scroll-bar-thumb-vertical: var(--jp-dark-scroll-bar-thumb-vertical);
+  --jp-scroll-bar-thumb-highlight: var(--jp-dark-scroll-bar-thumb-highlight);
+  --jp-calendar-background: var(--jp-dark-input-background);
+  --jp-calendar-foreground: var(--jp-dark-control-foreground);
+  --jp-calendar-day-name: var(--jp-dark-text-dim);
+  --jp-calendar-today: var(--jp-dark-calendar-today);
+  --jp-calendar-mouse-over: var(--jp-dark-calendar-mouse-over);
+  --jp-menu-background: var(--jp-dark-panel-background);
+  --jp-menu-disabled: var(--jp-dark-control-foreground-disabled);
+  --jp-menu-gesture: var(--jp-dark-text-dim);
+  --jp-separator-light: var(--jp-dark-separator-light);
+  --jp-dialog-background: var(--jp-dark-panel-background);
+  --jp-dialog-close: var(--jp-dark-dialog-close);
+  --jp-busy-indicator-overlay: var(--jp-dark-busy-indicator-overlay);
 }
 
 /* ---------------------------------------------------------------- controls/text.css */
@@ -323,15 +425,15 @@ Load this file before Tailwind: the first @layer statement fixes the order of th
     border-color: var(--jp-control-border);
     box-shadow: var(--jp-inner-shadow), var(--jp-outer-highlight);
   }
-  .jp-text-box--dark {
+  .jp-text-box--dark, :where([data-theme="dark"]) .jp-text-box {
     --jp-tb-surface: var(--jp-dark-input-background);
     border-color: var(--jp-dark-input-border);
     color: var(--jp-dark-input-foreground);
     box-shadow: inset 1px 1px 0 var(--jp-control-dark-edge), inset 2px 2px 0 rgb(48 48 48 / 0.31), var(--jp-outer-highlight);
   }
-  .jp-text-box--dark::placeholder { color: var(--jp-dark-input-watermark); }
-  .jp-text-box--dark:read-only:not(select) { --jp-tb-surface: linear-gradient(var(--jp-dark-input-read-only), var(--jp-dark-input-read-only)), var(--jp-dark-input-background); }
-  .jp-text-box--dark:disabled {
+  .jp-text-box--dark::placeholder, :where([data-theme="dark"]) .jp-text-box::placeholder { color: var(--jp-dark-input-watermark); }
+  .jp-text-box--dark:read-only:not(select), :where([data-theme="dark"]) .jp-text-box:read-only:not(select) { --jp-tb-surface: linear-gradient(var(--jp-dark-input-read-only), var(--jp-dark-input-read-only)), var(--jp-dark-input-background); }
+  .jp-text-box--dark:disabled, :where([data-theme="dark"]) .jp-text-box:disabled {
     --jp-tb-surface: linear-gradient(var(--jp-dark-input-disabled), var(--jp-dark-input-disabled)), var(--jp-dark-input-background);
     color: rgb(255 255 255 / 0.4);
     border-color: var(--jp-dark-input-border);
@@ -438,19 +540,19 @@ Load this file before Tailwind: the first @layer statement fixes the order of th
     padding: 0;
     border: 0;
     border-radius: 1.5px;
-    background: var(--jp-control-background);
+    background: var(--jp-inline-button-background);
     box-shadow: 0 1px 1px rgb(0 0 0 / 0.35), var(--jp-highlight);
     cursor: pointer;
   }
-  .jp-numeric-up-down__spin > button:hover { background: var(--jp-control-background-mouse-over); }
-  .jp-numeric-up-down__spin > button:active { background: var(--jp-control-background-pressed); }
+  .jp-numeric-up-down__spin > button:hover { background: var(--jp-inline-button-background-mouse-over); }
+  .jp-numeric-up-down__spin > button:active { background: var(--jp-inline-button-background-pressed); }
   .jp-numeric-up-down__spin > button::after {
     content: "";
     border-left: 3.5px solid transparent;
     border-right: 3.5px solid transparent;
   }
-  .jp-numeric-up-down__spin > button:first-child::after { border-bottom: 4px solid var(--jp-control-glyph); }
-  .jp-numeric-up-down__spin > button:last-child::after { border-top: 4px solid var(--jp-control-glyph); }
+  .jp-numeric-up-down__spin > button:first-child::after { border-bottom: 4px solid var(--jp-inline-button-glyph); }
+  .jp-numeric-up-down__spin > button:last-child::after { border-top: 4px solid var(--jp-inline-button-glyph); }
 
   /* ------------------------------------------------------------ combo box */
   /*
@@ -500,6 +602,32 @@ Load this file before Tailwind: the first @layer statement fixes the order of th
     color: var(--jp-input-foreground);
     text-shadow: none;
   }
+  /* ComboBox.Dark: the field of TextBox.Dark with the caret and divider; its list is dark too */
+  select.jp-combo-box--dark, :where([data-theme="dark"]) select.jp-combo-box {
+    --jp-combo-surface: var(--jp-dark-input-background);
+    --jp-combo-glyph: rgb(255 255 255 / 0.85);
+    padding: 2px 31px 2px 9px;
+    border: 1px solid var(--jp-dark-input-border);
+    background:
+      linear-gradient(45deg, transparent 50%, var(--jp-combo-glyph) 50%) right 12px top 50% / 4px 4px no-repeat,
+      linear-gradient(-45deg, transparent 50%, var(--jp-combo-glyph) 50%) right 8px top 50% / 4px 4px no-repeat,
+      linear-gradient(rgb(0 0 0 / 0), rgb(0 0 0 / 0.35) 30%, rgb(0 0 0 / 0.35) 70%, rgb(0 0 0 / 0)) right 25px top 50% / 1px 70% no-repeat,
+      linear-gradient(rgb(255 255 255 / 0), rgb(255 255 255 / 0.14) 30%, rgb(255 255 255 / 0.14) 70%, rgb(255 255 255 / 0)) right 24px top 50% / 1px 70% no-repeat,
+      var(--jp-combo-surface);
+    color: var(--jp-dark-input-foreground);
+    box-shadow: inset 1px 1px 0 var(--jp-control-dark-edge), inset 2px 2px 0 rgb(48 48 48 / 0.31), var(--jp-outer-highlight);
+    text-shadow: none;
+  }
+  select.jp-combo-box--dark:hover, :where([data-theme="dark"]) select.jp-combo-box:hover { --jp-combo-surface: linear-gradient(rgb(255 255 255 / 0.07), rgb(255 255 255 / 0.07)), var(--jp-dark-input-background); }
+  select.jp-combo-box--dark[aria-expanded="true"], :where([data-theme="dark"]) select.jp-combo-box[aria-expanded="true"] { --jp-combo-surface: linear-gradient(rgb(0 0 0 / 0.1), rgb(0 0 0 / 0.1)), var(--jp-dark-input-background); }
+  select.jp-combo-box--dark:disabled, :where([data-theme="dark"]) select.jp-combo-box:disabled {
+    --jp-combo-surface: linear-gradient(var(--jp-dark-input-disabled), var(--jp-dark-input-disabled)), var(--jp-dark-input-background);
+    --jp-combo-glyph: rgb(255 255 255 / 0.4);
+    box-shadow: var(--jp-outer-highlight);
+    color: rgb(255 255 255 / 0.4);
+  }
+  select.jp-combo-box--dark.is-watermark, :where([data-theme="dark"]) select.jp-combo-box.is-watermark { color: var(--jp-dark-input-watermark); }
+  select.jp-combo-box--dark option, :where([data-theme="dark"]) select.jp-combo-box option { background: #505054; color: #fff; }
 
   .jp-combo-box--editable,
   .jp-date-picker,
@@ -521,24 +649,24 @@ Load this file before Tailwind: the first @layer statement fixes the order of th
     padding: 0;
     border: 0;
     border-radius: 1.5px;
-    background: var(--jp-control-background);
+    background: var(--jp-inline-button-background);
     box-shadow: 0 1px 1px rgb(0 0 0 / 0.35), var(--jp-highlight);
     cursor: pointer;
   }
-  .jp-text-box-button:hover { background: var(--jp-control-background-mouse-over); }
-  .jp-text-box-button:active, .jp-text-box-button[aria-expanded="true"] { background: var(--jp-control-background-pressed); }
+  .jp-text-box-button:hover { background: var(--jp-inline-button-background-mouse-over); }
+  .jp-text-box-button:active, .jp-text-box-button[aria-expanded="true"] { background: var(--jp-inline-button-background-pressed); }
   .jp-text-box-button::after {
     content: "";
     position: absolute;
     inset: 0;
     margin: auto;
-    background: var(--jp-control-glyph-dark);
+    background: var(--jp-inline-button-glyph-dark);
   }
   .jp-text-box-button--drop-down::after {
     width: 8px;
     height: 4px;
     clip-path: polygon(0 0, 100% 0, 50% 100%);
-    background: var(--jp-control-glyph);
+    background: var(--jp-inline-button-glyph);
   }
   .jp-text-box-button--calendar::after {
     width: 11px;
@@ -571,6 +699,15 @@ Load this file before Tailwind: the first @layer statement fixes the order of th
     overscroll-behavior: contain;
   }
   .jp-popup.jp-popup--calendar, .jp-popup.jp-popup--palette { padding: 0; background: transparent; box-shadow: none; overflow: visible; }
+  /* The list of a dark field (jetpack.js adds jp-popup--dark): ListBox.Dark */
+  .jp-popup.jp-popup--dark.jp-popup--list, :where([data-theme="dark"]) .jp-popup.jp-popup--list {
+    background: var(--jp-dark-input-background);
+    box-shadow: var(--jp-effect-popup-shadow), 0 0 0 1px var(--jp-dark-input-border);
+    color: #fff;
+  }
+  .jp-popup--dark .jp-list-box-item:hover, :where([data-theme="dark"]) .jp-popup .jp-list-box-item:hover { background: rgb(255 255 255 / 0.08); }
+  .jp-popup--dark .jp-list-box-item[aria-selected="true"], :where([data-theme="dark"]) .jp-popup .jp-list-box-item[aria-selected="true"] { background: var(--jp-accent-selection); }
+  .jp-popup--dark .jp-list-box-item[aria-disabled="true"], :where([data-theme="dark"]) .jp-popup .jp-list-box-item[aria-disabled="true"] { color: rgb(255 255 255 / 0.4); background: transparent; }
 
   /* --------------------------------------------------------- validation tip */
   /* The red call-out jetpack.js shows beside an invalid control (Validation.ErrorTemplate) */
@@ -639,6 +776,30 @@ Load this file before Tailwind: the first @layer statement fixes the order of th
     background: var(--jp-control-background-checked);
     box-shadow: inset 0 0 0 1px var(--jp-control-border-checked), inset 2px 2px 0 rgb(48 48 48 / 0.34), inset 3px 3px 0 rgb(48 48 48 / 0.12);
   }
+  /*
+  Button.Dark: dark grey for dark panels, with the shadow and highlight of the light button; text,
+  carets and glyph icons turn light. The coloured styles below still win over it, so a coloured
+  button stays coloured.
+  */
+  .jp-button--dark, :where([data-theme="dark"]) .jp-button {
+    --jp-control-glyph: rgb(255 255 255 / 0.85);
+    --jp-control-glyph-dark: var(--jp-dark-control-glyph);
+    color: #fff;
+    background: var(--jp-dark-control-background);
+    text-shadow: var(--jp-effect-dark-text-emboss);
+  }
+  .jp-button--dark:hover, :where([data-theme="dark"]) .jp-button:hover { background: var(--jp-dark-control-background-mouse-over); }
+  .jp-button--dark:active, :where([data-theme="dark"]) .jp-button:active { background: var(--jp-dark-control-background-pressed); }
+  .jp-button--dark:disabled, .jp-button--dark[aria-disabled="true"], :where([data-theme="dark"]) .jp-button:disabled, :where([data-theme="dark"]) .jp-button[aria-disabled="true"] {
+    background: linear-gradient(#636468, #5A5B5F);
+    color: rgb(255 255 255 / 0.35);
+    text-shadow: none;
+  }
+  .jp-button--dark[aria-pressed="true"], :where([data-theme="dark"]) .jp-button[aria-pressed="true"] {
+    background: linear-gradient(#3C3D41 10%, #48494D 90%);
+    box-shadow: inset 0 0 0 1px rgb(0 0 0 / 0.5), inset 2px 2px 0 rgb(0 0 0 / 0.32), inset 3px 3px 0 rgb(0 0 0 / 0.12);
+  }
+
   /* Coloured buttons: each sets the four values, the shared rules below use them */
   .jp-button--accent {
     --jp-b-normal: var(--jp-accent-button-normal);
@@ -736,6 +897,8 @@ Load this file before Tailwind: the first @layer statement fixes the order of th
     width: 1px;
     background: rgb(0 0 0 / 0.22);
   }
+  /* SplitButton.Dark: the arrow half gets the top highlight too, which shows on the dark grey */
+  .jp-split-button > .jp-button--dark + .jp-button--dark, :where([data-theme="dark"]) .jp-split-button > .jp-button + .jp-button { box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.5), inset 1px 0 0 rgb(255 255 255 / 0.4); }
 }
 
 /* ---------------------------------------------------------------- controls/toggles.css */
@@ -1112,6 +1275,15 @@ Load this file before Tailwind: the first @layer statement fixes the order of th
     transition: transform 0.15s;
   }
   .jp-expander[open] > summary::before { transform: rotate(90deg); }
+  /* Expander.Dark (and every Expander of Accordion.Dark): the header in the dark grey of Button.Dark */
+  :is(.jp-expander--dark, .jp-accordion--dark > .jp-expander) > summary, :where([data-theme="dark"]) :is(.jp-expander, .jp-accordion > .jp-expander) > summary {
+    background: var(--jp-dark-control-background);
+    color: #fff;
+    text-shadow: var(--jp-effect-dark-text-emboss);
+  }
+  :is(.jp-expander--dark, .jp-accordion--dark > .jp-expander) > summary:hover, :where([data-theme="dark"]) :is(.jp-expander, .jp-accordion > .jp-expander) > summary:hover { background: var(--jp-dark-control-background-mouse-over); }
+  :is(.jp-expander--dark, .jp-accordion--dark > .jp-expander) > summary:active, :where([data-theme="dark"]) :is(.jp-expander, .jp-accordion > .jp-expander) > summary:active { background: var(--jp-dark-control-background-pressed); }
+  :is(.jp-expander--dark, .jp-accordion--dark > .jp-expander) > summary::before, :where([data-theme="dark"]) :is(.jp-expander, .jp-accordion > .jp-expander) > summary::before { border-left-color: var(--jp-dark-control-glyph); }
   .jp-expander__content {
     margin-top: 2px;
     padding: 8px 10px;
@@ -1260,15 +1432,15 @@ Load this file before Tailwind: the first @layer statement fixes the order of th
     position: absolute;
     inset: 0 0 auto;
     height: 38px;
-    background: var(--jp-static-background);
+    background: var(--jp-navigation-background);
     box-shadow: var(--jp-effect-control-shadow);
   }
   .jp-tab-control--navigation > .jp-tab-control__header > .jp-tab-control__strip > .jp-tab-item {
     padding: 0 20px;
     color: var(--jp-navigation-inactive);
-    text-shadow: var(--jp-effect-text-emboss);
+    text-shadow: var(--jp-effect-navigation-text-emboss);
   }
-  .jp-tab-control--navigation > .jp-tab-control__header > .jp-tab-control__strip > .jp-tab-item:hover:not(:disabled, [aria-selected="true"]) { background: var(--jp-static-background-mouse-over); }
+  .jp-tab-control--navigation > .jp-tab-control__header > .jp-tab-control__strip > .jp-tab-item:hover:not(:disabled, [aria-selected="true"]) { background: var(--jp-navigation-background-mouse-over); }
   .jp-tab-control--navigation > .jp-tab-control__header > .jp-tab-control__tag {
     position: relative;
     display: flex;
@@ -1315,7 +1487,7 @@ Load this file before Tailwind: the first @layer statement fixes the order of th
   .jp-busy-indicator[data-busy="true"]::after {
     content: "";
     grid-area: 1 / 1;
-    background: rgb(255 255 255 / 0.35);
+    background: var(--jp-busy-indicator-overlay);
   }
   .jp-busy-indicator[data-busy="true"] > .jp-busy-indicator__card {
     position: relative;
@@ -1335,6 +1507,14 @@ Load this file before Tailwind: the first @layer statement fixes the order of th
     text-shadow: 0 1px 0 rgb(255 255 255 / 0.5);
   }
   .jp-busy-indicator__card > .jp-progress-bar { width: 120px; }
+  /* BusyIndicator.Dark: the card in the dark grey of Button.Dark, and a dark veil instead of the light one */
+  .jp-busy-indicator--dark[data-busy="true"]::after, :where([data-theme="dark"]) .jp-busy-indicator[data-busy="true"]::after { background: rgb(0 0 0 / 0.25); }
+  .jp-busy-indicator--dark[data-busy="true"] > .jp-busy-indicator__card, :where([data-theme="dark"]) .jp-busy-indicator[data-busy="true"] > .jp-busy-indicator__card {
+    background: var(--jp-dark-control-background);
+    box-shadow: var(--jp-shadow), var(--jp-highlight);
+    color: #fff;
+    text-shadow: var(--jp-effect-dark-text-emboss);
+  }
 
   /* ----------------------------------------------------------- grid splitter */
   /* Between two panes in a flex row; jetpack.js drags the pane before it */
@@ -1830,12 +2010,12 @@ Load this file before Tailwind: the first @layer statement fixes the order of th
   }
   .jp-list-box-item[aria-disabled="true"] { color: var(--jp-menu-disabled); background: transparent; }
   /* On the dark panels: the Recent list in a flyout */
-  .jp-list-box--dark {
+  .jp-list-box--dark, :where([data-theme="dark"]) .jp-list-box {
     border-color: var(--jp-dark-input-border);
     background: var(--jp-dark-input-background);
     color: #fff;
   }
-  .jp-list-box--dark .jp-list-box-item:hover { background: rgb(255 255 255 / 0.08); }
+  .jp-list-box--dark .jp-list-box-item:hover, :where([data-theme="dark"]) .jp-list-box .jp-list-box-item:hover { background: rgb(255 255 255 / 0.08); }
 
   /* ------------------------------------------------------------ list view */
   /* ListView with a GridView: a list box with column headers: <div class="jp-list-view"><table>… */
@@ -1868,6 +2048,34 @@ Load this file before Tailwind: the first @layer statement fixes the order of th
   .jp-list-view tbody tr:hover td { background: var(--jp-selection-mouse-over); }
   .jp-list-view tbody tr[aria-selected="true"] td { background: var(--jp-accent-selection); color: #fff; }
 
+  /*
+  DataGrid.Dark, ListView.Dark, JetPackGrid.Dark: white text on dark grey rows, darker than the header,
+  which keeps its gradient. They set the grid's own values, so hover, selection, alternating rows and
+  search hits follow.
+  */
+  :is(.jp-data-grid--dark, .jp-list-view--dark, .jp-jetpack-grid--dark), :where([data-theme="dark"]) :is(.jp-data-grid, .jp-list-view, .jp-jetpack-grid) {
+    --jp-data-grid-background: var(--jp-dark-data-grid-background);
+    --jp-data-grid-alternating-row: var(--jp-dark-data-grid-alternating-row);
+    --jp-data-grid-grid-lines: var(--jp-dark-data-grid-grid-lines);
+    --jp-data-grid-search-hit: var(--jp-dark-data-grid-search-hit);
+    --jp-jetpack-grid-highlight-foreground: var(--jp-accent-highlight);
+    border-color: var(--jp-control-dark-edge);
+    color: #fff;
+  }
+  .jp-list-view--dark, :where([data-theme="dark"]) .jp-list-view { background: var(--jp-data-grid-background); }
+  .jp-list-view--dark tbody tr:hover td, :where([data-theme="dark"]) .jp-list-view tbody tr:hover td { background: var(--jp-dark-selection-mouse-over); }
+  .jp-list-view--dark tbody tr[aria-selected="true"] td, :where([data-theme="dark"]) .jp-list-view tbody tr[aria-selected="true"] td { background: var(--jp-accent-selection); }
+  .jp-data-grid--dark tfoot td, :where([data-theme="dark"]) .jp-data-grid tfoot td { background: var(--jp-dark-control-background); }
+  .jp-jetpack-grid--dark .jp-jetpack-grid__group-header, :where([data-theme="dark"]) .jp-jetpack-grid .jp-jetpack-grid__group-header {
+    border-bottom-color: rgb(0 0 0 / 0.4);
+    background: var(--jp-dark-control-background);
+    box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.2);
+    color: #fff;
+    text-shadow: var(--jp-effect-dark-text-emboss);
+  }
+  .jp-jetpack-grid--dark .jp-jetpack-grid__group-header:hover, :where([data-theme="dark"]) .jp-jetpack-grid .jp-jetpack-grid__group-header:hover { background: var(--jp-dark-control-background-mouse-over); }
+  .jp-jetpack-grid--dark .jp-jetpack-grid__group-header::before, :where([data-theme="dark"]) .jp-jetpack-grid .jp-jetpack-grid__group-header::before { background: var(--jp-dark-control-glyph); }
+
   /* ------------------------------------------------------------ scrollbars */
   /* JetPack.Styles.ScrollBar: the light track, a raised thumb and arrow buttons (Chromium).
      Every JetPack element that scrolls gets them. */
@@ -1889,7 +2097,7 @@ Load this file before Tailwind: the first @layer statement fixes the order of th
     background: var(--jp-scroll-bar-thumb-vertical) padding-box;
     border: 2px solid transparent;
     border-radius: 4px;
-    box-shadow: inset 1px 1px 0 #fff, inset -1px -1px 0 rgb(0 0 0 / 0.25);
+    box-shadow: inset 1px 1px 0 var(--jp-scroll-bar-thumb-highlight), inset -1px -1px 0 rgb(0 0 0 / 0.25);
   }
   :where(.jp-scroll-viewer, .jp-list-box, .jp-list-view, .jp-data-grid-host, .jp-jetpack-grid__viewport, .jp-jetpack-grid-filter__list, .jp-popup, .jp-tree-view, textarea.jp-text-box)::-webkit-scrollbar-thumb:horizontal {
     background: var(--jp-scroll-bar-thumb) padding-box;
@@ -1917,6 +2125,35 @@ Load this file before Tailwind: the first @layer statement fixes the order of th
     height: 16px;
     background-size: 4px 7px;
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 4 7'%3E%3Cpath d='M0 0v7l4-3.5z' fill='%23606060'/%3E%3C/svg%3E");
+  }
+
+  /*
+  ScrollViewer.Dark: a dark track with a dark grey thumb and light arrows. The dark ListBox, ListView,
+  DataGrid, JetPackGrid, drop-downs and multi-line TextBox use the same bars.
+  */
+  :is(.jp-scroll-viewer--dark:not(.jp-scroll-viewer--thin), .jp-list-box--dark, .jp-list-view--dark, .jp-data-grid-host.jp-data-grid--dark, .jp-jetpack-grid--dark .jp-jetpack-grid__viewport, .jp-popup--dark, textarea.jp-text-box--dark), :where([data-theme="dark"]) :is(.jp-scroll-viewer:not(.jp-scroll-viewer--thin), .jp-list-box, .jp-list-view, .jp-data-grid-host, .jp-jetpack-grid .jp-jetpack-grid__viewport, .jp-popup, textarea.jp-text-box) {
+    --jp-scroll-bar-track: var(--jp-dark-scroll-bar-track);
+    --jp-scroll-bar-thumb: var(--jp-dark-scroll-bar-thumb);
+    --jp-scroll-bar-thumb-vertical: var(--jp-dark-scroll-bar-thumb-vertical);
+    scrollbar-color: #6A6B70 var(--jp-scroll-bar-track);
+  }
+  @supports selector(::-webkit-scrollbar) {
+    :is(.jp-scroll-viewer--dark:not(.jp-scroll-viewer--thin), .jp-list-box--dark, .jp-list-view--dark, .jp-data-grid-host.jp-data-grid--dark, .jp-jetpack-grid--dark .jp-jetpack-grid__viewport, .jp-popup--dark, textarea.jp-text-box--dark), :where([data-theme="dark"]) :is(.jp-scroll-viewer:not(.jp-scroll-viewer--thin), .jp-list-box, .jp-list-view, .jp-data-grid-host, .jp-jetpack-grid .jp-jetpack-grid__viewport, .jp-popup, textarea.jp-text-box) { scrollbar-color: auto; }
+  }
+  :is(.jp-scroll-viewer--dark:not(.jp-scroll-viewer--thin), .jp-list-box--dark, .jp-list-view--dark, .jp-data-grid-host.jp-data-grid--dark, .jp-jetpack-grid--dark .jp-jetpack-grid__viewport, .jp-popup--dark, textarea.jp-text-box--dark)::-webkit-scrollbar-thumb, :where([data-theme="dark"]) :is(.jp-scroll-viewer:not(.jp-scroll-viewer--thin), .jp-list-box, .jp-list-view, .jp-data-grid-host, .jp-jetpack-grid .jp-jetpack-grid__viewport, .jp-popup, textarea.jp-text-box)::-webkit-scrollbar-thumb {
+    box-shadow: inset 1px 1px 0 rgb(255 255 255 / 0.25), inset -1px -1px 0 rgb(0 0 0 / 0.35);
+  }
+  :is(.jp-scroll-viewer--dark:not(.jp-scroll-viewer--thin), .jp-list-box--dark, .jp-list-view--dark, .jp-data-grid-host.jp-data-grid--dark, .jp-jetpack-grid--dark .jp-jetpack-grid__viewport, .jp-popup--dark, textarea.jp-text-box--dark)::-webkit-scrollbar-button:single-button:vertical:decrement, :where([data-theme="dark"]) :is(.jp-scroll-viewer:not(.jp-scroll-viewer--thin), .jp-list-box, .jp-list-view, .jp-data-grid-host, .jp-jetpack-grid .jp-jetpack-grid__viewport, .jp-popup, textarea.jp-text-box)::-webkit-scrollbar-button:single-button:vertical:decrement {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 7 4'%3E%3Cpath d='M0 4h7L3.5 0z' fill='%23D0D0D0'/%3E%3C/svg%3E");
+  }
+  :is(.jp-scroll-viewer--dark:not(.jp-scroll-viewer--thin), .jp-list-box--dark, .jp-list-view--dark, .jp-data-grid-host.jp-data-grid--dark, .jp-jetpack-grid--dark .jp-jetpack-grid__viewport, .jp-popup--dark, textarea.jp-text-box--dark)::-webkit-scrollbar-button:single-button:vertical:increment, :where([data-theme="dark"]) :is(.jp-scroll-viewer:not(.jp-scroll-viewer--thin), .jp-list-box, .jp-list-view, .jp-data-grid-host, .jp-jetpack-grid .jp-jetpack-grid__viewport, .jp-popup, textarea.jp-text-box)::-webkit-scrollbar-button:single-button:vertical:increment {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 7 4'%3E%3Cpath d='M0 0h7L3.5 4z' fill='%23D0D0D0'/%3E%3C/svg%3E");
+  }
+  :is(.jp-scroll-viewer--dark:not(.jp-scroll-viewer--thin), .jp-list-box--dark, .jp-list-view--dark, .jp-data-grid-host.jp-data-grid--dark, .jp-jetpack-grid--dark .jp-jetpack-grid__viewport, .jp-popup--dark, textarea.jp-text-box--dark)::-webkit-scrollbar-button:single-button:horizontal:decrement, :where([data-theme="dark"]) :is(.jp-scroll-viewer:not(.jp-scroll-viewer--thin), .jp-list-box, .jp-list-view, .jp-data-grid-host, .jp-jetpack-grid .jp-jetpack-grid__viewport, .jp-popup, textarea.jp-text-box)::-webkit-scrollbar-button:single-button:horizontal:decrement {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 4 7'%3E%3Cpath d='M4 0v7L0 3.5z' fill='%23D0D0D0'/%3E%3C/svg%3E");
+  }
+  :is(.jp-scroll-viewer--dark:not(.jp-scroll-viewer--thin), .jp-list-box--dark, .jp-list-view--dark, .jp-data-grid-host.jp-data-grid--dark, .jp-jetpack-grid--dark .jp-jetpack-grid__viewport, .jp-popup--dark, textarea.jp-text-box--dark)::-webkit-scrollbar-button:single-button:horizontal:increment, :where([data-theme="dark"]) :is(.jp-scroll-viewer:not(.jp-scroll-viewer--thin), .jp-list-box, .jp-list-view, .jp-data-grid-host, .jp-jetpack-grid .jp-jetpack-grid__viewport, .jp-popup, textarea.jp-text-box)::-webkit-scrollbar-button:single-button:horizontal:increment {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 4 7'%3E%3Cpath d='M0 0v7l4-3.5z' fill='%23D0D0D0'/%3E%3C/svg%3E");
   }
 
   /* JetPack.Styles.ScrollViewer.Thin: a slim accent thumb over the content that jetpack.js shows
@@ -1954,9 +2191,9 @@ Load this file before Tailwind: the first @layer statement fixes the order of th
     box-sizing: border-box;
     width: 174px;
     border-radius: var(--jp-radius);
-    background: #fff;
+    background: var(--jp-calendar-background);
     box-shadow: var(--jp-shadow-light);
-    color: #333;
+    color: var(--jp-calendar-foreground);
     font-size: 11px;
     overflow: hidden;
     user-select: none;
@@ -2011,22 +2248,22 @@ Load this file before Tailwind: the first @layer statement fixes the order of th
     gap: 6px 2px;
     padding: 8px 6px 10px;
   }
-  .jp-calendar__day-name { padding: 3px 0 2px; color: #8A8A8A; font-size: 9.5px; }
+  .jp-calendar__day-name { padding: 3px 0 2px; color: var(--jp-calendar-day-name); font-size: 9.5px; }
   .jp-calendar__cell {
     height: 21px;
     padding: 0;
     border: 0;
     border-radius: 1px;
     background: transparent;
-    color: #333;
+    color: var(--jp-calendar-foreground);
     font: inherit;
     font-size: 11px;
     cursor: pointer;
   }
   .jp-calendar__grid:is([data-mode="year"], [data-mode="decade"]) .jp-calendar__cell { height: 30px; font-size: var(--jp-font-size-control); }
-  .jp-calendar__cell:hover { background: rgb(0 0 0 / 0.125); }
+  .jp-calendar__cell:hover { background: var(--jp-calendar-mouse-over); }
   .jp-calendar__cell.is-other-month { color: #ADADAD; }
-  .jp-calendar__cell.is-today { background: #AAAAAA; color: #fff; }
+  .jp-calendar__cell.is-today { background: var(--jp-calendar-today); color: #fff; }
   .jp-calendar__cell.is-selected {
     background: var(--jp-accent-selection);
     color: #fff;
@@ -2034,6 +2271,26 @@ Load this file before Tailwind: the first @layer statement fixes the order of th
   }
   .jp-calendar__cell:focus-visible { outline: 1px solid var(--jp-focus-border); outline-offset: -1px; }
   .jp-popup--calendar .jp-calendar { border-radius: 0 0 var(--jp-radius) var(--jp-radius); box-shadow: var(--jp-effect-popup-shadow); }
+
+  /* Calendar.Dark: the header in the dark grey of Button.Dark, the days on the field of ListBox.Dark.
+     A DatePicker with the dark field opens it too (jetpack.js marks its drop-down jp-popup--dark). */
+  :is(.jp-calendar--dark, .jp-popup--dark .jp-calendar), :where([data-theme="dark"]) :is(.jp-calendar, .jp-popup .jp-calendar) {
+    background: var(--jp-dark-input-background);
+    color: #fff;
+  }
+  :is(.jp-calendar--dark, .jp-popup--dark .jp-calendar) .jp-calendar__header, :where([data-theme="dark"]) :is(.jp-calendar, .jp-popup .jp-calendar) .jp-calendar__header {
+    background: var(--jp-dark-control-background);
+    box-shadow: inset 0 -1px 0 rgb(0 0 0 / 0.4), var(--jp-highlight);
+  }
+  :is(.jp-calendar--dark, .jp-popup--dark .jp-calendar) .jp-calendar__header > button, :where([data-theme="dark"]) :is(.jp-calendar, .jp-popup .jp-calendar) .jp-calendar__header > button { color: #fff; }
+  :is(.jp-calendar--dark, .jp-popup--dark .jp-calendar) .jp-calendar__header > button:hover, :where([data-theme="dark"]) :is(.jp-calendar, .jp-popup .jp-calendar) .jp-calendar__header > button:hover { background: rgb(255 255 255 / 0.1); }
+  :is(.jp-calendar--dark, .jp-popup--dark .jp-calendar) .jp-calendar__title, :where([data-theme="dark"]) :is(.jp-calendar, .jp-popup .jp-calendar) .jp-calendar__title { text-shadow: var(--jp-effect-dark-text-emboss); }
+  :is(.jp-calendar--dark, .jp-popup--dark .jp-calendar) :is(.jp-calendar__previous, .jp-calendar__next)::after, :where([data-theme="dark"]) :is(.jp-calendar, .jp-popup .jp-calendar) :is(.jp-calendar__previous, .jp-calendar__next)::after { background: var(--jp-dark-control-glyph); }
+  :is(.jp-calendar--dark, .jp-popup--dark .jp-calendar) .jp-calendar__day-name, :where([data-theme="dark"]) :is(.jp-calendar, .jp-popup .jp-calendar) .jp-calendar__day-name { color: rgb(255 255 255 / 0.55); }
+  :is(.jp-calendar--dark, .jp-popup--dark .jp-calendar) .jp-calendar__cell, :where([data-theme="dark"]) :is(.jp-calendar, .jp-popup .jp-calendar) .jp-calendar__cell { color: #fff; }
+  :is(.jp-calendar--dark, .jp-popup--dark .jp-calendar) .jp-calendar__cell:hover:not(.is-today, .is-selected), :where([data-theme="dark"]) :is(.jp-calendar, .jp-popup .jp-calendar) .jp-calendar__cell:hover:not(.is-today, .is-selected) { background: rgb(255 255 255 / 0.1); }
+  :is(.jp-calendar--dark, .jp-popup--dark .jp-calendar) .jp-calendar__cell.is-other-month, :where([data-theme="dark"]) :is(.jp-calendar, .jp-popup .jp-calendar) .jp-calendar__cell.is-other-month { color: rgb(255 255 255 / 0.4); }
+  :is(.jp-calendar--dark, .jp-popup--dark .jp-calendar) .jp-calendar__cell.is-today:not(.is-selected), :where([data-theme="dark"]) :is(.jp-calendar, .jp-popup .jp-calendar) .jp-calendar__cell.is-today:not(.is-selected) { background: rgb(255 255 255 / 0.25); color: #fff; }
 }
 
 /* ---------------------------------------------------------------- controls/menu.css */
@@ -2087,7 +2344,7 @@ Load this file before Tailwind: the first @layer statement fixes the order of th
   }
   .jp-menu-item > .jp-icon { grid-column: 1; justify-self: center; }
   .jp-menu-item__header { grid-column: 2; margin: 0 12px 0 4px; }
-  .jp-menu-item__gesture { grid-column: 3; margin-left: 12px; color: #707070; }
+  .jp-menu-item__gesture { grid-column: 3; margin-left: 12px; color: var(--jp-menu-gesture); }
   /* a plain label without the header span */
   .jp-menu-item:not(:has(.jp-menu-item__header)) { padding-left: 30px; display: flex; }
   .jp-menu-item:is(:hover, :focus-visible, .is-highlighted):not(:disabled) {
@@ -2124,7 +2381,7 @@ Load this file before Tailwind: the first @layer statement fixes the order of th
     margin: 4px 6px 4px 30px;
     border: 0;
     border-top: 1px solid rgb(0 0 0 / 0.16);
-    border-bottom: 1px solid #fff;
+    border-bottom: 1px solid var(--jp-separator-light);
   }
 
   /* Menu: the light bar with the top-level headers; the open one gets the accent */
@@ -2146,6 +2403,29 @@ Load this file before Tailwind: the first @layer statement fixes the order of th
   .jp-menu > .jp-menu-item::after { display: none; }
   .jp-menu > .jp-menu-item:is(:hover, .is-open, :focus-visible) { text-shadow: none; }
   .jp-menu > .jp-menu-item.is-open { background: var(--jp-accent-selection); color: #fff; }
+
+  /*
+  Menu.Dark and ContextMenu.Dark: the bar in the dark grey of Button.Dark; its drop-downs, the
+  context menu and their submenus on a dark grey panel with white text. The menus of SplitButton and
+  DropDownButton stay light grey.
+  */
+  .jp-menu--dark, :where([data-theme="dark"]) .jp-menu {
+    background: var(--jp-dark-control-background);
+    box-shadow: var(--jp-shadow), var(--jp-highlight);
+    color: #fff;
+  }
+  .jp-menu--dark > .jp-menu-item, :where([data-theme="dark"]) .jp-menu > .jp-menu-item { text-shadow: var(--jp-effect-dark-text-emboss); }
+  :is(.jp-context-menu--dark, .jp-menu--dark .jp-context-menu, .jp-context-menu--dark .jp-context-menu), :where([data-theme="dark"]) :is(.jp-context-menu, .jp-menu .jp-context-menu, .jp-context-menu .jp-context-menu) {
+    border-color: var(--jp-control-dark-edge);
+    background: var(--jp-dark-panel-background);
+    color: #fff;
+  }
+  :is(.jp-context-menu--dark, .jp-menu--dark .jp-context-menu, .jp-context-menu--dark .jp-context-menu) .jp-menu-item__gesture, :where([data-theme="dark"]) :is(.jp-context-menu, .jp-menu .jp-context-menu, .jp-context-menu .jp-context-menu) .jp-menu-item__gesture { color: rgb(255 255 255 / 0.55); }
+  :is(.jp-context-menu--dark, .jp-menu--dark .jp-context-menu, .jp-context-menu--dark .jp-context-menu) .jp-menu-item:disabled, :where([data-theme="dark"]) :is(.jp-context-menu, .jp-menu .jp-context-menu, .jp-context-menu .jp-context-menu) .jp-menu-item:disabled { color: rgb(255 255 255 / 0.35); }
+  :is(.jp-context-menu--dark, .jp-menu--dark .jp-context-menu, .jp-context-menu--dark .jp-context-menu) .jp-menu-separator, :where([data-theme="dark"]) :is(.jp-context-menu, .jp-menu .jp-context-menu, .jp-context-menu .jp-context-menu) .jp-menu-separator {
+    border-top-color: rgb(0 0 0 / 0.4);
+    border-bottom-color: rgb(255 255 255 / 0.1);
+  }
 
   /* ----------------------------------------------------------------- toolbar */
   /*
@@ -2181,7 +2461,7 @@ Load this file before Tailwind: the first @layer statement fixes the order of th
     width: 1px;
     margin: 2px 4px;
     background: rgb(0 0 0 / 0.2);
-    box-shadow: 1px 0 0 #fff;
+    box-shadow: 1px 0 0 var(--jp-separator-light);
   }
   /* Buttons in a ToolBar (ToolBar.ButtonStyleKey): flat until the mouse is over them */
   .jp-tool-bar > :is(.jp-button, button:not([class])) {
@@ -2203,6 +2483,25 @@ Load this file before Tailwind: the first @layer statement fixes the order of th
   }
   .jp-tool-bar > select.jp-combo-box { width: auto; margin: 0 4px; }
   .jp-tool-bar > .jp-check-box { margin: 0 4px; color: var(--jp-control-foreground); }
+
+  /* ToolBar.Dark: the dark grey of Button.Dark; glyphs and labels turn light, the buttons stay flat */
+  .jp-tool-bar--dark, :where([data-theme="dark"]) .jp-tool-bar {
+    --jp-control-glyph-dark: var(--jp-dark-control-glyph);
+    background: var(--jp-dark-control-background);
+    box-shadow: var(--jp-shadow), var(--jp-highlight);
+    color: #fff;
+  }
+  .jp-tool-bar--dark > .jp-tool-bar__thumb, :where([data-theme="dark"]) .jp-tool-bar > .jp-tool-bar__thumb {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4'%3E%3Crect x='1' y='1' width='2' height='2' fill='%23888'/%3E%3Crect width='2' height='2' fill='%23222'/%3E%3C/svg%3E");
+  }
+  .jp-tool-bar--dark > .jp-tool-bar__separator, :where([data-theme="dark"]) .jp-tool-bar > .jp-tool-bar__separator { background: rgb(0 0 0 / 0.45); box-shadow: 1px 0 0 rgb(255 255 255 / 0.12); }
+  .jp-tool-bar--dark > :is(.jp-button, button:not([class])):hover, :where([data-theme="dark"]) .jp-tool-bar > :is(.jp-button, button:not([class])):hover { background: var(--jp-dark-control-background-mouse-over); border-color: rgb(0 0 0 / 0.4); }
+  .jp-tool-bar--dark > .jp-button[aria-pressed="true"], .jp-tool-bar--dark > .jp-button:active, :where([data-theme="dark"]) .jp-tool-bar > .jp-button[aria-pressed="true"], :where([data-theme="dark"]) .jp-tool-bar > .jp-button:active {
+    background: var(--jp-dark-control-background-pressed);
+    border-color: rgb(0 0 0 / 0.5);
+    box-shadow: inset 1px 1px 0 rgb(0 0 0 / 0.3);
+  }
+  .jp-tool-bar--dark > .jp-check-box, :where([data-theme="dark"]) .jp-tool-bar > .jp-check-box { color: #fff; }
 
   /* ---------------------------------------------------------------- tooltip */
   /*
@@ -2582,13 +2881,25 @@ Load this file before Tailwind: the first @layer statement fixes the order of th
     border: 0;
     border-radius: var(--jp-radius);
     background: transparent;
-    color: #505050;
+    color: var(--jp-dialog-close);
     font-size: 14px;
     cursor: pointer;
   }
   .jp-dialog__header > button:hover { background: var(--jp-close-mouse-over); color: #fff; }
   .jp-dialog__content { padding: 14px 14px 12px; }
   .jp-dialog__buttons { display: flex; justify-content: flex-end; gap: 8px; margin-top: 14px; }
+  /* Dialog.Dark (JetPack.showDialog({ dark: true, … })): the header in the dark grey of Button.Dark
+     over a dark grey body with white text; its plain buttons are Button.Dark */
+  .jp-dialog--dark, :where([data-theme="dark"]) .jp-dialog {
+    background: var(--jp-dark-panel-background);
+    color: #fff;
+  }
+  .jp-dialog--dark .jp-dialog__header, :where([data-theme="dark"]) .jp-dialog .jp-dialog__header {
+    background: var(--jp-dark-control-background);
+    box-shadow: inset 0 -1px 0 rgb(0 0 0 / 0.4), var(--jp-highlight);
+    text-shadow: var(--jp-effect-dark-text-emboss);
+  }
+  .jp-dialog--dark .jp-dialog__header > button, :where([data-theme="dark"]) .jp-dialog .jp-dialog__header > button { color: rgb(255 255 255 / 0.8); }
 }
 
 /* ---------------------------------------------------------------- controls/jetpack-controls.css */
@@ -2671,6 +2982,14 @@ Load this file before Tailwind: the first @layer statement fixes the order of th
   }
   .jp-tile:hover { background: var(--jp-control-background-mouse-over); }
   .jp-tile:active { background: var(--jp-control-background-pressed); }
+  /* Tile.Dark: the dark grey of Button.Dark */
+  .jp-tile--dark, :where([data-theme="dark"]) .jp-tile {
+    background: var(--jp-dark-control-background);
+    color: #fff;
+    text-shadow: var(--jp-effect-dark-text-emboss);
+  }
+  .jp-tile--dark:hover, :where([data-theme="dark"]) .jp-tile:hover { background: var(--jp-dark-control-background-mouse-over); }
+  .jp-tile--dark:active, :where([data-theme="dark"]) .jp-tile:active { background: var(--jp-dark-control-background-pressed); }
   .jp-tile__title { grid-area: title; font-size: 12px; font-weight: 700; }
   .jp-tile__count { grid-area: count; justify-self: end; font-size: 24px; font-weight: 700; line-height: 1; }
   .jp-tile--accent { --jp-b-normal: var(--jp-accent-button-normal); --jp-b-over: var(--jp-accent-button-mouse-over); --jp-b-pressed: var(--jp-accent-button-pressed); --jp-b-highlight: var(--jp-accent-button-highlight); }
@@ -2759,6 +3078,24 @@ Load this file before Tailwind: the first @layer statement fixes the order of th
     background: var(--jp-control-glyph);
     clip-path: polygon(0 0, 100% 0, 50% 100%);
   }
+  /* ColorPicker.Dark: the field of TextBox.Dark; the palette drop-down is dark too */
+  .jp-color-picker--dark, :where([data-theme="dark"]) .jp-color-picker {
+    --jp-cp-surface: var(--jp-dark-input-background);
+    padding: 2px 31px 2px 5px;
+    border: 1px solid var(--jp-dark-input-border);
+    background:
+      linear-gradient(rgb(0 0 0 / 0), rgb(0 0 0 / 0.35) 30%, rgb(0 0 0 / 0.35) 70%, rgb(0 0 0 / 0)) right 25px top 50% / 1px 70% no-repeat,
+      linear-gradient(rgb(255 255 255 / 0), rgb(255 255 255 / 0.14) 30%, rgb(255 255 255 / 0.14) 70%, rgb(255 255 255 / 0)) right 24px top 50% / 1px 70% no-repeat,
+      var(--jp-cp-surface);
+    box-shadow: inset 1px 1px 0 var(--jp-control-dark-edge), inset 2px 2px 0 rgb(48 48 48 / 0.31), var(--jp-outer-highlight);
+    color: var(--jp-dark-input-foreground);
+    text-shadow: none;
+  }
+  .jp-color-picker--dark:hover, :where([data-theme="dark"]) .jp-color-picker:hover { --jp-cp-surface: linear-gradient(rgb(255 255 255 / 0.07), rgb(255 255 255 / 0.07)), var(--jp-dark-input-background); }
+  .jp-color-picker--dark[aria-expanded="true"], :where([data-theme="dark"]) .jp-color-picker[aria-expanded="true"] { --jp-cp-surface: linear-gradient(rgb(0 0 0 / 0.1), rgb(0 0 0 / 0.1)), var(--jp-dark-input-background); }
+  .jp-color-picker--dark::after, :where([data-theme="dark"]) .jp-color-picker::after { right: 8px; background: rgb(255 255 255 / 0.85); }
+  .jp-color-picker--dark .jp-color-picker__swatch, :where([data-theme="dark"]) .jp-color-picker .jp-color-picker__swatch { border-color: rgb(255 255 255 / 0.4); }
+  .jp-popup--dark .jp-color-picker__palette, :where([data-theme="dark"]) .jp-popup .jp-color-picker__palette { background: var(--jp-dark-input-background); }
   .jp-color-picker__swatch {
     flex: none;
     width: 12px;
@@ -2799,6 +3136,10 @@ Load this file before Tailwind: the first @layer statement fixes the order of th
   --jp-emboss: 0 1px 1px rgb(255 255 255 / 0.5);
   --jp-glow: 0 0 5px rgb(0 0 0 / 0.25);
   --jp-radius: 2px;
+}
+/* The dark version ([data-theme="dark"], see jetpack.tokens.css): the white emboss of the light surfaces turns into the dark one */
+[data-theme="dark"] {
+  --jp-emboss: var(--jp-effect-dark-text-emboss);
 }
 /* ThemeManager.ShowFocusVisuals = false */
 :root[data-focus="off"] {

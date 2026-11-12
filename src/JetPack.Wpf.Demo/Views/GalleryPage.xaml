@@ -873,5 +873,237 @@
                 <TextBlock Style="{StaticResource JetPack.Styles.TextBlock.Caption}" Margin="0,4,0,0" Text="Caption · 11 px, 80% white" />
             </StackPanel>
         </ContentControl>
+
+        <!-- The dark version: the JetPack.Styles.*.Dark styles (ThemeManager.ChangeTheme turns everything dark) -->
+        <ContentControl Style="{StaticResource Demo.Sample}" Tag="button-dark">
+            <StackPanel d:Demo.Spacing="10">
+                <StackPanel Orientation="Horizontal" d:Demo.Spacing="10">
+                    <Button Content="Normal" Style="{StaticResource JetPack.Styles.Button.Dark}" />
+                    <Button Content="Disabled" IsEnabled="False" Style="{StaticResource JetPack.Styles.Button.Dark}" />
+                    <ToggleButton Content="Toggle checked" IsChecked="True" Style="{StaticResource JetPack.Styles.ToggleButton.Dark}" />
+                    <RepeatButton Content="Repeat" Style="{StaticResource JetPack.Styles.RepeatButton.Dark}" />
+                    <Button Content="Accent" Style="{StaticResource JetPack.Styles.Button.Accent}" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" d:Demo.Spacing="10">
+                    <Button Style="{StaticResource JetPack.Styles.Button.Square.Dark}">
+                        <jp:JetPackIcon Kind="Bell" />
+                    </Button>
+                    <jp:Badged Badge="12">
+                        <Button Content="Inbox" Style="{StaticResource JetPack.Styles.Button.Dark}" />
+                    </jp:Badged>
+                    <jp:SplitButton Content="Save" Menu="{StaticResource SaveMenu}" Style="{StaticResource JetPack.Styles.SplitButton.Dark}" />
+                    <jp:DropDownButton Content="Export" Menu="{StaticResource ExportMenu}" Style="{StaticResource JetPack.Styles.DropDownButton.Dark}" />
+                </StackPanel>
+            </StackPanel>
+        </ContentControl>
+
+        <ContentControl Style="{StaticResource Demo.Sample}" Tag="tile-dark">
+            <StackPanel Orientation="Horizontal" d:Demo.Spacing="8">
+                <jp:Tile Title="Available" Count="14" Style="{StaticResource JetPack.Styles.Tile.Green}" />
+                <jp:Tile Title="Archive" Count="148" Style="{StaticResource JetPack.Styles.Tile.Dark}" />
+            </StackPanel>
+        </ContentControl>
+
+        <ContentControl Style="{StaticResource Demo.Sample}" Tag="combobox-dark">
+            <StackPanel Orientation="Horizontal" d:Demo.Spacing="12" VerticalAlignment="Top">
+                <ComboBox Width="150" VerticalAlignment="Top" SelectedIndex="1" d:Demo.Open="True" Style="{StaticResource JetPack.Styles.ComboBox.Dark}">
+                    <ComboBoxItem Content="Seattle" />
+                    <ComboBoxItem Content="Portland" />
+                    <ComboBoxItem Content="Denver" />
+                    <ComboBoxItem Content="Boston" />
+                </ComboBox>
+                <StackPanel Width="150" d:Demo.Spacing="10">
+                    <ComboBox IsEditable="True" Text="Denver" Style="{StaticResource JetPack.Styles.ComboBox.Dark}">
+                        <ComboBoxItem Content="Seattle" />
+                        <ComboBoxItem Content="Denver" />
+                    </ComboBox>
+                    <ComboBox jp:TextBoxHelper.Watermark="Choose week" Style="{StaticResource JetPack.Styles.ComboBox.Dark}">
+                        <ComboBoxItem Content="Week 42" />
+                    </ComboBox>
+                    <ComboBox SelectedIndex="0" IsEnabled="False" Style="{StaticResource JetPack.Styles.ComboBox.Dark}">
+                        <ComboBoxItem Content="Disabled" />
+                    </ComboBox>
+                </StackPanel>
+            </StackPanel>
+        </ContentControl>
+
+        <ContentControl Style="{StaticResource Demo.Sample}" Tag="autosuggestbox-dark">
+            <jp:AutoSuggestBox x:Name="DarkSuggest" Width="200" d:Demo.Open="True" jp:TextBoxHelper.Watermark="Search companies…" Style="{StaticResource JetPack.Styles.AutoSuggestBox.Dark}" />
+        </ContentControl>
+
+        <ContentControl Style="{StaticResource Demo.Sample}" Tag="searchcombobox-dark">
+            <jp:SearchComboBox Width="220" ItemsSource="{x:Static d:DemoData.Companies}" DisplayMemberPath="Name" SelectedValuePath="Id"
+                               d:Demo.Open="True" jp:TextBoxHelper.Watermark="Search companies…" Style="{StaticResource JetPack.Styles.SearchComboBox.Dark}" />
+        </ContentControl>
+
+        <ContentControl Style="{StaticResource Demo.Sample}" Tag="datepicker-dark">
+            <DatePicker x:Name="DarkOpenDate" Width="170" d:Demo.Open="True" Style="{StaticResource JetPack.Styles.DatePicker.Dark}" />
+        </ContentControl>
+
+        <ContentControl Style="{StaticResource Demo.Sample}" Tag="timepicker-dark">
+            <jp:TimePicker x:Name="DarkTime" Width="150" d:Demo.Open="True" Style="{StaticResource JetPack.Styles.TimePicker.Dark}" />
+        </ContentControl>
+
+        <ContentControl Style="{StaticResource Demo.Sample}" Tag="colorpicker-dark">
+            <jp:ColorPicker Width="160" VerticalAlignment="Top" HorizontalAlignment="Left" d:Demo.Open="True" Style="{StaticResource JetPack.Styles.ColorPicker.Dark}" />
+        </ContentControl>
+
+        <ContentControl Style="{StaticResource Demo.Sample}" Tag="calendar-dark">
+            <Calendar x:Name="DarkCalendar" Style="{StaticResource JetPack.Styles.Calendar.Dark}" />
+        </ContentControl>
+
+        <ContentControl Style="{StaticResource Demo.Sample}" Tag="listbox-dark">
+            <ListBox Width="170" Height="130" SelectedIndex="1" Style="{StaticResource JetPack.Styles.ListBox.Dark}">
+                <ListBoxItem Content="Lindsey Ballard" />
+                <ListBoxItem Content="Charles Hoyle" />
+                <ListBoxItem Content="Daniel Tiedemann" />
+                <ListBoxItem Content="David Ritter" />
+                <ListBoxItem Content="Vivian Smail" />
+                <ListBoxItem Content="Ida Kragh" />
+                <ListBoxItem Content="Mads Lund" />
+            </ListBox>
+        </ContentControl>
+
+        <ContentControl Style="{StaticResource Demo.Sample}" Tag="listview-dark">
+            <ListView x:Name="DarkList" Width="360" Height="150" SelectedIndex="2" Style="{StaticResource JetPack.Styles.ListView.Dark}">
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn Header="Employee" DisplayMemberBinding="{Binding Employee}" Width="150" />
+                        <GridViewColumn Header="Department" DisplayMemberBinding="{Binding Department}" Width="110" />
+                        <GridViewColumn Header="Hours" DisplayMemberBinding="{Binding Hours}" Width="70" />
+                    </GridView>
+                </ListView.View>
+            </ListView>
+        </ContentControl>
+
+        <ContentControl Style="{StaticResource Demo.Sample}" Tag="datagrid-dark">
+            <DataGrid x:Name="DarkGrid" Width="520" Height="190" AutoGenerateColumns="False" IsReadOnly="True" SelectionMode="Single" CanUserAddRows="False"
+                      Style="{StaticResource JetPack.Styles.DataGrid.Dark}">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Employee" Binding="{Binding Employee}" Width="*" SortDirection="Ascending" />
+                    <DataGridTextColumn Header="Department" Binding="{Binding Department}" Width="110" />
+                    <DataGridTextColumn Header="Hours" Binding="{Binding Hours, StringFormat=N1}" Width="60" />
+                    <DataGridTextColumn Header="Week" Binding="{Binding Week}" Width="50" />
+                    <DataGridTextColumn Header="Status" Binding="{Binding Status}" Width="90" />
+                </DataGrid.Columns>
+            </DataGrid>
+        </ContentControl>
+
+        <ContentControl Style="{StaticResource Demo.Sample}" Tag="jetpackgrid-dark">
+            <jp:JetPackGrid x:Name="DarkCarGrid" Width="560" Height="230" SearchText="auto" SearchDelay="0" GroupMemberPath="Make" PageSize="10"
+                            Style="{StaticResource JetPack.Styles.JetPackGrid.Dark}">
+                <jp:JetPackGrid.Columns>
+                    <jp:JetPackGridColumn Header="Make" Binding="{Binding Make}" Width="110" />
+                    <jp:JetPackGridColumn Header="Model" Binding="{Binding Model}" Width="100" />
+                    <jp:JetPackGridColumn Header="Gearbox" Binding="{Binding Gearbox}" Width="80" />
+                    <jp:JetPackGridCheckBoxColumn Header="Sold" Binding="{Binding IsSold}" Width="56" />
+                    <jp:JetPackGridColumn Header="Price" Binding="{Binding Price, StringFormat=N0}" Width="*" />
+                </jp:JetPackGrid.Columns>
+            </jp:JetPackGrid>
+        </ContentControl>
+
+        <ContentControl Style="{StaticResource Demo.Sample}" Tag="expander-dark">
+            <StackPanel Orientation="Horizontal" d:Demo.Spacing="16">
+                <StackPanel Width="210" d:Demo.Spacing="8" VerticalAlignment="Top">
+                    <Expander Header="Billing address" IsExpanded="True" Style="{StaticResource JetPack.Styles.Expander.Dark}">
+                        <TextBlock Text="120 Pine Street&#10;Seattle, WA 98101" />
+                    </Expander>
+                    <Expander Header="Shipping address" Style="{StaticResource JetPack.Styles.Expander.Dark}">
+                        <TextBlock Text="Same as billing" />
+                    </Expander>
+                </StackPanel>
+                <jp:Accordion Width="210" Height="170" Style="{StaticResource JetPack.Styles.Accordion.Dark}">
+                    <Expander Header="Need Placement" IsExpanded="True">
+                        <TextBlock TextWrapping="Wrap" Text="5 consultants without an assignment in week 44." />
+                    </Expander>
+                    <Expander Header="Renewal Pending">
+                        <TextBlock TextWrapping="Wrap" Text="2 contracts expire on 31 December." />
+                    </Expander>
+                    <Expander Header="Archive">
+                        <TextBlock TextWrapping="Wrap" Text="148 completed placements." />
+                    </Expander>
+                </jp:Accordion>
+            </StackPanel>
+        </ContentControl>
+
+        <ContentControl Style="{StaticResource Demo.Sample}" Tag="menu-dark">
+            <Menu Width="420" Style="{StaticResource JetPack.Styles.Menu.Dark}">
+                <MenuItem Header="_File" d:Demo.Open="True">
+                    <MenuItem Header="_New customer" InputGestureText="Ctrl+N" />
+                    <MenuItem Header="_Open…" InputGestureText="Ctrl+O" />
+                    <Separator />
+                    <MenuItem Header="Status bar" IsCheckable="True" IsChecked="True" />
+                    <MenuItem Header="Print" IsEnabled="False" />
+                    <Separator />
+                    <MenuItem Header="E_xit" />
+                </MenuItem>
+                <MenuItem Header="_Edit" />
+                <MenuItem Header="_View" />
+                <MenuItem Header="_Help" />
+            </Menu>
+        </ContentControl>
+
+        <ContentControl Style="{StaticResource Demo.Sample}" Tag="contextmenu-dark">
+            <Border Width="200" Height="70" Background="{DynamicResource JetPack.Brushes.Panel.Background}"
+                    BorderBrush="{DynamicResource JetPack.Brushes.Panel.Border}" BorderThickness="1" CornerRadius="2.5" d:Demo.Open="True">
+                <Border.ContextMenu>
+                    <ContextMenu Style="{StaticResource JetPack.Styles.ContextMenu.Dark}">
+                        <MenuItem Header="Cut" InputGestureText="Ctrl+X" />
+                        <MenuItem Header="Copy" InputGestureText="Ctrl+C" />
+                        <MenuItem Header="Paste" InputGestureText="Ctrl+V" IsEnabled="False" />
+                        <Separator />
+                        <MenuItem Header="Show grid lines" IsCheckable="True" IsChecked="True" />
+                        <MenuItem Header="Export">
+                            <MenuItem Header="PDF" />
+                        </MenuItem>
+                    </ContextMenu>
+                </Border.ContextMenu>
+                <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Text="Right-click here" />
+            </Border>
+        </ContentControl>
+
+        <ContentControl Style="{StaticResource Demo.Sample}" Tag="toolbar-dark">
+            <ToolBarTray>
+                <ToolBar Style="{StaticResource JetPack.Styles.ToolBar.Dark}">
+                    <Button>
+                        <jp:JetPackIcon Kind="FilePlus" />
+                    </Button>
+                    <Button>
+                        <jp:JetPackIcon Kind="ContentSave" />
+                    </Button>
+                    <Separator />
+                    <ToggleButton IsChecked="True" Content="B" FontWeight="Bold" />
+                    <ToggleButton Content="I" FontStyle="Italic" />
+                    <Separator />
+                    <ComboBox Width="110" SelectedIndex="0">
+                        <ComboBoxItem Content="Trebuchet MS" />
+                    </ComboBox>
+                    <CheckBox Content="Spelling" IsChecked="True" />
+                </ToolBar>
+            </ToolBarTray>
+        </ContentControl>
+
+        <ContentControl Style="{StaticResource Demo.Sample}" Tag="busyindicator-dark">
+            <jp:BusyIndicator Width="240" Height="128" IsBusy="True" BusyContent="Loading orders…" Style="{StaticResource JetPack.Styles.BusyIndicator.Dark}">
+                <Border Background="{DynamicResource JetPack.Brushes.Panel.Background}" CornerRadius="2.5" Padding="10">
+                    <TextBlock FontSize="11" Text="Customer: Fabrikam&#10;Contact: Ida Kragh&#10;Orders: 14&#10;Latest: 10/12/2026" />
+                </Border>
+            </jp:BusyIndicator>
+        </ContentControl>
+
+        <ContentControl Style="{StaticResource Demo.Sample}" Tag="scrollviewer-dark">
+            <Border Width="200" Height="120" BorderBrush="#80404040" BorderThickness="1" CornerRadius="2.5" Background="{DynamicResource JetPack.Brushes.Dark.DataGrid.Background}">
+                <ScrollViewer HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Visible" Style="{StaticResource JetPack.Styles.ScrollViewer.Dark}">
+                    <Rectangle Width="400" Height="300">
+                        <Rectangle.Fill>
+                            <LinearGradientBrush StartPoint="0,0" EndPoint="0,24" MappingMode="Absolute" SpreadMethod="Repeat">
+                                <GradientStop Color="#10FFFFFF" Offset="0.5" />
+                                <GradientStop Color="#00FFFFFF" Offset="0.5" />
+                            </LinearGradientBrush>
+                        </Rectangle.Fill>
+                    </Rectangle>
+                </ScrollViewer>
+            </Border>
+        </ContentControl>
     </Grid>
 </UserControl>

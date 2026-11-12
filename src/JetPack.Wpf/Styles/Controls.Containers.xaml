@@ -1,5 +1,6 @@
 <ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:t="clr-namespace:JetPack.Wpf.Theming"
                     xmlns:h="clr-namespace:JetPack.Wpf.Helpers"
                     xmlns:jp="urn:jetpack-wpf">
 
@@ -265,8 +266,8 @@
         <Setter Property="FocusVisualStyle" Value="{DynamicResource JetPack.Styles.FocusVisual}" />
         <Setter Property="FontFamily" Value="{DynamicResource JetPack.Fonts.Family}" />
         <Setter Property="h:ControlHelper.HeaderForeground" Value="{DynamicResource JetPack.Brushes.Navigation.Inactive}" />
-        <Setter Property="h:ControlHelper.MouseOverBackground" Value="{DynamicResource JetPack.Brushes.Static.Background.MouseOver}" />
-        <Setter Property="h:ControlHelper.ContentEffect" Value="{DynamicResource JetPack.Effects.TextEmboss}" />
+        <Setter Property="h:ControlHelper.MouseOverBackground" Value="{DynamicResource JetPack.Brushes.Navigation.Background.MouseOver}" />
+        <Setter Property="h:ControlHelper.ContentEffect" Value="{DynamicResource JetPack.Effects.Navigation.TextEmboss}" />
         <Setter Property="Padding" Value="20,0" />
         <Setter Property="Height" Value="47" />
         <Setter Property="Template">
@@ -305,7 +306,7 @@
     <Style x:Key="JetPack.Styles.TabControl.Navigation" TargetType="TabControl">
         <Setter Property="SnapsToDevicePixels" Value="True" />
         <Setter Property="Foreground" Value="{DynamicResource JetPack.Brushes.Text}" />
-        <Setter Property="Background" Value="{DynamicResource JetPack.Brushes.Static.Background}" />
+        <Setter Property="Background" Value="{DynamicResource JetPack.Brushes.Navigation.Background}" />
         <Setter Property="Padding" Value="0" />
         <Setter Property="ItemContainerStyle" Value="{StaticResource JetPack.Styles.TabItem.Navigation}" />
         <Setter Property="Template">
@@ -479,5 +480,15 @@
     <Style TargetType="Separator" BasedOn="{StaticResource JetPack.Styles.Separator}" />
     <Style TargetType="StatusBar" BasedOn="{StaticResource JetPack.Styles.StatusBar}" />
     <Style TargetType="StatusBarItem" BasedOn="{StaticResource JetPack.Styles.StatusBarItem}" />
+
+    <!-- ===================== The dark version =====================
+         The header in the dark grey of Button.Dark.
+         Each is the normal style with Theming.DarkResources in its resources: the control, what it
+         holds and its drop-downs take the dark colours (ThemeManager.ChangeTheme does it for all). -->
+    <Style x:Key="JetPack.Styles.Expander.Dark" TargetType="Expander" BasedOn="{StaticResource JetPack.Styles.Expander}">
+        <Style.Resources>
+            <t:DarkResources />
+        </Style.Resources>
+    </Style>
 
 </ResourceDictionary>

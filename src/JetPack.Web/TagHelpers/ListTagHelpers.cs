@@ -82,6 +82,9 @@ public class ScrollViewerTagHelper : JetPackTagHelper
 {
     public bool Thin { get; set; }
 
+    /// <summary>Dark track and thumb with light arrows (the thin bars are the same on any ground).</summary>
+    public bool Dark { get; set; }
+
     public ScrollBarVisibility HorizontalScrollBarVisibility { get; set; } = ScrollBarVisibility.Disabled;
 
     public ScrollBarVisibility VerticalScrollBarVisibility { get; set; } = ScrollBarVisibility.Auto;
@@ -96,7 +99,7 @@ public class ScrollViewerTagHelper : JetPackTagHelper
     public override void Process(TagHelperContext context, TagHelperOutput output)
     {
         output.TagName = "div";
-        AddClasses(output, "jp-scroll-viewer", Thin ? "jp-scroll-viewer--thin" : null);
+        AddClasses(output, "jp-scroll-viewer", Thin ? "jp-scroll-viewer--thin" : null, Dark ? "jp-scroll-viewer--dark" : null);
         output.Attributes.SetAttribute("style", $"overflow-x:{Css(HorizontalScrollBarVisibility)};overflow-y:{Css(VerticalScrollBarVisibility)};" + (output.Attributes["style"]?.Value ?? ""));
         output.Attributes.SetAttribute("tabindex", "-1");
         ApplyCommon(output);
@@ -257,9 +260,14 @@ public class DataGridTagHelper : JetPackTagHelper
     /// <summary>False: the columns cannot be resized.</summary>
     public bool CanUserResizeColumns { get; set; } = true;
 
+    /// <summary>White text on dark grey rows below the usual header, for dark panels.</summary>
+    public bool Dark { get; set; }
+
     protected virtual string HostClass => "jp-data-grid-host";
 
     protected virtual string TableClass => "jp-data-grid";
+
+    protected virtual string DarkClass => "jp-data-grid--dark";
 
     public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
     {
@@ -267,7 +275,7 @@ public class DataGridTagHelper : JetPackTagHelper
         await output.GetChildContentAsync();
         output.TagName = "div";
         output.TagMode = TagMode.StartTagAndEndTag;
-        AddClasses(output, HostClass);
+        AddClasses(output, HostClass, Dark ? DarkClass : null);
         if (Height is { } h)
         {
             output.Attributes.SetAttribute("style", $"height:{Html.Num(h)}px;" + (output.Attributes["style"]?.Value ?? ""));
@@ -287,7 +295,7 @@ public class DataGridTagHelper : JetPackTagHelper
         var rows = string.Concat(Items.Cast<object?>().Select((item, i) =>
             $"<tr aria-selected=\"{(i == SelectedIndex ? "true" : "false")}\">" +
             string.Concat(columns.Items.Select(c => $"<td{c.Align}{c.SortAttribute(item)}>{Html.Text(c.Cell(item))}</td>")) + "</tr>"));
-        output.Content.SetHtmlContent($"<table class=\"{TableClass}\"{options}><thead><tr>{head}</tr></thead><tbody>{rows}</tbody></table>");
+        output.Content.SetHtmlContent($"<table class=\"{TableClass}{(Dark && TableClass != "" ? " " + DarkClass : "")}\"{options}><thead><tr>{head}</tr></thead><tbody>{rows}</tbody></table>");
     }
 }
 
@@ -298,6 +306,8 @@ public class ListViewTagHelper : DataGridTagHelper
     protected override string HostClass => "jp-list-view";
 
     protected override string TableClass => "";
+
+    protected override string DarkClass => "jp-list-view--dark";
 
     public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
     {
@@ -323,11 +333,14 @@ public class CalendarTagHelper : JetPackTagHelper
     /// <summary>The first day of the week; the culture's when empty.</summary>
     public DayOfWeek? FirstDayOfWeek { get; set; }
 
+    /// <summary>The dark header of Button.Dark over the field of ListBox.Dark.</summary>
+    public bool Dark { get; set; }
+
     public override void Process(TagHelperContext context, TagHelperOutput output)
     {
         output.TagName = "div";
         output.TagMode = TagMode.StartTagAndEndTag;
-        AddClasses(output, "jp-calendar");
+        AddClasses(output, "jp-calendar", Dark ? "jp-calendar--dark" : null);
         if (SelectedDate is { } s) output.Attributes.SetAttribute("data-selected-date", s.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture));
         if (DisplayDate is { } d) output.Attributes.SetAttribute("data-display-date", d.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture));
         DateCulture.Apply(output, Culture, FirstDayOfWeek);

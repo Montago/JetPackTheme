@@ -82,19 +82,6 @@
     <SolidColorBrush x:Key="JetPack.Brushes.Input.InnerShadowLight" Color="#20202020" />
     <SolidColorBrush x:Key="JetPack.Brushes.Input.SelectionForeground" Color="#FFFFFFFF" />
 
-    <!-- Inputs (dark) -->
-    <LinearGradientBrush x:Key="JetPack.Brushes.Dark.Input.Background" StartPoint="0,0" EndPoint="0,1">
-        <GradientStop Color="#FF57575F" Offset="0.3" />
-        <GradientStop Color="#FF505054" Offset="1.0" />
-    </LinearGradientBrush>
-    <SolidColorBrush x:Key="JetPack.Brushes.Dark.Input.Border" Color="#D0505050" />
-    <SolidColorBrush x:Key="JetPack.Brushes.Dark.Input.Foreground" Color="#FFFFFFFF" />
-    <SolidColorBrush x:Key="JetPack.Brushes.Dark.Input.Watermark" Color="#73FFFFFF" />
-    <SolidColorBrush x:Key="JetPack.Brushes.Dark.Input.InnerShadowDark" Color="#50303030" />
-    <SolidColorBrush x:Key="JetPack.Brushes.Dark.Input.InnerShadowLight" Color="#20303030" />
-    <SolidColorBrush x:Key="JetPack.Brushes.Dark.Input.ReadOnly" Color="#20FFFFFF" />
-    <SolidColorBrush x:Key="JetPack.Brushes.Dark.Input.Disabled" Color="#33FFFFFF" />
-
     <!-- Validation -->
     <SolidColorBrush x:Key="JetPack.Brushes.Error" Color="#FFEF0A0A" />
     <SolidColorBrush x:Key="JetPack.Brushes.Error.Tip" Color="#FFDC000C" />
@@ -201,6 +188,62 @@
     <SolidColorBrush x:Key="JetPack.Brushes.Menu.Disabled" Color="#FF9A9A9A" />
     <SolidColorBrush x:Key="JetPack.Brushes.Dialog.Background" Color="#FFE0E0E0" />
     <SolidColorBrush x:Key="JetPack.Brushes.Dialog.Overlay" Color="#7F000000" />
+    <SolidColorBrush x:Key="JetPack.Brushes.Dialog.Close" Color="#FF505050" />
+    <SolidColorBrush x:Key="JetPack.Brushes.Menu.Gesture" Color="#FF707070" />
+    <!-- The white half of the engraved menu and tool bar separators -->
+    <SolidColorBrush x:Key="JetPack.Brushes.Separator.Light" Color="#FFFFFFFF" />
+    <SolidColorBrush x:Key="JetPack.Brushes.ScrollBar.Thumb.Highlight" Color="#FFFFFFFF" />
+    <SolidColorBrush x:Key="JetPack.Brushes.BusyIndicator.Overlay" Color="#59FFFFFF" />
+
+    <!-- Calendar -->
+    <SolidColorBrush x:Key="JetPack.Brushes.Calendar.Background" Color="#FFFFFFFF" />
+    <SolidColorBrush x:Key="JetPack.Brushes.Calendar.Foreground" Color="#FF333333" />
+    <SolidColorBrush x:Key="JetPack.Brushes.Calendar.DayName" Color="#FF8A8A8A" />
+    <SolidColorBrush x:Key="JetPack.Brushes.Calendar.Today" Color="#FFAAAAAA" />
+    <SolidColorBrush x:Key="JetPack.Brushes.Calendar.MouseOver" Color="#20000000" />
+
+    <!--
+    Surfaces that share the button gradient today but go their own way in the dark version:
+    the closed ComboBox and ColorPicker turn into the dark field, the navigation bar stays light.
+    -->
+    <LinearGradientBrush x:Key="JetPack.Brushes.ComboBox.Background" StartPoint="0.5,0" EndPoint="0.5,1">
+        <GradientStop Color="#FFF7F7F7" Offset="0.164" />
+        <GradientStop Color="#FFC6C6C6" Offset="0.802" />
+        <GradientStop Color="#FFC6C6C6" Offset="0.953" />
+    </LinearGradientBrush>
+    <LinearGradientBrush x:Key="JetPack.Brushes.ComboBox.Background.MouseOver" StartPoint="0.5,0" EndPoint="0.5,1">
+        <GradientStop Color="#FFFFFFFF" Offset="0.211" />
+        <GradientStop Color="#FFDEDEDE" Offset="0.784" />
+    </LinearGradientBrush>
+    <LinearGradientBrush x:Key="JetPack.Brushes.ComboBox.Background.Pressed" StartPoint="0.5,0" EndPoint="0.5,1">
+        <GradientStop Color="#FFCECECE" Offset="0.204" />
+        <GradientStop Color="#FFAFAFAF" Offset="0.864" />
+    </LinearGradientBrush>
+    <!-- The small raised buttons inside fields (spinners, picker buttons) stay light on the dark field too -->
+    <LinearGradientBrush x:Key="JetPack.Brushes.InlineButton.Background" StartPoint="0.5,0" EndPoint="0.5,1">
+        <GradientStop Color="#FFF7F7F7" Offset="0.164" />
+        <GradientStop Color="#FFC6C6C6" Offset="0.802" />
+        <GradientStop Color="#FFC6C6C6" Offset="0.953" />
+    </LinearGradientBrush>
+    <LinearGradientBrush x:Key="JetPack.Brushes.InlineButton.Background.MouseOver" StartPoint="0.5,0" EndPoint="0.5,1">
+        <GradientStop Color="#FFFFFFFF" Offset="0.211" />
+        <GradientStop Color="#FFDEDEDE" Offset="0.784" />
+    </LinearGradientBrush>
+    <LinearGradientBrush x:Key="JetPack.Brushes.InlineButton.Background.Pressed" StartPoint="0.5,0" EndPoint="0.5,1">
+        <GradientStop Color="#FFCECECE" Offset="0.204" />
+        <GradientStop Color="#FFAFAFAF" Offset="0.864" />
+    </LinearGradientBrush>
+    <SolidColorBrush x:Key="JetPack.Brushes.InlineButton.Glyph" Color="#FF606060" />
+    <SolidColorBrush x:Key="JetPack.Brushes.InlineButton.Glyph.Dark" Color="#FF404040" />
+    <!-- The light navigation bar keeps its colours in the dark version -->
+    <LinearGradientBrush x:Key="JetPack.Brushes.Navigation.Background" StartPoint="0.5,0" EndPoint="0.5,1">
+        <GradientStop Color="#FFE2E2E2" Offset="0" />
+        <GradientStop Color="#FFC6C6C6" Offset="1" />
+    </LinearGradientBrush>
+    <LinearGradientBrush x:Key="JetPack.Brushes.Navigation.Background.MouseOver" StartPoint="0.5,0" EndPoint="0.5,1">
+        <GradientStop Color="#FFF8F8F8" Offset="0" />
+        <GradientStop Color="#FFD0D0D0" Offset="1" />
+    </LinearGradientBrush>
     <LinearGradientBrush x:Key="JetPack.Brushes.Overlay" StartPoint="0.5,0" EndPoint="0.5,1">
         <GradientStop Color="#4CFFFFFF" Offset="0" />
         <GradientStop Color="#4C000000" Offset="1" />

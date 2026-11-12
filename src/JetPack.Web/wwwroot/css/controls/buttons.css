@@ -38,6 +38,30 @@
     background: var(--jp-control-background-checked);
     box-shadow: inset 0 0 0 1px var(--jp-control-border-checked), inset 2px 2px 0 rgb(48 48 48 / 0.34), inset 3px 3px 0 rgb(48 48 48 / 0.12);
   }
+  /*
+  Button.Dark: dark grey for dark panels, with the shadow and highlight of the light button; text,
+  carets and glyph icons turn light. The coloured styles below still win over it, so a coloured
+  button stays coloured.
+  */
+  .jp-button--dark, :where([data-theme="dark"]) .jp-button {
+    --jp-control-glyph: rgb(255 255 255 / 0.85);
+    --jp-control-glyph-dark: var(--jp-dark-control-glyph);
+    color: #fff;
+    background: var(--jp-dark-control-background);
+    text-shadow: var(--jp-effect-dark-text-emboss);
+  }
+  .jp-button--dark:hover, :where([data-theme="dark"]) .jp-button:hover { background: var(--jp-dark-control-background-mouse-over); }
+  .jp-button--dark:active, :where([data-theme="dark"]) .jp-button:active { background: var(--jp-dark-control-background-pressed); }
+  .jp-button--dark:disabled, .jp-button--dark[aria-disabled="true"], :where([data-theme="dark"]) .jp-button:disabled, :where([data-theme="dark"]) .jp-button[aria-disabled="true"] {
+    background: linear-gradient(#636468, #5A5B5F);
+    color: rgb(255 255 255 / 0.35);
+    text-shadow: none;
+  }
+  .jp-button--dark[aria-pressed="true"], :where([data-theme="dark"]) .jp-button[aria-pressed="true"] {
+    background: linear-gradient(#3C3D41 10%, #48494D 90%);
+    box-shadow: inset 0 0 0 1px rgb(0 0 0 / 0.5), inset 2px 2px 0 rgb(0 0 0 / 0.32), inset 3px 3px 0 rgb(0 0 0 / 0.12);
+  }
+
   /* Coloured buttons: each sets the four values, the shared rules below use them */
   .jp-button--accent {
     --jp-b-normal: var(--jp-accent-button-normal);
@@ -135,4 +159,6 @@
     width: 1px;
     background: rgb(0 0 0 / 0.22);
   }
+  /* SplitButton.Dark: the arrow half gets the top highlight too, which shows on the dark grey */
+  .jp-split-button > .jp-button--dark + .jp-button--dark, :where([data-theme="dark"]) .jp-split-button > .jp-button + .jp-button { box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.5), inset 1px 0 0 rgb(255 255 255 / 0.4); }
 }

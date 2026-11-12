@@ -46,6 +46,18 @@ public partial class GalleryPage : UserControl
         {
             "Contoso Corporation", "Fabrikam", "Fabrikam Residences", "Southridge Video", "Soar Airlines", "Margie's Travel", "Northwind Traders", "Fourth Coffee",
         };
+
+        // The dark version
+        DarkGrid.ItemsSource = DemoData.Timesheets;
+        DarkGrid.SelectedIndex = 1;
+        DarkList.ItemsSource = DemoData.Timesheets;
+        DarkCarGrid.ItemsSource = CarData.Cars.Where((c, i) => c.IsSold || i % 4 == 0).Take(16).OrderBy(c => c.Make).ToArray();
+        DarkCarGrid.SelectedIndex = 1;
+        DarkCalendar.DisplayDate = day;
+        DarkCalendar.SelectedDate = day.AddDays(4);
+        DarkOpenDate.SelectedDate = day;
+        DarkTime.SelectedTime = new TimeSpan(8, 30, 0);
+        DarkSuggest.ItemsSource = Suggest.ItemsSource;
     }
 
     /// <summary>The samples; each one's <c>Tag</c> is its file name.</summary>

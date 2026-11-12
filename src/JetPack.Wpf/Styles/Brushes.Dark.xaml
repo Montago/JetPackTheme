@@ -1,0 +1,88 @@
+<!--
+    The values of the dark version: the dark inputs (TextBox.Dark and friends) and the dark grey
+    surfaces, rows and panels. JetPack.xaml merges this file, so the keys can be used anywhere;
+    Theming/DarkResources.cs maps the normal keys onto them for ThemeManager.ChangeTheme(JetPackTheme.Dark)
+    and the JetPack.Styles.*.Dark styles. tools/generate_web_tokens.py writes them as the jp-dark-* tokens for the web.
+-->
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!-- Inputs (dark) -->
+    <LinearGradientBrush x:Key="JetPack.Brushes.Dark.Input.Background" StartPoint="0,0" EndPoint="0,1">
+        <GradientStop Color="#FF57575F" Offset="0.3" />
+        <GradientStop Color="#FF505054" Offset="1.0" />
+    </LinearGradientBrush>
+    <SolidColorBrush x:Key="JetPack.Brushes.Dark.Input.Border" Color="#D0505050" />
+    <SolidColorBrush x:Key="JetPack.Brushes.Dark.Input.Foreground" Color="#FFFFFFFF" />
+    <SolidColorBrush x:Key="JetPack.Brushes.Dark.Input.Watermark" Color="#73FFFFFF" />
+    <SolidColorBrush x:Key="JetPack.Brushes.Dark.Input.InnerShadowDark" Color="#50303030" />
+    <SolidColorBrush x:Key="JetPack.Brushes.Dark.Input.InnerShadowLight" Color="#20303030" />
+    <SolidColorBrush x:Key="JetPack.Brushes.Dark.Input.ReadOnly" Color="#20FFFFFF" />
+    <SolidColorBrush x:Key="JetPack.Brushes.Dark.Input.Disabled" Color="#33FFFFFF" />
+
+    <!--
+    The dark version (the *.Dark styles and ThemeManager.ChangeTheme(JetPackTheme.Dark)): dark grey
+    button surfaces with the shape of the light ones, light glyphs, dark rows and panels.
+    -->
+    <LinearGradientBrush x:Key="JetPack.Brushes.Dark.Control.Background" StartPoint="0.5,0" EndPoint="0.5,1">
+        <GradientStop Color="#FF6B6C71" Offset="0.164" />
+        <GradientStop Color="#FF4C4D52" Offset="0.802" />
+        <GradientStop Color="#FF48494E" Offset="0.953" />
+    </LinearGradientBrush>
+    <LinearGradientBrush x:Key="JetPack.Brushes.Dark.Control.Background.MouseOver" StartPoint="0.5,0" EndPoint="0.5,1">
+        <GradientStop Color="#FF7A7B80" Offset="0.211" />
+        <GradientStop Color="#FF57585D" Offset="0.784" />
+    </LinearGradientBrush>
+    <LinearGradientBrush x:Key="JetPack.Brushes.Dark.Control.Background.Pressed" StartPoint="0.5,0" EndPoint="0.5,1">
+        <GradientStop Color="#FF3F4044" Offset="0.204" />
+        <GradientStop Color="#FF4A4B50" Offset="0.864" />
+    </LinearGradientBrush>
+    <LinearGradientBrush x:Key="JetPack.Brushes.Dark.Control.Background.Checked" StartPoint="0,0" EndPoint="0,1">
+        <GradientStop Offset="0.1" Color="#FF3C3D41" />
+        <GradientStop Offset="0.9" Color="#FF48494D" />
+    </LinearGradientBrush>
+    <LinearGradientBrush x:Key="JetPack.Brushes.Dark.Disabled" StartPoint="0.5,0" EndPoint="0.5,1">
+        <GradientStop Color="#FF636468" />
+        <GradientStop Color="#FF5A5B5F" Offset="1" />
+    </LinearGradientBrush>
+    <SolidColorBrush x:Key="JetPack.Brushes.Dark.Control.Foreground" Color="#FFFFFFFF" />
+    <SolidColorBrush x:Key="JetPack.Brushes.Dark.Control.Foreground.Disabled" Color="#59FFFFFF" />
+    <SolidColorBrush x:Key="JetPack.Brushes.Dark.Control.Glyph" Color="#E6FFFFFF" />
+    <SolidColorBrush x:Key="JetPack.Brushes.Dark.Panel.Background" Color="#FF4A4B50" />
+    <SolidColorBrush x:Key="JetPack.Brushes.Dark.DataGrid.Background" Color="#FF3D3E42" />
+    <SolidColorBrush x:Key="JetPack.Brushes.Dark.DataGrid.AlternatingRow" Color="#FF46474B" />
+    <SolidColorBrush x:Key="JetPack.Brushes.Dark.DataGrid.GridLines" Color="#12FFFFFF" />
+    <SolidColorBrush x:Key="JetPack.Brushes.Dark.DataGrid.SearchHit" Color="#24FFFFFF" />
+    <SolidColorBrush x:Key="JetPack.Brushes.Dark.Selection.MouseOver" Color="#14FFFFFF" />
+    <SolidColorBrush x:Key="JetPack.Brushes.Dark.ScrollBar.Track" Color="#FF45464A" />
+    <LinearGradientBrush x:Key="JetPack.Brushes.Dark.ScrollBar.Thumb" StartPoint="0,0" EndPoint="0,1">
+        <GradientStop Color="#FF7A7B80" Offset="0.1" />
+        <GradientStop Color="#FF5C5D62" Offset="1.0" />
+    </LinearGradientBrush>
+    <LinearGradientBrush x:Key="JetPack.Brushes.Dark.ScrollBar.Thumb.Vertical" StartPoint="0,0" EndPoint="1,0">
+        <GradientStop Color="#FF7A7B80" Offset="0.1" />
+        <GradientStop Color="#FF5C5D62" Offset="1.0" />
+    </LinearGradientBrush>
+    <SolidColorBrush x:Key="JetPack.Brushes.Dark.ScrollBar.Glyph" Color="#FFD0D0D0" />
+
+    <!-- Hover and pressed of the dark field (ComboBox, ColorPicker in the dark version) -->
+    <LinearGradientBrush x:Key="JetPack.Brushes.Dark.Input.Background.MouseOver" StartPoint="0,0" EndPoint="0,1">
+        <GradientStop Color="#FF616169" Offset="0.3" />
+        <GradientStop Color="#FF5A5A5E" Offset="1.0" />
+    </LinearGradientBrush>
+    <LinearGradientBrush x:Key="JetPack.Brushes.Dark.Input.Background.Pressed" StartPoint="0,0" EndPoint="0,1">
+        <GradientStop Color="#FF4C4C53" Offset="0.3" />
+        <GradientStop Color="#FF46464A" Offset="1.0" />
+    </LinearGradientBrush>
+    <SolidColorBrush x:Key="JetPack.Brushes.Dark.Text.Dim" Color="#8CFFFFFF" />
+    <SolidColorBrush x:Key="JetPack.Brushes.Dark.Calendar.Today" Color="#40FFFFFF" />
+    <SolidColorBrush x:Key="JetPack.Brushes.Dark.Calendar.MouseOver" Color="#1AFFFFFF" />
+    <SolidColorBrush x:Key="JetPack.Brushes.Dark.Separator.Light" Color="#1AFFFFFF" />
+    <SolidColorBrush x:Key="JetPack.Brushes.Dark.ScrollBar.Thumb.Highlight" Color="#40FFFFFF" />
+    <SolidColorBrush x:Key="JetPack.Brushes.Dark.BusyIndicator.Overlay" Color="#40000000" />
+    <SolidColorBrush x:Key="JetPack.Brushes.Dark.Dialog.Close" Color="#CCFFFFFF" />
+
+    <!-- Text on the dark grey surfaces: a dark shadow 1px above -->
+    <DropShadowEffect x:Key="JetPack.Effects.Dark.TextEmboss" BlurRadius="0" Color="#FF000000" Direction="90" Opacity="0.45" ShadowDepth="1" />
+
+</ResourceDictionary>

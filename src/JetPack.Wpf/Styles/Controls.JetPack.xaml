@@ -1,5 +1,6 @@
 <ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:t="clr-namespace:JetPack.Wpf.Theming"
                     xmlns:c="clr-namespace:JetPack.Wpf.Controls"
                     xmlns:h="clr-namespace:JetPack.Wpf.Helpers">
 
@@ -37,13 +38,13 @@
             <Setter.Value>
                 <ControlTemplate TargetType="ButtonBase">
                     <Grid SnapsToDevicePixels="True">
-                        <Border Background="{DynamicResource JetPack.Brushes.Control.Background}" CornerRadius="1.5">
+                        <Border Background="{DynamicResource JetPack.Brushes.InlineButton.Background}" CornerRadius="1.5">
                             <Border.Effect>
                                 <DropShadowEffect BlurRadius="2" ShadowDepth="1" Direction="270" Opacity="0.35" />
                             </Border.Effect>
                         </Border>
-                        <Border x:Name="MouseOver" Background="{DynamicResource JetPack.Brushes.Control.Background.MouseOver}" CornerRadius="1.5" Opacity="0" />
-                        <Border x:Name="Pressed" Background="{DynamicResource JetPack.Brushes.Control.Background.Pressed}" CornerRadius="1.5" Opacity="0" />
+                        <Border x:Name="MouseOver" Background="{DynamicResource JetPack.Brushes.InlineButton.Background.MouseOver}" CornerRadius="1.5" Opacity="0" />
+                        <Border x:Name="Pressed" Background="{DynamicResource JetPack.Brushes.InlineButton.Background.Pressed}" CornerRadius="1.5" Opacity="0" />
                         <Border BorderBrush="{DynamicResource JetPack.Brushes.Control.Highlight}" BorderThickness="1,1,0,0" CornerRadius="1.5" />
                         <ContentPresenter x:Name="Content" HorizontalAlignment="Center" VerticalAlignment="Center" />
                     </Grid>
@@ -314,7 +315,7 @@
                 <ControlTemplate TargetType="c:BusyIndicator">
                     <Grid x:Name="Root">
                         <ContentPresenter x:Name="PART_Content" />
-                        <Rectangle x:Name="Overlay" Fill="#59FFFFFF" Visibility="Collapsed" />
+                        <Rectangle x:Name="Overlay" Fill="{DynamicResource JetPack.Brushes.BusyIndicator.Overlay}" Visibility="Collapsed" />
                         <Grid x:Name="Card" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="Collapsed">
                             <Border Background="{DynamicResource JetPack.Brushes.Static.Background}" CornerRadius="2" Effect="{DynamicResource JetPack.Effects.LightControlShadow}" />
                             <Border BorderBrush="{DynamicResource JetPack.Brushes.Control.Highlight}" BorderThickness="1,1,0,0" CornerRadius="2" />
@@ -387,10 +388,10 @@
                                 <RowDefinition Height="*" />
                             </Grid.RowDefinitions>
                             <RepeatButton x:Name="PART_Up" Style="{StaticResource JetPack.Styles.Button.Inline}" Margin="0,0,0,0.5" Interval="60" Delay="400">
-                                <Path Width="7" Height="4" Stretch="Fill" Data="{DynamicResource JetPack.Geometry.ArrowUp}" Fill="{DynamicResource JetPack.Brushes.Control.Glyph}" />
+                                <Path Width="7" Height="4" Stretch="Fill" Data="{DynamicResource JetPack.Geometry.ArrowUp}" Fill="{DynamicResource JetPack.Brushes.InlineButton.Glyph}" />
                             </RepeatButton>
                             <RepeatButton x:Name="PART_Down" Grid.Row="1" Style="{StaticResource JetPack.Styles.Button.Inline}" Margin="0,0.5,0,0" Interval="60" Delay="400">
-                                <Path Width="7" Height="4" Stretch="Fill" Data="{DynamicResource JetPack.Geometry.ArrowDown}" Fill="{DynamicResource JetPack.Brushes.Control.Glyph}" />
+                                <Path Width="7" Height="4" Stretch="Fill" Data="{DynamicResource JetPack.Geometry.ArrowDown}" Fill="{DynamicResource JetPack.Brushes.InlineButton.Glyph}" />
                             </RepeatButton>
                         </Grid>
                     </Grid>
@@ -957,7 +958,7 @@
         <Setter Property="FontFamily" Value="{DynamicResource JetPack.Fonts.Family}" />
         <Setter Property="FontSize" Value="{DynamicResource JetPack.Font.Size.Control}" />
         <Setter Property="Foreground" Value="{DynamicResource JetPack.Brushes.Control.Foreground}" />
-        <Setter Property="Background" Value="{DynamicResource JetPack.Brushes.Control.Background}" />
+        <Setter Property="Background" Value="{DynamicResource JetPack.Brushes.ComboBox.Background}" />
         <Setter Property="MinHeight" Value="22" />
         <Setter Property="MinWidth" Value="120" />
         <Setter Property="Template">
@@ -1072,6 +1073,56 @@
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
+    </Style>
+
+    <!-- ===================== The dark version =====================
+         SplitButton and DropDownButton keep their light grey menus; the inline buttons of the pickers stay light.
+         Each is the normal style with Theming.DarkResources in its resources: the control, what it
+         holds and its drop-downs take the dark colours (ThemeManager.ChangeTheme does it for all). -->
+    <Style x:Key="JetPack.Styles.Tile.Dark" TargetType="c:Tile" BasedOn="{StaticResource JetPack.Styles.Tile}">
+        <Style.Resources>
+            <t:DarkResources />
+        </Style.Resources>
+    </Style>
+    <Style x:Key="JetPack.Styles.SplitButton.Dark" TargetType="c:SplitButton" BasedOn="{StaticResource {x:Type c:SplitButton}}">
+        <Style.Resources>
+            <t:DarkResources />
+        </Style.Resources>
+    </Style>
+    <Style x:Key="JetPack.Styles.DropDownButton.Dark" TargetType="c:DropDownButton" BasedOn="{StaticResource {x:Type c:DropDownButton}}">
+        <Style.Resources>
+            <t:DarkResources />
+        </Style.Resources>
+    </Style>
+    <Style x:Key="JetPack.Styles.TimePicker.Dark" TargetType="c:TimePicker" BasedOn="{StaticResource {x:Type c:TimePicker}}">
+        <Style.Resources>
+            <t:DarkResources />
+        </Style.Resources>
+    </Style>
+    <Style x:Key="JetPack.Styles.ColorPicker.Dark" TargetType="c:ColorPicker" BasedOn="{StaticResource {x:Type c:ColorPicker}}">
+        <Style.Resources>
+            <t:DarkResources />
+        </Style.Resources>
+    </Style>
+    <Style x:Key="JetPack.Styles.AutoSuggestBox.Dark" TargetType="c:AutoSuggestBox" BasedOn="{StaticResource {x:Type c:AutoSuggestBox}}">
+        <Style.Resources>
+            <t:DarkResources />
+        </Style.Resources>
+    </Style>
+    <Style x:Key="JetPack.Styles.SearchComboBox.Dark" TargetType="c:SearchComboBox" BasedOn="{StaticResource {x:Type c:SearchComboBox}}">
+        <Style.Resources>
+            <t:DarkResources />
+        </Style.Resources>
+    </Style>
+    <Style x:Key="JetPack.Styles.Accordion.Dark" TargetType="c:Accordion" BasedOn="{StaticResource {x:Type c:Accordion}}">
+        <Style.Resources>
+            <t:DarkResources />
+        </Style.Resources>
+    </Style>
+    <Style x:Key="JetPack.Styles.BusyIndicator.Dark" TargetType="c:BusyIndicator" BasedOn="{StaticResource {x:Type c:BusyIndicator}}">
+        <Style.Resources>
+            <t:DarkResources />
+        </Style.Resources>
     </Style>
 
 </ResourceDictionary>
