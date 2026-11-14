@@ -121,9 +121,13 @@
     background: var(--jp-navigation-inactive);
     box-shadow: 1px 0 0 rgb(0 0 0 / 0.25);
     overflow: hidden auto;
-    transition: width 0.15s ease-out;
+    /* the thin accent scroll bar (ScrollViewer.Thin in lists.css) fades in while the pointer is over the pane */
+    transition: width 0.15s ease-out, --jp-thin-thumb 0.25s ease-in-out;
   }
   .jp-hamburger-menu.is-collapsed { width: 40px; }
+  /* While the items scroll (is-scrollable, set by jetpack.js) the 12px bar takes room beside them; the
+     collapsed pane widens by that much, so the icons keep their 40px column */
+  .jp-hamburger-menu.is-collapsed.is-scrollable { width: 52px; }
   .jp-hamburger-menu__toggle, .jp-hamburger-menu__item {
     position: relative;
     display: flex;

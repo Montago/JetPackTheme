@@ -8,10 +8,10 @@ using System.Windows.Threading;
 namespace JetPack.Wpf.Helpers;
 
 /// <summary>
-/// Auto-hiding scroll bars for the thin ScrollViewer style. While <c>AutoHide</c> is on, the
-/// scroll viewer is marked active when it scrolls or the mouse moves over it, and inactive again
-/// once nothing has happened for <c>AutoHideDelay</c>. The template fades its bars on
-/// <c>IsScrollBarActive</c>.
+/// Auto-hiding scroll bars for the thin ScrollViewer style (on by default there). While
+/// <c>AutoHide</c> is on, the scroll viewer is marked active while the mouse is over it, and for
+/// <c>AutoHideDelay</c> after it scrolls without the mouse (keyboard, code). The template fades its
+/// bars in and out on <c>IsScrollBarActive</c>.
 /// </summary>
 public static class ScrollViewerHelper
 {
@@ -21,7 +21,7 @@ public static class ScrollViewerHelper
     public static bool GetAutoHide(DependencyObject o) => (bool)o.GetValue(AutoHideProperty);
     public static void SetAutoHide(DependencyObject o, bool value) => o.SetValue(AutoHideProperty, value);
 
-    /// <summary>How long the bars stay after the last scroll or mouse move (default 1.5 seconds).</summary>
+    /// <summary>How long the bars stay after scrolling while the mouse is elsewhere (default 1.5 seconds).</summary>
     public static readonly DependencyProperty AutoHideDelayProperty = DependencyProperty.RegisterAttached(
         "AutoHideDelay", typeof(TimeSpan), typeof(ScrollViewerHelper), new FrameworkPropertyMetadata(TimeSpan.FromSeconds(1.5)));
 
@@ -49,15 +49,17 @@ public static class ScrollViewerHelper
         if ((bool)e.NewValue)
         {
             sv.ScrollChanged += OnScrollChanged;
-            sv.PreviewMouseMove += OnMouseMove;
+            sv.MouseEnter += OnMouseEnter;
+            sv.PreviewMouseMove += OnMouseEnter;
             sv.MouseLeave += OnMouseLeave;
             sv.Unloaded += OnUnloaded;
-            sv.SetValue(IsScrollBarActivePropertyKey, false);
+            sv.SetValue(IsScrollBarActivePropertyKey, sv.IsMouseOver);
         }
         else
         {
             sv.ScrollChanged -= OnScrollChanged;
-            sv.PreviewMouseMove -= OnMouseMove;
+            sv.MouseEnter -= OnMouseEnter;
+            sv.PreviewMouseMove -= OnMouseEnter;
             sv.MouseLeave -= OnMouseLeave;
             sv.Unloaded -= OnUnloaded;
             (sv.GetValue(TimerProperty) as DispatcherTimer)?.Stop();
@@ -70,25 +72,37 @@ public static class ScrollViewerHelper
         // Only real scrolling; a change of extent or viewport (loading, resizing) leaves the bars hidden.
         if (e.OriginalSource == sender && (e.VerticalChange != 0 || e.HorizontalChange != 0))
         {
-            Activate((ScrollViewer)sender);
+            var sv = (ScrollViewer)sender;
+            sv.SetValue(IsScrollBarActivePropertyKey, true);
+            Restart(sv);
         }
     }
 
-    private static void OnMouseMove(object sender, MouseEventArgs e) => Activate((ScrollViewer)sender);
+    // The bars show for as long as the mouse is over the scroll viewer.
+    private static void OnMouseEnter(object sender, MouseEventArgs e)
+    {
+        var sv = (ScrollViewer)sender;
+        if (!GetIsScrollBarActive(sv))
+        {
+            sv.SetValue(IsScrollBarActivePropertyKey, true);
+        }
+    }
 
-    private static void OnMouseLeave(object sender, MouseEventArgs e) => Restart((ScrollViewer)sender);
+    private static void OnMouseLeave(object sender, MouseEventArgs e)
+    {
+        var sv = (ScrollViewer)sender;
+        if (!IsDragging(sv))
+        {
+            (sv.GetValue(TimerProperty) as DispatcherTimer)?.Stop();
+            sv.SetValue(IsScrollBarActivePropertyKey, false);
+        }
+    }
 
     private static void OnUnloaded(object sender, RoutedEventArgs e)
     {
         var sv = (ScrollViewer)sender;
         (sv.GetValue(TimerProperty) as DispatcherTimer)?.Stop();
         sv.SetValue(IsScrollBarActivePropertyKey, false);
-    }
-
-    private static void Activate(ScrollViewer sv)
-    {
-        sv.SetValue(IsScrollBarActivePropertyKey, true);
-        Restart(sv);
     }
 
     private static void Restart(ScrollViewer sv)
@@ -107,15 +121,18 @@ public static class ScrollViewerHelper
 
     private static void OnTimeout(ScrollViewer sv, DispatcherTimer timer)
     {
-        // Keep the bars while the mouse is on one of them or a thumb is being dragged.
-        if (Mouse.Captured is Thumb thumb && thumb.IsDescendantOf(sv) || IsOverBar(sv, "PART_VerticalScrollBar") || IsOverBar(sv, "PART_HorizontalScrollBar"))
+        // A thumb being dragged keeps the bars; so does the mouse, until it leaves.
+        if (IsDragging(sv))
         {
             return;
         }
 
         timer.Stop();
-        sv.SetValue(IsScrollBarActivePropertyKey, false);
+        if (!sv.IsMouseOver)
+        {
+            sv.SetValue(IsScrollBarActivePropertyKey, false);
+        }
     }
 
-    private static bool IsOverBar(ScrollViewer sv, string part) => sv.Template?.FindName(part, sv) is ScrollBar { IsMouseOver: true };
+    private static bool IsDragging(ScrollViewer sv) => Mouse.Captured is Thumb thumb && thumb.IsDescendantOf(sv);
 }

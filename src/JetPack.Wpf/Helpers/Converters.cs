@@ -76,3 +76,15 @@ public sealed class GridSplitterDirectionConverter : IMultiValueConverter
     public object[] ConvertBack(object value, Type[] targetTypes, object? parameter, CultureInfo culture) =>
         throw new NotSupportedException();
 }
+
+/// <summary>Adds the converter parameter (a number, invariant culture) to a <see cref="double"/>.</summary>
+public sealed class AddConverter : IValueConverter
+{
+    public object Convert(object value, Type targetType, object? parameter, CultureInfo culture) =>
+        value is double number && double.TryParse(parameter?.ToString(), NumberStyles.Float, CultureInfo.InvariantCulture, out var add)
+            ? number + add
+            : Binding.DoNothing;
+
+    public object ConvertBack(object value, Type targetType, object? parameter, CultureInfo culture) =>
+        throw new NotSupportedException();
+}
