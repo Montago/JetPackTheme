@@ -374,7 +374,7 @@
                                                Text="{Binding (jp:JetPackGrid.HeaderColumn).Header, RelativeSource={RelativeSource TemplatedParent}, Mode=OneWay, StringFormat='Filter {0}'}" />
                                     <!-- The column's values to tick, when it has few enough of them (JetPackGrid.FilterListLimit) -->
                                     <Border x:Name="FilterList" Margin="0,0,0,8" BorderBrush="#40000000" BorderThickness="0,0,0,1" Padding="0,0,0,6">
-                                        <ScrollViewer MaxHeight="220" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Focusable="False">
+                                        <ScrollViewer Style="{DynamicResource JetPack.Styles.ScrollViewer.Thin}" MaxHeight="220" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Focusable="False">
                                             <ItemsControl Focusable="False"
                                                           ItemsSource="{Binding (jp:JetPackGrid.HeaderColumn).(jp:JetPackGrid.FilterOptions), RelativeSource={RelativeSource TemplatedParent}}">
                                                 <ItemsControl.ItemTemplate>
@@ -396,6 +396,14 @@
                                         <TreeView MaxHeight="240" Focusable="False" Background="Transparent" BorderThickness="0" Padding="0"
                                                   ItemContainerStyle="{DynamicResource JetPack.Styles.JetPackGrid.DateFilterItem}"
                                                   ItemsSource="{Binding (jp:JetPackGrid.HeaderColumn).(jp:JetPackGrid.FilterDateTree), RelativeSource={RelativeSource TemplatedParent}}">
+                                            <!-- Just the items in a ScrollViewer with the thin bar, as the tick list has -->
+                                            <TreeView.Template>
+                                                <ControlTemplate TargetType="TreeView">
+                                                    <ScrollViewer Style="{DynamicResource JetPack.Styles.ScrollViewer.Thin}" Focusable="False" CanContentScroll="False">
+                                                        <ItemsPresenter />
+                                                    </ScrollViewer>
+                                                </ControlTemplate>
+                                            </TreeView.Template>
                                             <TreeView.ItemTemplate>
                                                 <HierarchicalDataTemplate ItemsSource="{Binding Children}">
                                                     <!-- Not focusable: a focused check box would select its tree item (accent bar) -->
