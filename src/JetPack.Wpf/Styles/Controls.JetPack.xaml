@@ -11,6 +11,7 @@
 
     <h:ColorToBrushConverter x:Key="JetPack.Converters.ColorToBrush" />
     <h:ColorToHexConverter x:Key="JetPack.Converters.ColorToHex" />
+    <h:AddConverter x:Key="JetPack.Converters.Add" />
 
     <!-- Plain list for drop-downs (no frame of its own) -->
     <Style x:Key="JetPack.Styles.ListBox.Popup" TargetType="ListBox">
@@ -775,8 +776,9 @@
                             <DockPanel>
                                 <ToggleButton DockPanel.Dock="Top" Style="{StaticResource JetPack.Styles.HamburgerMenu.Toggle}"
                                               IsChecked="{Binding IsPaneOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}" />
-                                <ScrollViewer Focusable="False" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
-                                    <ItemsPresenter />
+                                <ScrollViewer x:Name="Scroller" Style="{DynamicResource JetPack.Styles.ScrollViewer.Thin}" Focusable="False"
+                                              VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                                    <ItemsPresenter x:Name="Items" />
                                 </ScrollViewer>
                             </DockPanel>
                         </Border>
@@ -786,6 +788,19 @@
                         <Trigger Property="IsPaneOpen" Value="False">
                             <Setter TargetName="Pane" Property="Width" Value="{Binding CompactPaneWidth, RelativeSource={RelativeSource TemplatedParent}}" />
                         </Trigger>
+                        <!-- While the items scroll, the thin bar gets a 12px column of its own beside them; the
+                             collapsed pane widens by that much, so the icons keep their column -->
+                        <Trigger SourceName="Scroller" Property="ComputedVerticalScrollBarVisibility" Value="Visible">
+                            <Setter TargetName="Items" Property="Margin" Value="0,0,12,0" />
+                        </Trigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsPaneOpen" Value="False" />
+                                <Condition SourceName="Scroller" Property="ComputedVerticalScrollBarVisibility" Value="Visible" />
+                            </MultiTrigger.Conditions>
+                            <Setter TargetName="Pane" Property="Width"
+                                    Value="{Binding CompactPaneWidth, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource JetPack.Converters.Add}, ConverterParameter=12}" />
+                        </MultiTrigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>

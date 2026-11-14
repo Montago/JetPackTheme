@@ -24,7 +24,7 @@ sets up controls added later.
                     .jp-data-grid[data-jp-selection], .jp-tab-control, .jp-slider, .jp-range-slider,
                     .jp-rating[data-jp-input], .jp-calendar, .jp-date-picker, .jp-time-picker,
                     .jp-auto-suggest-box, .jp-search-combo-box, .jp-color-picker, .jp-grid-splitter,
-                    .jp-scroll-viewer--thin, .jp-menu, canvas.jp-vignette
+                    .jp-scroll-viewer--thin, .jp-hamburger-menu, .jp-menu, canvas.jp-vignette
   DataGrid          table.jp-data-grid: header click sorts (Shift adds a column), header edge resizes;
                     data-jp-sort="false", data-jp-resize="false", data-sort-value on a cell
   tr[data-href]     a data grid row that opens a page when clicked
@@ -1958,19 +1958,31 @@ also raise "jp-change" with the new value in event.detail. A data grid raises "j
   }
 
   /* =========================================================== thin scroll */
+  /* The thin bar shows while the pointer is over the scroll viewer (CSS :hover), and for 1.5 s after it
+     scrolls some other way (keyboard, script), as ScrollViewerHelper.AutoHide does in WPF */
   function setUpThinScroll(viewer) {
     let timer = 0;
-    const show = () => {
+    const hide = () => {
+      clearTimeout(timer);
+      viewer.classList.remove('is-active');
+    };
+    viewer.addEventListener('scroll', () => {
       viewer.classList.add('is-active');
       clearTimeout(timer);
-      timer = setTimeout(() => viewer.classList.remove('is-active'), 1500);
-    };
-    viewer.addEventListener('scroll', show, { passive: true });
-    viewer.addEventListener('pointermove', e => {
-      /* only near the bars, as the WPF ScrollBar only reacts when the mouse is over it */
-      const r = viewer.getBoundingClientRect();
-      if (e.clientX > r.right - 16 || e.clientY > r.bottom - 16) show();
-    });
+      timer = setTimeout(hide, 1500);
+    }, { passive: true });
+    viewer.addEventListener('pointerleave', hide);
+  }
+
+  /* The HamburgerMenu pane scrolls with the thin bar; is-scrollable tells the CSS that the bar takes room,
+     so the collapsed pane can widen by it */
+  function setUpHamburgerMenu(menu) {
+    setUpThinScroll(menu);
+    const check = () => menu.classList.toggle('is-scrollable', menu.scrollHeight > menu.clientHeight);
+    new ResizeObserver(check).observe(menu);
+    /* groups opening and closing, the pane collapsing, items added */
+    new MutationObserver(check).observe(menu, { subtree: true, childList: true, attributes: true, attributeFilter: ['hidden', 'class'] });
+    check();
   }
 
   /* ================================================================ sliders */
@@ -3201,6 +3213,7 @@ also raise "jp-change" with the new value in event.detail. A data grid raises "j
     ['.jp-jetpack-grid', setUpJetPackGrid],
     ['.jp-tree-view', setUpTreeView],
     ['.jp-scroll-viewer--thin', setUpThinScroll],
+    ['.jp-hamburger-menu', setUpHamburgerMenu],
     ['.jp-slider, .jp-range-slider', setUpSlider],
     ['.jp-rating[data-jp-input]', setUpRating],
     ['.jp-calendar:not(.jp-popup .jp-calendar)', setUpCalendar],

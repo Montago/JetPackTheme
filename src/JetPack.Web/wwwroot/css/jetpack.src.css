@@ -87,6 +87,6 @@ Load this file before Tailwind: the first @layer statement fixes the order of th
 
 @media (prefers-reduced-motion: reduce) {
   @layer components {
-    .jp-flyout, .jp-toggle-switch > input, .jp-toggle-switch > input::after, .jp-expander > summary::before, .jp-hamburger-menu { transition: none; }
+    .jp-flyout, .jp-toggle-switch > input, .jp-toggle-switch > input::after, .jp-expander > summary::before, .jp-hamburger-menu, .jp-scroll-viewer--thin { transition: none; }
   }
 }

@@ -150,7 +150,8 @@
     <!-- ===================== Thin ScrollBar / ScrollViewer =====================
          Modern overlay scroll bars: a slim rounded thumb in the accent gradient, without arrows or
          track, which widens under the mouse. JetPack.Styles.ScrollViewer.Thin lays them over the
-         content and fades them out after ScrollViewerHelper.AutoHideDelay. -->
+         content and hides them (ScrollViewerHelper.AutoHide): they fade in over 0.25 s while the mouse
+         is over the scroll viewer or it scrolls, and fade out again when the mouse leaves. -->
     <Style x:Key="JetPack.Styles.ScrollBar.Thin.Thumb" TargetType="Thumb">
         <Setter Property="OverridesDefaultStyle" Value="True" />
         <Setter Property="IsTabStop" Value="False" />
@@ -285,16 +286,16 @@
                             <Trigger.EnterActions>
                                 <BeginStoryboard>
                                     <Storyboard>
-                                        <DoubleAnimation Storyboard.TargetName="PART_VerticalScrollBar" Storyboard.TargetProperty="Opacity" To="0" Duration="0:0:0.4" />
-                                        <DoubleAnimation Storyboard.TargetName="PART_HorizontalScrollBar" Storyboard.TargetProperty="Opacity" To="0" Duration="0:0:0.4" />
+                                        <DoubleAnimation Storyboard.TargetName="PART_VerticalScrollBar" Storyboard.TargetProperty="Opacity" To="0" Duration="0:0:0.25" />
+                                        <DoubleAnimation Storyboard.TargetName="PART_HorizontalScrollBar" Storyboard.TargetProperty="Opacity" To="0" Duration="0:0:0.25" />
                                     </Storyboard>
                                 </BeginStoryboard>
                             </Trigger.EnterActions>
                             <Trigger.ExitActions>
                                 <BeginStoryboard>
                                     <Storyboard>
-                                        <DoubleAnimation Storyboard.TargetName="PART_VerticalScrollBar" Storyboard.TargetProperty="Opacity" To="1" Duration="0:0:0.15" />
-                                        <DoubleAnimation Storyboard.TargetName="PART_HorizontalScrollBar" Storyboard.TargetProperty="Opacity" To="1" Duration="0:0:0.15" />
+                                        <DoubleAnimation Storyboard.TargetName="PART_VerticalScrollBar" Storyboard.TargetProperty="Opacity" To="1" Duration="0:0:0.25" />
+                                        <DoubleAnimation Storyboard.TargetName="PART_HorizontalScrollBar" Storyboard.TargetProperty="Opacity" To="1" Duration="0:0:0.25" />
                                     </Storyboard>
                                 </BeginStoryboard>
                             </Trigger.ExitActions>
