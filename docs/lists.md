@@ -54,7 +54,8 @@ header. (The whole app: [Light and dark](theming.md#light-and-dark).)
 ![TreeView](screenshots/controls/treeview.png)
 
 A dark panel (`#707176`) with bold white items, the white +/− expander boxes of the original and the
-accent gradient with a highlight line on the selected item.
+accent gradient with a highlight line on the selected item. It scrolls with the
+[thin accent bar](#thin-scroll-bars), which shows while the mouse is over the tree.
 
 ```xml
 <TreeView ItemsSource="{Binding Companies}">
@@ -213,7 +214,8 @@ the accent only and a custom colour.
 When the box opens, the grid reads the column's values from every row in the source. If there are
 at most `FilterListLimit` different values (20 by default), they are listed with their row counts
 so you can tick them. This suits columns such as fuel type or body type. A column with more values,
-such as model or stock number, only gets the text box. The list and the text follow each other:
+such as model or stock number, only gets the text box. The list (and the date tree below) scrolls
+with the [thin accent bar](#thin-scroll-bars). The list and the text follow each other:
 
 - Ticking a value writes it into the text.
 - Typing a value ticks it.
@@ -522,7 +524,8 @@ under the mouse. They hide themselves (`ScrollViewerHelper.AutoHide`, on in this
 over 0.25 s while the mouse is over the scroll viewer, and fade out again when it leaves. Content that
 scrolls some other way (keyboard, code) shows them for `ScrollViewerHelper.AutoHideDelay` (1.5 seconds).
 They stay while a thumb is being dragged. The demo uses it for its pages, and the
-[HamburgerMenu](navigation.md#hamburgermenu) pane scrolls with it.
+[HamburgerMenu](navigation.md#hamburgermenu) pane, the [TreeView](#treeview) and the
+[JetPackGrid](#jetpackgrid) filter box scroll with it.
 
 ```xml
 <ScrollViewer Style="{StaticResource JetPack.Styles.ScrollViewer.Thin}"

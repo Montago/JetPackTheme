@@ -277,7 +277,7 @@ matches). The items can be objects: `display-member-path` names the property to 
 | `selected-value-path` | | the property to post and to match `selected-value` |
 | `selected-value` | | the value of the selected item |
 | `selected-item` | | the selected item itself, for lists of strings |
-| `filter-mode` | `Contains` | `Contains` or `StartsWith` |
+| `filter-mode` | `Contains` | `Contains`: every word of the text, in any order (`vol v90` finds `Volvo V90`); `StartsWith`: the whole text at the start |
 | `watermark`, `name`, `id` | | `name` adds a hidden input with the selected value |
 | `dark` | `false` | `JetPack.Styles.SearchComboBox.Dark` |
 

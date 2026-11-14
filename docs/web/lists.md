@@ -89,6 +89,7 @@ header. (The whole page: [Light and dark](theming.md#light-and-dark).)
 
 `jp-tree-view` is the dark tree with bold items. An item with children gets the [+]/[−] box, which
 is a `<details>`, so it folds without script; a click on the text selects the item without folding it.
+It scrolls with the [thin accent bar](#scrollviewer-and-scrollbar), shown while the mouse is over it.
 
 ```cshtml
 <jp-tree-view name="Month" class="h-44">
@@ -322,7 +323,8 @@ gradient behind the cells' dark text.
 
 When the box opens, the grid reads the column's values from every row. With at most
 `filter-list-limit` different values (20 by default) they are listed with their row counts to
-tick; a column with more values only gets the text box. Ticking writes the value into the text,
+tick, in a list that scrolls with the [thin accent bar](#scrollviewer-and-scrollbar); a column with
+more values only gets the text box. Ticking writes the value into the text,
 typing a value ticks it, and typed values that are not in the list stay in the text.
 
 The values and ranges are those of the WPF grid ([Header filter](../lists.md#header-filter)):
@@ -728,7 +730,8 @@ scrolling box with WPF's scroll bar settings:
 `thin="true"` gives the thin accent bar of `JetPack.Styles.ScrollViewer.Thin`: it fades in over
 0.25 s while the mouse is over the box and out again when it leaves; scrolling some other way
 (keyboard, script) shows it for 1.5 s. The fade animates the registered colour `--jp-thin-thumb`. The
-[HamburgerMenu](navigation.md#hamburgermenu) pane scrolls with the same bar.
+[HamburgerMenu](navigation.md#hamburgermenu) pane, the [TreeView](#treeview) and the JetPackGrid
+filter box scroll with the same bar.
 
 ![ScrollViewer, dark](../screenshots/web/controls/scrollviewer-dark.png)
 
