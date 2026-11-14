@@ -585,9 +585,10 @@ also raise "jp-change" with the new value in event.detail. A data grid raises "j
     if (!container.hasAttribute('tabindex')) container.tabIndex = 0;
   }
 
-  /* TreeView: the [+]/[-] boxes are <details>; the items select like a list */
+  /* TreeView: the [+]/[-] boxes are <details>; the items select like a list; it scrolls with the thin bar */
   function setUpTreeView(tree) {
     setUpSelection(tree, '.jp-tree-view__item');
+    setUpThinScroll(tree);
     tree.addEventListener('click', e => {
       /* only the box folds; a click on the header text selects without folding */
       const summary = e.target.closest('summary');

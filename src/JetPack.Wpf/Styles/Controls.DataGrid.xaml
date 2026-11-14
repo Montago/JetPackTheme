@@ -396,6 +396,14 @@
                                         <TreeView MaxHeight="240" Focusable="False" Background="Transparent" BorderThickness="0" Padding="0"
                                                   ItemContainerStyle="{DynamicResource JetPack.Styles.JetPackGrid.DateFilterItem}"
                                                   ItemsSource="{Binding (jp:JetPackGrid.HeaderColumn).(jp:JetPackGrid.FilterDateTree), RelativeSource={RelativeSource TemplatedParent}}">
+                                            <!-- Just the items in a ScrollViewer, which scrolls with the theme's bar as the tick list does -->
+                                            <TreeView.Template>
+                                                <ControlTemplate TargetType="TreeView">
+                                                    <ScrollViewer Focusable="False" CanContentScroll="False">
+                                                        <ItemsPresenter />
+                                                    </ScrollViewer>
+                                                </ControlTemplate>
+                                            </TreeView.Template>
                                             <TreeView.ItemTemplate>
                                                 <HierarchicalDataTemplate ItemsSource="{Binding Children}">
                                                     <!-- Not focusable: a focused check box would select its tree item (accent bar) -->
