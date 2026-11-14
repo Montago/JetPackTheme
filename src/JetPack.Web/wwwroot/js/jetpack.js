@@ -1790,6 +1790,7 @@ also raise "jp-change" with the new value in event.detail. A data grid raises "j
         '<div class="jp-jetpack-grid-filter__buttons"><button type="button" class="jp-button" data-filter="clear">Clear</button>' +
         '<button type="button" class="jp-button jp-button--accent" data-filter="done">Done</button></div>';
       popup.querySelector('.jp-text-box').value = col.filterText;
+      setUpThinScroll(popup.querySelector('.jp-jetpack-grid-filter__list'));
     }
     function fillList(col) {
       treeNodes = [];
