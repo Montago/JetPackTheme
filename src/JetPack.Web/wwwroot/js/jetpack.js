@@ -2507,10 +2507,12 @@ also raise "jp-change" with the new value in event.detail. A data grid raises "j
 
     const show = filter => {
       const q = filter.trim().toLowerCase();
+      // Contains: every word, in any order (as SearchComboBox.Filter in WPF). StartsWith: the whole text.
+      const words = q.split(/\s+/).filter(Boolean);
       shown = items.filter(item => {
         if (!q) return true;
         const t = text(item).toLowerCase();
-        return startsWith ? t.startsWith(q) : t.includes(q);
+        return startsWith ? t.startsWith(q) : words.every(w => t.includes(w));
       }).slice(0, limit);
       list.fill(shown.map(item => ({ text: text(item) })), Math.max(0, q ? 0 : shown.indexOf(selected)));
       if (!list.isOpen) list.open(host);

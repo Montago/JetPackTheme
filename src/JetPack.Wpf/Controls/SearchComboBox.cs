@@ -12,7 +12,9 @@ namespace JetPack.Wpf.Controls;
 /// <summary>How <see cref="SearchComboBox"/> matches typed text against the items.</summary>
 public enum SearchFilterMode
 {
+    /// <summary>Every word of the text (split on white space) appears somewhere in the item, in any order.</summary>
     Contains,
+    /// <summary>The item starts with the whole text.</summary>
     StartsWith,
 }
 
@@ -474,11 +476,18 @@ public class SearchComboBox : Control
         }
     }
 
-    private IEnumerable<Entry> Filter(string text) => FilterMode == SearchFilterMode.StartsWith
-        ? entries.Where(x => x.Text.StartsWith(text, StringComparison.CurrentCultureIgnoreCase))
-        : entries.Where(x => x.Text.Contains(text, StringComparison.CurrentCultureIgnoreCase));
+    private IEnumerable<Entry> Filter(string text)
+    {
+        if (FilterMode == SearchFilterMode.StartsWith)
+        {
+            return entries.Where(x => x.Text.StartsWith(text, StringComparison.CurrentCultureIgnoreCase));
+        }
+        var words = text.Split((char[]?)null, StringSplitOptions.RemoveEmptyEntries);
+        return entries.Where(x => words.All(w => x.Text.Contains(w, StringComparison.CurrentCultureIgnoreCase)));
+    }
 
-    // The first item starting with the text, else (when filtering by Contains) the first one containing it.
+    // The first item starting with the whole text, else (when filtering by Contains) the first one containing
+    // every word. Only the first kind is completed: OnTextChanged checks that the text is a prefix of it.
     private object? FindBest(string text)
     {
         foreach (var x in entries)
