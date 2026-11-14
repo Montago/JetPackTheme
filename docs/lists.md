@@ -518,9 +518,11 @@ the same on any ground. (The whole app: [Light and dark](theming.md#light-and-da
 `JetPack.Styles.ScrollViewer.Thin` is a modern alternative: a slim rounded thumb in the accent
 gradient with a soft shadow, no arrows and no track. The bars lie over the content instead of taking
 space beside it. They are 12px wide to grab, the thumb is 5px and grows to 8px with a faint track
-under the mouse. They fade in when the content scrolls or the mouse moves over the scroll viewer, and
-fade out again after `ScrollViewerHelper.AutoHideDelay` (1.5 seconds) without activity. They stay while
-the mouse is on a bar or a thumb is being dragged. The demo uses it for its pages.
+under the mouse. They hide themselves (`ScrollViewerHelper.AutoHide`, on in this style): they fade in
+over 0.25 s while the mouse is over the scroll viewer, and fade out again when it leaves. Content that
+scrolls some other way (keyboard, code) shows them for `ScrollViewerHelper.AutoHideDelay` (1.5 seconds).
+They stay while a thumb is being dragged. The demo uses it for its pages, and the
+[HamburgerMenu](navigation.md#hamburgermenu) pane scrolls with it.
 
 ```xml
 <ScrollViewer Style="{StaticResource JetPack.Styles.ScrollViewer.Thin}"

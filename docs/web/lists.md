@@ -725,8 +725,10 @@ scrolling box with WPF's scroll bar settings:
 
 ![The thin scroll bar](../screenshots/web/controls/scrollviewer-thin.png)
 
-`thin="true"` gives the thin accent bar of `JetPack.Styles.ScrollViewer.Thin`: it shows while the box
-scrolls or the mouse is near its edge, and hides 1.5 s later.
+`thin="true"` gives the thin accent bar of `JetPack.Styles.ScrollViewer.Thin`: it fades in over
+0.25 s while the mouse is over the box and out again when it leaves; scrolling some other way
+(keyboard, script) shows it for 1.5 s. The fade animates the registered colour `--jp-thin-thumb`. The
+[HamburgerMenu](navigation.md#hamburgermenu) pane scrolls with the same bar.
 
 ![ScrollViewer, dark](../screenshots/web/controls/scrollviewer-dark.png)
 
