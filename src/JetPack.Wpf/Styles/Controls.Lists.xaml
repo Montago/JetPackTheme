@@ -870,7 +870,8 @@
                     <Grid>
                         <Border Background="{TemplateBinding Background}" CornerRadius="2.5" Effect="{DynamicResource JetPack.Effects.LightControlShadow}" />
                         <Border BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="2.5">
-                            <ScrollViewer Focusable="False" Padding="{TemplateBinding Padding}" CanContentScroll="False">
+                            <!-- The thin accent bar, shown while the mouse is over the tree (as the HamburgerMenu pane) -->
+                            <ScrollViewer Style="{StaticResource JetPack.Styles.ScrollViewer.Thin}" Focusable="False" Padding="{TemplateBinding Padding}" CanContentScroll="False">
                                 <ItemsPresenter />
                             </ScrollViewer>
                         </Border>

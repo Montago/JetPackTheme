@@ -527,48 +527,48 @@
   /* ------------------------------------------------------------ scrollbars */
   /* JetPack.Styles.ScrollBar: the light track, a raised thumb and arrow buttons (Chromium).
      Every JetPack element that scrolls gets them. */
-  :where(.jp-scroll-viewer, .jp-list-box, .jp-list-view, .jp-data-grid-host, .jp-jetpack-grid__viewport, .jp-jetpack-grid-filter__list, .jp-popup, .jp-tree-view, textarea.jp-text-box) {
+  :where(.jp-scroll-viewer, .jp-list-box, .jp-list-view, .jp-data-grid-host, .jp-jetpack-grid__viewport, .jp-jetpack-grid-filter__list, .jp-popup, textarea.jp-text-box) {
     scrollbar-color: #C8C8C8 var(--jp-scroll-bar-track);
   }
   .jp-scroll-viewer { overflow: auto; }
   @supports selector(::-webkit-scrollbar) {
-    :where(.jp-scroll-viewer, .jp-list-box, .jp-list-view, .jp-data-grid-host, .jp-jetpack-grid__viewport, .jp-jetpack-grid-filter__list, .jp-popup, .jp-tree-view, textarea.jp-text-box) { scrollbar-color: auto; }
+    :where(.jp-scroll-viewer, .jp-list-box, .jp-list-view, .jp-data-grid-host, .jp-jetpack-grid__viewport, .jp-jetpack-grid-filter__list, .jp-popup, textarea.jp-text-box) { scrollbar-color: auto; }
   }
-  :where(.jp-scroll-viewer, .jp-list-box, .jp-list-view, .jp-data-grid-host, .jp-jetpack-grid__viewport, .jp-jetpack-grid-filter__list, .jp-popup, .jp-tree-view, textarea.jp-text-box)::-webkit-scrollbar {
+  :where(.jp-scroll-viewer, .jp-list-box, .jp-list-view, .jp-data-grid-host, .jp-jetpack-grid__viewport, .jp-jetpack-grid-filter__list, .jp-popup, textarea.jp-text-box)::-webkit-scrollbar {
     width: 16px;
     height: 16px;
     background: var(--jp-scroll-bar-track);
   }
-  :where(.jp-scroll-viewer, .jp-list-box, .jp-list-view, .jp-data-grid-host, .jp-jetpack-grid__viewport, .jp-jetpack-grid-filter__list, .jp-popup, .jp-tree-view, textarea.jp-text-box)::-webkit-scrollbar-corner { background: var(--jp-scroll-bar-track); }
-  :where(.jp-scroll-viewer, .jp-list-box, .jp-list-view, .jp-data-grid-host, .jp-jetpack-grid__viewport, .jp-jetpack-grid-filter__list, .jp-popup, .jp-tree-view, textarea.jp-text-box)::-webkit-scrollbar-thumb {
+  :where(.jp-scroll-viewer, .jp-list-box, .jp-list-view, .jp-data-grid-host, .jp-jetpack-grid__viewport, .jp-jetpack-grid-filter__list, .jp-popup, textarea.jp-text-box)::-webkit-scrollbar-corner { background: var(--jp-scroll-bar-track); }
+  :where(.jp-scroll-viewer, .jp-list-box, .jp-list-view, .jp-data-grid-host, .jp-jetpack-grid__viewport, .jp-jetpack-grid-filter__list, .jp-popup, textarea.jp-text-box)::-webkit-scrollbar-thumb {
     min-height: 24px;
     background: var(--jp-scroll-bar-thumb-vertical) padding-box;
     border: 2px solid transparent;
     border-radius: 4px;
     box-shadow: inset 1px 1px 0 var(--jp-scroll-bar-thumb-highlight), inset -1px -1px 0 rgb(0 0 0 / 0.25);
   }
-  :where(.jp-scroll-viewer, .jp-list-box, .jp-list-view, .jp-data-grid-host, .jp-jetpack-grid__viewport, .jp-jetpack-grid-filter__list, .jp-popup, .jp-tree-view, textarea.jp-text-box)::-webkit-scrollbar-thumb:horizontal {
+  :where(.jp-scroll-viewer, .jp-list-box, .jp-list-view, .jp-data-grid-host, .jp-jetpack-grid__viewport, .jp-jetpack-grid-filter__list, .jp-popup, textarea.jp-text-box)::-webkit-scrollbar-thumb:horizontal {
     background: var(--jp-scroll-bar-thumb) padding-box;
   }
-  :where(.jp-scroll-viewer, .jp-list-box, .jp-list-view, .jp-data-grid-host, .jp-jetpack-grid__viewport, .jp-jetpack-grid-filter__list, .jp-popup, .jp-tree-view, textarea.jp-text-box)::-webkit-scrollbar-button:single-button {
+  :where(.jp-scroll-viewer, .jp-list-box, .jp-list-view, .jp-data-grid-host, .jp-jetpack-grid__viewport, .jp-jetpack-grid-filter__list, .jp-popup, textarea.jp-text-box)::-webkit-scrollbar-button:single-button {
     display: block;
     width: 16px;
     height: 14px;
     background: var(--jp-scroll-bar-track) center / 7px 4px no-repeat;
   }
-  :where(.jp-scroll-viewer, .jp-list-box, .jp-list-view, .jp-data-grid-host, .jp-jetpack-grid__viewport, .jp-jetpack-grid-filter__list, .jp-popup, .jp-tree-view, textarea.jp-text-box)::-webkit-scrollbar-button:single-button:vertical:decrement {
+  :where(.jp-scroll-viewer, .jp-list-box, .jp-list-view, .jp-data-grid-host, .jp-jetpack-grid__viewport, .jp-jetpack-grid-filter__list, .jp-popup, textarea.jp-text-box)::-webkit-scrollbar-button:single-button:vertical:decrement {
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 7 4'%3E%3Cpath d='M0 4h7L3.5 0z' fill='%23606060'/%3E%3C/svg%3E");
   }
-  :where(.jp-scroll-viewer, .jp-list-box, .jp-list-view, .jp-data-grid-host, .jp-jetpack-grid__viewport, .jp-jetpack-grid-filter__list, .jp-popup, .jp-tree-view, textarea.jp-text-box)::-webkit-scrollbar-button:single-button:vertical:increment {
+  :where(.jp-scroll-viewer, .jp-list-box, .jp-list-view, .jp-data-grid-host, .jp-jetpack-grid__viewport, .jp-jetpack-grid-filter__list, .jp-popup, textarea.jp-text-box)::-webkit-scrollbar-button:single-button:vertical:increment {
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 7 4'%3E%3Cpath d='M0 0h7L3.5 4z' fill='%23606060'/%3E%3C/svg%3E");
   }
-  :where(.jp-scroll-viewer, .jp-list-box, .jp-list-view, .jp-data-grid-host, .jp-jetpack-grid__viewport, .jp-jetpack-grid-filter__list, .jp-popup, .jp-tree-view, textarea.jp-text-box)::-webkit-scrollbar-button:single-button:horizontal:decrement {
+  :where(.jp-scroll-viewer, .jp-list-box, .jp-list-view, .jp-data-grid-host, .jp-jetpack-grid__viewport, .jp-jetpack-grid-filter__list, .jp-popup, textarea.jp-text-box)::-webkit-scrollbar-button:single-button:horizontal:decrement {
     width: 14px;
     height: 16px;
     background-size: 4px 7px;
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 4 7'%3E%3Cpath d='M4 0v7L0 3.5z' fill='%23606060'/%3E%3C/svg%3E");
   }
-  :where(.jp-scroll-viewer, .jp-list-box, .jp-list-view, .jp-data-grid-host, .jp-jetpack-grid__viewport, .jp-jetpack-grid-filter__list, .jp-popup, .jp-tree-view, textarea.jp-text-box)::-webkit-scrollbar-button:single-button:horizontal:increment {
+  :where(.jp-scroll-viewer, .jp-list-box, .jp-list-view, .jp-data-grid-host, .jp-jetpack-grid__viewport, .jp-jetpack-grid-filter__list, .jp-popup, textarea.jp-text-box)::-webkit-scrollbar-button:single-button:horizontal:increment {
     width: 14px;
     height: 16px;
     background-size: 4px 7px;
@@ -607,23 +607,23 @@
   /*
   JetPack.Styles.ScrollViewer.Thin: a slim accent thumb, hidden until the pointer is over the scroll viewer
   or it scrolls (jetpack.js keeps it 1.5 s after scrolling; ScrollViewerHelper.AutoHide), fading in and out
-  over 0.25 s. The HamburgerMenu pane scrolls with it too. Scroll bar parts cannot be animated, but a
+  over 0.25 s. The HamburgerMenu pane and the TreeView scroll with it too. Scroll bar parts cannot be animated, but a
   registered colour can: the thumb paints with --jp-thin-thumb, which the scroll viewer animates.
   */
-  :is(.jp-scroll-viewer--thin, .jp-hamburger-menu) {
+  :is(.jp-scroll-viewer--thin, .jp-hamburger-menu, .jp-tree-view) {
     --jp-thin-thumb: transparent;
     scrollbar-width: thin;
     scrollbar-color: var(--jp-thin-thumb) transparent;
   }
-  .jp-scroll-viewer--thin { transition: --jp-thin-thumb 0.25s ease-in-out; }
-  :is(.jp-scroll-viewer--thin, .jp-hamburger-menu):is(:hover, .is-active) { --jp-thin-thumb: var(--jp-accent-solid); }
+  :is(.jp-scroll-viewer--thin, .jp-tree-view) { transition: --jp-thin-thumb 0.25s ease-in-out; }
+  :is(.jp-scroll-viewer--thin, .jp-hamburger-menu, .jp-tree-view):is(:hover, .is-active) { --jp-thin-thumb: var(--jp-accent-solid); }
   @supports selector(::-webkit-scrollbar) {
-    :is(.jp-scroll-viewer--thin, .jp-hamburger-menu) { scrollbar-color: auto; scrollbar-width: auto; }
+    :is(.jp-scroll-viewer--thin, .jp-hamburger-menu, .jp-tree-view) { scrollbar-color: auto; scrollbar-width: auto; }
   }
-  :is(.jp-scroll-viewer--thin, .jp-hamburger-menu)::-webkit-scrollbar { width: 12px; height: 12px; background: transparent; }
-  :is(.jp-scroll-viewer--thin, .jp-hamburger-menu)::-webkit-scrollbar-corner { background: transparent; }
-  :is(.jp-scroll-viewer--thin, .jp-hamburger-menu)::-webkit-scrollbar-button { display: none; }
-  :is(.jp-scroll-viewer--thin, .jp-hamburger-menu)::-webkit-scrollbar-thumb {
+  :is(.jp-scroll-viewer--thin, .jp-hamburger-menu, .jp-tree-view)::-webkit-scrollbar { width: 12px; height: 12px; background: transparent; }
+  :is(.jp-scroll-viewer--thin, .jp-hamburger-menu, .jp-tree-view)::-webkit-scrollbar-corner { background: transparent; }
+  :is(.jp-scroll-viewer--thin, .jp-hamburger-menu, .jp-tree-view)::-webkit-scrollbar-button { display: none; }
+  :is(.jp-scroll-viewer--thin, .jp-hamburger-menu, .jp-tree-view)::-webkit-scrollbar-thumb {
     min-height: 32px;
     border: 0 solid transparent;
     border-width: 3px 3px 3px 4px;
@@ -631,6 +631,6 @@
     background: var(--jp-thin-thumb) padding-box;
     box-shadow: none;
   }
-  :is(.jp-scroll-viewer--thin, .jp-hamburger-menu)::-webkit-scrollbar-thumb:horizontal { border-width: 4px 3px 3px 3px; }
-  :is(.jp-scroll-viewer--thin, .jp-hamburger-menu)::-webkit-scrollbar-thumb:hover { background: var(--jp-accent-mouse-over) padding-box; }
+  :is(.jp-scroll-viewer--thin, .jp-hamburger-menu, .jp-tree-view)::-webkit-scrollbar-thumb:horizontal { border-width: 4px 3px 3px 3px; }
+  :is(.jp-scroll-viewer--thin, .jp-hamburger-menu, .jp-tree-view)::-webkit-scrollbar-thumb:hover { background: var(--jp-accent-mouse-over) padding-box; }
 }
