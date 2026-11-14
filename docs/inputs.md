@@ -183,8 +183,9 @@ drop-down is virtualized, so lists with thousands of items stay fast.
 
 - Focusing the box (or typing) opens the list. With no typed text it shows every item, with the
   selected one highlighted.
-- Typing filters the list (`Contains` or `StartsWith`, ignoring case) and highlights the first item
-  that starts with the text. The rest of that item is filled in and selected, so the next key replaces it.
+- Typing filters the list, ignoring case. With `Contains` the text is split into words, and an item
+  shows when every word appears in it, in any order (`vol v90` finds `Volvo V90`); with `StartsWith`
+  the item starts with the whole text. The first item that starts with the text is highlighted. The rest of that item is filled in and selected, so the next key replaces it.
   Backspace and Delete remove text without completing it again.
 - Down/Up and PageDown/PageUp move the highlight and show it in the box; Down, Alt+Down or F4 open a
   closed list.
@@ -201,7 +202,7 @@ drop-down is virtualized, so lists with thousands of items stay fast.
 | `SelectedValuePath` | `string` | `""` | Without a path, `SelectedValue` is the item itself. |
 | `DisplayMemberPath` | `string` | `""` | Text shown, matched and completed (`ToString()` when empty); dotted paths work. |
 | `ItemTemplate` | `DataTemplate` | `null` | Template for the drop-down items; the box still shows `DisplayMemberPath`. |
-| `FilterMode` | `SearchFilterMode` | `Contains` | `Contains` or `StartsWith`. |
+| `FilterMode` | `SearchFilterMode` | `Contains` | `Contains` (every word, in any order) or `StartsWith` (the whole text). |
 | `IsFilteringEnabled` | `bool` | `true` | When `false`, typing only highlights and completes; the list keeps every item. |
 | `IsAutoCompleteEnabled` | `bool` | `true` | Fills in the rest of the first matching item. |
 | `OpenOnFocus` | `bool` | `true` | |
