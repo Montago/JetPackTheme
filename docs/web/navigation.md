@@ -104,7 +104,10 @@ page switcher of the web demo. Both bar looks leave the content unframed.
 ![HamburgerMenu](../screenshots/web/controls/hamburgermenu.png)
 
 `jp-hamburger-menu` is the dark navigation pane with an icon and a label for each page; the button at
-the top folds it to the icons. It works in two ways.
+the top folds it to the icons. When the items do not fit, the pane scrolls with the
+[thin accent bar](lists.md#scrollviewer-and-scrollbar), which shows while the mouse is over the pane.
+The bar takes a 12px lane beside the items, and the folded pane grows from 40 to 52 px while it scrolls
+(jetpack.js marks it `is-scrollable`), so the icons keep their place. It works in two ways.
 
 **As the window's navigation.** Put it in `.jp-window__body`, before the content, and give the items
 an `href`. Each page marks its own item with `is-selected` (or `aria-current="page"`). Folding the pane

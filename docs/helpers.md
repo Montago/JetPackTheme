@@ -44,8 +44,8 @@ Drives the auto-hiding bars of `JetPack.Styles.ScrollViewer.Thin` (see
 
 | Attached property | Type | Description |
 | --- | --- | --- |
-| `AutoHide` | `bool` | Hides the bars until the content scrolls or the mouse moves over the scroll viewer. The thin style turns it on. |
-| `AutoHideDelay` | `TimeSpan` (default 1.5 s) | How long the bars stay after the last scroll or mouse move. |
+| `AutoHide` | `bool` | Hides the bars except while the mouse is over the scroll viewer or it scrolls. The thin style turns it on. |
+| `AutoHideDelay` | `TimeSpan` (default 1.5 s) | How long the bars stay after scrolling while the mouse is elsewhere (keyboard, code). |
 | `IsScrollBarActive` | `bool`, read-only | True while the bars should show; always true when `AutoHide` is off. Templates fade the bars on it. |
 
 ## TabControlHelper

@@ -89,6 +89,10 @@ The demo's settings flyout switches between them.
 `jp:HamburgerMenu` is a `ListBox` with a dark pane on the left and a content area on the right. The
 selected item gets the accent gradient. The ☰ button collapses the pane to icons.
 
+When the items do not fit, the pane scrolls with the [thin accent bar](lists.md#thin-scroll-bars),
+which shows while the mouse is over the pane. The bar then gets a 12px lane beside the items, and the
+collapsed pane grows by that much (`CompactPaneWidth` + 12), so the icons keep their place.
+
 ```xml
 <jp:HamburgerMenu SelectedIndex="0" Content="{Binding SelectedItem.Tag, RelativeSource={RelativeSource Self}}">
     <jp:HamburgerMenu.ContentTemplate>
