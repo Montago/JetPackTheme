@@ -11,7 +11,7 @@
         <!-- Branding shown at the right end of the full-width navigation bar (see UseNavigationBar) -->
         <StackPanel x:Key="Demo.Brand.Bar" Orientation="Horizontal" Margin="0,0,16,0" Effect="{DynamicResource JetPack.Effects.Navigation.TextEmboss}">
             <TextBlock VerticalAlignment="Center" FontSize="22" Text="Jetpack" TextOptions.TextFormattingMode="Ideal" />
-            <TextBlock VerticalAlignment="Center" Margin="8,3,0,0" FontSize="11" Text="for WPF · .NET 8+" />
+            <TextBlock VerticalAlignment="Center" Margin="8,3,0,0" FontSize="11" Text="for WPF · .NET 10+" />
         </StackPanel>
     </jp:JetPackWindow.Resources>
 
@@ -122,7 +122,7 @@
                 <TabControl.Tag>
                     <StackPanel HorizontalAlignment="Right" Margin="0,4,0,0">
                         <TextBlock HorizontalAlignment="Right" FontSize="38" Text="Jetpack" TextOptions.TextFormattingMode="Ideal" Effect="{DynamicResource JetPack.Effects.TextGlow}" />
-                        <TextBlock HorizontalAlignment="Right" Style="{StaticResource Demo.State}" Text="for WPF · .NET 8+" />
+                        <TextBlock HorizontalAlignment="Right" Style="{StaticResource Demo.State}" Text="for WPF · .NET 10+" />
                     </StackPanel>
                 </TabControl.Tag>
                 <TabItem Header="Core">

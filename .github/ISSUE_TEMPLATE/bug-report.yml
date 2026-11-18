@@ -84,4 +84,4 @@ body:
     attributes:
       label: Other details
       description: Optional. .NET version, accent (green, orange, blue, custom), display scaling, light title bar.
-      placeholder: e.g. .NET 8, orange accent, 150% scaling
+      placeholder: e.g. .NET 10, orange accent, 150% scaling

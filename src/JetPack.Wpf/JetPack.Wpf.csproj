@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net8.0-windows</TargetFramework>
+    <TargetFramework>net10.0-windows</TargetFramework>
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
     <ImplicitUsings>enable</ImplicitUsings>
@@ -18,7 +18,7 @@
     <Version>0.1.0</Version>
     <Authors>Martin Kirk</Authors>
     <Copyright>Copyright (c) 2026 Martin Kirk</Copyright>
-    <Description>The JetPack theme from Silverlight 4, rebuilt as a complete WPF controls library for .NET 8+: styles for every standard control plus JetPackWindow, dialogs, ToggleSwitch, NumericUpDown, Flyout, HamburgerMenu, InfoBar and more.</Description>
+    <Description>The JetPack theme from Silverlight 4, rebuilt as a complete WPF controls library for .NET 10+: styles for every standard control plus JetPackWindow, dialogs, ToggleSwitch, NumericUpDown, Flyout, HamburgerMenu, InfoBar and more.</Description>
     <PackageTags>wpf;theme;jetpack;controls;styles;silverlight;mahapps</PackageTags>
     <PackageProjectUrl>https://montago.github.io/JetPackTheme/</PackageProjectUrl>
     <RepositoryUrl>https://github.com/Montago/JetPackTheme</RepositoryUrl>

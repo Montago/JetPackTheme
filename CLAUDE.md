@@ -1,7 +1,7 @@
 # CLAUDE.md
 
 JetPack for WPF: the JetPack theme from Microsoft's Silverlight 4 Application Themes, rebuilt as a
-WPF controls library for .NET 8+ in the style of MahApps.Metro. Repo: github.com/Montago/JetPackTheme
+WPF controls library for .NET 10+ in the style of MahApps.Metro. Repo: github.com/Montago/JetPackTheme
 (default branch `master`).
 
 ## Rules
@@ -31,7 +31,7 @@ WPF controls library for .NET 8+ in the style of MahApps.Metro. Repo: github.com
 ## Layout
 
 ```
-src/JetPack.Wpf/            library (net8.0-windows)
+src/JetPack.Wpf/            library (net10.0-windows)
   Styles/JetPack.xaml       the one dictionary apps merge; merges everything below
   Styles/Brushes.xaml, Fonts.xaml, Effects.xaml, Accents/{Green,Orange,Blue}.xaml
   Styles/Controls.*.xaml    one file per control group
@@ -42,7 +42,7 @@ src/JetPack.Wpf/            library (net8.0-windows)
   Helpers/                  ControlHelper / TextBoxHelper attached properties, converters
   Theming/                  ThemeManager, AccentGenerator
 src/JetPack.Wpf.Demo/       demo app; pages in Views/
-src/JetPack.Web/            web theme (Razor class library, net8.0; NuGet package JetPack.Web):
+src/JetPack.Web/            web theme (Razor class library, net10.0; NuGet package JetPack.Web):
                             wwwroot/css/jetpack.src.css imports jetpack.tokens.css (generated) and
                             css/controls/*.css (one per Controls.*.xaml); jetpack.css is that bundled
                             into one file by tools/bundle_web_css.py (sites link it; never edit it);
@@ -87,7 +87,7 @@ Resource keys follow MahApps with a `JetPack.` prefix (`JetPack.Brushes.Accent`,
 
 ```bash
 dotnet build JetPackTheme.slnx
-src/JetPack.Wpf.Demo/bin/Debug/net8.0-windows/JetPack.Wpf.Demo.exe --snapshot <folder>
+src/JetPack.Wpf.Demo/bin/Debug/net10.0-windows/JetPack.Wpf.Demo.exe --snapshot <folder>
 ```
 
 - `--snapshot` renders every demo page (plus orange/blue accent, light title bar, dialog, flyout) to
