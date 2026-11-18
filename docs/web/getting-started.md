@@ -8,7 +8,7 @@ nav_order: 1
 
 ## Requirements
 
-- An ASP.NET Core site on .NET 8 or later (MVC or Razor Pages) for the tag helpers.
+- An ASP.NET Core site on .NET 10 or later (MVC or Razor Pages) for the tag helpers.
 - Any site at all for the CSS and the script alone: they have no dependencies.
 - A browser with popovers and `<dialog>` (Edge, Chrome, Firefox and Safari from 2024 on).
 

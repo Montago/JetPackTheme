@@ -8,7 +8,7 @@ nav_order: 1
 
 ## Requirements
 
-- .NET 8 or later, Windows (`net8.0-windows`, `UseWPF`).
+- .NET 10 or later, Windows (`net10.0-windows`, `UseWPF`).
 - Windows 10 or 11. Rounded window corners need Windows 11; everything else works on both.
 
 ## Add the library
@@ -23,7 +23,7 @@ or in the project file:
 
 ```xml
 <ItemGroup>
-  <PackageReference Include="JetPack.Wpf" Version="0.5.0" />
+  <PackageReference Include="JetPack.Wpf" Version="0.10.0" />
 </ItemGroup>
 ```
 
