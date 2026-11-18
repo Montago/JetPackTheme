@@ -2,7 +2,7 @@
 # https://just-the-docs.com/docs/configuration/
 
 title: JetPack
-description: The JetPack theme from Silverlight 4, rebuilt for WPF and the web on .NET 8+.
+description: The JetPack theme from Silverlight 4, rebuilt for WPF and the web on .NET 10+.
 
 remote_theme: just-the-docs/just-the-docs@v0.12.0
 plugins:

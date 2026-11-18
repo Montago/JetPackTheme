@@ -14,7 +14,7 @@ portal can look the same.
 | | [JetPack for WPF](wpf.md) | [JetPack for the web](web.md) |
 | --- | --- | --- |
 | Package | [JetPack.Wpf](https://www.nuget.org/packages/JetPack.Wpf) | [JetPack.Web](https://www.nuget.org/packages/JetPack.Web) |
-| For | WPF desktop apps on .NET 8 and later | ASP.NET Core sites on .NET 8 and later; the CSS and JavaScript work on any site |
+| For | WPF desktop apps on .NET 10 and later | ASP.NET Core sites on .NET 10 and later; the CSS and JavaScript work on any site |
 | What you get | Styles for every standard WPF control, plus `JetPackWindow`, dialogs, `Flyout`, `HamburgerMenu`, `JetPackGrid` and more | CSS classes and a script for the same controls, tag helpers with the WPF names (`<jp-combo-box>`), and an SVG icon sprite |
 | Start with | [Getting started with WPF](getting-started.md) | [Getting started on the web](web/getting-started.md) |
 
