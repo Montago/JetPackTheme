@@ -107,6 +107,9 @@ Shared by every accent.
 | `JetPack.Brushes.ScrollBar.Track` | SolidColorBrush | `#FFDCDCDD` |
 | `JetPack.Brushes.ScrollBar.Thumb` | LinearGradientBrush | `#FFF8F8F8` 0.1 → `#FFC0C0C0` 1.0 |
 | `JetPack.Brushes.ScrollBar.Thumb.Vertical` | LinearGradientBrush | `#FFF8F8F8` 0.1 → `#FFC0C0C0` 1.0 |
+| `JetPack.Brushes.ScrollBar.Thin.Gray` | SolidColorBrush | `#FF5C5D62` |
+| `JetPack.Brushes.ScrollBar.Thin.Gray.MouseOver` | SolidColorBrush | `#FF707176` |
+| `JetPack.Brushes.ScrollBar.Thin.Gray.Pressed` | SolidColorBrush | `#FF48494E` |
 | `JetPack.Brushes.Panel.Background` | SolidColorBrush | `#FF707176` |
 | `JetPack.Brushes.Panel.Border` | SolidColorBrush | `#FF58585D` |
 | `JetPack.Brushes.Strip.Background` | SolidColorBrush | `#FF5B5C61` |
@@ -206,6 +209,9 @@ The values of the dark version. `ThemeManager.ChangeTheme(JetPackTheme.Dark)` an
 | `JetPack.Brushes.Dark.ScrollBar.Thumb` | LinearGradientBrush | `#FF7A7B80` 0.1 → `#FF5C5D62` 1.0 |
 | `JetPack.Brushes.Dark.ScrollBar.Thumb.Vertical` | LinearGradientBrush | `#FF7A7B80` 0.1 → `#FF5C5D62` 1.0 |
 | `JetPack.Brushes.Dark.ScrollBar.Glyph` | SolidColorBrush | `#FFD0D0D0` |
+| `JetPack.Brushes.Dark.ScrollBar.Thin.Gray` | SolidColorBrush | `#FF9A9BA0` |
+| `JetPack.Brushes.Dark.ScrollBar.Thin.Gray.MouseOver` | SolidColorBrush | `#FFB2B3B8` |
+| `JetPack.Brushes.Dark.ScrollBar.Thin.Gray.Pressed` | SolidColorBrush | `#FF85868B` |
 | `JetPack.Brushes.Dark.Input.Background.MouseOver` | LinearGradientBrush | `#FF616169` 0.3 → `#FF5A5A5E` 1.0 |
 | `JetPack.Brushes.Dark.Input.Background.Pressed` | LinearGradientBrush | `#FF4C4C53` 0.3 → `#FF46464A` 1.0 |
 | `JetPack.Brushes.Dark.Text.Dim` | SolidColorBrush | `#8CFFFFFF` |

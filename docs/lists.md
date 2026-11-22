@@ -510,8 +510,8 @@ lists, use them.
 
 ![Scroll bars, dark](screenshots/controls/scrollviewer-dark.png)
 
-`JetPack.Styles.ScrollViewer.Dark` has a dark track and thumb with light arrows; the thin bars look
-the same on any ground. (The whole app: [Light and dark](theming.md#light-and-dark).)
+`JetPack.Styles.ScrollViewer.Dark` has a dark track and thumb with light arrows; the thin accent bars
+look the same on any ground. (The whole app: [Light and dark](theming.md#light-and-dark).)
 
 ### Thin scroll bars
 
@@ -539,6 +539,22 @@ everywhere, add an implicit style after the JetPack dictionary:
 
 ```xml
 <Style TargetType="ScrollViewer" BasedOn="{StaticResource JetPack.Styles.ScrollViewer.Thin}" />
+```
+
+#### Grey thumb
+
+![Thin scroll bars with the grey thumb](screenshots/controls/scrollviewer-thin-gray.png)
+
+`jp:ScrollViewerHelper.ThinThumb="Gray"` gives the thin bars a dark grey thumb instead of the accent
+one: `JetPack.Brushes.ScrollBar.Thin.Gray`, lighter under the mouse (`.MouseOver`) and darker while
+dragged (`.Pressed`). In the dark version it turns a lighter grey, so it stays visible on dark rows.
+The property is inherited, so set it on a window or panel to cover every thin bar in it, including
+those in the HamburgerMenu pane, the TreeView and the JetPackGrid filter box.
+
+```xml
+<ScrollViewer Style="{StaticResource JetPack.Styles.ScrollViewer.Thin}" jp:ScrollViewerHelper.ThinThumb="Gray">
+    ...
+</ScrollViewer>
 ```
 
 The bars cover the whole scroll viewer, padding included, so a right `Padding` of 12 keeps a free lane
