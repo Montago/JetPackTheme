@@ -60,6 +60,7 @@ details and the HTML each one writes. The tag helpers marked * also take `is-ena
 | `jp-grid-splitter` * | `GridSplitter` | `resize-direction` | [Navigation](navigation.md#gridsplitter-and-separator) |
 | `jp-separator` | `Separator` | | [Navigation](navigation.md#gridsplitter-and-separator) |
 | `jp-tool-tip` (on any element) | `ToolTip` | the text | [Navigation](navigation.md#tooltip) |
+| `jp-thin-thumb` (on any element) | `ScrollViewerHelper.ThinThumb` | `Accent` or `Gray` (adds `.jp-thin-thumb--gray`) | [Lists and data](lists.md#scrollviewer-and-scrollbar) |
 | `jp-flyout` * | `jp:Flyout` | `id`, `header`, `position`, `width`, `is-open`, `is-closable`, `is-auto-close-enabled`, `auto-close-interval`, `padding` | [Window](window.md#flyouts) |
 | `jp-progress-bar` * | `ProgressBar` | `value`, `maximum`, `is-indeterminate` | [Status](status.md#progressbar) |
 | `jp-progress-ring` * | `jp:ProgressRing` | `is-active` | [Status](status.md#progressring) |

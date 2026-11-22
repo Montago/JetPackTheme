@@ -733,8 +733,24 @@ scrolling box with WPF's scroll bar settings:
 [HamburgerMenu](navigation.md#hamburgermenu) pane, the [TreeView](#treeview) and the JetPackGrid
 filter box scroll with the same bar.
 
+![The thin scroll bar with the grey thumb](../screenshots/web/controls/scrollviewer-thin-gray.png)
+
+`jp-thin-thumb="Gray"` (`ScrollViewerHelper.ThinThumb`) works on any element and gives the thin bars
+in it a dark grey thumb instead of the accent one; under `data-theme="dark"` it is a lighter grey. It
+adds the class `jp-thin-thumb--gray`, which sets the inherited colours `--jp-thin-thumb-color`,
+`--jp-thin-thumb-mouse-over` and `--jp-thin-thumb-pressed` (from `--jp-scroll-bar-thin-gray` and its
+`-mouse-over` and `-pressed` tokens). Put it on the body to make every thin bar grey.
+
+```cshtml
+<jp-scroll-viewer thin="true" jp-thin-thumb="Gray" class="h-40">…</jp-scroll-viewer>
+```
+
+```html
+<div class="jp-scroll-viewer jp-scroll-viewer--thin jp-thin-thumb--gray h-40" style="overflow-x:hidden;overflow-y:auto;" tabindex="-1">…</div>
+```
+
 ![ScrollViewer, dark](../screenshots/web/controls/scrollviewer-dark.png)
 
 `dark="true"` (`jp-scroll-viewer--dark`) is `ScrollViewer.Dark`: a dark track and thumb with light
-arrows; the thin bars look the same on any ground. (The whole page: [Light and
+arrows; the thin accent bars look the same on any ground. (The whole page: [Light and
 dark](theming.md#light-and-dark).)
