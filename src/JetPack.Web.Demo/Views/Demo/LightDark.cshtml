@@ -326,7 +326,10 @@ decision and a note (kept in the browser), and "Copy decisions" puts them on the
         <jp-scroll-viewer thin="true" horizontal-scroll-bar-visibility="Visible" vertical-scroll-bar-visibility="Visible" class="demo-scroll-sample !w-[180px] !h-[110px]" style="@(item.Dark ? "background: #3D3E42" : null)">
             <div class="demo-scroll-sample__content !w-[400px] !h-[300px]"></div>
         </jp-scroll-viewer>
-    </div>, "Normal and thin bars; the thin accent bar is the same on both. Dark lists and grids get the dark bars too."); }
+        <jp-scroll-viewer thin="true" jp-thin-thumb="Gray" data-theme="@(item.Dark ? "dark" : null)" horizontal-scroll-bar-visibility="Visible" vertical-scroll-bar-visibility="Visible" class="demo-scroll-sample !w-[180px] !h-[110px]" style="@(item.Dark ? "background: #3D3E42" : null)">
+            <div class="demo-scroll-sample__content !w-[400px] !h-[300px]"></div>
+        </jp-scroll-viewer>
+    </div>, "Normal and thin bars; the thin accent bar is the same on both, the grey one (jp-thin-thumb=\"Gray\") turns lighter in the dark version. Dark lists and grids get the dark bars too."); }
 
     @* ------------------------------------------------ Navigation and layout *@
     <h2 class="ld-group">Navigation and layout</h2>

@@ -609,14 +609,21 @@
   or it scrolls (jetpack.js keeps it 1.5 s after scrolling; ScrollViewerHelper.AutoHide), fading in and out
   over 0.25 s. The HamburgerMenu pane, the TreeView and the JetPackGrid filter list scroll with it too. Scroll bar parts cannot be animated, but a
   registered colour can: the thumb paints with --jp-thin-thumb, which the scroll viewer animates.
+  .jp-thin-thumb--gray (ScrollViewerHelper.ThinThumb="Gray") on the scroll viewer or any element around it
+  makes the thumb grey instead of accent: it sets the inherited --jp-thin-thumb-* colours.
   */
+  .jp-thin-thumb--gray {
+    --jp-thin-thumb-color: var(--jp-scroll-bar-thin-gray);
+    --jp-thin-thumb-mouse-over: var(--jp-scroll-bar-thin-gray-mouse-over);
+    --jp-thin-thumb-pressed: var(--jp-scroll-bar-thin-gray-pressed);
+  }
   :is(.jp-scroll-viewer--thin, .jp-hamburger-menu, .jp-tree-view, .jp-jetpack-grid-filter__list) {
     --jp-thin-thumb: transparent;
     scrollbar-width: thin;
     scrollbar-color: var(--jp-thin-thumb) transparent;
   }
   :is(.jp-scroll-viewer--thin, .jp-tree-view, .jp-jetpack-grid-filter__list) { transition: --jp-thin-thumb 0.25s ease-in-out; }
-  :is(.jp-scroll-viewer--thin, .jp-hamburger-menu, .jp-tree-view, .jp-jetpack-grid-filter__list):is(:hover, .is-active) { --jp-thin-thumb: var(--jp-accent-solid); }
+  :is(.jp-scroll-viewer--thin, .jp-hamburger-menu, .jp-tree-view, .jp-jetpack-grid-filter__list):is(:hover, .is-active) { --jp-thin-thumb: var(--jp-thin-thumb-color, var(--jp-accent-solid)); }
   @supports selector(::-webkit-scrollbar) {
     :is(.jp-scroll-viewer--thin, .jp-hamburger-menu, .jp-tree-view, .jp-jetpack-grid-filter__list) { scrollbar-color: auto; scrollbar-width: auto; }
   }
@@ -632,5 +639,6 @@
     box-shadow: none;
   }
   :is(.jp-scroll-viewer--thin, .jp-hamburger-menu, .jp-tree-view, .jp-jetpack-grid-filter__list)::-webkit-scrollbar-thumb:horizontal { border-width: 4px 3px 3px 3px; }
-  :is(.jp-scroll-viewer--thin, .jp-hamburger-menu, .jp-tree-view, .jp-jetpack-grid-filter__list)::-webkit-scrollbar-thumb:hover { background: var(--jp-accent-mouse-over) padding-box; }
+  :is(.jp-scroll-viewer--thin, .jp-hamburger-menu, .jp-tree-view, .jp-jetpack-grid-filter__list)::-webkit-scrollbar-thumb:hover { background: var(--jp-thin-thumb-mouse-over, var(--jp-accent-mouse-over)) padding-box; }
+  :is(.jp-scroll-viewer--thin, .jp-hamburger-menu, .jp-tree-view, .jp-jetpack-grid-filter__list)::-webkit-scrollbar-thumb:active { background: var(--jp-thin-thumb-pressed, var(--jp-accent-pressed)) padding-box; }
 }

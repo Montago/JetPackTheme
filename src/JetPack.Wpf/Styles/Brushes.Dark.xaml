@@ -64,6 +64,10 @@
         <GradientStop Color="#FF5C5D62" Offset="1.0" />
     </LinearGradientBrush>
     <SolidColorBrush x:Key="JetPack.Brushes.Dark.ScrollBar.Glyph" Color="#FFD0D0D0" />
+    <!-- The grey thin thumb on dark grounds: lighter than the rows -->
+    <SolidColorBrush x:Key="JetPack.Brushes.Dark.ScrollBar.Thin.Gray" Color="#FF9A9BA0" />
+    <SolidColorBrush x:Key="JetPack.Brushes.Dark.ScrollBar.Thin.Gray.MouseOver" Color="#FFB2B3B8" />
+    <SolidColorBrush x:Key="JetPack.Brushes.Dark.ScrollBar.Thin.Gray.Pressed" Color="#FF85868B" />
 
     <!-- Hover and pressed of the dark field (ComboBox, ColorPicker in the dark version) -->
     <LinearGradientBrush x:Key="JetPack.Brushes.Dark.Input.Background.MouseOver" StartPoint="0,0" EndPoint="0,1">

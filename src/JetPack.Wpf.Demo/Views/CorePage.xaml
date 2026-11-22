@@ -142,18 +142,43 @@
 
                 <HeaderedContentControl Style="{StaticResource Demo.Column}" Header="ScrollViewer · Thin" Tag="JetPack.Styles.ScrollViewer.Thin">
                     <StackPanel>
-                        <Border Width="130" Height="110" BorderBrush="#80404040" BorderThickness="1" CornerRadius="2.5" Background="#FFC9CACC">
-                            <ScrollViewer Style="{StaticResource JetPack.Styles.ScrollViewer.Thin}" HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Visible">
-                                <Rectangle Width="300" Height="260">
-                                    <Rectangle.Fill>
-                                        <LinearGradientBrush StartPoint="0,0" EndPoint="0,24" MappingMode="Absolute" SpreadMethod="Repeat">
-                                            <GradientStop Color="#10FFFFFF" Offset="0.5" />
-                                            <GradientStop Color="#00FFFFFF" Offset="0.5" />
-                                        </LinearGradientBrush>
-                                    </Rectangle.Fill>
-                                </Rectangle>
-                            </ScrollViewer>
-                        </Border>
+                        <Grid Width="272">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition />
+                                <ColumnDefinition Width="12" />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+                            <StackPanel>
+                                <Border Height="110" BorderBrush="#80404040" BorderThickness="1" CornerRadius="2.5" Background="#FFC9CACC">
+                                    <ScrollViewer Style="{StaticResource JetPack.Styles.ScrollViewer.Thin}" HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Visible">
+                                        <Rectangle Width="300" Height="260">
+                                            <Rectangle.Fill>
+                                                <LinearGradientBrush StartPoint="0,0" EndPoint="0,24" MappingMode="Absolute" SpreadMethod="Repeat">
+                                                    <GradientStop Color="#10FFFFFF" Offset="0.5" />
+                                                    <GradientStop Color="#00FFFFFF" Offset="0.5" />
+                                                </LinearGradientBrush>
+                                            </Rectangle.Fill>
+                                        </Rectangle>
+                                    </ScrollViewer>
+                                </Border>
+                                <TextBlock Style="{StaticResource Demo.State}" Text="Accent (default)" />
+                            </StackPanel>
+                            <StackPanel Grid.Column="2">
+                                <Border Height="110" BorderBrush="#80404040" BorderThickness="1" CornerRadius="2.5" Background="#FFC9CACC">
+                                    <ScrollViewer Style="{StaticResource JetPack.Styles.ScrollViewer.Thin}" jp:ScrollViewerHelper.ThinThumb="Gray" HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Visible">
+                                        <Rectangle Width="300" Height="260">
+                                            <Rectangle.Fill>
+                                                <LinearGradientBrush StartPoint="0,0" EndPoint="0,24" MappingMode="Absolute" SpreadMethod="Repeat">
+                                                    <GradientStop Color="#10FFFFFF" Offset="0.5" />
+                                                    <GradientStop Color="#00FFFFFF" Offset="0.5" />
+                                                </LinearGradientBrush>
+                                            </Rectangle.Fill>
+                                        </Rectangle>
+                                    </ScrollViewer>
+                                </Border>
+                                <TextBlock Style="{StaticResource Demo.State}" Text="ThinThumb=&quot;Gray&quot;" />
+                            </StackPanel>
+                        </Grid>
                         <TextBlock Style="{StaticResource Demo.State}" Text="Hides after 1.5 s" />
                     </StackPanel>
                 </HeaderedContentControl>

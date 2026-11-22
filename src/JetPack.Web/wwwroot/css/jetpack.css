@@ -87,6 +87,9 @@ Load this file before Tailwind: the first @layer statement fixes the order of th
   --jp-scroll-bar-track: #DCDCDD;
   --jp-scroll-bar-thumb: linear-gradient(#F8F8F8 10%, #C0C0C0 100%);
   --jp-scroll-bar-thumb-vertical: linear-gradient(to right, #F8F8F8 10%, #C0C0C0 100%);
+  --jp-scroll-bar-thin-gray: #5C5D62;
+  --jp-scroll-bar-thin-gray-mouse-over: #707176;
+  --jp-scroll-bar-thin-gray-pressed: #48494E;
   --jp-panel-background: #707176;
   --jp-panel-border: #58585D;
   --jp-strip-background: #5B5C61;
@@ -182,6 +185,9 @@ Load this file before Tailwind: the first @layer statement fixes the order of th
   --jp-dark-scroll-bar-thumb: linear-gradient(#7A7B80 10%, #5C5D62 100%);
   --jp-dark-scroll-bar-thumb-vertical: linear-gradient(to right, #7A7B80 10%, #5C5D62 100%);
   --jp-dark-scroll-bar-glyph: #D0D0D0;
+  --jp-dark-scroll-bar-thin-gray: #9A9BA0;
+  --jp-dark-scroll-bar-thin-gray-mouse-over: #B2B3B8;
+  --jp-dark-scroll-bar-thin-gray-pressed: #85868B;
   --jp-dark-input-background-mouse-over: linear-gradient(#616169 30%, #5A5A5E 100%);
   --jp-dark-input-background-pressed: linear-gradient(#4C4C53 30%, #46464A 100%);
   --jp-dark-text-dim: #FFFFFF8C;
@@ -328,6 +334,9 @@ Load this file before Tailwind: the first @layer statement fixes the order of th
   --jp-scroll-bar-thumb: var(--jp-dark-scroll-bar-thumb);
   --jp-scroll-bar-thumb-vertical: var(--jp-dark-scroll-bar-thumb-vertical);
   --jp-scroll-bar-thumb-highlight: var(--jp-dark-scroll-bar-thumb-highlight);
+  --jp-scroll-bar-thin-gray: var(--jp-dark-scroll-bar-thin-gray);
+  --jp-scroll-bar-thin-gray-mouse-over: var(--jp-dark-scroll-bar-thin-gray-mouse-over);
+  --jp-scroll-bar-thin-gray-pressed: var(--jp-dark-scroll-bar-thin-gray-pressed);
   --jp-calendar-background: var(--jp-dark-input-background);
   --jp-calendar-foreground: var(--jp-dark-control-foreground);
   --jp-calendar-day-name: var(--jp-dark-text-dim);
@@ -2163,14 +2172,21 @@ Load this file before Tailwind: the first @layer statement fixes the order of th
   or it scrolls (jetpack.js keeps it 1.5 s after scrolling; ScrollViewerHelper.AutoHide), fading in and out
   over 0.25 s. The HamburgerMenu pane, the TreeView and the JetPackGrid filter list scroll with it too. Scroll bar parts cannot be animated, but a
   registered colour can: the thumb paints with --jp-thin-thumb, which the scroll viewer animates.
+  .jp-thin-thumb--gray (ScrollViewerHelper.ThinThumb="Gray") on the scroll viewer or any element around it
+  makes the thumb grey instead of accent: it sets the inherited --jp-thin-thumb-* colours.
   */
+  .jp-thin-thumb--gray {
+    --jp-thin-thumb-color: var(--jp-scroll-bar-thin-gray);
+    --jp-thin-thumb-mouse-over: var(--jp-scroll-bar-thin-gray-mouse-over);
+    --jp-thin-thumb-pressed: var(--jp-scroll-bar-thin-gray-pressed);
+  }
   :is(.jp-scroll-viewer--thin, .jp-hamburger-menu, .jp-tree-view, .jp-jetpack-grid-filter__list) {
     --jp-thin-thumb: transparent;
     scrollbar-width: thin;
     scrollbar-color: var(--jp-thin-thumb) transparent;
   }
   :is(.jp-scroll-viewer--thin, .jp-tree-view, .jp-jetpack-grid-filter__list) { transition: --jp-thin-thumb 0.25s ease-in-out; }
-  :is(.jp-scroll-viewer--thin, .jp-hamburger-menu, .jp-tree-view, .jp-jetpack-grid-filter__list):is(:hover, .is-active) { --jp-thin-thumb: var(--jp-accent-solid); }
+  :is(.jp-scroll-viewer--thin, .jp-hamburger-menu, .jp-tree-view, .jp-jetpack-grid-filter__list):is(:hover, .is-active) { --jp-thin-thumb: var(--jp-thin-thumb-color, var(--jp-accent-solid)); }
   @supports selector(::-webkit-scrollbar) {
     :is(.jp-scroll-viewer--thin, .jp-hamburger-menu, .jp-tree-view, .jp-jetpack-grid-filter__list) { scrollbar-color: auto; scrollbar-width: auto; }
   }
@@ -2186,7 +2202,8 @@ Load this file before Tailwind: the first @layer statement fixes the order of th
     box-shadow: none;
   }
   :is(.jp-scroll-viewer--thin, .jp-hamburger-menu, .jp-tree-view, .jp-jetpack-grid-filter__list)::-webkit-scrollbar-thumb:horizontal { border-width: 4px 3px 3px 3px; }
-  :is(.jp-scroll-viewer--thin, .jp-hamburger-menu, .jp-tree-view, .jp-jetpack-grid-filter__list)::-webkit-scrollbar-thumb:hover { background: var(--jp-accent-mouse-over) padding-box; }
+  :is(.jp-scroll-viewer--thin, .jp-hamburger-menu, .jp-tree-view, .jp-jetpack-grid-filter__list)::-webkit-scrollbar-thumb:hover { background: var(--jp-thin-thumb-mouse-over, var(--jp-accent-mouse-over)) padding-box; }
+  :is(.jp-scroll-viewer--thin, .jp-hamburger-menu, .jp-tree-view, .jp-jetpack-grid-filter__list)::-webkit-scrollbar-thumb:active { background: var(--jp-thin-thumb-pressed, var(--jp-accent-pressed)) padding-box; }
 }
 
 /* ---------------------------------------------------------------- controls/calendar.css */

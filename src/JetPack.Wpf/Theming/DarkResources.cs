@@ -54,6 +54,9 @@ public class DarkResources : ResourceDictionary
         ("JetPack.Brushes.ScrollBar.Thumb", "JetPack.Brushes.Dark.ScrollBar.Thumb"),
         ("JetPack.Brushes.ScrollBar.Thumb.Vertical", "JetPack.Brushes.Dark.ScrollBar.Thumb.Vertical"),
         ("JetPack.Brushes.ScrollBar.Thumb.Highlight", "JetPack.Brushes.Dark.ScrollBar.Thumb.Highlight"),
+        ("JetPack.Brushes.ScrollBar.Thin.Gray", "JetPack.Brushes.Dark.ScrollBar.Thin.Gray"),
+        ("JetPack.Brushes.ScrollBar.Thin.Gray.MouseOver", "JetPack.Brushes.Dark.ScrollBar.Thin.Gray.MouseOver"),
+        ("JetPack.Brushes.ScrollBar.Thin.Gray.Pressed", "JetPack.Brushes.Dark.ScrollBar.Thin.Gray.Pressed"),
         // Calendar: the field of the dark inputs, light text
         ("JetPack.Brushes.Calendar.Background", "JetPack.Brushes.Dark.Input.Background"),
         ("JetPack.Brushes.Calendar.Foreground", "JetPack.Brushes.Dark.Control.Foreground"),

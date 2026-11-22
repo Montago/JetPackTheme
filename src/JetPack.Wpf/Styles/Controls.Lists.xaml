@@ -151,7 +151,8 @@
          Modern overlay scroll bars: a slim rounded thumb in the accent gradient, without arrows or
          track, which widens under the mouse. JetPack.Styles.ScrollViewer.Thin lays them over the
          content and hides them (ScrollViewerHelper.AutoHide): they fade in over 0.25 s while the mouse
-         is over the scroll viewer or it scrolls, and fade out again when the mouse leaves. -->
+         is over the scroll viewer or it scrolls, and fade out again when the mouse leaves.
+         ScrollViewerHelper.ThinThumb="Gray" (inherited) makes the thumb grey instead of accent. -->
     <Style x:Key="JetPack.Styles.ScrollBar.Thin.Thumb" TargetType="Thumb">
         <Setter Property="OverridesDefaultStyle" Value="True" />
         <Setter Property="IsTabStop" Value="False" />
@@ -164,6 +165,23 @@
             <Trigger Property="IsDragging" Value="True">
                 <Setter Property="Background" Value="{DynamicResource JetPack.Brushes.Accent.Pressed}" />
             </Trigger>
+            <Trigger Property="h:ScrollViewerHelper.ThinThumb" Value="Gray">
+                <Setter Property="Background" Value="{DynamicResource JetPack.Brushes.ScrollBar.Thin.Gray}" />
+            </Trigger>
+            <MultiTrigger>
+                <MultiTrigger.Conditions>
+                    <Condition Property="h:ScrollViewerHelper.ThinThumb" Value="Gray" />
+                    <Condition Property="IsMouseOver" Value="True" />
+                </MultiTrigger.Conditions>
+                <Setter Property="Background" Value="{DynamicResource JetPack.Brushes.ScrollBar.Thin.Gray.MouseOver}" />
+            </MultiTrigger>
+            <MultiTrigger>
+                <MultiTrigger.Conditions>
+                    <Condition Property="h:ScrollViewerHelper.ThinThumb" Value="Gray" />
+                    <Condition Property="IsDragging" Value="True" />
+                </MultiTrigger.Conditions>
+                <Setter Property="Background" Value="{DynamicResource JetPack.Brushes.ScrollBar.Thin.Gray.Pressed}" />
+            </MultiTrigger>
         </Style.Triggers>
     </Style>
 
