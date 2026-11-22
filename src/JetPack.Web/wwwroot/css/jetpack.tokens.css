@@ -68,6 +68,9 @@
   --jp-scroll-bar-track: #DCDCDD;
   --jp-scroll-bar-thumb: linear-gradient(#F8F8F8 10%, #C0C0C0 100%);
   --jp-scroll-bar-thumb-vertical: linear-gradient(to right, #F8F8F8 10%, #C0C0C0 100%);
+  --jp-scroll-bar-thin-gray: #5C5D62;
+  --jp-scroll-bar-thin-gray-mouse-over: #707176;
+  --jp-scroll-bar-thin-gray-pressed: #48494E;
   --jp-panel-background: #707176;
   --jp-panel-border: #58585D;
   --jp-strip-background: #5B5C61;
@@ -163,6 +166,9 @@
   --jp-dark-scroll-bar-thumb: linear-gradient(#7A7B80 10%, #5C5D62 100%);
   --jp-dark-scroll-bar-thumb-vertical: linear-gradient(to right, #7A7B80 10%, #5C5D62 100%);
   --jp-dark-scroll-bar-glyph: #D0D0D0;
+  --jp-dark-scroll-bar-thin-gray: #9A9BA0;
+  --jp-dark-scroll-bar-thin-gray-mouse-over: #B2B3B8;
+  --jp-dark-scroll-bar-thin-gray-pressed: #85868B;
   --jp-dark-input-background-mouse-over: linear-gradient(#616169 30%, #5A5A5E 100%);
   --jp-dark-input-background-pressed: linear-gradient(#4C4C53 30%, #46464A 100%);
   --jp-dark-text-dim: #FFFFFF8C;
@@ -309,6 +315,9 @@
   --jp-scroll-bar-thumb: var(--jp-dark-scroll-bar-thumb);
   --jp-scroll-bar-thumb-vertical: var(--jp-dark-scroll-bar-thumb-vertical);
   --jp-scroll-bar-thumb-highlight: var(--jp-dark-scroll-bar-thumb-highlight);
+  --jp-scroll-bar-thin-gray: var(--jp-dark-scroll-bar-thin-gray);
+  --jp-scroll-bar-thin-gray-mouse-over: var(--jp-dark-scroll-bar-thin-gray-mouse-over);
+  --jp-scroll-bar-thin-gray-pressed: var(--jp-dark-scroll-bar-thin-gray-pressed);
   --jp-calendar-background: var(--jp-dark-input-background);
   --jp-calendar-foreground: var(--jp-dark-control-foreground);
   --jp-calendar-day-name: var(--jp-dark-text-dim);

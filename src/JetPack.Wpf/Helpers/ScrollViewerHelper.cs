@@ -7,6 +7,16 @@ using System.Windows.Threading;
 
 namespace JetPack.Wpf.Helpers;
 
+/// <summary>The colour of the thumb of the thin scroll bars (<see cref="ScrollViewerHelper.ThinThumbProperty"/>).</summary>
+public enum ThinThumbColor
+{
+    /// <summary>The accent colour (the default).</summary>
+    Accent,
+
+    /// <summary>Dark grey; a lighter grey in the dark version.</summary>
+    Gray,
+}
+
 /// <summary>
 /// Auto-hiding scroll bars for the thin ScrollViewer style (on by default there). While
 /// <c>AutoHide</c> is on, the scroll viewer is marked active while the mouse is over it, and for
@@ -27,6 +37,18 @@ public static class ScrollViewerHelper
 
     public static TimeSpan GetAutoHideDelay(DependencyObject o) => (TimeSpan)o.GetValue(AutoHideDelayProperty);
     public static void SetAutoHideDelay(DependencyObject o, TimeSpan value) => o.SetValue(AutoHideDelayProperty, value);
+
+    /// <summary>
+    /// The colour of the thin scroll bars' thumb: Accent (default) or Gray. Inherited, so it can be set on
+    /// a window or a panel, and it reaches the thin bars inside TreeView, HamburgerMenu and the
+    /// JetPackGrid filter lists.
+    /// </summary>
+    public static readonly DependencyProperty ThinThumbProperty = DependencyProperty.RegisterAttached(
+        "ThinThumb", typeof(ThinThumbColor), typeof(ScrollViewerHelper),
+        new FrameworkPropertyMetadata(ThinThumbColor.Accent, FrameworkPropertyMetadataOptions.Inherits));
+
+    public static ThinThumbColor GetThinThumb(DependencyObject o) => (ThinThumbColor)o.GetValue(ThinThumbProperty);
+    public static void SetThinThumb(DependencyObject o, ThinThumbColor value) => o.SetValue(ThinThumbProperty, value);
 
     private static readonly DependencyPropertyKey IsScrollBarActivePropertyKey = DependencyProperty.RegisterAttachedReadOnly(
         "IsScrollBarActive", typeof(bool), typeof(ScrollViewerHelper), new FrameworkPropertyMetadata(true));

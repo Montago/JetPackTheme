@@ -146,6 +146,36 @@ internal static class DateCulture
     }
 }
 
+/// <summary>The colour of the thumb of the thin scroll bars (ScrollViewerHelper.ThinThumb in WPF).</summary>
+public enum ThinThumbColor
+{
+    /// <summary>The accent colour (the default).</summary>
+    Accent,
+
+    /// <summary>Dark grey; a lighter grey in the dark version.</summary>
+    Gray,
+}
+
+/// <summary>
+/// <c>jp-thin-thumb="Gray"</c> on any element (ScrollViewerHelper.ThinThumb): the thin scroll bars in it
+/// (thin ScrollViewer, TreeView, HamburgerMenu, JetPackGrid filter lists) get a grey thumb instead of
+/// the accent one. Adds the class jp-thin-thumb--gray.
+/// </summary>
+[HtmlTargetElement("*", Attributes = "jp-thin-thumb")]
+public class ThinThumbTagHelper : TagHelper
+{
+    [HtmlAttributeName("jp-thin-thumb")]
+    public ThinThumbColor ThinThumb { get; set; }
+
+    public override void Process(TagHelperContext context, TagHelperOutput output)
+    {
+        if (ThinThumb == ThinThumbColor.Gray)
+        {
+            output.AddClass("jp-thin-thumb--gray", Html.Encoder);
+        }
+    }
+}
+
 /// <summary>
 /// <c>jp-tool-tip="Saves the changes"</c> on any element: the JetPack tool tip under the pointer.
 /// </summary>

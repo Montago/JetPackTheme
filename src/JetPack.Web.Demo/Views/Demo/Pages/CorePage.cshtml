@@ -118,9 +118,20 @@
         </demo-column>
 
         <demo-column header="ScrollViewer · Thin" tag="JetPack.Styles.ScrollViewer.Thin">
-            <jp-scroll-viewer thin="true" horizontal-scroll-bar-visibility="Visible" vertical-scroll-bar-visibility="Visible" class="demo-scroll-sample">
-                <div class="demo-scroll-sample__content"></div>
-            </jp-scroll-viewer>
+            <div class="grid grid-cols-2 gap-x-3 w-[272px]">
+                <div class="flex flex-col">
+                    <jp-scroll-viewer thin="true" horizontal-scroll-bar-visibility="Visible" vertical-scroll-bar-visibility="Visible" class="demo-scroll-sample !w-auto">
+                        <div class="demo-scroll-sample__content"></div>
+                    </jp-scroll-viewer>
+                    <span class="demo-state">Accent (default)</span>
+                </div>
+                <div class="flex flex-col">
+                    <jp-scroll-viewer thin="true" jp-thin-thumb="Gray" horizontal-scroll-bar-visibility="Visible" vertical-scroll-bar-visibility="Visible" class="demo-scroll-sample !w-auto">
+                        <div class="demo-scroll-sample__content"></div>
+                    </jp-scroll-viewer>
+                    <span class="demo-state">jp-thin-thumb="Gray"</span>
+                </div>
+            </div>
             <span class="demo-state">Hides after 1.5 s</span>
         </demo-column>
 

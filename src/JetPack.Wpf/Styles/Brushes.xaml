@@ -163,6 +163,10 @@
         <GradientStop Color="#FFF8F8F8" Offset="0.1" />
         <GradientStop Color="#FFC0C0C0" Offset="1.0" />
     </LinearGradientBrush>
+    <!-- The grey thumb of the thin scroll bars (ScrollViewerHelper.ThinThumb="Gray"); solid, so the web can fade it -->
+    <SolidColorBrush x:Key="JetPack.Brushes.ScrollBar.Thin.Gray" Color="#FF5C5D62" />
+    <SolidColorBrush x:Key="JetPack.Brushes.ScrollBar.Thin.Gray.MouseOver" Color="#FF707176" />
+    <SolidColorBrush x:Key="JetPack.Brushes.ScrollBar.Thin.Gray.Pressed" Color="#FF48494E" />
 
     <!-- Dark panels -->
     <SolidColorBrush x:Key="JetPack.Brushes.Panel.Background" Color="#FF707176" />
